@@ -2,7 +2,21 @@ import React from "react";
 import styled from "styled-components";
 
 const Grid = (props) => {
-  const { is_flex, is_center, right, verticalAlign, position, display, width, padding, margin, bg, children, _onClick } = props;
+  const {
+    is_flex,
+    is_center,
+    right,
+    verticalAlign,
+    position,
+    display,
+    width,
+    padding,
+    margin,
+    bg,
+    children,
+    _onClick,
+    _className,
+  } = props;
 
   const styles = {
     is_flex: is_flex,
@@ -14,6 +28,7 @@ const Grid = (props) => {
     display: display,
     position: position,
     verticalAlign: verticalAlign,
+    className: _className,
     right: right,
   };
 
@@ -39,6 +54,7 @@ Grid.defaultProps = {
   position: false,
   verticalAlign: false,
   right: false,
+  className: "",
 };
 
 const GridBox = styled.div`
@@ -51,9 +67,14 @@ const GridBox = styled.div`
   ${(props) => (props.margin ? `margin: ${props.margin}` : "")};
   ${(props) => (props.position ? `position: ${props.position}` : "")};
   ${(props) => (props.bg ? `background-color: ${props.bg}` : "")};
-  ${(props) => (props.is_flex ? `display:flex; align-items:center; justify-content:space-between` : "")}
   ${(props) =>
-    props.is_center ? `display:flex; flex-direction:column; align-items:center; justify-content:center` : ""}
+    props.is_flex
+      ? `display:flex; align-items:center; justify-content:space-between`
+      : ""}
+  ${(props) =>
+    props.is_center
+      ? `display:flex; flex-direction:column; align-items:center; justify-content:center`
+      : ""}
 `;
 
 export default Grid;

@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { CardGrid, Image } from "../elements";
+import Grid from "./Grid";
 import { BiX } from "react-icons/bi";
 import styled from "styled-components";
 import { HiUpload } from "react-icons/hi";
 import { useDispatch } from "react-redux";
-import { imgActions } from "../redux/modules/image";
 
-const Upload = () => {
+const Uploads = () => {
   const dispatch = useDispatch();
   const [imgPreview, setImgPreview] = useState([]);
-  const fileInput = React.useRef();
 
   const uploadFile = (e) => {
     const imageList = e.target.files;
@@ -20,10 +18,11 @@ const Upload = () => {
       imageUrlList.push(currentImageUrl);
     }
 
-    if (imageUrlList.length > 10) {
-      imageUrlList = imageUrlList.slice(0, 10);
+    if (imageUrlList.length > 4) {
+      alert("사진은 최대 4장만 가능합니다!");
+    } else {
+      setImgPreview(imageUrlList);
     }
-    setImgPreview(imageUrlList);
 
     let imgList = [];
 
@@ -32,58 +31,61 @@ const Upload = () => {
         imgList.push(imageList[key]);
       }
     }
-    dispatch(imgActions.setPre(imgList, imageUrlList));
   };
 
-  // useEffect(() => {
-
-  // });
-
   const handleDeleteImage = (id) => {
-    dispatch(imgActions.deletePre(id));
     setImgPreview(imgPreview.filter((b, idx) => idx !== id));
   };
 
   return (
     <>
-      <CardGrid is_flex width="auto">
+      <Grid is_flex width="auto">
         <Labels htmlFor="files" onChange={uploadFile}>
-          <HiUpload />
-          <Inputs type="file" id="files" multiple="multiple" />
+          <HiUpload style={{ marginTop: "5px" }} />
+          <Inputs type="file" id="files" multiple="multiple" accept="image/*" />
         </Labels>
-        {imgPreview.map((image, id) => {
-          return (
-            <CardGrid key={id} margin="0px 25px 25px 0">
-              <BiX
-                type="button"
-                onClick={() => {
-                  handleDeleteImage(id);
-                }}
-              />
+      </Grid>
+      {imgPreview.map((image, id) => {
+        return (
+          <ImageBox key={id}>
+            <BiX
+              size="20px"
+              style={{ cursor: "pointer" }}
+              type="button"
+              onClick={() => {
+                handleDeleteImage(id);
+              }}
+            />
 
-              <ImageList src={`${image}`} />
-            </CardGrid>
-          );
-        })}
-      </CardGrid>
+            <ImageList src={`${image}`} alt={`${image}-${id}`} />
+          </ImageBox>
+        );
+      })}
     </>
   );
 };
 
-export default Upload;
+export default Uploads;
+
+const ImageBox = styled.div`
+  margin-top: 1%;
+  width: 14%;
+  float: left;
+  margin-right: 38px;
+`;
 
 const Labels = styled.label`
-  display: block;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 16px 5px 16px;
   line-height: 100px;
   font-size: 18px;
-  width: 150px;
-  height: 100px;
-  margin: 0 25px 0 25px;
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  border-radius: 3px;
+  width: 90.2%;
+  height: 30px;
+  border: 1px solid #c4c4c4;
+  border-radius: 1px;
+  background-color: #c6c6c6; ;
 `;
 
 const Inputs = styled.input`
@@ -91,13 +93,13 @@ const Inputs = styled.input`
 `;
 
 const ImageList = styled.div`
-  width: 150px;
-  height: 100px;
+  width: 200px;
+  height: 130px;
+  margin-left: 2%;
   border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: 3px;
   background-image: url("${(props) => props.src}");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  position: relative;
 `;

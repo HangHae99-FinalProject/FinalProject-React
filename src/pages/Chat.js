@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
+import { useSelector } from "react-redux";
 
 const Chat = () => {
-  return (
-    <div>채팅 페이지가 될 예정입니다.</div>
-  )
-}
+  // const client = useSelector((state) => console.log(state.chat.client));
+  // console.log(client);
 
-export default Chat
+  return <div>채팅 페이지가 될 예정입니다.</div>;
+};
+
+export default Chat;

@@ -59,7 +59,8 @@ function Header() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: "block", sm: "block" } }}
+            sx={{ display: { xs: "block", sm: "block", cursor:"pointer"} }}
+            onClick={goHome}
           >
             <b style={{ fontSize: "30px" }}>모</b>두의 경<b style={{ fontSize: "30px" }}>험</b>
             <b style={{ fontSize: "30px" }}>:모험</b>{" "}

@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
 
-// import User from "./modules/user";
+import User from "./modules/user";
 // import Post from "./modules/post"; 
 // import Image from "./modules/image";
 
@@ -11,7 +11,7 @@ import { connectRouter } from "connected-react-router";
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
-  // user: User,
+  user: User,
   // post: Post,
   // image: Image,
   router: connectRouter(history),

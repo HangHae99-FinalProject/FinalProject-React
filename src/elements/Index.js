@@ -1,5 +1,5 @@
 import Grid from "./Grid";
-import FixedContainer from "./FixedContainer";
-import FlexContainer from "./FlexContainer";
+// import FixedContainer from "./FixedContainer";
+// import FlexContainer from "./FlexContainer";
 
-export { Grid, FixedContainer, FlexContainer };
+export { Grid };

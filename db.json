@@ -1,0 +1,26 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": {
+    "email": "2121",
+    "password": "212",
+    "pwCheck": "2121",
+    "nickname": "2121"
+  },
+  "login": {
+    "email": "kyr91@lycos.co.kr",
+    "password": "123456You!!"
+  }
+}

@@ -17,6 +17,7 @@ import Chat from "../pages/Chat";
 //기타 임포트
 import { history } from "../redux/configureStore";
 import { Grid } from "@mui/material";
+import Detail from "../pages/Detail";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
         <Route path="/signup" exact component={Signup} />
         <Route path="/login" exact component={Login} />
         <Route path="/post/:id" exact component={Post} />
+        <Route path="/detail/:id" exact component={Detail} />
+        <Route path="/detail" exact component={Detail} />
         <Route path="/write" exact component={Write} />
         <Route path="/write/:id" exact component={Write} />
         <Route path="/user" exact component={User} />

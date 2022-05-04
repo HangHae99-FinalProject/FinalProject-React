@@ -313,7 +313,7 @@ const CateBtn = styled.div`
     cursor: pointer;
     .icon {
       font-size: 32px;
-      color: var(--inactive-text-color);
+      color: var(--inactive--color);
     }
     p {
       text-align: center;

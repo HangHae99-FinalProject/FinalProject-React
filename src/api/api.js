@@ -15,5 +15,18 @@ instance.interceptors.request.use(function (config) {
   config.headers.common["Authorization"] = `Bearer ${accessToken}`;
   return config;
 });
-
 export default instance;
+
+export const formDataApi = axios.create({
+  baseURL: "http://54.225.34.106:8080/",
+  headers: {
+    "content-type": "multipart/form-data",
+  },
+});
+
+formDataApi.interceptors.request.use(function (config) {
+  const accessToken = document.cookie.split("=")[1];
+  config.headers.common["Authorization"] = `${accessToken}`;
+  // console.log(config);
+  return config;
+});

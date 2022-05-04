@@ -5,6 +5,9 @@ import { connectRouter } from "connected-react-router";
 import chat from "./modules/chat";
 
 import User from "./modules/user";
+import post from "./modules/post";
+import recruit from "./modules/recruit";
+import image from "./modules/image";
 // import Post from "./modules/post";
 // import Image from "./modules/image";
 
@@ -12,8 +15,9 @@ export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
   user: User,
-  // post: Post,
-  // image: Image,
+  recruit: recruit,
+  image: image,
+  post: post,
   chat: chat,
   router: connectRouter(history),
 });
@@ -23,11 +27,11 @@ const middlewares = [thunk.withExtraArgument({ history: history })];
 // 지금이 어느 환경인 지 알려줘요. (개발환경, 프로덕션(배포)환경 ...)
 const env = process.env.NODE_ENV;
 
-// 개발환경에서는 로거라는 걸 하나만 더 써볼게요.
-// if (env === "development") {
-//   const { logger } = require("redux-logger");
-//   middlewares.push(logger);
-// }
+// 개발환경에서의 logger 추가
+if (env === "development") {
+  const { logger } = require("redux-logger");
+  middlewares.push(logger);
+}
 
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

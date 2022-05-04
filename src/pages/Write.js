@@ -1,137 +1,507 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import rr from "../assets/image 35.png";
 import Grid from "../elements/Grid";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Text from "../elements/Text";
 import Uploads from "../elements/Upload";
+import { BiX } from "react-icons/bi";
+
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreates as RecruitActions } from "../redux/modules/recruit";
+import { actionCreates as PostActions } from "../redux/modules/post";
+import { style } from "@mui/system";
 
 const Write = () => {
-  const [is_location, setLocation] = useState("카테고리를 선택해주세요.");
-  const [is_open, setIs_open] = useState(false);
-  const [selected, setSelected] = useState(false);
+  const dispatch = useDispatch();
 
-  const locations = [
-    { id: 1, locationName: "미술/디자인" },
-    { id: 2, locationName: "영상" },
-    { id: 3, locationName: "배우" },
-    { id: 4, locationName: "사진" },
-    { id: 5, locationName: "프로그래밍" },
-    { id: 6, locationName: "모델" },
-    { id: 7, locationName: "성우" },
-    { id: 8, locationName: "음향" },
-    { id: 9, locationName: "기타" },
-  ];
+  const [is_location, setLocation] = useState("");
+
+  const [selected, setSelected] = useState(false);
+  const [is_Week, setWeek] = useState("");
+  const [is_cate, setIs_Cate] = useState("");
+  const [is_people, setIs_People] = useState("");
+  const [is_title, setIs_Title] = useState("");
+  const [is_content, setIs_Content] = useState("");
+
+  const majorList = useSelector((state) => state.recruit.majorList);
+  const link = useSelector((state) => state.image.Url);
+
+  const data = {
+    content: is_content,
+    title: is_title,
+    deadline: is_Week,
+    region: is_location,
+    majorList,
+    link,
+  };
+
+  const TitleHandleChange = (event) => {
+    setIs_Title(event.target.value);
+  };
+
+  const ContentHandleChange = (event) => {
+    setIs_Content(event.target.value);
+  };
+
+  const WeekHandleChange = (event) => {
+    setWeek(event.target.value);
+  };
+
+  const RegionHandleChange = (event) => {
+    setLocation(event.target.value);
+  };
+
+  const PeopleHandleChange = (event) => {
+    setIs_People(event.target.value);
+  };
+
+  const DeleteMajor = (id) => {
+    dispatch(RecruitActions.deleteRecruit(id));
+  };
+
+  const PeopleBtn = () => {
+    const CheckMojor = majorList.map((a) => a.majorName);
+    console.log(CheckMojor);
+    if (is_cate === "" && is_people === "") {
+      alert("모집분야와 인원을 선택해 주세요!");
+      return;
+    }
+    if (is_cate === "") {
+      alert("모집분야를 선택해 주세요!");
+      return;
+    }
+    if (is_people === "") {
+      alert("모집인원을 선택해 주세요!");
+      return;
+    }
+
+    dispatch(
+      RecruitActions.serRecruit({
+        majorName: is_cate,
+        numOfPeopleSet: Number(is_people),
+      })
+    );
+
+    if (is_cate === CheckMojor) {
+      alert("같은 직군이 이미 있습니다!");
+    }
+    console.log(is_cate);
+  };
+
+  const PostDetailBtn = () => {
+    if (data.title === "") {
+      alert("제목을 입력해주세요!");
+      return;
+    }
+    if (data.content === "") {
+      alert("내용을 입력해주세요!");
+      return;
+    }
+    if (data.deadline === "") {
+      alert("모집기간을 선택해주세요!");
+      return;
+    }
+    if (data.region === "") {
+      alert("지역을 선택해주세요!");
+      return;
+    }
+    dispatch(PostActions.__addPost(data));
+  };
+
   return (
     <>
-      <Profile>
-        <div style={{ margin: "auto", width: "130px", height: "130px" }}>
-          <img src={rr} alt="profile" />
-        </div>
-        <p>안녕하세영</p>
-      </Profile>
-      <Grid margin="5% 0 0 -5%">
+      <Container>
+        {/* 헤더 제목 */}
+        <HeaderText>
+          <span style={{ fontWeight: "700" }}>등대에 모집글쓰기</span>
+        </HeaderText>
+
+        {/* 제목 입력 */}
         <TitleBox>
-          <span>등대에 글쓰기</span>
-          <Grid width="20%" is_flex>
-            <Btns>임시저장</Btns>
-            <Btns>등록</Btns>
-          </Grid>
+          <Text bold size="20px" margin="0 75px 0 20px">
+            제목
+          </Text>
+          <InputBox
+            placeholder="제목을 20글자 이내 적어주세요!"
+            maxLength={20}
+            value={is_title}
+            onChange={TitleHandleChange}
+          />
         </TitleBox>
 
-        <Grid is_flex width="70%">
-          <LocationBox>
-            <Grid
-              is_flex
-              flex_align="center"
-              _onClick={() => setIs_open(true)}
-              _className={
-                is_location === "위치 설정하기" ? "default" : "active"
-              }
+        {/* 모집기간/ 지역 */}
+        <DropBox>
+          <Text bold size="20px" margin="0 40px 0 20px">
+            모집기간
+          </Text>
+
+          <FormControl sx={{ width: "36%" }}>
+            <Select
+              value={is_Week}
+              onChange={WeekHandleChange}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+              style={{ height: "40px", outlineColor: "gray" }}
             >
-              <Grid is_flex flex_align="center">
-                {is_location}
-                <ArrowDropDownIcon />
-              </Grid>
+              <MenuItem value="">
+                <em>모집기간을 선택해주세요.</em>
+              </MenuItem>
+              <MenuItem value={"1주"}>1주</MenuItem>
+              <MenuItem value={"2주"}>2주</MenuItem>
+              <MenuItem value={"3주"}>3주</MenuItem>
+              <MenuItem value={"4주"}>4주</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Text bold size="20px" margin="0 70px 0 50px">
+            지역
+          </Text>
+
+          <FormControl sx={{ width: "36%" }}>
+            <Select
+              value={is_location}
+              onChange={RegionHandleChange}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+              style={{ height: "40px" }}
+            >
+              <MenuItem value="">
+                <em>지역을 선택해주세요.</em>
+              </MenuItem>
+              <MenuItem value={"서울/경기"}>서울/경기</MenuItem>
+              <MenuItem value={"강원"}>강원</MenuItem>
+              <MenuItem value={"전북"}>전북</MenuItem>
+              <MenuItem value={"전라"}>전라</MenuItem>
+              <MenuItem value={"충북"}>충북</MenuItem>
+              <MenuItem value={"충남"}>충남</MenuItem>
+              <MenuItem value={"경남"}>경남</MenuItem>
+              <MenuItem value={"경북"}>경북</MenuItem>
+              <MenuItem value={"제주"}>제주</MenuItem>
+              <MenuItem value={"온라인"}>온라인</MenuItem>
+            </Select>
+          </FormControl>
+        </DropBox>
+
+        {/* 카테고리 버튼 */}
+        <Text margin="2% 15% 0 15%">최소 하나의 분야를 선택해주세요!</Text>
+
+        <Category>
+          <CateBtn
+            onClick={() => {
+              is_cate === "미술/디자인"
+                ? setIs_Cate("")
+                : setIs_Cate("미술/디자인");
+              setSelected(true);
+            }}
+          >
+            <Grid
+              _className={is_cate === "미술/디자인" ? "active" : "default"}
+              bg={is_cate === "미술/디자인" ? "red" : "#fff"}
+            >
+              <p>미술/디자인</p>
             </Grid>
-            {is_open && (
-              <>
-                <Grid _className="location-option">
-                  {locations.map((loc, i) => {
-                    return (
-                      <p
-                        key={loc.id}
-                        onClick={() => {
-                          setLocation(loc.locationName);
-                          setIs_open(false);
-                          setSelected(true);
-                        }}
-                      >
-                        {loc.locationName}
-                      </p>
-                    );
-                  })}
-                </Grid>
-              </>
-            )}
-          </LocationBox>
-        </Grid>
+          </CateBtn>
 
-        <InputBox placeholder="제목을 적어주세요!" />
+          <CateBtn
+            onClick={() => {
+              is_cate === "영상" ? setIs_Cate("") : setIs_Cate("영상");
+              setSelected(true);
+            }}
+          >
+            <Grid
+              _className={is_cate === "영상" ? "active" : "default"}
+              bg={is_cate === "영상" ? "blue" : "#fff"}
+            >
+              <p>영상</p>
+            </Grid>
+          </CateBtn>
 
+          <CateBtn
+            onClick={() => {
+              is_cate === "배우" ? setIs_Cate("") : setIs_Cate("배우");
+              setSelected(true);
+            }}
+          >
+            <Grid
+              _className={is_cate === "배우" ? "active" : "default"}
+              bg={is_cate === "배우" ? "red" : "#fff"}
+            >
+              <p>배우</p>
+            </Grid>
+          </CateBtn>
+
+          <CateBtn
+            onClick={() => {
+              is_cate === "사진" ? setIs_Cate("") : setIs_Cate("사진");
+              setSelected(true);
+            }}
+          >
+            <Grid
+              _className={is_cate === "사진" ? "active" : "default"}
+              bg={is_cate === "사진" ? "red" : "#fff"}
+            >
+              <p>사진</p>
+            </Grid>
+          </CateBtn>
+
+          <CateBtn
+            onClick={() => {
+              is_cate === "프로그래밍"
+                ? setIs_Cate("")
+                : setIs_Cate("프로그래밍");
+
+              setSelected(true);
+            }}
+          >
+            <Grid
+              _className={is_cate === "프로그래밍" ? "active" : "default"}
+              bg={is_cate === "프로그래밍" ? "red" : "#fff"}
+            >
+              <p>프로그래밍</p>
+            </Grid>
+          </CateBtn>
+
+          <CateBtn
+            onClick={() => {
+              is_cate === "모델" ? setIs_Cate("") : setIs_Cate("모델");
+              setSelected(true);
+            }}
+          >
+            <Grid
+              _className={is_cate === "모델" ? "active" : "default"}
+              bg={is_cate === "모델" ? "red" : "#fff"}
+            >
+              <p>모델</p>
+            </Grid>
+          </CateBtn>
+
+          <CateBtn
+            onClick={() => {
+              is_cate === "성우" ? setIs_Cate("") : setIs_Cate("성우");
+              setSelected(true);
+            }}
+          >
+            <Grid
+              _className={is_cate === "성우" ? "active" : "default"}
+              bg={is_cate === "성우" ? "red" : "#fff"}
+            >
+              <p>성우</p>
+            </Grid>
+          </CateBtn>
+
+          <CateBtn
+            onClick={() => {
+              is_cate === "음향" ? setIs_Cate("") : setIs_Cate("음향");
+              setSelected(true);
+            }}
+          >
+            <Grid
+              _className={is_cate === "음향" ? "active" : "default"}
+              bg={is_cate === "음향" ? "red" : "#fff"}
+            >
+              <p>음향</p>
+            </Grid>
+          </CateBtn>
+        </Category>
+
+        {/* 전공선택/모집인원 */}
+        <RecruitBox>
+          <Text bold size="20px" margin="0 35px 0 40px">
+            모집인원
+          </Text>
+
+          <FormControl sx={{ width: "30%" }}>
+            <Select
+              value={is_people}
+              onChange={PeopleHandleChange}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+              style={{ height: "40px" }}
+            >
+              <MenuItem value="">
+                <em>인원을 선택해주세요.</em>
+              </MenuItem>
+              <MenuItem value={"1"}>1명</MenuItem>
+              <MenuItem value={"2"}>2명</MenuItem>
+            </Select>
+          </FormControl>
+          <PlusBtn onClick={PeopleBtn}>추가하기 +</PlusBtn>
+        </RecruitBox>
+        <Peoples>
+          {majorList?.map((a, idx) => {
+            return (
+              <MajorLists key={idx}>
+                {a.majorName} : {a.numOfPeopleSet} 명
+                <BiX
+                  size="18px"
+                  style={{
+                    cursor: "pointer",
+                    display: "inline-flex",
+                  }}
+                  type="button"
+                  onClick={() => {
+                    DeleteMajor(idx);
+                  }}
+                />
+              </MajorLists>
+            );
+          })}
+        </Peoples>
+        {/* 사진/URL입력 */}
         <Uploads />
-        <Grid>
-          <TextBox placeholder="내용을 적어주세요!" />
-          <DateInput placeholder="일정을 입력하세요!" />
-          <Grid margin="1% 0 5% 88% " style={{ display: "flex" }}>
-            <Btns>삭제</Btns>
-          </Grid>
-        </Grid>
-      </Grid>
+        {/* content입력 */}
+        <ContentBox>
+          <TextBox
+            placeholder="내용을 적어주세요!"
+            value={is_content}
+            onChange={ContentHandleChange}
+          />
+        </ContentBox>
+
+        {/* 버튼 박스 */}
+        <BtnBox>
+          <AddBtn onClick={PostDetailBtn}>등록</AddBtn>
+          <CloseBtn>취소</CloseBtn>
+        </BtnBox>
+      </Container>
     </>
   );
 };
 
-const DateInput = styled.input`
-  margin-top: 10px;
-  display: flex;
-  margin-left: 30%;
-  height: 20px;
-  width: 63.1%;
-  font-size: 15px;
+const MajorLists = styled.span`
+  text-align: center;
+  border: 1px solid #2967ac;
   padding: 5px 16px 5px 16px;
-  border: 1px solid #c4c4c4;
+  font-size: 16px;
+  float: left;
+  margin-right: 2%;
+  margin-bottom: 2%;
+  border-radius: 20px;
+  color: #2967ac;
+  background-color: #fff;
+  height: 23px;
+`;
+
+const Peoples = styled.div`
+  margin: 0 19% 1%;
+`;
+
+const BtnBox = styled.div`
+  margin: 1% 6% 5% 75.5%;
+`;
+
+const ContentBox = styled.div`
+  margin: 0 11%;
+`;
+
+const PlusBtn = styled.span`
+  margin: 0 25px;
+  color: rgba(41, 103, 172, 1);
+  font-size: 15px;
+  cursor: pointer;
+`;
+
+const RecruitBox = styled.div`
+  margin: 5% 8% 2% 8%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const TitleBox = styled.div`
+  margin: 1% 9%;
+
+  align-items: center;
+  display: flex;
+`;
+
+const Container = styled.div`
+  width: 1370px;
+  margin: 3% auto;
+`;
+
+const DropBox = styled.div`
+  margin: 2% 9%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const TextBox = styled.textarea`
+  margin-top: 1%;
   border: 1px solid #c4c4c4;
-  width: 63.1%;
+  width: 100%;
   height: 200px;
   padding: 5px 16px 5px 16px;
   font-size: 16px;
+
+  :focus {
+    outline-color: gray;
+  }
 
   ::placeholder {
     font-size: 16px;
   }
 `;
 
-const LocationBox = styled.div`
-  margin-top: 3%;
+const Category = styled.div`
+  margin-left: 14%;
+  margin-right: 3%;
   display: flex;
-  width: 90%;
-  border: 1px solid #c4c4c4;
-  height: 40px;
+  margin-top: 10px;
+  margin-bottom: 3%;
+`;
+const CateBtn = styled.div`
+  width: 8%;
+  height: 10px;
+  border-radius: 10px;
+  margin-right: 3%;
+  .default {
+    width: 100px;
+    height: 40px;
+    border-radius: 14px;
+    border: 1px solid black;
+    background-color: #fff;
+    /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    .icon {
+      font-size: 32px;
+      color: var(--inactive-text-color);
+    }
+    p {
+      text-align: center;
+      font-size: 12px;
 
-  background-color: #fff;
-  color: black;
-  padding: 5px 16px 5px 16px;
-
-  cursor: pointer;
-  .icon {
-    margin-right: 5px;
+      color: black;
+    }
   }
   .active {
-    color: black;
+    width: 100px;
+    height: 40px;
+    border-radius: 14px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+
+    /* background-color: gray; */
     animation: 0.6s ease-in-out loadEffect3;
+
+    p {
+      font-size: 12px;
+
+      text-align: center;
+      color: #fff;
+    }
   }
   @keyframes loadEffect3 {
     0% {
@@ -152,22 +522,15 @@ const LocationBox = styled.div`
     }
   }
 
-  .location-option {
-    width: 140px;
-    position: absolute;
-    margin-top: 3.3%;
-    margin-left: -1.2%;
-    color: black;
-    background-color: #949494;
-    border: 1px solid gray;
-    border-radius: 6px;
-    z-index: 15;
-    cursor: pointer;
+  .inactive {
+    .icon {
+      color: var(--help-color);
+      font-size: 32px;
+    }
     p {
-      padding: 10px 10px;
-      &:hover {
-        background-color: gray;
-      }
+      font-size: 12px;
+
+      color: white;
     }
   }
 `;
@@ -175,54 +538,49 @@ const LocationBox = styled.div`
 const InputBox = styled.input`
   padding: 5px 16px 5px 16px;
   border: 1px solid #c4c4c4;
-  margin-top: 1%;
-  margin-bottom: 1%;
+
   font-size: 16px;
-  width: 63%;
-  height: 40px;
+  width: 83.4%;
+  height: 30px;
+  :focus {
+    outline-color: gray;
+  }
 `;
 
-const TitleBox = styled.div`
-  width: 65%;
+const HeaderText = styled.div`
+  margin: 0 auto;
+  width: 80%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: 15px;
-
   border-bottom: 1px solid #c4c4c4;
   span {
     font-size: 20px;
   }
 `;
 
-const Btns = styled.button`
+const AddBtn = styled.button`
   cursor: pointer;
   width: 100px;
   height: 35px;
   margin-left: 10px;
-  background: #cecece;
-  border: 1px solid #000000;
+  background: #4299e9;
+  border: none;
   box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+  border-radius: 14px;
+  color: #fff;
 `;
-
-const Profile = styled.div`
-  margin-top: 5%;
-  float: left;
-  height: 75vh;
-  width: 25%;
-  img {
-    width: 130px;
-    height: 130px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 1px solid black;
-  }
-  p {
-    font-size: 20px;
-    text-align: center;
-  }
+const CloseBtn = styled.button`
+  cursor: pointer;
+  width: 100px;
+  height: 35px;
+  margin-left: 10px;
+  background: #fe5953;
+  border: none;
+  box-sizing: border-box;
+  color: #fff;
+  border-radius: 14px;
 `;
 
 export default Write;

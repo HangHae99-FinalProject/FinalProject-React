@@ -3,7 +3,7 @@ import { produce } from "immer";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-let sockjs = new SockJS("http://54.225.34.106/webSocket");
+let sockjs = new SockJS("http://54.225.34.106:8080/webSocket");
 let client = Stomp.over(sockjs);
 client.debug = null;
 

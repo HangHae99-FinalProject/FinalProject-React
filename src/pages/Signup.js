@@ -3,6 +3,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
+import { emailCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
 
 //MUI import
 // import Grid from "../elements/Grid";
@@ -79,10 +80,14 @@ const Signup = () => {
   const [emailCheck, setEmailCheck] = React.useState(false);
   const [nicknameCheck, setNicknameCheck] = React.useState(false);
 
-  const emailCheckBtn={}
-  const nicknameCheckBtn={}
-
-
+  const emailCheckBtn = () => {
+    console.log("이메일체크:", email);
+    // dispatch(userAction.__emailCheck(email))
+  };
+  const nicknameCheckBtn = () => {
+    console.log("닉네임체크:", nickname);
+    // dispatch(userAction.__nicknameCheck(nickname))
+  };
 
   const onEmailHandler = (e) => {
     setEmail(e.target.value);
@@ -100,6 +105,27 @@ const Signup = () => {
   const goHome = () => {
     history.push("/");
   };
+
+  const goSignup = () => {
+    if (!emailCheckRE(email)) {
+      window.alert("이메일 형식을 확인해주세요.");
+      return;
+    }
+    if (!nicknameCheckRE(nickname)) {
+      window.alert("닉네임 형식을 확인해주세요.");
+      return;
+    }
+    if (!pwCheckRE(password)) {
+      window.alert("패스워드 형식을 확인해주세요.");
+      return;
+    }
+    if (password !== pwCheck) {
+      window.alert("패스워드와 패스워드 확인이 일치하지 않습니다.");
+      return;
+    }
+    dispatch(userActions.__signup(email, password, pwCheck, nickname));
+  };
+
   return (
     <React.Fragment>
       <Grid
@@ -117,36 +143,44 @@ const Signup = () => {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            dispatch(userActions.__signup(email, password, pwCheck, nickname));
+            goSignup();
+
+            // dispatch(userActions.__signup(email, password, pwCheck, nickname));
             // console.log({email, password, pwCheck, nickname});
           }}
         >
-          <Grid container direction="row" justifyContent="space-between" alignItems="center">
-            <Grid item xs={8}>
+          <Grid container direction="row" justifyContent="space-between" alignItems="flex-start">
+            <Grid>
               <FormControl sx={{ width: "115%" }}>
-                <OutlinedInput
-                  required
-                  name="email"
-                  type="text"
-                  id="_email"
-                  placeholder="이메일을 입력해 주세요"
-                  variant="standard"
-                  onChange={onEmailHandler}
-                />
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="flex-start"
+                >
+                  <OutlinedInput
+                    required
+                    name="email"
+                    type="text"
+                    id="_email"
+                    placeholder="이메일을 입력해 주세요"
+                    variant="standard"
+                    onChange={onEmailHandler}
+                    sx={{ width: "65%" }}
+                  />
+                  <Grid>
+                    <Button
+                      variant="outlined"
+                      onClick={emailCheckBtn}
+                      sx={{ width: "110px", height: "55px", padding: "0" }}
+                    >
+                      중복확인
+                    </Button>
+                  </Grid>
+                </Grid>
+
                 <IdFormHelperText />
               </FormControl>
-            </Grid>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-end"
-              alignItems="stretch"
-              xs={4}
-              pb={3}
-            >
-              <Button variant="outlined"  onClick={emailCheckBtn} sx={{ width: "65%", height: "55px", padding: "0" }}>
-                중복확인
-              </Button>
             </Grid>
           </Grid>
           <Grid
@@ -156,29 +190,37 @@ const Signup = () => {
             alignItems="flex-start"
             mt={2}
           >
-            <Grid item xs={8}>
+            <Grid>
               <FormControl sx={{ width: "115%" }}>
-                <OutlinedInput
-                  required
-                  name="nickname"
-                  id="_nickname"
-                  placeholder="닉네임을 입력해 주세요"
-                  variant="standard"
-                  onChange={onNicknameHandler}
-                />
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="flex-start"
+                >
+                  <OutlinedInput
+                    required
+                    name="nickname"
+                    type="text"
+                    id="_nickname"
+                    placeholder="닉네임을 입력해 주세요"
+                    variant="standard"
+                    onChange={onNicknameHandler}
+                    sx={{ width: "65%" }}
+                  />
+                  <Grid>
+                    <Button
+                      variant="outlined"
+                      onClick={nicknameCheckBtn}
+                      sx={{ width: "110px", height: "55px", padding: "0" }}
+                    >
+                      중복확인
+                    </Button>
+                  </Grid>
+                </Grid>
+
                 <NicknameFormHelperText />
               </FormControl>
-            </Grid>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-end"
-              alignItems="flex-start"
-              xs={4}
-            >
-              <Button variant="outlined" onClick={nicknameCheckBtn} sx={{ width: "65%", height: "55px", padding: "0" }}>
-                중복확인
-              </Button>
             </Grid>
           </Grid>
           <Grid>

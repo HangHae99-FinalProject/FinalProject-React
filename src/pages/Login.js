@@ -3,6 +3,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
+import { emailCheckRE, pwCheckRE } from "../shared/common";
 
 //MUI import
 import FormControl, { useFormControl } from "@mui/material/FormControl";
@@ -55,6 +56,21 @@ const Login = () => {
   const goSignUp = () => {
     history.push("/signup");
   };
+
+  const goLogin = () => {
+    if (!emailCheckRE(email)) {
+      window.alert("이메일 형식을 확인해주세요.");
+      return;
+    }
+
+    if (!pwCheckRE(password)) {
+      window.alert("패스워드 형식을 확인해주세요.");
+      return;
+    }
+
+    dispatch(userActions.__login(email, password));
+  };
+
   return (
     <React.Fragment>
       <Grid is_center margin="80px auto">
@@ -67,8 +83,7 @@ const Login = () => {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            dispatch(userActions.__login(email, password))
-            // console.log("이메일:", email, "암호:", password);
+            goLogin();
           }}
         >
           <div>

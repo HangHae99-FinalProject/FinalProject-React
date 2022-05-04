@@ -48,13 +48,26 @@ const userInitial = {
 };
 
 //middleware actions
-const __login = (email, password) =>
-  async function (dispatch, getState, { history }) {
+const __login = (userEmail, password) => {
+  return async function (dispatch, getState, { history }) {
     try {
       const {
         data: { accessToken, refreshToken, accessTokenExpiresIn },
-      } = await userApi.login(email, password);
-      const { sub, username } = jwt_decode(accessToken);
+      } = await axios.post("http://54.225.34.106:8080/user/login", {
+        email:userEmail,
+        password,
+      });
+      const { email, nickname, profileImg, major } = jwt_decode(accessToken);
+      console.log(
+        "이메일:",
+        email,
+        "닉네임:",
+        nickname,
+        "프로필:",
+        profileImg,
+        "전공:",
+        major
+      );
       cookies.set("accessToken", accessToken, {
         path: "/",
         maxAge: 3600, // 60분
@@ -63,27 +76,63 @@ const __login = (email, password) =>
         path: "/",
         maxAge: 604800, // 7일
       });
-      localStorage.setItem("userTitle", sub);
-      localStorage.setItem("username", username);
-      dispatch(login({ username }));
+      localStorage.setItem("email", email);
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("profileImgUrl", profileImg);
+      localStorage.setItem("major", major);
+      // dispatch(login({ username }));
       history.replace("/");
     } catch (err) {
       console.log(err);
     }
   };
+};
 
-const __signup =
-  (email, password, pwCheck, nickname) =>
-  async (dispatch, getState, { history }) => {
+const __signup = (email, password, pwCheck, nickname, major) => {
+  return async (dispatch, getState, { history }) => {
     try {
-      await userApi.signup(email, password, pwCheck, nickname);
-      window.alert("회원가입이 완료되었습니다.");
-      history.replace("/login");
+      const signup = await axios.post("http://54.225.34.106:8080/user/signup", {
+        email,
+        password,
+        pwCheck,
+        nickname,
+        major: "음향",
+      });
+      console.log(signup);
+      if (signup.data) {
+        window.alert("회원가입이 완료되었습니다.");
+        history.replace("/login");
+      }
     } catch (err) {
+      console.log(err);
       if (err.errorCode === 400) {
         window.alert("오류가 발생했습니다.");
         console.log(err.errorCode, err.errorMessage);
       }
+    }
+  };
+};
+
+const __emailCheck =
+  (email) =>
+  async (dispatch, getState, { hisory }) => {
+    try {
+      await userApi.emailCheck(email);
+      window.alert("입력하신 이메일은 사용이 가능합니다.");
+    } catch (err) {
+      console.log(err);
+      window.alert("입력하신 이메일은 사용이 불가능합니다.");
+    }
+  };
+const __nicknameCheck =
+  (nickname) =>
+  async (dispatch, getState, { hisory }) => {
+    try {
+      await userApi.nicknameCheck(nickname);
+      window.alert("입력하신 닉네임은 사용이 가능합니다.");
+    } catch (err) {
+      console.log(err);
+      window.alert("입력하신 닉네임은 사용이 불가능합니다.");
     }
   };
 
@@ -167,6 +216,8 @@ export default handleActions(
 //action creator export
 const actionCreators = {
   __login,
+  __emailCheck,
+  __nicknameCheck,
   // logOut,
   // getUser,
   __signup,

@@ -43,7 +43,7 @@ function Header() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, minWidth:"640px" }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton

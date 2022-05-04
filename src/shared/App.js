@@ -12,6 +12,7 @@ import Login from "../pages/Login";
 import Post from "../pages/Post";
 import Write from "../pages/Write";
 import User from "../pages/User";
+import UserMod from "../pages/UserMod";
 import Chat from "../pages/Chat";
 
 //기타 임포트
@@ -34,7 +35,7 @@ function App() {
         <Route path="/write/:id" exact component={Write} />
         <Route path="/user" exact component={User} />
         <Route path="/user/:id" exact component={User} />
-        <Route path="/usermodify/:id" exact component={User} />
+        <Route path="/usermod/:id" exact component={UserMod} />
         <Route path="/chatlist/:id" exact component={Chat} />
         <Route path="/chat/:id" exact component={Chat} />
       </ConnectedRouter>

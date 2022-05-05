@@ -58,8 +58,20 @@ const __login = (userEmail, password) => {
         email: userEmail,
         password,
       });
-      const { sub, email, nickname, profileImg, major } = jwt_decode(accessToken);
-      console.log("userid:", sub, "이메일:", email, "닉네임:", nickname, "프로필:", profileImg, "전공:", major);
+      const { sub, email, nickname, profileImg, major } =
+        jwt_decode(accessToken);
+      console.log(
+        "userid:",
+        sub,
+        "이메일:",
+        email,
+        "닉네임:",
+        nickname,
+        "프로필:",
+        profileImg,
+        "전공:",
+        major
+      );
       cookies.set("accessToken", accessToken, {
         path: "/",
         maxAge: 3600, // 60분
@@ -84,7 +96,6 @@ const __login = (userEmail, password) => {
 const __signup = (email, password, pwCheck, nickname, major) => {
   return async (dispatch, getState, { history }) => {
     try {
-      // const doc = { email, password, pwCheck, nickname, major: "음향" };
       const signup = await axios.post("http://3.34.135.82:8080/user/signup", {
         email,
         password,

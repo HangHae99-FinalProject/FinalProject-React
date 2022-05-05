@@ -2,8 +2,7 @@ import React from "react";
 import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
 import { postApi } from "../../api/postApi";
-import { useSelector } from "react-redux";
-import image from "./image";
+import { actionCreators as commentActions } from "../modules/comment";
 
 // 액션
 const SET_POST = "SET_POST";
@@ -53,21 +52,66 @@ const __addPost =
     }
   };
 
+const __getDetail =
+  (postId) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.getDetail(postId);
+      console.log(data.commentList.length);
+
+      dispatch(commentActions.getComment(data.commentList));
+      dispatch(setDetail(data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+const __getPost =
+  () =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.getPost();
+      console.log(data.date);
+      dispatch(setPost(data.date));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+// const __getPost = (postId) => {
+//   return function (dispatch, getState, { history }) {
+//     postApi.getDetail(postId).then((res) => {
+//       console.log(res);
+//     });
+//   };
+// };
+
 // 리덕스
 export default handleActions(
   {
-    [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    [SET_POST]: (state, action) => produce(state, (draft) => {}),
+    [SET_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = action.payload.post_list;
+        draft.is_loading = false;
+      }),
+    [SET_DETAIL]: (state, action) =>
+      produce(state, (draft) => {
+        draft.detailList = action.payload.detail_list;
+      }),
+    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
+    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
+    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
+    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
   },
   initialState
 );
 
 const actionCreates = {
   __addPost,
+  __getPost,
+  setPost,
+  __getDetail,
+  setDetail,
 };
 
 export { actionCreates };

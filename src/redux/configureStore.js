@@ -8,6 +8,7 @@ import User from "./modules/user";
 import post from "./modules/post";
 import recruit from "./modules/recruit";
 import image from "./modules/image";
+import comment from "./modules/comment";
 // import Post from "./modules/post";
 // import Image from "./modules/image";
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   image: image,
   post: post,
   chat: chat,
+  comment: comment,
   router: connectRouter(history),
 });
 

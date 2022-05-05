@@ -1,8 +1,8 @@
 import instance from "./api";
-import { formDataApi } from "./api";
 
-export const postApi = {
-  postWrite: (formData) => formDataApi.post("/api/post", formData),
+export const commentApi = {
+  postComment: (postId, comment) =>
+    instance.post("api/comment", { postId, comment }),
   getPost: () => instance.get("/api/category"),
   getDetail: (postId) => instance.get(`/api/post/${postId}`),
 };

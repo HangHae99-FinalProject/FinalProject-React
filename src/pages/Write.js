@@ -11,7 +11,7 @@ import Select from "@mui/material/Select";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreates as RecruitActions } from "../redux/modules/recruit";
 import { actionCreates as PostActions } from "../redux/modules/post";
-import { style } from "@mui/system";
+import { history } from "../redux/configureStore";
 
 const Write = () => {
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const Write = () => {
 
   const PeopleBtn = () => {
     const CheckMojor = majorList.map((a) => a.majorName);
-    console.log(CheckMojor);
+
     if (is_cate === "" && is_people === "") {
       alert("모집분야와 인원을 선택해 주세요!");
       return;
@@ -76,18 +76,18 @@ const Write = () => {
       alert("모집인원을 선택해 주세요!");
       return;
     }
-
+    for (let i = 0; i < CheckMojor.length; i++) {
+      if (is_cate === CheckMojor[i]) {
+        alert("이미 같은 직군이 있습니다!");
+        return;
+      }
+    }
     dispatch(
       RecruitActions.serRecruit({
         majorName: is_cate,
         numOfPeopleSet: Number(is_people),
       })
     );
-
-    if (is_cate === CheckMojor) {
-      alert("같은 직군이 이미 있습니다!");
-    }
-    console.log(is_cate);
   };
 
   const PostDetailBtn = () => {
@@ -120,7 +120,7 @@ const Write = () => {
 
         {/* 제목 입력 */}
         <TitleBox>
-          <Text bold size="20px" margin="0 75px 0 20px">
+          <Text bold size="23px" margin="0 75px 0 20px">
             제목
           </Text>
           <InputBox
@@ -133,59 +133,89 @@ const Write = () => {
 
         {/* 모집기간/ 지역 */}
         <DropBox>
-          <Text bold size="20px" margin="0 40px 0 20px">
+          <Text bold size="23px" margin="0 40px 0 15px">
             모집기간
           </Text>
 
-          <FormControl sx={{ width: "36%" }}>
+          <FormControl sx={{ width: "33.5rem" }}>
             <Select
               value={is_Week}
               onChange={WeekHandleChange}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
-              style={{ height: "40px", outlineColor: "gray" }}
+              style={{ height: "50px", fontSize: "20px" }}
             >
-              <MenuItem value="">
+              <MenuItem value="" style={{ fontSize: "20px" }}>
                 <em>모집기간을 선택해주세요.</em>
               </MenuItem>
-              <MenuItem value={"1주"}>1주</MenuItem>
-              <MenuItem value={"2주"}>2주</MenuItem>
-              <MenuItem value={"3주"}>3주</MenuItem>
-              <MenuItem value={"4주"}>4주</MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"1주"}>
+                1주
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"2주"}>
+                2주
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"3주"}>
+                3주
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"4주"}>
+                4주
+              </MenuItem>
             </Select>
           </FormControl>
 
-          <Text bold size="20px" margin="0 70px 0 50px">
+          <Text bold size="23px" margin="0 70px 0 50px">
             지역
           </Text>
 
-          <FormControl sx={{ width: "36%" }}>
+          <FormControl sx={{ width: "33.5rem" }}>
             <Select
               value={is_location}
               onChange={RegionHandleChange}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
-              style={{ height: "40px" }}
+              style={{ height: "50px", fontSize: "20px" }}
             >
-              <MenuItem value="">
+              <MenuItem value="" style={{ fontSize: "20px" }}>
                 <em>지역을 선택해주세요.</em>
               </MenuItem>
-              <MenuItem value={"서울/경기"}>서울/경기</MenuItem>
-              <MenuItem value={"강원"}>강원</MenuItem>
-              <MenuItem value={"전북"}>전북</MenuItem>
-              <MenuItem value={"전라"}>전라</MenuItem>
-              <MenuItem value={"충북"}>충북</MenuItem>
-              <MenuItem value={"충남"}>충남</MenuItem>
-              <MenuItem value={"경남"}>경남</MenuItem>
-              <MenuItem value={"경북"}>경북</MenuItem>
-              <MenuItem value={"제주"}>제주</MenuItem>
-              <MenuItem value={"온라인"}>온라인</MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"서울/경기"}>
+                서울/경기
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"강원"}>
+                강원
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"전북"}>
+                전북
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"전라"}>
+                전라
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"충북"}>
+                충북
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"충남"}>
+                충남
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"경남"}>
+                경남
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"경북"}>
+                경북
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"제주"}>
+                제주
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"온라인"}>
+                온라인
+              </MenuItem>
             </Select>
           </FormControl>
         </DropBox>
 
         {/* 카테고리 버튼 */}
-        <Text margin="2% 15% 0 15%">최소 하나의 분야를 선택해주세요!</Text>
+        <Text margin="2% 0 0 1%" size="17px" color="rgba(112, 112, 112, 1)">
+          최소 하나의 분야를 선택해주세요!
+        </Text>
 
         <Category>
           <CateBtn
@@ -198,7 +228,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "미술/디자인" ? "active" : "default"}
-              bg={is_cate === "미술/디자인" ? "red" : "#fff"}
+              bg={is_cate === "미술/디자인" ? "black" : "#fff"}
             >
               <p>미술/디자인</p>
             </Grid>
@@ -308,7 +338,7 @@ const Write = () => {
 
         {/* 전공선택/모집인원 */}
         <RecruitBox>
-          <Text bold size="20px" margin="0 35px 0 40px">
+          <Text bold size="23px" margin="0 40px 0 20px">
             모집인원
           </Text>
 
@@ -318,13 +348,17 @@ const Write = () => {
               onChange={PeopleHandleChange}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
-              style={{ height: "40px" }}
+              style={{ height: "50px", fontSize: "20px" }}
             >
-              <MenuItem value="">
+              <MenuItem value="" style={{ fontSize: "20px" }}>
                 <em>인원을 선택해주세요.</em>
               </MenuItem>
-              <MenuItem value={"1"}>1명</MenuItem>
-              <MenuItem value={"2"}>2명</MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"1"}>
+                1명
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"2"}>
+                2명
+              </MenuItem>
             </Select>
           </FormControl>
           <PlusBtn onClick={PeopleBtn}>추가하기 +</PlusBtn>
@@ -354,7 +388,7 @@ const Write = () => {
         {/* content입력 */}
         <ContentBox>
           <TextBox
-            placeholder="내용을 적어주세요!"
+            placeholder="내용을 입력하세요!"
             value={is_content}
             onChange={ContentHandleChange}
           />
@@ -363,7 +397,13 @@ const Write = () => {
         {/* 버튼 박스 */}
         <BtnBox>
           <AddBtn onClick={PostDetailBtn}>등록</AddBtn>
-          <CloseBtn>취소</CloseBtn>
+          <CloseBtn
+            onClick={() => {
+              history.goBack();
+            }}
+          >
+            취소
+          </CloseBtn>
         </BtnBox>
       </Container>
     </>
@@ -371,48 +411,47 @@ const Write = () => {
 };
 
 const MajorLists = styled.span`
-  text-align: center;
-  border: 1px solid #2967ac;
-  padding: 5px 16px 5px 16px;
-  font-size: 16px;
+  border: 2px solid rgba(41, 103, 172, 1);
+  padding: 8px 16px 5px 16px;
+  font-size: 20px;
   float: left;
   margin-right: 2%;
   margin-bottom: 2%;
   border-radius: 20px;
-  color: #2967ac;
+  color: rgba(41, 103, 172, 1);
   background-color: #fff;
-  height: 23px;
+  height: 30px;
 `;
 
 const Peoples = styled.div`
-  margin: 0 19% 1%;
+  margin: 1% 10% 1%;
 `;
 
 const BtnBox = styled.div`
-  margin: 1% 6% 5% 75.5%;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  justify-content: flex-end;
+  display: flex;
 `;
 
-const ContentBox = styled.div`
-  margin: 0 11%;
-`;
+const ContentBox = styled.div``;
 
 const PlusBtn = styled.span`
   margin: 0 25px;
   color: rgba(41, 103, 172, 1);
-  font-size: 15px;
+  font-size: 18px;
   cursor: pointer;
 `;
 
 const RecruitBox = styled.div`
-  margin: 5% 8% 2% 8%;
+  margin-top: 80px;
   display: flex;
   flex-direction: row;
   align-items: center;
 `;
 
 const TitleBox = styled.div`
-  margin: 1% 9%;
-
+  margin-top: 1%;
   align-items: center;
   display: flex;
 `;
@@ -423,7 +462,7 @@ const Container = styled.div`
 `;
 
 const DropBox = styled.div`
-  margin: 2% 9%;
+  margin-top: 2%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -435,32 +474,32 @@ const TextBox = styled.textarea`
   width: 100%;
   height: 200px;
   padding: 5px 16px 5px 16px;
-  font-size: 16px;
+  font-size: 22px;
 
   :focus {
     outline-color: gray;
   }
 
   ::placeholder {
-    font-size: 16px;
+    font-size: 22px;
+    color: rgba(194, 192, 193, 1);
   }
 `;
 
 const Category = styled.div`
-  margin-left: 14%;
-  margin-right: 3%;
+  justify-content: center;
+
   display: flex;
   margin-top: 10px;
   margin-bottom: 3%;
 `;
 const CateBtn = styled.div`
-  width: 8%;
   height: 10px;
   border-radius: 10px;
-  margin-right: 3%;
+  margin-right: 2%;
   .default {
-    width: 100px;
-    height: 40px;
+    width: 140px;
+    height: 50px;
     border-radius: 14px;
     border: 1px solid black;
     background-color: #fff;
@@ -476,14 +515,14 @@ const CateBtn = styled.div`
     }
     p {
       text-align: center;
-      font-size: 12px;
-
+      font-size: 20px;
+      font-weight: 700;
       color: black;
     }
   }
   .active {
-    width: 100px;
-    height: 40px;
+    width: 140px;
+    height: 50px;
     border-radius: 14px;
     border: none;
     display: flex;
@@ -497,8 +536,8 @@ const CateBtn = styled.div`
     animation: 0.6s ease-in-out loadEffect3;
 
     p {
-      font-size: 12px;
-
+      font-size: 20px;
+      font-weight: 700;
       text-align: center;
       color: #fff;
     }
@@ -539,9 +578,9 @@ const InputBox = styled.input`
   padding: 5px 16px 5px 16px;
   border: 1px solid #c4c4c4;
 
-  font-size: 16px;
-  width: 83.4%;
-  height: 30px;
+  font-size: 20px;
+  width: 75rem;
+  height: 40px;
   :focus {
     outline-color: gray;
   }
@@ -549,21 +588,18 @@ const InputBox = styled.input`
 
 const HeaderText = styled.div`
   margin: 0 auto;
-  width: 80%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding-bottom: 15px;
   border-bottom: 1px solid #c4c4c4;
   span {
-    font-size: 20px;
+    font-size: 24px;
   }
 `;
 
 const AddBtn = styled.button`
   cursor: pointer;
-  width: 100px;
-  height: 35px;
+  width: 120px;
+  height: 40px;
+  font-size: 18px;
   margin-left: 10px;
   background: #4299e9;
   border: none;
@@ -573,8 +609,9 @@ const AddBtn = styled.button`
 `;
 const CloseBtn = styled.button`
   cursor: pointer;
-  width: 100px;
-  height: 35px;
+  width: 120px;
+  height: 40px;
+  font-size: 18px;
   margin-left: 10px;
   background: #fe5953;
   border: none;

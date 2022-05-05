@@ -29,17 +29,17 @@ function App() {
     dispatch(userActions.__loginCheck());
   }, []);
   return (
-    <Grid>
+    <Grid height="100%">
       <Header></Header>
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Main} />
         <Route path="/signup" exact component={Signup} />
         <Route path="/login" exact component={Login} />
         <Route path="/post/:id" exact component={Post} />
-        <Route path="/detail/:id" exact component={Detail} />
+        <Route path="/detail/:postid" exact component={Detail} />
         <Route path="/detail" exact component={Detail} />
         <Route path="/write" exact component={Write} />
-        <Route path="/write/:id" exact component={Write} />
+        <Route path="/write/:postid" exact component={Write} />
         <Route path="/user" exact component={User} />
         <Route path="/user/:id" exact component={User} />
         <Route path="/edituser/:id" exact component={EditUser} />

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
+import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
 
 const Uploads = () => {
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ const Uploads = () => {
     <>
       <UploadBox>
         <Labels htmlFor="files" onChange={uploadFile}>
-          <InsertPhotoIcon />
+          <InsertPhotoIcon fontSize="large" />
           <Inputs type="file" id="files" multiple="multiple" accept="image/*" />
         </Labels>
 
@@ -72,7 +73,7 @@ const Uploads = () => {
             setIs_open(!is_open);
           }}
         >
-          <LinkIcon />
+          <LinkIcon fontSize="large" />
         </Labels>
         {is_open ? (
           <>
@@ -84,8 +85,24 @@ const Uploads = () => {
             <UrlBtn title="submit" onClick={UrlButton}>
               확인
             </UrlBtn>
-            {Link ? <LinkText>o</LinkText> : <LinkText>x</LinkText>}
-            {/* <LinkText>현재 링크 : {Link}</LinkText> */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {Link ? (
+                <DownloadDoneRoundedIcon
+                  sx={{
+                    marginLeft: "20px",
+                    color: "#707070",
+                  }}
+                  fontSize="large"
+                />
+              ) : null}
+            </div>
           </>
         ) : null}
       </UploadBox>
@@ -113,33 +130,29 @@ const Uploads = () => {
 
 export default Uploads;
 
-const LinkText = styled.span`
-  margin: 1%;
-  font-size: 15px;
-  color: gray;
-`;
-
 const UploadBox = styled.div`
-  margin: auto;
+  margin-top: 2rem;
+  margin-left: 1rem;
   display: flex;
   background-color: white;
   width: 80%;
-  height: 40px;
+  height: 50px;
 `;
 
 const UrlBtn = styled.button`
   cursor: pointer;
-  margin-left: -38px;
+  margin-left: -45px;
   background-color: transparent;
   border: 1px solid transparent;
   color: gray;
+  font-size: 16px;
 `;
 
 const UrlBox = styled.input`
-  font-size: 14px;
+  font-size: 17px;
   padding: 5px 15px 5px 15px;
   margin-left: 2px;
-  width: 30%;
+  width: 45%;
   border: 1px solid gray;
   border-radius: 10px;
 
@@ -174,7 +187,7 @@ const Inputs = styled.input`
 `;
 
 const ImageList = styled.div`
-  width: 200px;
+  width: 220px;
   height: 130px;
   border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: 3px;

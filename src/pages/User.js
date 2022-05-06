@@ -148,7 +148,7 @@ const User = (props) => {
                 >
                   <Profile>
                     <div style={{ margin: "auto", width: "auto", height: "auto" }}>
-                      <img src={`${getProfileImg}`} alt="profileImg" />
+                      <img src={getProfileImg} alt="profileImg" />
                     </div>
                   </Profile>
                   <Grid container direction="row" justifyContent="center" alignItems="center">
@@ -180,7 +180,7 @@ const User = (props) => {
                     variant="contained"
                     sx={{ borderRadius: "20px", marginLeft: "24px" }}
                   >
-                    {`${getMajor}`}
+                    {getMajor}
                   </Button>
                 </Grid>
                 {/* <Grid>
@@ -197,9 +197,8 @@ const User = (props) => {
                 <Grid>
                   <TextField
                     id="myIntro"
-                    label="나의 소개"
                     multiline
-                    defaultValue={`${getIntro}`}
+                    defaultValue={getIntro}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -209,9 +208,8 @@ const User = (props) => {
                 <Grid>
                   <TextField
                     id="myIntro"
-                    label="포트폴리오 URL"
                     multiline
-                    defaultValue={`${getPortfolioLink}`}
+                    defaultValue={getPortfolioLink}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -223,6 +221,7 @@ const User = (props) => {
           </Grid>
         </Box>
         <Grid>
+          {/* 이미지 슬라이드 작업 할 것. */}
           <DetailImage/>
         </Grid>
         {/* <Grid

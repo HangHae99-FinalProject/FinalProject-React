@@ -9,7 +9,8 @@ import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
 
-const Uploads = () => {
+const EditImage = (image) => {
+  const eddit = image.image;
   const dispatch = useDispatch();
   const [imgPreview, setImgPreview] = useState([]);
   const [is_open, setIs_open] = useState(false);
@@ -19,20 +20,21 @@ const Uploads = () => {
   const uploadFile = (e) => {
     const imageList = e.target.files;
     let imageUrlList = [...imgPreview];
+    const maxImageCnt = 4;
 
+    if (imageList.length > maxImageCnt) {
+      window.alert("이미지는 최대 4개까지 가능합니다!");
+    }
+
+    // 파일들을 URL로 만듬
     for (let i = 0; i < imageList.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageList[i]);
       imageUrlList.push(currentImageUrl);
     }
 
-    if (imageUrlList.length > 5) {
-      alert("사진은 최대 5장만 가능합니다!");
-    } else {
-      setImgPreview(imageUrlList);
-    }
-
-    if (imageUrlList.length > 10) {
-      window.alert("이미지는 최대 10개까지 가능합니다!");
+    // 10개로 갯수 정함
+    if (imageUrlList.length > 4) {
+      window.alert("이미지는 최대 4개까지 가능합니다!");
     } else {
       let imgList = [];
       // 파일들을 꺼내 배열안에 넣어줌
@@ -46,18 +48,38 @@ const Uploads = () => {
     }
   };
 
+  useEffect(() => {
+    let editPree = [];
+    // 서버에서 받은 URL을 PreView에 넣어줌
+    for (let i = 0; i < eddit?.length; i++) {
+      editPree.push(eddit[i]);
+    }
+    setImgPreview(editPree);
+    // 리덕스에 files 인덱스를 맞추기 위해 URL도 같이 넣우줌
+    dispatch(imgActions.setPre(editPree));
+  }, [eddit]);
+
+  const handleDeleteImage = (x, id) => {
+    // 서버에서 준 URL 버킷 이름을 기준으로 찾아
+    if (x.indexOf("hyemco-butket") !== -1) {
+      dispatch(imgActions.editUrl(x));
+      // URL을 따로 저장
+      dispatch(imgActions.deletePre(id));
+      // 리덕스 files에 있는 URL 삭제 (배열을 맞추기 위함)
+    } else {
+      // 리덕스에 files 삭제
+      dispatch(imgActions.deletePre(id));
+    }
+    // 프리뷰 삭제
+    setImgPreview(imgPreview.filter((b, idx) => idx !== id));
+  };
+
   const handleUrl = (e) => {
     setIs_url(e.target.value);
   };
 
   const UrlButton = () => {
     dispatch(imgActions.setURL(is_Url));
-    // setIs_url("");
-  };
-
-  const handleDeleteImage = (id) => {
-    dispatch(imgActions.deletePre(id));
-    setImgPreview(imgPreview.filter((b, idx) => idx !== id));
   };
 
   return (
@@ -115,7 +137,7 @@ const Uploads = () => {
                 style={{ cursor: "pointer" }}
                 type="button"
                 onClick={() => {
-                  handleDeleteImage(id);
+                  handleDeleteImage(image, id);
                 }}
               />
 
@@ -128,7 +150,7 @@ const Uploads = () => {
   );
 };
 
-export default Uploads;
+export default EditImage;
 
 const UploadBox = styled.div`
   margin-top: 2rem;

@@ -1,20 +1,7 @@
 .swiper {
+  width: 60rem;
+  height: 33rem;
   border: 1px solid gray;
-  width: 69%;
-  height: 100%;
-}
-
-.swiper-button-prev:after,
-.swiper-rtl .swiper-button-next:after {
-  content: "prev";
-  font-size: 25px;
-  color: black;
-}
-.swiper-button-next:after,
-.swiper-rtl .swiper-button-prev:after {
-  content: "next";
-  font-size: 25px;
-  color: black;
 }
 
 .swiper-slide {
@@ -39,7 +26,7 @@
 
 .swiper-slide img {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 60rem;
+  height: 33rem;
   object-fit: cover;
 }

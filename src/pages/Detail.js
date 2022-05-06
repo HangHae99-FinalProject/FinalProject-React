@@ -1,172 +1,241 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "../elements/Grid";
 import styled from "styled-components";
-import rr from "../assets/image 35.png";
-
+import ReactModal from "react-modal";
 import DetailImage from "../components/Detail/DetailImage";
-import Input from "../elements/Input";
+
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreates as PosrActions } from "../redux/modules/post";
+import { useParams } from "react-router-dom";
+import Comment from "../components/Detail/Comment";
+import { imgActions } from "../redux/modules/image";
+import { actionCreates as recruitActions } from "../redux/modules/recruit";
 
 const Detail = () => {
+  const param = useParams();
+  const dispatch = useDispatch();
+  const [ModalState, setModalState] = useState(false);
+
+  const detailList = useSelector((state) => state.post.detailList);
+
+  const created = detailList.createdAt;
+  const createdAt = created?.split(" ")[0];
+
+  const applyHandelButton = () => {
+    setModalState(!ModalState);
+  };
+
+  useEffect(() => {
+    dispatch(PosrActions.__getDetail(param.postid));
+    dispatch(imgActions.initPre());
+  }, []);
+
   return (
     <>
-      <Profile>
-        <div style={{ margin: "auto", width: "130px", height: "130px" }}>
-          <img src={rr} alt="profile" />
-        </div>
-        <p>안녕하세영</p>
-      </Profile>
+      <Container>
+        <HeadBox>
+          <Profile>
+            <img src={detailList.pofileImg} alt="profile" />
+            <p>
+              {detailList.nickname} ㅣ {createdAt}
+            </p>
+          </Profile>
+          <HeadBtnBox>
+            <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
+            <Btn2>스크랩</Btn2>
+          </HeadBtnBox>
+        </HeadBox>
 
-      <Grid margin="5% 0 0 -5%">
-        <TitleBox>
-          <span>이곳은 아마 제목이 될겁니다</span>
-          <Grid width="20%" is_flex>
-            <BtnTest>신청하기</BtnTest>
-            <BtnTest>스크랩</BtnTest>
-          </Grid>
-        </TitleBox>
+        <MidBox>
+          <LeftBox>
+            <p>{detailList.title}</p>
 
-        <DateBox>
-          <h5>2022.04.30 ~ 2022.05.05(6이일간)</h5>
-        </DateBox>
-        <ContentBox>
-          <span>
-            여기부터는 내용이 들어갈겁니다 이게 내여ㅛㅇㅇ이
-            걘ㅇ라넝라ㅣㅜㄴ어뤄누러ㅏ눔러ㅏㅜㄴ머ㅏㅇ뤄ㅏㄴ우러ㅏㅁ누러ㅏㅜ너ㅏ루너ㅏㅣ무러ㅏ눔ㅇ러ㅏㅜ너ㅏ룸너ㅏㅣ뤄ㅏㅁ누라누마룬어ㅏ루ㅏㅁ눠ㅏ룬아루머ㅏㅇ뤄ㅏㄴ우러ㅏㅣ누마뤄ㅏㅁㄴ
-          </span>
-        </ContentBox>
-        <DetailImage />
-        <Comment>
-          <span>댓글 2</span>
-        </Comment>
+            <ButtonBox>
+              {detailList.majorList?.map((a, idx) => {
+                return (
+                  <Grid _className="mojarName" key={idx}>
+                    <p style={{ fontSize: "16px" }}>
+                      {a.majorName} : {a.numOfPeopleSet}명
+                    </p>
+                  </Grid>
+                );
+              })}
+            </ButtonBox>
+          </LeftBox>
+          <Line />
+          <RightBox>
+            <p style={{ fontSize: "20px", fontWeight: "700" }}>
+              {detailList.region} 모집기간: {detailList.deadline}
+            </p>
+            <p>{detailList.content}</p>
+          </RightBox>
+        </MidBox>
+        <ImageBox>
+          <DetailImage image={detailList.imgList} />
+        </ImageBox>
+        <Comment />
 
-        <CommentBox>
-          <img src={rr} alt="profile" />
-          <p className="name">유저이름</p>
-          <p className="comment">나는 여기다 댓글을 달겁니다</p>
-        </CommentBox>
-        <CommentBox>
-          <img src={rr} alt="profile" />
-          <p className="name">유저이름</p>
-          <p className="comment">나는 여기다 댓글을 달겁니다</p>
-        </CommentBox>
-        <BtnBox>
-          <BtnTest>마감</BtnTest>
-          <BtnTest style={{ marginRight: "4.5%" }}>몰루?</BtnTest>
+        {/* 신청 모달 */}
+        <ReactModal
+          state={ModalState}
+          isOpen={ModalState}
+          ariaHideApp={false}
+          onRequestClose={() => setModalState(false)}
+          closeTimeoutMS={200}
+          style={{
+            overlay: {
+              zIndex: 3,
+              backgroundColor: "rgba(0,0,0,0.5)",
+            },
+            content: {
+              borderRadius: 0,
+              top: "calc(100% - 750px)",
+              height: "600px",
+              width: "1200px",
+              left: "calc(100% - 1560px)",
+              padding: 0,
 
-          <InputBox placeholder="댓글을 입력하세요!" />
-        </BtnBox>
-      </Grid>
+              transition: "0.3s",
+            },
+          }}
+        >
+          <ModalGrid></ModalGrid>
+        </ReactModal>
+      </Container>
     </>
   );
 };
 
-const BtnBox = styled.div`
-  margin-top: 3%;
-  display: flex;
-  width: 90%;
-  margin-left: 10%;
+const ModalGrid = styled.div`
+  height: 620px;
+  width: 346px;
 `;
 
-const InputBox = styled.input`
-  border: 1px solid #c4c4c4;
-  border-radius: 15px;
-  margin-bottom: 5%;
-  padding: 5px 16px 5px 16px;
-
-  width: 80%;
-  height: 40px;
-  font-size: 16px;
+const ImageBox = styled.div`
+  margin: 3rem 0 5rem 0;
 `;
 
-const CommentBox = styled.div`
-  height: 45px;
-  margin-top: 2%;
+const ButtonBox = styled.div`
   display: flex;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #c4c4c4;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  width: 32rem;
 
-  img {
-    width: 45px;
-    height: 45px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 1px solid black;
+  .mojarName {
+    margin-bottom: 10px;
+    margin-right: 10px;
+    min-width: 110px;
+    padding: 16px;
+    width: auto;
+    height: 40px;
+    background-color: #2967ac;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-  .name {
-    margin: 0 0 0 15px;
-    font-size: 13px;
-  }
-  .comment {
-    margin-left: -45px;
-    font-size: 18px;
+  p {
+    color: #fff;
   }
 `;
 
-const Comment = styled.div`
+const LeftBox = styled.div`
+  width: 35rem;
+  margin: 2.5rem 0 3rem 3rem;
+  height: 10rem;
+  p {
+    font-size: 24px;
+    font-weight: 700;
+  }
+`;
+
+const RightBox = styled.div`
+  margin: 2.8rem 3rem 3rem 0;
+  p {
+    font-size: 17px;
+    font-weight: 400;
+  }
+`;
+
+const Line = styled.div`
+  width: 2px;
+  height: 170px;
+  background-color: #9b9798;
+  margin: 3rem 50px 0 50px;
+`;
+
+const MidBox = styled.div`
   display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-top: 1rem;
+  width: 100%;
+  border: 1px solid #c2c0c1;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  height: 270px;
+`;
+
+const HeadBtnBox = styled.div``;
+
+const HeadBox = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  margin-top: 2%;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #c4c4c4;
-
-  span {
-    font-size: 14px;
-  }
-`;
-const ContentBox = styled.div`
-  margin-bottom: 5%;
+  justify-content: center;
 `;
 
-const DateBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 5%;
-  h5 {
-    margin-top: 6px;
-    color: gray;
-  }
-  /* margin-left: 30%; */
+const Container = styled.div`
+  width: 1370px;
+  margin: 3% auto;
 `;
 
-const TitleBox = styled.div`
-  width: 70%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 15px;
-
-  border-bottom: 1px solid #c4c4c4;
-  span {
-    font-size: 20px;
-  }
-`;
-
-const BtnTest = styled.button`
+const Btn1 = styled.button`
   cursor: pointer;
-  width: 100px;
-  height: 35px;
+  width: 120px;
+  height: 50px;
   margin-left: 10px;
-  background: #cecece;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
+  background: #4299e9;
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+const Btn2 = styled.button`
+  cursor: pointer;
+  width: 120px;
+  height: 50px;
+  margin-left: 10px;
+  background: #ffd082;
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
 `;
 
 const Profile = styled.div`
-  margin-top: 5%;
   float: left;
-  height: 100vh;
-  width: 25%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
   img {
-    width: 130px;
-    height: 130px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
     border-radius: 50%;
     border: 1px solid black;
   }
   p {
-    font-size: 20px;
+    margin-left: 0.5rem;
+    margin-right: 54rem;
+    font-size: 18px;
+    font-weight: 400;
     text-align: center;
   }
 `;

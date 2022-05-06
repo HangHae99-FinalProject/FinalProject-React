@@ -171,7 +171,7 @@ const __getUserInfo = (userId) => {
       dispatch(getUser(data));
       // const {userId, nickname, profileImg, major, intro, portfolioLink, currentImgUrl, imgs } = {...data};
 
-      // console.log(data);
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -260,7 +260,7 @@ export default handleActions(
       }),
     [GET_USER]: (state, action) =>
       produce(state, (draft) => {
-        draft.userInfo = action.payload.data_list;
+        draft.userInfo = action.payload?.data_list;
       }),
   },
   initialState

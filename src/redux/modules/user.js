@@ -5,6 +5,7 @@ import { userApi } from "../../api/userApi";
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
 import instance from "../../api/api";
+import { history } from "../configureStore";
 
 import axios from "axios";
 
@@ -53,21 +54,12 @@ const __login = (userEmail, password) => {
     try {
       const {
         data: { accessToken, refreshToken, accessTokenExpiresIn },
-      } = await axios.post("http://54.225.34.106:8080/user/login", {
-        email:userEmail,
+      } = await axios.post("http://3.34.135.82:8080/user/login", {
+        email: userEmail,
         password,
       });
-      const { email, nickname, profileImg, major } = jwt_decode(accessToken);
-      console.log(
-        "이메일:",
-        email,
-        "닉네임:",
-        nickname,
-        "프로필:",
-        profileImg,
-        "전공:",
-        major
-      );
+      const { sub, email, nickname, profileImg, major } = jwt_decode(accessToken);
+      console.log("userid:", sub, "이메일:", email, "닉네임:", nickname, "프로필:", profileImg, "전공:", major);
       cookies.set("accessToken", accessToken, {
         path: "/",
         maxAge: 3600, // 60분
@@ -76,11 +68,12 @@ const __login = (userEmail, password) => {
         path: "/",
         maxAge: 604800, // 7일
       });
+      localStorage.setItem("userId", sub);
       localStorage.setItem("email", email);
       localStorage.setItem("nickname", nickname);
       localStorage.setItem("profileImgUrl", profileImg);
       localStorage.setItem("major", major);
-      // dispatch(login({ username }));
+      dispatch(login());
       history.replace("/");
     } catch (err) {
       console.log(err);
@@ -91,7 +84,8 @@ const __login = (userEmail, password) => {
 const __signup = (email, password, pwCheck, nickname, major) => {
   return async (dispatch, getState, { history }) => {
     try {
-      const signup = await axios.post("http://54.225.34.106:8080/user/signup", {
+      // const doc = { email, password, pwCheck, nickname, major: "음향" };
+      const signup = await axios.post("http://3.34.135.82:8080/user/signup", {
         email,
         password,
         pwCheck,
@@ -135,6 +129,29 @@ const __nicknameCheck =
       window.alert("입력하신 닉네임은 사용이 불가능합니다.");
     }
   };
+
+const __logout = () => {
+  return function (dispatch, getState) {
+    dispatch(logout());
+    window.alert("로그아웃되었습니다.");
+    history.replace("/");
+  };
+};
+
+const __loginCheck = () => {
+  return function (dispatch, getState, { history }) {
+    const tokenCheck = cookies.get("accessToken");
+    // console.log(userId);
+    // console.log(tokenCheck);
+    if (tokenCheck) {
+      return;
+    } else {
+      dispatch(logout());
+      console.log("로그인을 다시 해주세요");
+      history.replace("/");
+    }
+  };
+};
 
 // const __signup =
 //   (email, password, pwCheck, nickname) =>
@@ -194,6 +211,8 @@ export default handleActions(
   {
     [LOG_IN]: (state, action) =>
       produce(state, (draft) => {
+        cookies.set("isLogin", "success");
+        draft.user = action.payload.user;
         draft.isLogin = true;
       }),
     // [SET_USER]: (state, action) =>
@@ -202,12 +221,18 @@ export default handleActions(
     //     draft.user = action.payload.user;
     //     draft.is_login = true;
     //   }),
-    // [LOG_OUT]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     deleteCookie("is_login");
-    //     draft.user = null;
-    //     draft.is_login = false;
-    //   }),
+    [LOG_OUT]: (state, action) =>
+      produce(state, (draft) => {
+        cookies.remove("isLogin");
+        cookies.remove("accessToken");
+        cookies.remove("refreshToken");
+        localStorage.removeItem("major");
+        localStorage.removeItem("email");
+        localStorage.removeItem("nickname");
+        localStorage.removeItem("profileImgUrl");
+        draft.user = null;
+        draft.isLogin = false;
+      }),
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
   },
   initialState
@@ -218,12 +243,9 @@ const actionCreators = {
   __login,
   __emailCheck,
   __nicknameCheck,
-  // logOut,
-  // getUser,
   __signup,
-  // loginFB,
-  // loginCheckFB,
-  // logoutFB,
+  __logout,
+  __loginCheck,
 };
 
 export { actionCreators };

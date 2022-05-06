@@ -15,7 +15,7 @@ const cookies = new Cookies();
 const LOG_IN = "user/LOG_IN";
 const LOG_OUT = "user/LOG_OUT";
 const GET_USER = "user/GET_USER";
-const SET_USER = "user/SET_USER";
+// const SET_USER = "user/SET_USER";
 
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
@@ -32,8 +32,8 @@ const SET_USER = "user/SET_USER";
 // };
 const login = createAction(LOG_IN, (user) => ({ user }));
 const logout = createAction(LOG_OUT, (user) => ({ user }));
-const getUser = createAction(GET_USER, (user) => ({ user }));
-const setUser = createAction(SET_USER, (user) => ({ user }));
+const getUser = createAction(GET_USER, (data_list) => ({ data_list }));
+// const setUser = createAction(SET_USER, (user) => ({ user }));
 
 //initialState
 const initialState = {
@@ -42,6 +42,7 @@ const initialState = {
     email: null,
     nickname: null,
   },
+  userInfo: [],
 };
 
 const userInitial = {
@@ -58,8 +59,7 @@ const __login = (userEmail, password) => {
         email: userEmail,
         password,
       });
-      const { sub, email, nickname, profileImg, major } =
-        jwt_decode(accessToken);
+      const { sub, email, nickname, profileImg, major } = jwt_decode(accessToken);
       console.log(
         "userid:",
         sub,
@@ -101,7 +101,7 @@ const __signup = (email, password, pwCheck, nickname, major) => {
         password,
         pwCheck,
         nickname,
-        major: "음향",
+        major,
       });
       console.log(signup);
       if (signup.data) {
@@ -160,6 +160,20 @@ const __loginCheck = () => {
       dispatch(logout());
       console.log("로그인을 다시 해주세요");
       history.replace("/");
+    }
+  };
+};
+
+const __getUserInfo = (userId) => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const { data } = await userApi.getUserInfo(userId);
+      dispatch(getUser(data));
+      // const {userId, nickname, profileImg, major, intro, portfolioLink, currentImgUrl, imgs } = {...data};
+
+      // console.log(data);
+    } catch (err) {
+      console.log(err);
     }
   };
 };
@@ -244,7 +258,10 @@ export default handleActions(
         draft.user = null;
         draft.isLogin = false;
       }),
-    [GET_USER]: (state, action) => produce(state, (draft) => {}),
+    [GET_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.userInfo = action.payload.data_list;
+      }),
   },
   initialState
 );
@@ -257,6 +274,7 @@ const actionCreators = {
   __signup,
   __logout,
   __loginCheck,
+  __getUserInfo,
 };
 
 export { actionCreators };

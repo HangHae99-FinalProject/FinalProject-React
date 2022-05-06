@@ -13,6 +13,10 @@ import FormHelperText from "@mui/material/FormHelperText";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import Box from "@mui/material/Box";
 
 function IdFormHelperText() {
   const { focused } = useFormControl() || {};
@@ -75,6 +79,7 @@ const Signup = () => {
   const [password, setPassword] = React.useState("");
   const [pwCheck, setPwCheck] = React.useState("");
   const [nickname, setNickname] = React.useState("");
+  const [major, setMajor] = React.useState("");
 
   //중복검사 상태관리
   const [emailCheck, setEmailCheck] = React.useState(false);
@@ -101,6 +106,10 @@ const Signup = () => {
   const onNicknameHandler = (e) => {
     setNickname(e.target.value);
   };
+  const onMajorHandler = (e) => {
+    setMajor(e.target.value);
+  };
+  console.log(major);
 
   const goHome = () => {
     history.push("/");
@@ -123,7 +132,7 @@ const Signup = () => {
       window.alert("패스워드와 패스워드 확인이 일치하지 않습니다.");
       return;
     }
-    dispatch(userActions.__signup(email, password, pwCheck, nickname));
+    dispatch(userActions.__signup(email, password, pwCheck, nickname, major));
   };
 
   return (
@@ -220,8 +229,8 @@ const Signup = () => {
               </FormControl>
             </Grid>
           </Grid>
-          <Grid>
-            <FormControl sx={{ width: "35ch", marginTop: "20px" }}>
+          <Grid sx={{ marginTop: "20px" }}>
+            <FormControl sx={{ width: "35ch" }}>
               <OutlinedInput
                 required
                 name="password"
@@ -234,8 +243,8 @@ const Signup = () => {
               <PwFormHelperText />
             </FormControl>
           </Grid>
-          <Grid>
-            <FormControl sx={{ width: "35ch", marginTop: "20px" }}>
+          <Grid sx={{ marginTop: "20px" }}>
+            <FormControl sx={{ width: "35ch" }}>
               <OutlinedInput
                 required
                 name="pwCheck"
@@ -247,6 +256,31 @@ const Signup = () => {
               />
               <PwCfnFormHelperText />
             </FormControl>
+          </Grid>
+          {/* 전공추가 */}
+          <Grid sx={{ marginTop: "20px" }}>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label"></InputLabel>
+                <Select
+                  required
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={major}
+                  onChange={onMajorHandler}
+                  placeholder="전공을 선택해 주세요."
+                >
+                  <MenuItem value={"미술/디자인"}>미술/디자인</MenuItem>
+                  <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
+                  <MenuItem value={"영상"}>영상</MenuItem>
+                  <MenuItem value={"사진"}>사진</MenuItem>
+                  <MenuItem value={"모델"}>모델</MenuItem>
+                  <MenuItem value={"배우"}>배우</MenuItem>
+                  <MenuItem value={"성우"}>성우</MenuItem>
+                  <MenuItem value={"음향"}>음향</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
           </Grid>
           <Grid
             container

@@ -1,4 +1,4 @@
-import { instance } from "./api";
+import instance from "./api";
 import axios from "axios";
 
 // export const userInfoApi = {

@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import _styled from "styled-components";
 import rr from "../assets/image 35.png";
+import { useDispatch, useSelector } from "react-redux";
 import store, { history } from "../redux/configureStore";
+import { actionCreators as userActions } from "../redux/modules/user";
+import DetailImage from "../components/Detail/DetailImage";
 
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -19,7 +22,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import { useDispatch } from "react-redux";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -48,20 +51,42 @@ const a11yProps = (index) => {
   };
 };
 
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  height: 60,
+  lineHeight: "60px",
+}));
+
+const lightTheme = createTheme({ palette: { mode: "light" } });
+
 const User = (props) => {
-  const dispatch = useDispatch()
-  console.log(props)
-  const id = props.match.params.id
-  console.log(id)
+  const dispatch = useDispatch();
+  const getIntro = useSelector((state) => state.user.userInfo?.intro);
+  const getMajor = useSelector((state) => state.user.userInfo?.major);
+  const getPortfolioLink = useSelector((state) => state.user.userInfo?.portfolioLink);
+  const getLikeCount = useSelector((state) => state.user.userInfo?.likeCount);
+  const getNickname = useSelector((state) => state.user.userInfo?.nickname);
+  const getProfileImg = useSelector((state) => state.user.userInfo?.profileImg);
+  const getProjectCount = useSelector((state) => state.user.userInfo?.projectCount);
+  const getUserPortfolioImgList = useSelector((state) => state.user.userInfo?.userPortfolioImgList);
+  console.log(getIntro);
+  // console.log(getMajor);
+  // console.log(getNickname);
+  // console.log(getLikeCount);
+  // console.log(getProfileImg);
+  // console.log(getProjectCount);
+  // console.log(getUserPortfolioImgList);
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  useEffect(()=>{
-    dispatch()
-  },[])
-
+  useEffect(() => {
+    dispatch(userActions.__getUserInfo());
+  }, []);
 
   return (
     <Container>
@@ -123,7 +148,7 @@ const User = (props) => {
                 >
                   <Profile>
                     <div style={{ margin: "auto", width: "auto", height: "auto" }}>
-                      <img src={rr} alt="profile" />
+                      <img src={`${getProfileImg}`} alt="profileImg" />
                     </div>
                   </Profile>
                   <Grid container direction="row" justifyContent="center" alignItems="center">
@@ -150,11 +175,15 @@ const User = (props) => {
               </Grid>
               <Grid>
                 <Grid>
-                  <Button variant="contained" sx={{ borderRadius: "20px", marginLeft: "24px" }}>
-                    미술/디자인
+                  <Button
+                    value="kkk"
+                    variant="contained"
+                    sx={{ borderRadius: "20px", marginLeft: "24px" }}
+                  >
+                    {`${getMajor}`}
                   </Button>
                 </Grid>
-                <Grid>
+                {/* <Grid>
                   <TextField
                     id="myMajor"
                     label="전공"
@@ -164,13 +193,13 @@ const User = (props) => {
                     }}
                     sx={{ marginTop: "24px", minWidth: "340px", width: "auto", maxWidth: "700px" }}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid>
                   <TextField
                     id="myIntro"
                     label="나의 소개"
                     multiline
-                    defaultValue="편집몰, 브랜딩, UXUI를 집중적으로 하고 있습니다. 저의 작품은 주로 차분하고 심플합니다. 제 포트폴리오를 확인해주세요. 개인적으로 개발자분과 협업을 하고 싶습니다."
+                    defaultValue={`${getIntro}`}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -182,7 +211,7 @@ const User = (props) => {
                     id="myIntro"
                     label="포트폴리오 URL"
                     multiline
-                    defaultValue="https://www.abcd.com/hahaha"
+                    defaultValue={`${getPortfolioLink}`}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -194,27 +223,9 @@ const User = (props) => {
           </Grid>
         </Box>
         <Grid>
-          <Grid>
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                "& > :not(style)": {
-                  m: 1,
-                  width: 120,
-                  height: 120,
-                },
-              }}
-            >
-              <Paper elevation={3} />
-              <Paper elevation={3} />
-              <Paper elevation={3} />
-              <Paper elevation={3} />
-              <Paper elevation={3} />
-            </Box>
-          </Grid>
+          <DetailImage/>
         </Grid>
-        <Grid
+        {/* <Grid
           container
           direction="column"
           justifyContent="center"
@@ -297,7 +308,7 @@ const User = (props) => {
               </Grid>
             </TabPanel>
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Container>
   );
@@ -370,7 +381,7 @@ const style = {
   bgcolor: "background.paper",
 };
 
-const Profile = styled.div`
+const Profile = _styled.div`
   /* margin-top: 5%; */
   float: left;
   height: auto;

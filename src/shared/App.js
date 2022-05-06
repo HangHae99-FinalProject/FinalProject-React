@@ -26,9 +26,9 @@ import EditPost from "../pages/EditPost";
 
 function App() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(userActions.__loginCheck());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(userActions.__loginCheck());
+  // }, []);
   return (
     <Grid height="100%">
       <Header></Header>

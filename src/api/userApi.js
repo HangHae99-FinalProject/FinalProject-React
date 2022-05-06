@@ -1,4 +1,4 @@
-import { instance } from "./api";
+import instance from "./api";
 import axios from "axios";
 
 export const userApi = {
@@ -13,8 +13,7 @@ export const userApi = {
 
   remove: () => instance.delete("/user/remove"),
 
-  getUserInfo: (userId) =>
-    instance.get(`/user/info/${userId}`),
+  getUserInfo: (userId = localStorage.getItem("userId")) => instance.get(`/user/info/${userId}`),
   // getUserInfo: (userId) =>
   //   instance.get(`/user/info/${userId}`, {
   //     data: {

@@ -9,6 +9,7 @@ const instance = axios.create({
   headers: { "content-type": "application/json;charset=UTF-8" },
 });
 
+export default instance;
 // 헤더에 토큰 보내기
 instance.interceptors.request.use(function (config) {
   const accessToken = cookies.get("accessToken");

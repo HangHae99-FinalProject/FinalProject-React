@@ -144,9 +144,6 @@ const Signup = () => {
           onSubmit={(event) => {
             event.preventDefault();
             goSignup();
-
-            // dispatch(userActions.__signup(email, password, pwCheck, nickname));
-            // console.log({email, password, pwCheck, nickname});
           }}
         >
           <Grid container direction="row" justifyContent="space-between" alignItems="flex-start">

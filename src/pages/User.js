@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import rr from "../assets/image 35.png";
+import store, { history } from "../redux/configureStore";
 
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -14,6 +15,10 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -42,7 +47,10 @@ const a11yProps = (index) => {
   };
 };
 
-const User = () => {
+const User = (props) => {
+  console.log(props)
+  const id = props.match.params.id
+  console.log(id)
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -75,6 +83,9 @@ const User = () => {
                 <Button
                   variant="contained"
                   sx={{ marginBottom: "14px", width: "100px", height: "40px", padding: "0" }}
+                  onClick={() => {
+                    history.push("/edituser/:id");
+                  }}
                 >
                   프로필 수정
                 </Button>
@@ -217,54 +228,66 @@ const User = () => {
           <Grid container direction="row" justifyContent="center" alignItems="flex-start">
             <TabPanel value={value} index={0}>
               <Grid>
-                <ImageList sx={{ minWidth: "640px", height: "210px" }} cols={5} rowHeight={164}>
-                  {itemData1.map((item) => (
-                    <ImageListItem key={item.img}>
-                      <img
-                        src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                        srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                        alt={item.title}
-                        loading="lazy"
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
+                <List sx={style} component="nav" aria-label="mailbox folders">
+                  <ListItem button>
+                    <ListItemText primary="신청중1" />
+                  </ListItem>
+                  <Divider />
+                  <ListItem button divider>
+                    <ListItemText primary="신청중2" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary="신청중3" />
+                  </ListItem>
+                  <Divider light />
+                  <ListItem button>
+                    <ListItemText primary="신청중4" />
+                  </ListItem>
+                </List>
               </Grid>
             </TabPanel>
           </Grid>
           <Grid container direction="row" justifyContent="center" alignItems="flex-start">
             <TabPanel value={value} index={1}>
               <Grid>
-                <ImageList sx={{ minWidth: "640px", height: "210px" }} cols={5} rowHeight={164}>
-                  {itemData2.map((item) => (
-                    <ImageListItem key={item.img}>
-                      <img
-                        src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                        srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                        alt={item.title}
-                        loading="lazy"
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
+                <List sx={style} component="nav" aria-label="mailbox folders">
+                  <ListItem button>
+                    <ListItemText primary="모집중1" />
+                  </ListItem>
+                  <Divider />
+                  <ListItem button divider>
+                    <ListItemText primary="모집중2" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary="모집중3" />
+                  </ListItem>
+                  <Divider light />
+                  <ListItem button>
+                    <ListItemText primary="모집중4" />
+                  </ListItem>
+                </List>
               </Grid>
             </TabPanel>
           </Grid>
           <Grid container direction="row" justifyContent="center" alignItems="flex-start">
             <TabPanel value={value} index={2}>
               <Grid>
-                <ImageList sx={{ minWidth: "640px", height: "210px" }} cols={5} rowHeight={164}>
-                  {itemData3.map((item) => (
-                    <ImageListItem key={item.img}>
-                      <img
-                        src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                        srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                        alt={item.title}
-                        loading="lazy"
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
+                <List sx={style} component="nav" aria-label="mailbox folders">
+                  <ListItem button>
+                    <ListItemText primary="진행완료1" />
+                  </ListItem>
+                  <Divider />
+                  <ListItem button divider>
+                    <ListItemText primary="진행완료2" />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary="진행완료3" />
+                  </ListItem>
+                  <Divider light />
+                  <ListItem button>
+                    <ListItemText primary="진행완료4" />
+                  </ListItem>
+                </List>
               </Grid>
             </TabPanel>
           </Grid>
@@ -333,6 +356,12 @@ TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
+};
+
+const style = {
+  width: "100%",
+  maxWidth: 360,
+  bgcolor: "background.paper",
 };
 
 const Profile = styled.div`

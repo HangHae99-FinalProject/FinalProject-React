@@ -1,6 +1,10 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
-import { history } from "../redux/configureStore";
+import store, { history } from "../redux/configureStore";
+import Cookies from "universal-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as userActions } from "../redux/modules/user";
+import logo from "../assets/logo.png";
 
 //MUI 관련 임포트
 import { styled, alpha } from "@mui/material/styles";
@@ -12,11 +16,12 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import ChatIcon from "@mui/icons-material/Chat";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
-
+import Grid from "@mui/material/Grid";
 
 //미사용 임포트
 import MenuItem from "@mui/material/MenuItem";
@@ -27,7 +32,22 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
-function Header() {
+const cookies = new Cookies();
+
+function Header(props) {
+  const dispatch = useDispatch();
+  const isCookies = cookies.get("isLogin") ? true : false;
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const id = localStorage.getItem("userId")
+  console.log(isLogin);
+  console.log(id)
+
+  // React.useEffect(() => {
+  //   if (isCookies) {
+  //     return;
+  //   }
+  // });
+
   const menuId = "primary-search-account-menu";
   const goHome = () => {
     history.push("/");
@@ -38,63 +58,60 @@ function Header() {
   const goLogin = () => {
     history.push("/login");
   };
+  const goLogout = () => {
+    dispatch(userActions.__logout());
+  };
   const goUserPage = () => {
+    history.push(`/user/${id}`);
+  };
+  const goSignup = () => {
     history.push("/signup");
   };
 
   return (
-    <Box sx={{ flexGrow: 1, minWidth:"640px" }}>
-      <AppBar position="static">
+    <Grid sx={{ maxWidth: "1920px" }}>
+      <AppBar position="static" sx={{background:"white", boxShadow:"none"}}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            {/* <MenuIcon /> */}
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "block", sm: "block", cursor:"pointer"} }}
-            onClick={goHome}
-          >
-            <b style={{ fontSize: "30px" }}>모</b>두의 경<b style={{ fontSize: "30px" }}>험</b>
-            <b style={{ fontSize: "30px" }}>:모험</b>{" "}
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "flex", md: "flex" } }}>
-            <IconButton size="large" aria-label="go to home" color="inherit" onClick={goHome}>
-              <HomeIcon />
-            </IconButton>
-            <IconButton size="large" aria-label="show 4 new chats" color="inherit" onClick={goChat}>
-              <Badge badgeContent={4} color="error">
-                <ChatIcon />
-              </Badge>
-            </IconButton>
-            <IconButton size="large" aria-label="do login" color="inherit" onClick={goLogin}>
-              <LoginIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={goUserPage}
-              color="inherit"
-            >
-              <GroupAddIcon />
-            </IconButton>
-          </Box>
+          <Grid sx={{color:"#C2C0C1"}} container direction="row" justifyContent="space-between" alignItems="center">
+            <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
+              <img src={logo} alt="logo" style={{ height: "40px" }} />
+            </Grid>
+            <Grid sx={{ width: "30%" }}>
+              <Grid container direction="row" justifyContent="space-between" alignItems="center">
+                <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
+                  <Typography>Home</Typography>
+                </Grid>
+                {isCookies === true ? (
+                  <Grid sx={{ display: { cursor: "pointer" } }}>
+                    <Badge badgeContent={4} color="error">
+                      <Typography>ChatOn</Typography>
+                    </Badge>{" "}
+                  </Grid>
+                ) : null}
+                <Grid sx={{ display: { cursor: "pointer" } }}>
+                  {isCookies === true ? (
+                    <Grid onClick={goLogout}>
+                      <Typography>Logout</Typography>
+                    </Grid>
+                  ) : (
+                    <Grid onClick={goLogin}>
+                      <Typography>Login</Typography>
+                    </Grid>
+                  )}
+                </Grid>
+                <Grid sx={{ display: { cursor: "pointer" } }}>
+                  {isCookies === true ? (
+                    <Typography onClick={goUserPage}>MyPage</Typography>
+                  ) : (
+                    <Typography onClick={goSignup}>SignUp</Typography>
+                  )}
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
-      {/* {renderMobileMenu} */}
-      {/* {renderMenu} */}
-    </Box>
+    </Grid>
   );
 }
 

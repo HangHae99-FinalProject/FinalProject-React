@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //패키지 임포트
 import { Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
+import Cookies from "universal-cookie";
+import { useDispatch } from "react-redux";
 
 //페이지 임포트
 import Header from "../components/Header";
@@ -12,15 +14,20 @@ import Login from "../pages/Login";
 import Post from "../pages/Post";
 import Write from "../pages/Write";
 import User from "../pages/User";
-import UserMod from "../pages/UserMod";
+import EditUser from "../pages/EditUser";
 import Chat from "../pages/Chat";
 
 //기타 임포트
 import { history } from "../redux/configureStore";
 import { Grid } from "@mui/material";
 import Detail from "../pages/Detail";
+import { actionCreators as userActions } from "../redux/modules/user";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(userActions.__loginCheck());
+  }, []);
   return (
     <Grid>
       <Header></Header>
@@ -35,7 +42,7 @@ function App() {
         <Route path="/write/:id" exact component={Write} />
         <Route path="/user" exact component={User} />
         <Route path="/user/:id" exact component={User} />
-        <Route path="/usermod/:id" exact component={UserMod} />
+        <Route path="/edituser/:id" exact component={EditUser} />
         <Route path="/chatlist/:id" exact component={Chat} />
         <Route path="/chat/:id" exact component={Chat} />
       </ConnectedRouter>

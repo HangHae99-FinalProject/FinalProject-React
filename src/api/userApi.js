@@ -1,18 +1,31 @@
-import instance from "./api";
+import { instance } from "./api";
+import axios from "axios";
 
 export const userApi = {
-  signup: (email, password, pwCheck, nickname) =>
-    instance.post("/user/signup", { email, password, pwCheck, nickname }),
-  // //json-server 테스트용입니다.
-  // instance.post("/users", { email, password, pwCheck, nickname }),
+  signup: (email, password, pwCheck, nickname, major) =>
+    axios.post("user/signup", { email, password, pwCheck, nickname, major }),
 
   emailCheck: (email) => instance.post("/user/emailCheck", { email }),
 
   nicknameCheck: (nickname) => instance.post("/user/nicknameCheck", { nickname }),
 
-  login: (email, password) => instance.post("/user/login", { email, password }),
-  // // json-server 테스트용입니다.
-  // instance.post("/login", { email, password }),
-  
+  login: (email, password) => axios.post("user/login", { email, password }),
+
   remove: () => instance.delete("/user/remove"),
+
+  getUserInfo: (userId) =>
+    instance.get(`/user/info/${userId}`),
+  // getUserInfo: (userId) =>
+  //   instance.get(`/user/info/${userId}`, {
+  //     data: {
+  //       userId,
+  //       nickname,
+  //       profileImg,
+  //       major,
+  //       intro,
+  //       introImgUrlList,
+  //       projectCount,
+  //       likeCount,
+  //     },
+  //   }),
 };

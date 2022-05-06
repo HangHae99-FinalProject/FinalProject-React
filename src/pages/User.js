@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import rr from "../assets/image 35.png";
 import store, { history } from "../redux/configureStore";
@@ -19,6 +19,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import { useDispatch } from "react-redux";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -48,6 +49,7 @@ const a11yProps = (index) => {
 };
 
 const User = (props) => {
+  const dispatch = useDispatch()
   console.log(props)
   const id = props.match.params.id
   console.log(id)
@@ -56,6 +58,10 @@ const User = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  useEffect(()=>{
+    dispatch()
+  },[])
+
 
   return (
     <Container>

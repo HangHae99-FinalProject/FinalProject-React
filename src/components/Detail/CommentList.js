@@ -1,9 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { actionCreators as commentActions } from "../../redux/modules/comment";
 
 const CommentList = (props) => {
+  const dispatch = useDispatch();
   const created = props.createdAt;
   const createdAt = created?.split(" ")[0];
+
+  const [is_comment, setIs_comment] = useState("");
+  const [is_open, setIs_open] = useState(false);
+
+  const editComment = () => {
+    setIs_open(!is_open);
+    setIs_comment(props.comment);
+  };
+
+  const deleteComment = () => {
+    dispatch(commentActions.__deleteComment(props.commentId));
+  };
+
+  const handleCommentEdit = (e) => {
+    setIs_comment(e.target.value);
+  };
+
+  const editEndButton = () => {
+    if (is_comment === "") {
+      alert("공란 입니다!");
+      return;
+    }
+    setIs_open(!is_open);
+    dispatch(commentActions.__editComment(props.commentId, is_comment));
+  };
+
+  const handleEvent = (e) => {
+    console.log(e.nativeEvent.isComposing);
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+
+    if (e.key !== "Enter") {
+      return;
+    }
+    editEndButton();
+  };
 
   return (
     <>
@@ -22,15 +62,49 @@ const CommentList = (props) => {
             {createdAt}
           </p>
           <HeadBtnBox>
-            <Btn1>수정</Btn1>
-            <Btn2>삭제</Btn2>
+            <Btn1 onClick={editComment}>수정</Btn1>
+            <Btn2 onClick={deleteComment}>삭제</Btn2>
           </HeadBtnBox>
         </Comments>
+        {is_open ? (
+          <EditInput>
+            <input
+              value={is_comment}
+              onChange={handleCommentEdit}
+              onKeyDown={handleEvent}
+            />
+            <span onClick={editEndButton}>완료</span>
+          </EditInput>
+        ) : (
+          <>
+            <p className="comments">{props.comment}</p>
+          </>
+        )}
       </div>
-      <p className="comments">{props.comment}</p>
     </>
   );
 };
+
+const EditInput = styled.div`
+  span {
+    margin-left: -2.5rem;
+    color: rgba(155, 151, 152, 1);
+    cursor: pointer;
+  }
+  input {
+    margin-left: 4rem;
+    height: 2.5rem;
+    width: 40rem;
+    font-size: 22px;
+    font-weight: 400;
+    border-radius: 10px;
+    border: 1px solid #9b9798;
+    padding: 5px 15px 5px 15px;
+    :focus {
+      outline-color: gray;
+    }
+  }
+`;
 
 const HeadBtnBox = styled.div`
   margin-left: 61rem;

@@ -6,35 +6,52 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 import { useParams } from "react-router-dom";
 import CommentList from "./CommentList";
+import { history } from "../../redux/configureStore";
+import { actionCreates as postActions } from "../../redux/modules/post";
 
-const Comment = (id) => {
+const Comment = (props) => {
   const dispatch = useDispatch();
   const commentList = useSelector((state) => state.comment);
 
   const param = useParams();
+
+  const id = param.postid;
 
   const commentCnt = commentList.commentList?.length;
 
   const [is_comment, setIs_comment] = useState("");
 
   const addComment = () => {
-    // if (is_comment) {
-
-    // } else {
-    //   alert("댓글에 내용이 없습니다!");
-    // }
+    if (is_comment === "") {
+      alert("공란 입니다!");
+      return;
+    }
     dispatch(commentActions.__addComment(param.postid, is_comment));
     setIs_comment("");
   };
 
   const handleEvent = (e) => {
-    if (e.key === "Enter") {
-      addComment();
+    console.log(e.nativeEvent.isComposing);
+    if (e.nativeEvent.isComposing) {
+      return;
     }
+
+    if (e.key !== "Enter") {
+      return;
+    }
+    addComment();
   };
 
   const handleComment = (e) => {
     setIs_comment(e.target.value);
+  };
+
+  const handleWrite = () => {
+    history.push(`/editpost/${id}`);
+  };
+
+  const postDelete = () => {
+    dispatch(postActions.__deletePost(id));
   };
 
   return (
@@ -42,7 +59,16 @@ const Comment = (id) => {
       <CommentBox>
         <div className="commentHead">
           <TextsmsOutlinedIcon />
-          <p>댓글 {commentCnt}</p>
+          <p style={{ marginRight: "70rem" }}>댓글 {commentCnt}</p>
+          <span
+            style={{ marginRight: "2rem", cursor: "pointer" }}
+            onClick={handleWrite}
+          >
+            수정하기
+          </span>
+          <span style={{ cursor: "pointer" }} onClick={postDelete}>
+            삭제하기
+          </span>
         </div>
         <div className="line" />
 
@@ -58,7 +84,7 @@ const Comment = (id) => {
             placeholder="댓글을 남겨보세요!"
             value={is_comment || ""}
             onChange={handleComment}
-            onKeyUp={handleEvent}
+            onKeyDown={handleEvent}
           />
 
           <span onClick={addComment}>입력</span>
@@ -95,7 +121,6 @@ const CommentBox = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-right: 78rem;
 
     p {
       margin-left: 0.5rem;
@@ -111,12 +136,16 @@ const CommentBox = styled.div`
     margin-left: 1rem;
     font-size: 18px;
     font-weight: 400;
-    height: 23px;
+    height: 60px;
+    margin-top: 2rem;
   }
   .comments {
-    margin-left: 5rem;
-    font-size: 23px;
+    margin-top: -0.5rem;
+    margin-left: 4rem;
+    font-size: 22px;
     font-weight: 400;
+
+    justify-content: center;
   }
   .commentInput {
     span {

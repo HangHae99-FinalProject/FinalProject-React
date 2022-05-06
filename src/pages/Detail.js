@@ -1,24 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "../elements/Grid";
 import styled from "styled-components";
-
+import ReactModal from "react-modal";
 import DetailImage from "../components/Detail/DetailImage";
 
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreates as PosrActions } from "../redux/modules/post";
 import { useParams } from "react-router-dom";
 import Comment from "../components/Detail/Comment";
+import { imgActions } from "../redux/modules/image";
+import { actionCreates as recruitActions } from "../redux/modules/recruit";
 
 const Detail = () => {
   const param = useParams();
   const dispatch = useDispatch();
+  const [ModalState, setModalState] = useState(false);
+
   const detailList = useSelector((state) => state.post.detailList);
 
   const created = detailList.createdAt;
   const createdAt = created?.split(" ")[0];
 
+  const applyHandelButton = () => {
+    setModalState(!ModalState);
+  };
+
   useEffect(() => {
     dispatch(PosrActions.__getDetail(param.postid));
+    dispatch(imgActions.initPre());
   }, []);
 
   return (
@@ -32,7 +41,7 @@ const Detail = () => {
             </p>
           </Profile>
           <HeadBtnBox>
-            <Btn1>신청하기</Btn1>
+            <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
             <Btn2>스크랩</Btn2>
           </HeadBtnBox>
         </HeadBox>
@@ -45,8 +54,8 @@ const Detail = () => {
               {detailList.majorList?.map((a, idx) => {
                 return (
                   <Grid _className="mojarName" key={idx}>
-                    <p style={{ fontSize: "22px" }}>
-                      {a.majorName} : {a.numOfPeopleSet}
+                    <p style={{ fontSize: "16px" }}>
+                      {a.majorName} : {a.numOfPeopleSet}명
                     </p>
                   </Grid>
                 );
@@ -65,10 +74,42 @@ const Detail = () => {
           <DetailImage image={detailList.imgList} />
         </ImageBox>
         <Comment />
+
+        {/* 신청 모달 */}
+        <ReactModal
+          state={ModalState}
+          isOpen={ModalState}
+          ariaHideApp={false}
+          onRequestClose={() => setModalState(false)}
+          closeTimeoutMS={200}
+          style={{
+            overlay: {
+              zIndex: 3,
+              backgroundColor: "rgba(0,0,0,0.5)",
+            },
+            content: {
+              borderRadius: 0,
+              top: "calc(100% - 750px)",
+              height: "600px",
+              width: "1200px",
+              left: "calc(100% - 1560px)",
+              padding: 0,
+
+              transition: "0.3s",
+            },
+          }}
+        >
+          <ModalGrid></ModalGrid>
+        </ReactModal>
       </Container>
     </>
   );
 };
+
+const ModalGrid = styled.div`
+  height: 620px;
+  width: 346px;
+`;
 
 const ImageBox = styled.div`
   margin: 3rem 0 5rem 0;
@@ -78,15 +119,17 @@ const ButtonBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  width: 40rem;
+  width: 32rem;
 
   .mojarName {
     margin-bottom: 10px;
     margin-right: 10px;
-    width: 150px;
-    height: 50px;
+    min-width: 110px;
+    padding: 16px;
+    width: auto;
+    height: 40px;
     background-color: #2967ac;
-    border-radius: 14px;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -98,7 +141,7 @@ const ButtonBox = styled.div`
 `;
 
 const LeftBox = styled.div`
-  width: 40rem;
+  width: 35rem;
   margin: 2.5rem 0 3rem 3rem;
   height: 10rem;
   p {

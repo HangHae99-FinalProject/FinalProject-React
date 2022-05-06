@@ -17,7 +17,6 @@ const Write = () => {
   const dispatch = useDispatch();
 
   const [is_location, setLocation] = useState("");
-
   const [selected, setSelected] = useState(false);
   const [is_Week, setWeek] = useState("");
   const [is_cate, setIs_Cate] = useState("");
@@ -95,16 +94,20 @@ const Write = () => {
       alert("제목을 입력해주세요!");
       return;
     }
-    if (data.content === "") {
-      alert("내용을 입력해주세요!");
-      return;
-    }
     if (data.deadline === "") {
       alert("모집기간을 선택해주세요!");
       return;
     }
     if (data.region === "") {
       alert("지역을 선택해주세요!");
+      return;
+    }
+    if (is_cate === "" && is_people === "") {
+      alert("모집분야와 인원을 선택해 주세요!");
+      return;
+    }
+    if (data.content === "") {
+      alert("내용을 입력해주세요!");
       return;
     }
     dispatch(PostActions.__addPost(data));
@@ -228,7 +231,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "미술/디자인" ? "active" : "default"}
-              bg={is_cate === "미술/디자인" ? "black" : "#fff"}
+              bg={is_cate === "미술/디자인" ? "#2967AC" : "#fff"}
             >
               <p>미술/디자인</p>
             </Grid>
@@ -242,7 +245,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "영상" ? "active" : "default"}
-              bg={is_cate === "영상" ? "blue" : "#fff"}
+              bg={is_cate === "영상" ? "#6AD8F5" : "#fff"}
             >
               <p>영상</p>
             </Grid>
@@ -256,7 +259,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "배우" ? "active" : "default"}
-              bg={is_cate === "배우" ? "red" : "#fff"}
+              bg={is_cate === "배우" ? "#F58467" : "#fff"}
             >
               <p>배우</p>
             </Grid>
@@ -270,7 +273,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "사진" ? "active" : "default"}
-              bg={is_cate === "사진" ? "red" : "#fff"}
+              bg={is_cate === "사진" ? "#4299E9" : "#fff"}
             >
               <p>사진</p>
             </Grid>
@@ -287,7 +290,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "프로그래밍" ? "active" : "default"}
-              bg={is_cate === "프로그래밍" ? "red" : "#fff"}
+              bg={is_cate === "프로그래밍" ? "#5BC8D2" : "#fff"}
             >
               <p>프로그래밍</p>
             </Grid>
@@ -301,7 +304,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "모델" ? "active" : "default"}
-              bg={is_cate === "모델" ? "red" : "#fff"}
+              bg={is_cate === "모델" ? "#FE674C" : "#fff"}
             >
               <p>모델</p>
             </Grid>
@@ -315,7 +318,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "성우" ? "active" : "default"}
-              bg={is_cate === "성우" ? "red" : "#fff"}
+              bg={is_cate === "성우" ? "#FFD082" : "#fff"}
             >
               <p>성우</p>
             </Grid>
@@ -329,7 +332,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "음향" ? "active" : "default"}
-              bg={is_cate === "음향" ? "red" : "#fff"}
+              bg={is_cate === "음향" ? "#FFEF62" : "#fff"}
             >
               <p>음향</p>
             </Grid>

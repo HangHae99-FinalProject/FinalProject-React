@@ -26,12 +26,47 @@ const initialState = {
 };
 
 //미들웨어
+
+const __deletePost =
+  (postId) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.deletePost(postId);
+      history.replace("/");
+      alert("삭제가 완료됐습니다!");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+const __editPost =
+  (data, postId, Files) =>
+  async (dispatch, getState, { history }) => {
+    const formData = new FormData();
+
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(data)], {
+        type: "application/json",
+      })
+    );
+    Files.map((e) => {
+      return formData.append("img", e);
+    });
+    try {
+      const data = await postApi.editPost(postId, formData);
+      console.log(data);
+      history.replace("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 const __addPost =
   (data) =>
   async (dispatch, getState, { history }) => {
     const formData = new FormData();
     const images = getState().image.files;
-    console.log(data);
 
     formData.append(
       "data",
@@ -46,7 +81,7 @@ const __addPost =
 
     try {
       const data = await postApi.postWrite(formData);
-      console.log(data);
+      history.replace("/");
     } catch (err) {
       console.log(err);
     }
@@ -112,6 +147,8 @@ const actionCreates = {
   setPost,
   __getDetail,
   setDetail,
+  __editPost,
+  __deletePost,
 };
 
 export { actionCreates };

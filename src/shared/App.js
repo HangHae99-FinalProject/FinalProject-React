@@ -22,6 +22,7 @@ import { history } from "../redux/configureStore";
 import { Grid } from "@mui/material";
 import Detail from "../pages/Detail";
 import { actionCreators as userActions } from "../redux/modules/user";
+import EditPost from "../pages/EditPost";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ function App() {
         <Route path="/detail/:postid" exact component={Detail} />
         <Route path="/detail" exact component={Detail} />
         <Route path="/write" exact component={Write} />
-        <Route path="/write/:postid" exact component={Write} />
+        <Route path="/editpost/:postid" exact component={EditPost} />
         <Route path="/user" exact component={User} />
         <Route path="/user/:id" exact component={User} />
         <Route path="/edituser/:id" exact component={EditUser} />

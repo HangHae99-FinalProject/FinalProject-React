@@ -7,6 +7,7 @@ import mainImage from "../assets/Group 36.png";
 import PlaceIcon from "@mui/icons-material/Place";
 
 import { actionCreates as postActions } from "../redux/modules/post";
+
 import { useDispatch, useSelector } from "react-redux";
 import MainSearch from "../components/Main/MainSearch";
 import { history } from "../redux/configureStore";
@@ -48,9 +49,8 @@ const Main = () => {
             }}
           >
             <Grid
-              _className={
-                is_cate === "미술/디자인" ? "default active" : "default"
-              }
+              _className={is_cate === "미술/디자인" ? "active" : "default"}
+              bg={is_cate === "미술/디자인" ? "#2967AC" : "#f5fcff"}
             >
               <p>미술/디자인</p>
             </Grid>
@@ -62,7 +62,10 @@ const Main = () => {
               setSelected(true);
             }}
           >
-            <Grid _className={is_cate === "영상" ? "active" : "default"}>
+            <Grid
+              _className={is_cate === "영상" ? "active" : "default"}
+              bg={is_cate === "영상" ? "#6AD8F5" : "#f5fcff"}
+            >
               <p>영상</p>
             </Grid>
           </CateBtn>
@@ -73,7 +76,10 @@ const Main = () => {
               setSelected(true);
             }}
           >
-            <Grid _className={is_cate === "배우" ? "active" : "default"}>
+            <Grid
+              _className={is_cate === "배우" ? "active" : "default"}
+              bg={is_cate === "배우" ? "#F58467" : "#f5fcff"}
+            >
               <p>배우</p>
             </Grid>
           </CateBtn>
@@ -84,7 +90,10 @@ const Main = () => {
               setSelected(true);
             }}
           >
-            <Grid _className={is_cate === "사진" ? "active" : "default"}>
+            <Grid
+              _className={is_cate === "사진" ? "active" : "default"}
+              bg={is_cate === "사진" ? "#4299E9" : "#f5fcff"}
+            >
               <p>사진</p>
             </Grid>
           </CateBtn>
@@ -97,7 +106,10 @@ const Main = () => {
               setSelected(true);
             }}
           >
-            <Grid _className={is_cate === "프로그래밍" ? "active" : "default"}>
+            <Grid
+              _className={is_cate === "프로그래밍" ? "active" : "default"}
+              bg={is_cate === "프로그래밍" ? "#5BC8D2" : "#f5fcff"}
+            >
               <p>프로그래밍</p>
             </Grid>
           </CateBtn>
@@ -108,7 +120,10 @@ const Main = () => {
               setSelected(true);
             }}
           >
-            <Grid _className={is_cate === "모델" ? "active" : "default"}>
+            <Grid
+              _className={is_cate === "모델" ? "active" : "default"}
+              bg={is_cate === "모델" ? "#FE674C" : "#f5fcff"}
+            >
               <p>모델</p>
             </Grid>
           </CateBtn>
@@ -119,7 +134,10 @@ const Main = () => {
               setSelected(true);
             }}
           >
-            <Grid _className={is_cate === "성우" ? "active" : "default"}>
+            <Grid
+              _className={is_cate === "성우" ? "active" : "default"}
+              bg={is_cate === "성우" ? "#FFD082" : "#f5fcff"}
+            >
               <p>성우</p>
             </Grid>
           </CateBtn>
@@ -130,7 +148,10 @@ const Main = () => {
               setSelected(true);
             }}
           >
-            <Grid _className={is_cate === "음향" ? "active" : "default"}>
+            <Grid
+              _className={is_cate === "음향" ? "active" : "default"}
+              bg={is_cate === "음향" ? "#FFEF62" : "#f5fcff"}
+            >
               <p>음향</p>
             </Grid>
           </CateBtn>
@@ -343,7 +364,6 @@ const CateBtn = styled.div`
     box-shadow: inset 0px 4px 13px #d7f1fd;
     cursor: pointer;
 
-    background-color: gray;
     animation: 0.6s ease-in-out loadEffect3;
     .icon {
       color: #fff;
@@ -353,7 +373,7 @@ const CateBtn = styled.div`
       font-size: 15px;
 
       text-align: center;
-      color: rgba(41, 103, 172, 1);
+      color: #f5fcff;
     }
   }
   @keyframes loadEffect3 {

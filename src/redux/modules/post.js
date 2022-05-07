@@ -3,23 +3,33 @@ import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
 import { postApi } from "../../api/postApi";
 import { actionCreators as commentActions } from "../modules/comment";
+import axios from "axios";
 
 // 액션
 const SET_POST = "SET_POST";
 const SET_DETAIL = "SET_DETAIL";
 const ADD_POST = "ADD_POST";
-const EDIT_POST = "EDIT_POST";
-const DELETE_POST = "DELETE_POST";
+
+// 신청하기
+const ADD_APPLY = "ADD_APPLY";
+const DELETE_APPLY = "DELETE_APPLY";
+const LOGIN_DETAIL = "LOGIN_DETAIL";
 
 // 액션 크리에이터
 const setPost = createAction(SET_POST, (post_list) => ({ post_list }));
 const setDetail = createAction(SET_DETAIL, (detail_list) => ({ detail_list }));
-const addPost = createAction(ADD_POST, (post_list) => ({ post_list }));
-const editPost = createAction(EDIT_POST, (post_list) => ({ post_list }));
-const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
+const setLoginDetail = createAction(SET_DETAIL, (detail_list) => ({
+  detail_list,
+}));
+// 신청하기
+const addApply = createAction(ADD_APPLY, (apply) => ({ apply }));
+const deleteApply = createAction(DELETE_APPLY, (apply) => ({ apply }));
+// const editPost = createAction(EDIT_POST, (post_list) => ({ post_list }));
+// const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 
 // 초기값
 const initialState = {
+  apply: "",
   list: [],
   is_loading: false,
   detailList: [],
@@ -27,6 +37,34 @@ const initialState = {
 
 //미들웨어
 
+// 신청하기
+// const aaa = () => {
+//   return postApi.deleteApply(postId);
+// };
+
+const __postApply =
+  (postId, data) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { res } = await postApi.postApply(postId, data);
+      dispatch(addApply("applicant"));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+const __deleteApply =
+  (postId) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.deleteApply(postId);
+      dispatch(addApply("user"));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+// 메인,게시글
 const __deletePost =
   (postId) =>
   async (dispatch, getState, { history }) => {
@@ -80,8 +118,21 @@ const __addPost =
     });
 
     try {
-      const data = await postApi.postWrite(formData);
+      await postApi.postWrite(formData);
       history.replace("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+const __loginGetDetail =
+  (postId) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.loginGetDetail(postId);
+      console.log(data);
+      dispatch(commentActions.getComment(data.data.commentList));
+      dispatch(setDetail(data.data));
     } catch (err) {
       console.log(err);
     }
@@ -92,10 +143,10 @@ const __getDetail =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await postApi.getDetail(postId);
-      console.log(data.commentList.length);
+      console.log(data.data);
 
-      dispatch(commentActions.getComment(data.commentList));
-      dispatch(setDetail(data));
+      dispatch(commentActions.getComment(data.data.commentList));
+      dispatch(setDetail(data.data));
     } catch (err) {
       console.log(err);
     }
@@ -106,20 +157,11 @@ const __getPost =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await postApi.getPost();
-      console.log(data.date);
-      dispatch(setPost(data.date));
+      dispatch(setPost(data));
     } catch (err) {
       console.log(err);
     }
   };
-
-// const __getPost = (postId) => {
-//   return function (dispatch, getState, { history }) {
-//     postApi.getDetail(postId).then((res) => {
-//       console.log(res);
-//     });
-//   };
-// };
 
 // 리덕스
 export default handleActions(
@@ -133,10 +175,19 @@ export default handleActions(
       produce(state, (draft) => {
         draft.detailList = action.payload.detail_list;
       }),
-    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
+    [LOGIN_DETAIL]: (state, action) =>
+      produce(state, (draft) => {
+        draft.detailList = action.payload.detail_list;
+      }),
+    [ADD_APPLY]: (state, action) =>
+      produce(state, (draft) => {
+        draft.detailList.userStatus = action.payload.apply;
+      }),
+    // [DELETE_APPLY]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     console.log(action.payload.apply);
+    //     draft.apply = action.payload.apply;
+    //   }),
   },
   initialState
 );
@@ -149,6 +200,12 @@ const actionCreates = {
   setDetail,
   __editPost,
   __deletePost,
+  __loginGetDetail,
+  setLoginDetail,
+  addApply,
+  __postApply,
+  __deleteApply,
+  deleteApply,
 };
 
 export { actionCreates };

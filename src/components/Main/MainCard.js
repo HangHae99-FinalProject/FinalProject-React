@@ -147,6 +147,7 @@ const DateBox = styled.div`
 const TitleBox = styled.div`
   margin-bottom: 20px;
   margin-left: 10px;
+  margin-right: 10px;
   span {
     font-size: 32px;
     font-weight: 700;

@@ -22,7 +22,8 @@ const MainList = ({ location, category, selected }) => {
   // 스피너 및 게시물 없는거 감시 할 state
   const [is_loading, setIs_Loading] = useState(false);
 
-  const postList = useSelector((state) => state.post.list);
+  const postList = useSelector((state) => state.post.list.data);
+  console.log(postList);
 
   // api로 넘겨줘야 할 값들
   // 동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에

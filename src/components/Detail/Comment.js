@@ -12,6 +12,7 @@ import { actionCreates as postActions } from "../../redux/modules/post";
 const Comment = (props) => {
   const dispatch = useDispatch();
   const commentList = useSelector((state) => state.comment);
+  console.log(commentList);
 
   const param = useParams();
 

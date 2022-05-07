@@ -36,6 +36,7 @@ const __addComment =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await commentApi.postComment(postId, comment);
+      console.log(data);
       const today = new Date();
       let year = today.getFullYear();
       let month = ("0" + (today.getMonth() + 1)).slice(-2);
@@ -44,8 +45,11 @@ const __addComment =
 
       const nickname = localStorage.getItem("nickname");
       const profileImg = localStorage.getItem("profileImgUrl");
+      const commentId = data.data.commentId;
 
-      dispatch(addComment({ comment, createdAt, profileImg, nickname }));
+      dispatch(
+        addComment({ comment, createdAt, profileImg, nickname, commentId })
+      );
     } catch (err) {
       console.log(err);
     }

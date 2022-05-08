@@ -7,9 +7,12 @@ const CommentList = (props) => {
   const dispatch = useDispatch();
   const created = props.createdAt;
   const createdAt = created?.split(" ")[0];
+  const localUserId = localStorage.getItem("userId");
 
   const [is_comment, setIs_comment] = useState("");
   const [is_open, setIs_open] = useState(false);
+
+  const userId = Number(localUserId) === props.userId ? true : false;
 
   const editComment = () => {
     setIs_open(!is_open);
@@ -34,7 +37,6 @@ const CommentList = (props) => {
   };
 
   const handleEvent = (e) => {
-    console.log(e.nativeEvent.isComposing);
     if (e.nativeEvent.isComposing) {
       return;
     }
@@ -62,8 +64,12 @@ const CommentList = (props) => {
             {createdAt}
           </p>
           <HeadBtnBox>
-            <Btn1 onClick={editComment}>수정</Btn1>
-            <Btn2 onClick={deleteComment}>삭제</Btn2>
+            {userId ? (
+              <>
+                <Btn1 onClick={editComment}>수정</Btn1>
+                <Btn2 onClick={deleteComment}>삭제</Btn2>
+              </>
+            ) : null}
           </HeadBtnBox>
         </Comments>
         {is_open ? (

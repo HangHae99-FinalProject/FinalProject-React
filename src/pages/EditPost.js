@@ -42,8 +42,6 @@ const EditPost = () => {
   }
 
   const imgUrl = useSelector((state) => state.image.editUrl);
-  console.log(imgUrl);
-  console.log(newFiles);
 
   const data = {
     imgUrl,

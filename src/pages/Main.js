@@ -7,6 +7,7 @@ import mainImage from "../assets/Group 36.png";
 import PlaceIcon from "@mui/icons-material/Place";
 
 import { actionCreates as postActions } from "../redux/modules/post";
+import { actionCreates as recruitActions } from "../redux/modules/recruit";
 
 import { useDispatch, useSelector } from "react-redux";
 import MainSearch from "../components/Main/MainSearch";
@@ -31,7 +32,11 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(postActions.__getPost());
-  }, []);
+    return () => {
+      dispatch(recruitActions.initRecruit());
+      dispatch(postActions.clearPost());
+    };
+  }, [dispatch]);
 
   return (
     <>
@@ -234,7 +239,7 @@ const MainImage = styled.div`
 `;
 
 const Container = styled.div`
-  width: 1370px;
+  width: 80%;
   margin: 3% auto;
 `;
 

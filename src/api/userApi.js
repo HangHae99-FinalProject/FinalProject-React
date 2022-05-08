@@ -7,13 +7,15 @@ export const userApi = {
 
   emailCheck: (email) => instance.post("/user/emailCheck", { email }),
 
-  nicknameCheck: (nickname) => instance.post("/user/nicknameCheck", { nickname }),
+  nicknameCheck: (nickname) =>
+    instance.post("/user/nicknameCheck", { nickname }),
 
   login: (email, password) => axios.post("user/login", { email, password }),
 
   remove: () => instance.delete("/user/remove"),
 
-  getUserInfo: (userId = localStorage.getItem("userId")) => instance.get(`/user/info/${userId}`),
+  getUserInfo: (userId = localStorage.getItem("userId")) =>
+    instance.get(`/user/info/${userId}`),
   // getUserInfo: (userId) =>
   //   instance.get(`/user/info/${userId}`, {
   //     data: {

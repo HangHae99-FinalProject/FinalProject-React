@@ -10,114 +10,96 @@ const MainCard = (item) => {
   const postId = item.item.postId;
 
   const majorName = item.item.majorList;
-  const mojor = majorName.map((a) => a.majorName);
-  const mojorCnt = mojor.length;
+  const major = majorName.map((a) => a.majorName);
+  const majorCnt = major.length;
 
   const created = item.item.createdAt;
   const setCreatedAt = created.split(" ");
   const createdAt = setCreatedAt[0];
 
   return (
-    <Card
-      sx={{
-        width: "430px",
-        display: "flex",
-        float: "left",
-        justifyContent: "center",
-        justifyItems: "center",
-        flexDirection: "row",
-        height: "600px",
-      }}
+    <Container
       onClick={() => {
         history.push(`/detail/${postId}`);
       }}
     >
-      <CardActionArea
-        sx={{ width: "430px", height: "600px", paddingTop: "120px" }}
-      >
-        {/* <CardMedia component="img" height="300px" src={dd} alt="green iguana" /> */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            justifyItems: "center",
-          }}
-        >
-          <MainImage src={item.item.imgUrl} />
-        </div>
-
+      <MainImage src={item.item.imgUrl} alt="mainImage" />
+      <TitleBox>
+        <span>{item.item.title}</span>
+      </TitleBox>
+      <MidBox>
+        <DateBox>
+          <span>
+            {item.item.region} ㅣ {item.item.deadline} 예상
+          </span>
+        </DateBox>
+      </MidBox>
+      <CreateAtBox>
+        <span>
+          {createdAt} ㅣ {item.item.nickname}
+        </span>
         <div>
-          <TitleBox>
-            <span>{item.item.title}</span>
-          </TitleBox>
+          <ButtonBox>
+            <Grid
+              _className={"majorName"}
+              bg={
+                major[0] === "미술/디자인"
+                  ? "#2967AC"
+                  : major[0] === "음향"
+                  ? "#FFEF62"
+                  : major[0] === "영상"
+                  ? "#6AD8F5"
+                  : major[0] === "배우"
+                  ? "#F58467"
+                  : major[0] === "프로그래밍"
+                  ? "#5BC8D2"
+                  : major[0] === "모델"
+                  ? "#FE674C"
+                  : major[0] === "사진"
+                  ? "#4299E9"
+                  : major[0] === "성우"
+                  ? "#FFD082"
+                  : null
+              }
+            >
+              <p>{major[0]}</p>
+            </Grid>
+            <Grid _className={"PeopleCnt"}>
+              <p>+{majorCnt}</p>
+            </Grid>
+          </ButtonBox>
         </div>
-
-        <div
-          style={{
-            width: "430px",
-            height: "80px",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: "-8px",
-          }}
-        >
-          <div>
-            <DateBox>
-              <span>
-                {item.item.region} ㅣ {item.item.deadline} 예상
-              </span>
-            </DateBox>
-            <CreateAtBox>
-              <span>
-                {createdAt} ㅣ {item.item.nickname}
-              </span>
-            </CreateAtBox>
-          </div>
-          <div>
-            <ButtonBox>
-              <Grid _className={"mojarName"} margin="0 0 0px 0">
-                <p>{mojor[0]}</p>
-              </Grid>
-              <Grid _className={"PeopleCnt"}>
-                <p>+{mojorCnt}</p>
-              </Grid>
-            </ButtonBox>
-          </div>
-        </div>
-      </CardActionArea>
-    </Card>
+      </CreateAtBox>
+    </Container>
   );
 };
-
 const ButtonBox = styled.div`
+  margin-top: -5px;
+  margin-left: 30px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-
-  .mojarName {
-    margin-right: 10px;
-    width: 80px;
-    height: 40px;
-    background-color: #b9daf6;
+  .majorName {
+    margin-right: 5px;
+    width: 70px;
+    height: 34px;
     border-radius: 14px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: #fff;
   }
   .PeopleCnt {
-    margin-right: 20px;
-    width: 50px;
-    height: 40px;
+    width: 45px;
+    height: 34px;
     background-color: #b9daf6;
     border-radius: 14px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: #fff;
   }
   p {
     font-size: 15px;
@@ -126,40 +108,97 @@ const ButtonBox = styled.div`
 `;
 
 const CreateAtBox = styled.div`
-  margin-left: 10px;
+  margin-left: 20px;
+  display: flex;
+
   span {
+    margin-top: 10px;
+    margin-right: 5px;
     font-size: 14px;
     color: #2967ac;
     font-weight: 500;
   }
 `;
 
+const MidBox = styled.div`
+  display: flex;
+  margin-top: 30px;
+  margin-left: 20px;
+`;
+
 const DateBox = styled.div`
-  margin-bottom: 20px;
-  margin-left: 10px;
   span {
-    font-size: 25px;
+    font-size: 16px;
+    font-weight: 500;
     color: #2967ac;
-    font-weight: 400;
   }
 `;
 
 const TitleBox = styled.div`
-  margin-bottom: 20px;
-  margin-left: 10px;
+  display: flex;
+  margin: 20px 0 0 15px;
   span {
-    font-size: 32px;
     font-weight: 700;
-    line-height: 46px;
+    font-size: 22px;
+  }
+`;
+
+const Container = styled.div`
+  height: 459px;
+  width: 330px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 35px 30px 10px 20px;
+  display: inline-block;
+  overflow: scroll;
+  overflow-x: hidden;
+  cursor: pointer;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 100%;
+    background: black;
+    border-radius: 50px;
+  }
+
+  :hover {
+  }
+  animation: 0.6s ease-in-out loadEffect3;
+  .icon {
+    color: #fff;
+    font-size: 32px;
+  }
+  p {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    color: #f5fcff;
+  }
+  @keyframes loadEffect3 {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    65% {
+      opacity: 0.65;
+      transform: scale(1.01);
+    }
+    85% {
+      opacity: 0.85;
+      transform: scale(0.97);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 `;
 
 const MainImage = styled.img`
-  margin-top: -129px;
-  /* margin-bottom: 30px; */
-
-  height: 410px;
-  width: 410px;
+  height: 310px;
+  width: 310px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

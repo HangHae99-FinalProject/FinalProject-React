@@ -23,9 +23,10 @@ import { Grid } from "@mui/material";
 import Detail from "../pages/Detail";
 import { actionCreators as userActions } from "../redux/modules/user";
 import EditPost from "../pages/EditPost";
+import Applied from "../pages/Applied";
 
 function App() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // useEffect(() => {
   //   dispatch(userActions.__loginCheck());
   // }, []);
@@ -46,6 +47,7 @@ function App() {
         <Route path="/edituser/:id" exact component={EditUser} />
         <Route path="/chatlist/:id" exact component={Chat} />
         <Route path="/chat/:id" exact component={Chat} />
+        <Route path="/applied/:postid" exact component={Applied} />
       </ConnectedRouter>
     </Grid>
   );

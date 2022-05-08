@@ -6,8 +6,6 @@ import Grid from "../../elements/Grid";
 import { actionCreates as applyActions } from "../../redux/modules/apply";
 
 const ApplyCard = (props) => {
-  console.log(props);
-  // const postId = props.id;
   const dispatch = useDispatch();
   const acceptedDto = {
     userId: props.userId,
@@ -16,6 +14,10 @@ const ApplyCard = (props) => {
 
   const requestHandelBtn = () => {
     dispatch(applyActions.__postRequest(acceptedDto));
+  };
+
+  const rejectHandelBtn = () => {
+    dispatch(applyActions.__postReject(acceptedDto));
   };
 
   return (
@@ -30,8 +32,29 @@ const ApplyCard = (props) => {
         </div>
       </Profile>
       <MidBtnBox>
-        <Grid width="0">
-          <span className="majorName">{props.applyMajor}</span>
+        <Grid
+          _className="majorName"
+          bg={
+            props.applyMajor === "미술/디자인"
+              ? "#2967AC"
+              : props.applyMajor === "음향"
+              ? "#FFEF62"
+              : props.applyMajor === "영상"
+              ? "#6AD8F5"
+              : props.applyMajor === "배우"
+              ? "#F58467"
+              : props.applyMajor === "프로그래밍"
+              ? "#5BC8D2"
+              : props.applyMajor === "모델"
+              ? "#FE674C"
+              : props.applyMajor === "사진"
+              ? "#4299E9"
+              : props.applyMajor === "성우"
+              ? "#FFD082"
+              : null
+          }
+        >
+          <p>{props.applyMajor}</p>
         </Grid>
       </MidBtnBox>
       <CommentBox>
@@ -42,7 +65,9 @@ const ApplyCard = (props) => {
           수락
         </span>
         <span className="chatButton">체팅</span>
-        <span className="noButton">거절</span>
+        <span className="noButton" onClick={rejectHandelBtn}>
+          거절
+        </span>
       </BottomBtn>
     </Container>
   );
@@ -126,7 +151,7 @@ const MidBtnBox = styled.div`
     font-weight: 700;
     width: 140px;
     height: 50px;
-    background-color: #b9daf6;
+
     border-radius: 14px;
     display: flex;
     justify-content: center;

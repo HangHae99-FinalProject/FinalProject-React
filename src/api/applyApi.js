@@ -5,7 +5,6 @@ export const applyApi = {
   getAccept: (postId) => instance.get(`user/apply/${postId}?isAccepted=1`),
   postRequest: (acceptedDto) =>
     instance.post("/user/apply/accepted", acceptedDto),
-  deleteComment: (commentId) => instance.delete(`/api/comment/${commentId}`),
-  editComment: (commentId, comment) =>
-    instance.put(`/api/comment/${commentId}`, { comment }),
+  postReject: (rejectDto) => instance.post("/user/apply/reject", rejectDto),
+  deadlinePatch: (postId) => instance.patch(`/api/apply/${postId}/over`),
 };

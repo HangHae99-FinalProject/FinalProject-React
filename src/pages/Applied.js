@@ -16,10 +16,15 @@ const Applied = () => {
 
   const subscriberList = useSelector((state) => state.apply.subscriberList);
   console.log(subscriberList);
+  // const majorName = subscriberList?.map((a) =>
+  //   a.post.majorList.map((a) => a.majorName)
+  // );
+  // console.log(majorName[0]);
+  // console.log(majorName.length);
   const acceptListList = useSelector((state) => state.apply.acceptListList);
   console.log(acceptListList);
-  const subscriberCnt = subscriberList.length;
-  const acceptListCnt = acceptListList.length;
+  const subscriberCnt = subscriberList?.length;
+  const acceptListCnt = acceptListList?.length;
 
   const [is_open, setIs_open] = useState(false);
   const [ModalState, setModalState] = useState(false);
@@ -35,6 +40,10 @@ const Applied = () => {
   const openHandelApply = () => {
     dispatch(applyActions.__getAccept(id));
     setIs_open(true);
+  };
+
+  const deadlineHandelBtn = () => {
+    dispatch(applyActions.__deadlinePatch(id));
   };
 
   useEffect(() => {
@@ -76,7 +85,9 @@ const Applied = () => {
             <span className="Personnel">{subscriberCnt}명</span>
             <span>이에요.</span>
             <span className="Last">마감하고 모험을 떠나볼까요?</span>
-            <span className="Deadline">모잡마감하기</span>
+            <span className="Deadline" onClick={deadlineHandelBtn}>
+              모잡마감하기
+            </span>
           </>
         ) : (
           <>
@@ -84,11 +95,13 @@ const Applied = () => {
             <span className="Personnel">{acceptListCnt}명</span>
             <span>이에요.</span>
             <span className="Last">마감하고 모험을 떠나볼까요?</span>
-            <span className="Deadline">모잡마감하기</span>
+            <span className="Deadline" onClick={deadlineHandelBtn}>
+              모잡마감하기
+            </span>
           </>
         )}
       </MidBox>
-      <CardBox>
+      {/* <CardBox>
         {is_open === false ? (
           <>
             {subscriberList?.map((a, idx) => {
@@ -97,16 +110,16 @@ const Applied = () => {
           </>
         ) : (
           <>
-            {acceptListList.map((a, idx) => {
+            {acceptListList?.map((a, idx) => {
               return <AppliedCard {...a} key={idx} />;
             })}
           </>
         )}
-      </CardBox>
+      </CardBox> */}
       <ReactModal
         state={ModalState}
         isOpen={ModalState}
-        // ariaHideApp={false}
+        ariaHideApp={false}
         onRequestClose={() => setModalState(false)}
         closeTimeoutMS={200}
         style={{
@@ -121,7 +134,7 @@ const Applied = () => {
             height: "auto",
             display: "flex",
             width: "200px",
-            left: "calc(100% - 1540px)",
+            left: "calc(100% - 1520px)",
             padding: 0,
             transition: "0.3s",
           },
@@ -221,7 +234,7 @@ const MidBox = styled.div`
     flex-direction: column;
     justify-content: center;
     border-radius: 14px;
-    margin-left: 22rem;
+    margin-left: 20rem;
     border: 1px solid #555555;
     width: 200px;
     height: 60px;
@@ -295,8 +308,6 @@ const ButtonBox = styled.div`
 const Container = styled.div`
   width: 1370px;
   margin: 3% auto;
-
-  height: 1300px;
 `;
 
 export default Applied;

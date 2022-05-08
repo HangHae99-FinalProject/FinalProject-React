@@ -36,7 +36,7 @@ const __addComment =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await commentApi.postComment(postId, comment);
-      console.log(data);
+
       const today = new Date();
       let year = today.getFullYear();
       let month = ("0" + (today.getMonth() + 1)).slice(-2);
@@ -59,8 +59,8 @@ const __deleteComment =
   (commentId) =>
   async (dispatch, getState, { history }) => {
     try {
-      const { data } = await commentApi.deleteComment(commentId);
-      console.log(data);
+      await commentApi.deleteComment(commentId);
+
       dispatch(deleteComment(commentId));
     } catch (err) {
       console.log(err);
@@ -71,8 +71,8 @@ const __editComment =
   (commentId, comment) =>
   async (dispatch, getState, { history }) => {
     try {
-      const { data } = await commentApi.editComment(commentId, comment);
-      console.log(data);
+      await commentApi.editComment(commentId, comment);
+
       dispatch(editComment(comment, commentId));
     } catch (err) {
       console.log(err);
@@ -88,8 +88,6 @@ export default handleActions(
       }),
     [EDIT_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.commentId);
-        console.log(action.payload.comment);
         draft.commentList = state.commentList.map((p) =>
           p.commentId === action.payload.commentId
             ? { ...p, comment: action.payload.comment }
@@ -106,7 +104,6 @@ export default handleActions(
 
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        console.log(draft.commentList);
         draft.commentList.push(action.payload.content);
       }),
   },

@@ -4,12 +4,10 @@ import rr from "../../assets/image 35.png";
 import Grid from "../../elements/Grid";
 
 const AppliedCard = (item) => {
-  const profileImage = localStorage.getItem("profileImgUrl");
-  console.log(item);
   return (
     <Container>
       <Profile>
-        <img src={profileImage} alt="profile" />
+        <img src={item.profileImg} alt="profile" />
         <div style={{ margin: "0 4%" }}>
           <p style={{ fontSize: "20px", fontWeight: "700" }}>{item.nickname}</p>
           <p>70%만족! 주니어 선장러</p>

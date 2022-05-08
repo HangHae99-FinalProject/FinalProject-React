@@ -8,7 +8,7 @@ import axios from "axios";
 // 액션
 const SET_POST = "SET_POST";
 const SET_DETAIL = "SET_DETAIL";
-const ADD_POST = "ADD_POST";
+const CLEAR_POST = "CLEAR_POST";
 
 // 신청하기
 const ADD_APPLY = "ADD_APPLY";
@@ -21,6 +21,7 @@ const setDetail = createAction(SET_DETAIL, (detail_list) => ({ detail_list }));
 const setLoginDetail = createAction(SET_DETAIL, (detail_list) => ({
   detail_list,
 }));
+const clearPost = createAction(CLEAR_POST, () => ({}));
 // 신청하기
 const addApply = createAction(ADD_APPLY, (apply) => ({ apply }));
 const deleteApply = createAction(DELETE_APPLY, (apply) => ({ apply }));
@@ -92,8 +93,8 @@ const __editPost =
       return formData.append("img", e);
     });
     try {
-      const data = await postApi.editPost(postId, formData);
-      console.log(data);
+      await postApi.editPost(postId, formData);
+
       history.replace("/");
     } catch (err) {
       console.log(err);
@@ -130,7 +131,7 @@ const __loginGetDetail =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await postApi.loginGetDetail(postId);
-      console.log(data);
+
       dispatch(commentActions.getComment(data.data.commentList));
       dispatch(setDetail(data.data));
     } catch (err) {
@@ -183,11 +184,10 @@ export default handleActions(
       produce(state, (draft) => {
         draft.detailList.userStatus = action.payload.apply;
       }),
-    // [DELETE_APPLY]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     console.log(action.payload.apply);
-    //     draft.apply = action.payload.apply;
-    //   }),
+    [CLEAR_POST]: (state, action) =>
+      produce(state, (draft) => {
+        return initialState;
+      }),
   },
   initialState
 );
@@ -206,6 +206,7 @@ const actionCreates = {
   __postApply,
   __deleteApply,
   deleteApply,
+  clearPost,
 };
 
 export { actionCreates };

@@ -38,9 +38,9 @@ function Header(props) {
   const dispatch = useDispatch();
   const isCookies = cookies.get("isLogin") ? true : false;
   const isLogin = useSelector((state) => state.user.isLogin);
-  const id = localStorage.getItem("userId")
+  const id = localStorage.getItem("userId");
   console.log(isLogin);
-  console.log(id)
+  console.log(id);
 
   // React.useEffect(() => {
   //   if (isCookies) {
@@ -70,14 +70,25 @@ function Header(props) {
 
   return (
     <Grid sx={{ maxWidth: "1920px" }}>
-      <AppBar position="static" sx={{background:"white", boxShadow:"none"}}>
+      <AppBar position="static" sx={{ background: "white", boxShadow: "none" }}>
         <Toolbar>
-          <Grid sx={{color:"#C2C0C1"}} container direction="row" justifyContent="space-between" alignItems="center">
+          <Grid
+            sx={{ color: "#C2C0C1" }}
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
               <img src={logo} alt="logo" style={{ height: "40px" }} />
             </Grid>
             <Grid sx={{ width: "30%" }}>
-              <Grid container direction="row" justifyContent="space-between" alignItems="center">
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
                 <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
                   <Typography>Home</Typography>
                 </Grid>

@@ -5,6 +5,7 @@ import { applyApi } from "../../api/applyApi";
 const GET_SUBSCRIBER = "GET_SUBSCRIBER";
 const GET_ACCEPT = "GET_ACCEPT";
 const ADD_REQUEST = "ADD_REQUEST";
+const DELETE_APPLY = "DELETE_APPLY";
 
 const setSubscriber = createAction(GET_SUBSCRIBER, (subscriberList) => ({
   subscriberList,
@@ -13,6 +14,7 @@ const setAccept = createAction(GET_ACCEPT, (acceptListList) => ({
   acceptListList,
 }));
 const addRequest = createAction(ADD_REQUEST, (userId) => ({ userId }));
+const deleteApply = createAction(DELETE_APPLY, (userId) => ({ userId }));
 
 const initialState = {
   subscriberList: [],
@@ -20,12 +22,36 @@ const initialState = {
   is_loading: false,
 };
 
+const __deadlinePatch =
+  (postId) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      await applyApi.deadlinePatch(postId);
+
+      history.replace("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+const __postReject =
+  (rejectDto) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      await applyApi.postReject(rejectDto);
+
+      dispatch(deleteApply(rejectDto.userId));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 const __postRequest =
   (acceptedDto) =>
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await applyApi.postRequest(acceptedDto);
-      console.log(acceptedDto.userId);
+
       dispatch(addRequest(acceptedDto.userId));
     } catch (err) {
       console.log(err);
@@ -48,7 +74,7 @@ const __getAccept =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await applyApi.getAccept(postId);
-      console.log(data);
+
       dispatch(setAccept(data));
     } catch (err) {
       console.log(err);
@@ -72,10 +98,13 @@ export default handleActions(
           (a, idx) => a.userId !== action.payload.userId
         );
       }),
-    // [INIT_RECRUIT]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.majorList = [];
-    //   }),
+    [DELETE_APPLY]: (state, action) =>
+      produce(state, (draft) => {
+        console.log(action.payload.userId);
+        draft.subscriberList = draft.subscriberList.filter(
+          (a, idx) => a.userId !== action.payload.userId
+        );
+      }),
   },
   initialState
 );
@@ -87,6 +116,9 @@ const actionCreates = {
   __postRequest,
   setSubscriber,
   addRequest,
+  __postReject,
+  deleteApply,
+  __deadlinePatch,
 };
 
 export { actionCreates };

@@ -35,6 +35,6 @@ export const formDataApi = axios.create({
 formDataApi.interceptors.request.use(function (config) {
   const accessToken = cookies.get("accessToken");
   config.headers.common["Authorization"] = `Bearer ${accessToken}`;
-  console.log(config);
+
   return config;
 });

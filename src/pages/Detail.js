@@ -7,7 +7,7 @@ import DetailImage from "../components/Detail/DetailImage";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreates as PostActions } from "../redux/modules/post";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Comment from "../components/Detail/Comment";
 import { imgActions } from "../redux/modules/image";
 import ModalImage from "../assets/Modal.svg";
@@ -20,14 +20,19 @@ const Detail = () => {
   const [is_cate, setIs_Cate] = useState("");
   const [selected, setSelected] = useState(false);
   const [is_comment, setIs_comment] = useState("");
+  const { pathName } = useLocation();
 
   const id = param.postid;
-  console.log(id);
+
+  const localUserId = localStorage.getItem("userId");
 
   const cookies = new Cookies();
   const is_login = cookies.get("isLogin");
 
   const detailList = useSelector((state) => state.post.detailList);
+  const majorList = detailList.majorList;
+
+  const userId = Number(localUserId) === detailList.userId ? true : false;
 
   const created = detailList.createdAt;
   const createdAt = created?.split(" ")[0];
@@ -35,6 +40,14 @@ const Detail = () => {
   const data = {
     applyMajor: is_cate,
     message: is_comment,
+  };
+
+  const postDelete = () => {
+    dispatch(PostActions.__deletePost(id));
+  };
+
+  const handleWrite = () => {
+    history.push(`/editpost/${id}`);
   };
 
   const applyHandelButton = () => {
@@ -48,6 +61,10 @@ const Detail = () => {
       alert("신청이 취소되었습니다!");
       return;
     }
+    if (detailList.currentStatus === "RECRUITING_COMPLETE") {
+      alert("모집이 마감된 글입니다!");
+      return;
+    }
     if (detailList.userStatus === "starter") {
       history.push(`/applied/${id}`);
     }
@@ -55,7 +72,11 @@ const Detail = () => {
     setModalState(!ModalState);
   };
 
-  const applyPostButtom = () => {
+  const applyPostButton = () => {
+    if (data.applyMajor === "") {
+      alert("카테고리를 선택해 주세요!");
+      return;
+    }
     dispatch(PostActions.__postApply(id, data));
     alert("신청 완료!");
     setModalState(!ModalState);
@@ -66,14 +87,17 @@ const Detail = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (is_login) {
-      dispatch(PostActions.__loginGetDetail(param.postid));
+      dispatch(PostActions.__loginGetDetail(id));
     } else {
-      dispatch(PostActions.__getDetail(param.postid));
+      dispatch(PostActions.__getDetail(id));
     }
 
-    dispatch(imgActions.initPre());
-  }, []);
+    return () => {
+      dispatch(imgActions.initPre());
+    };
+  }, [pathName]);
 
   return (
     <>
@@ -95,13 +119,21 @@ const Detail = () => {
             {detailList.userStatus === "user" ? (
               <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
             ) : null}
-            {detailList.userStatus === "member" ? <Btn3>신청하기</Btn3> : null}
-
+            {detailList.userStatus === "member" ? <Btn3>합류완료</Btn3> : null}
+            {/* {detailList.currentStatus === "RECRUITING_COMPLETE" ? (
+              <Btn3>모집완료</Btn3>
+            ) : null} */}
             {detailList.userStatus === "starter" ? (
-              <Btn1 onClick={applyHandelButton}>신청목록</Btn1>
+              <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
             ) : null}
-
-            <Btn2>스크랩</Btn2>
+            {userId ? (
+              <>
+                <Btn2 onClick={handleWrite}>수정하기</Btn2>
+                <Btn4 onClick={postDelete}>삭제하기</Btn4>
+              </>
+            ) : (
+              <Btn2>스크랩</Btn2>
+            )}
           </HeadBtnBox>
         </HeadBox>
 
@@ -111,12 +143,10 @@ const Detail = () => {
 
             <ButtonBox>
               {detailList.majorList?.map((a, idx) => {
-                if (a.majorName === "디자인") {
-                }
                 return (
                   <div key={idx}>
                     <Grid
-                      _className="mojarName"
+                      _className="majorName"
                       bg={
                         a.majorName === "미술/디자인"
                           ? "#2967AC"
@@ -154,10 +184,14 @@ const Detail = () => {
             <p>{detailList.content}</p>
           </RightBox>
         </MidBox>
+
+        {/* 이미지 컴포넌트 */}
         <ImageBox>
           <DetailImage image={detailList.imgList} />
         </ImageBox>
-        <Comment />
+
+        {/* 댓글 컴포넌트 */}
+        <Comment userId={userId} />
 
         {/* 신청 모달 */}
         <ReactModal
@@ -189,23 +223,66 @@ const Detail = () => {
               <p>신청 할 가테고리를 선택해주세요!</p>
             </ModalTitle>
             <Category>
-              <CateBtn
-                onClick={() => {
-                  is_cate === "미술/디자인"
-                    ? setIs_Cate("")
-                    : setIs_Cate("미술/디자인");
-                  setSelected(true);
-                }}
-              >
-                <Grid
-                  _className={is_cate === "미술/디자인" ? "active" : "default"}
-                  bg={is_cate === "미술/디자인" ? "#2967AC" : "#f5fcff"}
-                >
-                  <p>미술/디자인</p>
-                </Grid>
-              </CateBtn>
+              {majorList?.map((a, idx) => {
+                return (
+                  <CateBtn
+                    key={idx}
+                    onClick={() => {
+                      if (a.majorName === "미술/디자인") {
+                        setIs_Cate("미술/디자인");
+                      } else if (a.majorName === "영상") {
+                        setIs_Cate("영상");
+                      } else if (a.majorName === "배우") {
+                        setIs_Cate("배우");
+                      } else if (a.majorName === "사진") {
+                        setIs_Cate("사진");
+                      } else if (a.majorName === "프로그래밍") {
+                        setIs_Cate("프로그래밍");
+                      } else if (a.majorName === "모델") {
+                        setIs_Cate("모델");
+                      } else if (a.majorName === "성우") {
+                        setIs_Cate("성우");
+                      } else if (a.majorName === "음향") {
+                        setIs_Cate("음향");
+                      }
+                      if (a.majorName === is_cate) {
+                        setIs_Cate("");
+                      }
+                    }}
+                  >
+                    <Grid
+                      _className={
+                        is_cate === a.majorName ? "active" : "default"
+                      }
+                      bg={
+                        a.majorName === "미술/디자인"
+                          ? "#2967AC"
+                          : a.majorName === "음향"
+                          ? "#FFEF62"
+                          : a.majorName === "영상"
+                          ? "#6AD8F5"
+                          : a.majorName === "배우"
+                          ? "#F58467"
+                          : a.majorName === "프로그래밍"
+                          ? "#5BC8D2"
+                          : a.majorName === "모델"
+                          ? "#FE674C"
+                          : a.majorName === "사진"
+                          ? "#4299E9"
+                          : a.majorName === "성우"
+                          ? "#FFD082"
+                          : "#f5fcff"
+                      }
+                    >
+                      <p>
+                        {a.majorName}ㅣ{a.numOfPeopleApply}/{a.numOfPeopleSet}
+                      </p>
+                    </Grid>
+                  </CateBtn>
+                );
+              })}
 
-              <CateBtn
+              {/* <CateBtn
                 onClick={() => {
                   is_cate === "영상" ? setIs_Cate("") : setIs_Cate("영상");
                   setSelected(true);
@@ -303,7 +380,7 @@ const Detail = () => {
                 >
                   <p>음향</p>
                 </Grid>
-              </CateBtn>
+              </CateBtn> */}
             </Category>
             <ModalInput>
               <input
@@ -312,7 +389,7 @@ const Detail = () => {
                 onChange={applyHandelChange}
               />
             </ModalInput>
-            <ModalBtn onClick={applyPostButtom}>
+            <ModalBtn onClick={applyPostButton}>
               <span>신청하기</span>
             </ModalBtn>
           </ModalGrid>
@@ -321,18 +398,6 @@ const Detail = () => {
     </>
   );
 };
-
-const Btn3 = styled.div`
-  width: 120px;
-  height: 40px;
-  margin-left: 10px;
-  background: gray;
-  border: none;
-  border-radius: 14px;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-`;
 
 const ModalBtn = styled.div`
   cursor: pointer;
@@ -379,13 +444,17 @@ const ModalInput = styled.div`
 const Category = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  /* align-items: flex-start; */
+  align-items: center;
 `;
 
 const CateBtn = styled.div`
   margin: 10px 5px;
   .default {
-    width: 140px;
+    min-width: 110px;
+    padding: 16px;
+    width: auto;
+    /* width: 140px; */
     height: 50px;
     border-radius: 14px;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -406,7 +475,10 @@ const CateBtn = styled.div`
     }
   }
   .active {
-    width: 140px;
+    min-width: 110px;
+    padding: 16px;
+    width: auto;
+    /* width: 140px; */
     height: 50px;
     border-radius: 14px;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -477,7 +549,11 @@ const ModalGrid = styled.div`
 `;
 
 const ImageBox = styled.div`
-  margin: 3rem 0 5rem 0;
+  margin: 3rem auto 5rem auto;
+  width: 1100px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
 `;
 
 const ButtonBox = styled.div`
@@ -486,7 +562,7 @@ const ButtonBox = styled.div`
   align-items: flex-start;
   width: 32rem;
 
-  .mojarName {
+  .majorName {
     margin-bottom: 10px;
     margin-right: 10px;
     min-width: 110px;
@@ -517,9 +593,11 @@ const LeftBox = styled.div`
 
 const RightBox = styled.div`
   margin: 2.8rem 3rem 3rem 0;
+
   p {
     font-size: 17px;
     font-weight: 400;
+    width: 40rem;
   }
 `;
 
@@ -570,6 +648,12 @@ const Btn1 = styled.button`
   color: #fff;
   font-size: 16px;
   font-weight: 700;
+  :hover {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+      #66b8ff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: #fff;
+  }
 `;
 
 const Btn2 = styled.button`
@@ -583,8 +667,50 @@ const Btn2 = styled.button`
   color: #fff;
   font-size: 16px;
   font-weight: 700;
+  :hover {
+    background: linear-gradient(0deg, #e89308, #e89308), #ffd082;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    color: #fff;
+  }
 `;
 
+const Btn3 = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  width: 120px;
+  height: 40px;
+  margin-left: 10px;
+  background: gray;
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+`;
+const Btn4 = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  margin-left: 10px;
+  background: #fe5953;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  :hover {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+      #fe5953;
+    color: #fff;
+  }
+`;
 const Profile = styled.div`
   float: left;
   display: flex;

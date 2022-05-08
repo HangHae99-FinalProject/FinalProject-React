@@ -7,16 +7,12 @@ import { actionCreators as commentActions } from "../../redux/modules/comment";
 import { useParams } from "react-router-dom";
 import CommentList from "./CommentList";
 import { history } from "../../redux/configureStore";
-import { actionCreates as postActions } from "../../redux/modules/post";
 
-const Comment = (props) => {
+const Comment = (userId) => {
   const dispatch = useDispatch();
   const commentList = useSelector((state) => state.comment);
-  console.log(commentList);
 
   const param = useParams();
-
-  const id = param.postid;
 
   const commentCnt = commentList.commentList?.length;
 
@@ -32,7 +28,6 @@ const Comment = (props) => {
   };
 
   const handleEvent = (e) => {
-    console.log(e.nativeEvent.isComposing);
     if (e.nativeEvent.isComposing) {
       return;
     }
@@ -47,29 +42,12 @@ const Comment = (props) => {
     setIs_comment(e.target.value);
   };
 
-  const handleWrite = () => {
-    history.push(`/editpost/${id}`);
-  };
-
-  const postDelete = () => {
-    dispatch(postActions.__deletePost(id));
-  };
-
   return (
     <>
       <CommentBox>
         <div className="commentHead">
           <TextsmsOutlinedIcon />
-          <p style={{ marginRight: "70rem" }}>댓글 {commentCnt}</p>
-          <span
-            style={{ marginRight: "2rem", cursor: "pointer" }}
-            onClick={handleWrite}
-          >
-            수정하기
-          </span>
-          <span style={{ cursor: "pointer" }} onClick={postDelete}>
-            삭제하기
-          </span>
+          <p style={{ marginRight: "78rem" }}>댓글 {commentCnt}</p>
         </div>
         <div className="line" />
 
@@ -126,7 +104,6 @@ const CommentBox = styled.div`
     p {
       margin-left: 0.5rem;
       font-size: 15px;
-      font-weight: 400;
     }
   }
   .line {

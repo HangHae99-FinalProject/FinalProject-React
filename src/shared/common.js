@@ -1,13 +1,20 @@
-export const emailCheck = (email) => {
-  //영문자(대문자, 소문자) 또는 숫자 4~30자
-  let _reg = /^[0-9a-zA-Z]+[0-9a-zA-Z]{3,29}$/g;
+export const emailCheckRE = (email) => {
+  //email 형식
+  let _reg = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/g;
 
   return _reg.test(email);
 };
 
-export const pwdCheck = (pwd) => {
-  //대소문자, 숫자, 특수문자(!@#$%^&*)가 섞인 4자 이상 20자 미만       
-  let _reg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{3,19}$/;
+export const nicknameCheckRE = (nickname) => {
+  //영문 대소문자, 한글, 숫자 포함 4~10자
+  let _reg = /^[A-Za-z0-9가-힣]{4,10}$/g;
 
-  return _reg.test(pwd);
+  return _reg.test(nickname);
+};
+
+export const pwCheckRE = (password) => {
+  //영문 대소문자, 숫자 포함 6~20자
+  let _reg = /^[A-Za-z0-9]{6,20}$/;
+
+  return _reg.test(password);
 };

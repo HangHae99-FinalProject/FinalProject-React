@@ -1,5 +1,6 @@
 import Grid from "./Grid";
-import FixedContainer from "./FixedContainer";
-import FlexContainer from "./FlexContainer";
+import Text from "./Text";
+// import FixedContainer from "./FixedContainer";
+// import FlexContainer from "./FlexContainer";
 
-export { Grid, FixedContainer, FlexContainer };
+export { Grid, Text };

@@ -1,11 +1,17 @@
 import * as React from "react";
+
+import { useDispatch } from "react-redux";
+import { actionCreators as userActions } from "../redux/modules/user";
+import { history } from "../redux/configureStore";
+import { emailCheckRE, pwCheckRE } from "../shared/common";
+
+//MUI import
 import FormControl, { useFormControl } from "@mui/material/FormControl";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "../elements/Grid";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { history } from "../redux/configureStore";
 import Typography from "@mui/material/Typography";
 
 function IdFormHelperText() {
@@ -36,9 +42,35 @@ function PwFormHelperText() {
 }
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const onEmailHandler = (e) => {
+    setEmail(e.target.value);
+  };
+  const onPasswordHandler = (e) => {
+    setPassword(e.target.value);
+  };
+
   const goSignUp = () => {
     history.push("/signup");
   };
+
+  const goLogin = () => {
+    if (!emailCheckRE(email)) {
+      window.alert("이메일 형식을 확인해주세요.");
+      return;
+    }
+
+    if (!pwCheckRE(password)) {
+      window.alert("패스워드 형식을 확인해주세요.");
+      return;
+    }
+
+    dispatch(userActions.__login(email, password));
+  };
+
   return (
     <React.Fragment>
       <Grid is_center margin="80px auto">
@@ -48,37 +80,48 @@ const Login = () => {
           </Typography>
         </div>
 
-        <div>
-          <FormControl sx={{ width: "35ch" }}>
-            <OutlinedInput
-              required
-              id="_id"
-              placeholder="아이디를 입력해 주세요"
-              variant="standard"
-            />
-            <IdFormHelperText />
-          </FormControl>
-        </div>
-        <div>
-          <FormControl sx={{ width: "35ch", marginTop: "20px" }}>
-            <OutlinedInput
-              required
-              type="password"
-              id="_password"
-              placeholder="비밀번호를 입력해 주세요"
-              variant="standard"
-            />
-            <PwFormHelperText />
-          </FormControl>
-        </div>
-        <Grid is_center margin="30px">
-          <Stack spacing={4} direction="row">
-            <Button variant="contained">Login</Button>
-            <Button variant="outlined" onClick={goSignUp}>
-              go to Sign Up
-            </Button>
-          </Stack>
-        </Grid>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            goLogin();
+          }}
+        >
+          <div>
+            <FormControl sx={{ width: "35ch" }}>
+              <OutlinedInput
+                required
+                id="_email"
+                placeholder="이메일를 입력해 주세요"
+                variant="standard"
+                onChange={onEmailHandler}
+              />
+              <IdFormHelperText />
+            </FormControl>
+          </div>
+          <div>
+            <FormControl sx={{ width: "35ch", marginTop: "20px" }}>
+              <OutlinedInput
+                required
+                type="password"
+                id="_password"
+                placeholder="비밀번호를 입력해 주세요"
+                variant="standard"
+                onChange={onPasswordHandler}
+              />
+              <PwFormHelperText />
+            </FormControl>
+          </div>
+          <Grid is_center margin="30px auto">
+            <Stack spacing={4} direction="row">
+              <Button type="submit" variant="contained">
+                Login
+              </Button>
+              <Button variant="outlined" onClick={goSignUp}>
+                go to Sign Up
+              </Button>
+            </Stack>
+          </Grid>
+        </form>
       </Grid>
     </React.Fragment>
   );

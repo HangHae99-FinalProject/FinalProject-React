@@ -239,7 +239,7 @@ const MainImage = styled.div`
 `;
 
 const Container = styled.div`
-  width: 80%;
+  width: 1370px;
   margin: 3% auto;
 `;
 

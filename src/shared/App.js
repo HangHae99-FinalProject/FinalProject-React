@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import Cookies from "universal-cookie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //페이지 임포트
 import Header from "../components/Header";
@@ -24,12 +24,20 @@ import Detail from "../pages/Detail";
 import { actionCreators as userActions } from "../redux/modules/user";
 import EditPost from "../pages/EditPost";
 import Applied from "../pages/Applied";
+import Chatting from "../pages/Chatting";
+import { actionCreators as chatActions } from "../redux/modules/chat";
 
 function App() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // useEffect(() => {
   //   dispatch(userActions.__loginCheck());
   // }, []);
+  const client = useSelector((state) => state.chat.client);
+  useEffect(() => {
+    client.connect({}, () => {
+      dispatch(chatActions.setStomp(client));
+    });
+  }, []);
   return (
     <Grid height="100%">
       <Header></Header>
@@ -45,8 +53,8 @@ function App() {
         <Route path="/user" exact component={User} />
         <Route path="/user/:id" exact component={User} />
         <Route path="/edituser/:id" exact component={EditUser} />
-        <Route path="/chatlist/:id" exact component={Chat} />
-        <Route path="/chat/:id" exact component={Chat} />
+        <Route path="/chatlist" exact component={Chatting} />
+        <Route path="/chat" exact component={Chat} />
         <Route path="/applied/:postid" exact component={Applied} />
       </ConnectedRouter>
     </Grid>

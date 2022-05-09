@@ -14,8 +14,29 @@ const AppliedCard = (item) => {
         </div>
       </Profile>
       <MidBtnBox>
-        <Grid width="0">
-          <span className="majorName">{item.applyMajor}</span>
+        <Grid
+          _className="majorName"
+          bg={
+            item.applyMajor === "미술/디자인"
+              ? "#2967AC"
+              : item.applyMajor === "음향"
+              ? "#FFEF62"
+              : item.applyMajor === "영상"
+              ? "#6AD8F5"
+              : item.applyMajor === "배우"
+              ? "#F58467"
+              : item.applyMajor === "프로그래밍"
+              ? "#5BC8D2"
+              : item.applyMajor === "모델"
+              ? "#FE674C"
+              : item.applyMajor === "사진"
+              ? "#4299E9"
+              : item.applyMajor === "성우"
+              ? "#FFD082"
+              : null
+          }
+        >
+          <p>{item.applyMajor}</p>
         </Grid>
       </MidBtnBox>
       <CommentBox>
@@ -50,7 +71,6 @@ const MidBtnBox = styled.div`
     font-weight: 700;
     width: 140px;
     height: 50px;
-    background-color: #b9daf6;
     border-radius: 14px;
     display: flex;
     justify-content: center;

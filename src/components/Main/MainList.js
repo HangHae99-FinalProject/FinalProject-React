@@ -63,6 +63,7 @@ const MainList = ({ location, category, selected }) => {
 
 const MainCardBox = styled.div`
   width: auto;
+
   height: 800px;
   text-align: center;
 

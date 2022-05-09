@@ -22,7 +22,7 @@ const MainList = ({ location, category, selected }) => {
   // 스피너 및 게시물 없는거 감시 할 state
   const [is_loading, setIs_Loading] = useState(false);
 
-  const postList = useSelector((state) => state.post.list);
+  const postList = useSelector((state) => state.post.list.data);
 
   // api로 넘겨줘야 할 값들
   // 동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
@@ -47,20 +47,11 @@ const MainList = ({ location, category, selected }) => {
             </div>
           ) : ( */}
         <>
-          <MuiGrid
-            container
-            columnSpacing={1}
-            rowSpacing={2}
-            style={{ margin: "1% auto" }}
-          >
+          <MainCardBox>
             {postList?.map((item, idx) => {
-              return (
-                <MuiGrid item xs={4} key={idx}>
-                  <MainCard item={item} />
-                </MuiGrid>
-              );
+              return <MainCard item={item} key={idx} />;
             })}
-          </MuiGrid>
+          </MainCardBox>
         </>
         {/* )}      */}
 
@@ -69,6 +60,19 @@ const MainList = ({ location, category, selected }) => {
     </React.Fragment>
   );
 };
+
+const MainCardBox = styled.div`
+  width: auto;
+  height: 800px;
+  text-align: center;
+
+  @media screen and (max-height: 1000px) {
+    height: 500px;
+  }
+  @media screen and (max-height: 650px) {
+    height: 200px;
+  }
+`;
 
 const MainContainer = styled.div`
   .spinner {

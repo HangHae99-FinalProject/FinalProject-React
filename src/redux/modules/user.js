@@ -143,6 +143,14 @@ const __nicknameCheck =
 
 const __logout = () => {
   return function (dispatch, getState) {
+    cookies.remove("isLogin");
+    cookies.remove("accessToken");
+    cookies.remove("refreshToken");
+    localStorage.removeItem("major");
+    localStorage.removeItem("email");
+    localStorage.removeItem("nickname");
+    localStorage.removeItem("profileImgUrl");
+    localStorage.removeItem("userId");
     dispatch(logout());
     window.alert("로그아웃되었습니다.");
     history.replace("/");
@@ -248,13 +256,6 @@ export default handleActions(
     //   }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
-        cookies.remove("isLogin");
-        cookies.remove("accessToken");
-        cookies.remove("refreshToken");
-        localStorage.removeItem("major");
-        localStorage.removeItem("email");
-        localStorage.removeItem("nickname");
-        localStorage.removeItem("profileImgUrl");
         draft.user = null;
         draft.isLogin = false;
       }),

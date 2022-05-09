@@ -24,11 +24,9 @@ export default handleActions(
     [SET_RECRUIT]: (state, action) =>
       produce(state, (draft) => {
         draft.majorList = [...state.majorList, { ...action.payload.majorList }];
-        console.log(draft.majorList);
       }),
     [DELETE_RECRUIT]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.majorIdx);
         draft.majorList = draft.majorList.filter(
           (a, idx) => idx !== action.payload.majorIdx
         );

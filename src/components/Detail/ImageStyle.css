@@ -1,13 +1,24 @@
 .swiper {
-  width: 60rem;
-  height: 33rem;
-  border: 1px solid gray;
+  width: 100%;
+  height: 100%;
 }
 
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-family: swiper-icons;
+  font-size: 30px;
+  color: #707070;
+
+  text-transform: none !important;
+  letter-spacing: 0;
+  text-transform: none;
+  font-variant: initial;
+  line-height: 1;
+}
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  background: gray;
+  background: #fff;
 
   /* Center slide text vertically */
   display: -webkit-box;
@@ -25,8 +36,6 @@
 }
 
 .swiper-slide img {
-  display: block;
-  width: 60rem;
-  height: 33rem;
-  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }

@@ -14,7 +14,6 @@ const cookies = new Cookies();
 //actions
 const LOG_IN = "user/LOG_IN";
 const LOG_OUT = "user/LOG_OUT";
-const GET_USER = "user/GET_USER";
 // const SET_USER = "user/SET_USER";
 
 //action creators
@@ -32,7 +31,6 @@ const GET_USER = "user/GET_USER";
 // };
 const login = createAction(LOG_IN, (user) => ({ user }));
 const logout = createAction(LOG_OUT, (user) => ({ user }));
-const getUser = createAction(GET_USER, (data_list) => ({ data_list }));
 // const setUser = createAction(SET_USER, (user) => ({ user }));
 
 //initialState
@@ -172,19 +170,6 @@ const __loginCheck = () => {
   };
 };
 
-const __getUserInfo = (userId) => {
-  return async function (dispatch, getState, { history }) {
-    try {
-      const { data } = await userApi.getUserInfo(userId);
-      dispatch(getUser(data));
-      // const {userId, nickname, profileImg, major, intro, portfolioLink, currentImgUrl, imgs } = {...data};
-
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-};
 
 // const __signup =
 //   (email, password, pwCheck, nickname) =>
@@ -259,10 +244,6 @@ export default handleActions(
         draft.user = null;
         draft.isLogin = false;
       }),
-    [GET_USER]: (state, action) =>
-      produce(state, (draft) => {
-        draft.userInfo = action.payload?.data_list;
-      }),
   },
   initialState
 );
@@ -275,7 +256,6 @@ const actionCreators = {
   __signup,
   __logout,
   __loginCheck,
-  __getUserInfo,
 };
 
 export { actionCreators };

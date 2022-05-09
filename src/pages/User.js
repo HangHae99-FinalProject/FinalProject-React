@@ -4,7 +4,9 @@ import rr from "../assets/image 35.png";
 import { useDispatch, useSelector } from "react-redux";
 import store, { history } from "../redux/configureStore";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { actionCreators as userInfoActions } from "../redux/modules/myPage";
 import DetailImage from "../components/Detail/DetailImage";
+import TabPanel from "../components/MyPage/TabPanel";
 
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
@@ -23,26 +25,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-};
+import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
+import { Rowing } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
 
 const a11yProps = (index) => {
   return {
@@ -62,34 +47,40 @@ const Item = styled(Paper)(({ theme }) => ({
 const lightTheme = createTheme({ palette: { mode: "light" } });
 
 const User = (props) => {
+  const param = useParams()
+  const postId = param.postid;
   const dispatch = useDispatch();
-  const getIntro = useSelector((state) => state.user.userInfo?.intro);
-  const getMajor = useSelector((state) => state.user.userInfo?.major);
-  const getPortfolioLink = useSelector((state) => state.user.userInfo?.portfolioLink);
-  // const getLikeCount = useSelector((state) => state.user.userInfo?.likeCount);
+  const getIntro = useSelector((state) => state.myPage.userInfo.intro);
+  const getMajor = useSelector((state) => state.myPage.userInfo.major);
+  const getPortfolioLink = useSelector((state) => state.myPage.userInfo.portfolioLink);
+  // const getLikeCount = useSelector((state) => state.user.userInfo.likeCount);
   const getLikeCount = 51;
-  const getNickname = useSelector((state) => state.user.userInfo?.nickname);
-  const getProfileImg = useSelector((state) => state.user.userInfo?.profileImg);
-  const getProjectCount = useSelector((state) => state.user.userInfo?.projectCount);
-  const getUserPortfolioImgList = useSelector((state) => state.user.userInfo?.userPortfolioImgList);
-  console.log(getIntro);
-  // console.log(getMajor);
-  // console.log(getNickname);
-  // console.log(getLikeCount);
-  // console.log(getProfileImg);
-  // console.log(getProjectCount);
-  // console.log(getUserPortfolioImgList);
-
-  const likeRatio = `${(201 / 100) * 100}%`;
-  console.log(likeRatio);
+  const getNickname = useSelector((state) => state.myPage.userInfo.nickname);
+  const getProfileImg = useSelector((state) => state.myPage.userInfo.profileImg);
+  const getProjectCount = useSelector((state) => state.myPage.userInfo.projectCount);
+  const getUserPortfolioImgList = useSelector(
+    (state) => state.myPage.userInfo.userPortfolioImgList
+  );
+  const getAppliedList = useSelector((state) => state.myPage.appliedList?.data);
+  const getRecruitList = useSelector((state) => state.myPage.recruitList?.data);
+  const getApplierList = useSelector((state) => state.myPage.applierList)
+  console.log(getRecruitList);
 
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // const getApplierBtn = ()=>{
+  //   dispatch(userInfoActions.__getApplier(postId));
+  // }
+
   useEffect(() => {
-    dispatch(userActions.__getUserInfo());
+    dispatch(userInfoActions.__getUserInfo());
+    dispatch(userInfoActions.__getApplied());
+    dispatch(userInfoActions.__getRecruit());
+    return;
   }, []);
 
   return (
@@ -223,151 +214,117 @@ const User = (props) => {
         </Grid>
         <Grid sx={{ marginTop: "24px", width: "1270px", height: "450" }}>
           {/* 이미지 슬라이드 작업 할 것. */}
-          <DetailImage image={getUserPortfolioImgList} />
+          <ImageBox>
+            <DetailImage image={getUserPortfolioImgList} />
+          </ImageBox>
         </Grid>
-        {/* <Grid
+        <Grid
           container
           direction="column"
           justifyContent="center"
           alignItems="center"
-          sx={{ maxWidth: "600px", marginTop: "24px" }}
+          sx={{ width: "1370px", marginTop: "24px" }}
         >
-          <Grid>
-            <Box sx={{ maxWidth: "840px", borderBottom: 1, borderColor: "divider" }}>
-              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                <Tab label="신청중" {...a11yProps(0)} />
-                <Tab label="모집중" {...a11yProps(1)} />
-                <Tab label="진행완료" {...a11yProps(2)} />
-              </Tabs>
-            </Box>
+          <Grid container direction="row" justifyContent="flex-start" alignItems="center">
+            <Typography>나의 프로젝트</Typography>
           </Grid>
-
-          <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-            <TabPanel value={value} index={0}>
-              <Grid>
-                <List sx={style} component="nav" aria-label="mailbox folders">
-                  <ListItem button>
-                    <ListItemText primary="신청중1" />
-                  </ListItem>
-                  <Divider />
-                  <ListItem button divider>
-                    <ListItemText primary="신청중2" />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText primary="신청중3" />
-                  </ListItem>
-                  <Divider light />
-                  <ListItem button>
-                    <ListItemText primary="신청중4" />
-                  </ListItem>
-                </List>
-              </Grid>
-            </TabPanel>
+          <Grid sx={{ padding: "0px 20px", borderBottom: 1, borderColor: "divider" }}>
+            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+              <Tab sx={{ width: "430px" }} label="신청중" {...a11yProps(0)} />
+              <Tab
+                sx={{ width: "430px", marginLeft: "20px", marginRight: "20px" }}
+                label="모집중"
+                {...a11yProps(1)}
+              />
+              <Tab sx={{ width: "430px" }} label="진행완료" {...a11yProps(2)} />
+            </Tabs>
           </Grid>
-          <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-            <TabPanel value={value} index={1}>
-              <Grid>
-                <List sx={style} component="nav" aria-label="mailbox folders">
-                  <ListItem button>
-                    <ListItemText primary="모집중1" />
+          <TabPanel value={value} index={0}>
+            <List
+              sx={{ width: "1370px", height: "90px" }}
+              component="nav"
+              aria-label="mailbox folders"
+            >
+              {getAppliedList?.map((appliedList, idx) => {
+                return (
+                  <ListItem
+                    sx={{
+                      height: "90px",
+                    }}
+                    button
+                    key={idx}
+                    divider
+                  >
+                    <ListItemText
+                      onClick={() => {
+                        history.push(`/detail/${appliedList.postId}`);
+                      }}
+                    >
+                      {appliedList.title}
+                      <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                    </ListItemText>
                   </ListItem>
-                  <Divider />
-                  <ListItem button divider>
-                    <ListItemText primary="모집중2" />
+                );
+              })}
+            </List>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <List
+              sx={{ width: "1370px", height: "90px" }}
+              component="nav"
+              aria-label="mailbox folders"
+            >
+              {getRecruitList?.map((recruitList, idx) => {
+                return (
+                  <ListItem
+                    sx={{
+                      height: "90px",
+                    }}
+                    button
+                    key={idx}
+                    divider
+                  >
+                    <ListItemText
+                      onClick={() => {
+                        dispatch(userInfoActions.__getApplier(postId));
+                        history.push(`/detail/${recruitList.postId}`);
+                      }}
+                    >
+                      {recruitList.title}
+                      <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                    </ListItemText>
                   </ListItem>
-                  <ListItem button>
-                    <ListItemText primary="모집중3" />
-                  </ListItem>
-                  <Divider light />
-                  <ListItem button>
-                    <ListItemText primary="모집중4" />
-                  </ListItem>
-                </List>
-              </Grid>
-            </TabPanel>
-          </Grid>
-          <Grid container direction="row" justifyContent="center" alignItems="flex-start">
-            <TabPanel value={value} index={2}>
-              <Grid>
-                <List sx={style} component="nav" aria-label="mailbox folders">
-                  <ListItem button>
-                    <ListItemText primary="진행완료1" />
-                  </ListItem>
-                  <Divider />
-                  <ListItem button divider>
-                    <ListItemText primary="진행완료2" />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText primary="진행완료3" />
-                  </ListItem>
-                  <Divider light />
-                  <ListItem button>
-                    <ListItemText primary="진행완료4" />
-                  </ListItem>
-                </List>
-              </Grid>
-            </TabPanel>
-          </Grid>
-        </Grid> */}
+                );
+              })}
+            </List>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <List
+              sx={{ width: "1370px", height: "90px" }}
+              component="nav"
+              aria-label="mailbox folders"
+            >
+              <ListItem sx={{ height: "90px" }} button>
+                <ListItemText primary="진행완료1" />
+              </ListItem>
+              <Divider />
+              <ListItem button divider>
+                <ListItemText primary="진행완료2" />
+              </ListItem>
+              <ListItem button>
+                <ListItemText primary="진행완료3" />
+              </ListItem>
+              <Divider light />
+              <ListItem button>
+                <ListItemText primary="진행완료4" />
+              </ListItem>
+            </List>
+          </TabPanel>
+        </Grid>
       </Grid>
     </Grid>
   );
 };
-
-const itemData1 = [
-  {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
-  },
-];
-const itemData2 = [
-  {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
-  },
-];
-const itemData3 = [
-  {
-    img: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    title: "Sea star",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    title: "Bike",
-  },
-];
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -375,11 +332,11 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-const style = {
-  width: "100%",
-  maxWidth: 360,
-  bgcolor: "background.paper",
-};
+// const style = {
+//   height: "90px",
+//   width: "1370px",
+//   bgcolor: "background.paper",
+// };
 
 const Profile = _styled.div`
   /* margin-top: 5%; */
@@ -399,6 +356,14 @@ const Profile = _styled.div`
     border-radius: 50%;
     border: 1px solid black;
   }
+`;
+
+const ImageBox = _styled.div`
+  margin: 3rem auto 5rem auto;
+  width: 1100px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
 `;
 
 export default User;

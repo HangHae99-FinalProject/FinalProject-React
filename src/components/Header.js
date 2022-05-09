@@ -40,7 +40,7 @@ function Header(props) {
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
   console.log(isLogin);
-  console.log(id);
+  // console.log(id);
 
   // React.useEffect(() => {
   //   if (isCookies) {
@@ -96,7 +96,7 @@ function Header(props) {
                   <Grid sx={{ display: { cursor: "pointer" } }}>
                     <Badge badgeContent={4} color="error">
                       <Typography>ChatOn</Typography>
-                    </Badge>{" "}
+                    </Badge>
                   </Grid>
                 ) : null}
                 <Grid sx={{ display: { cursor: "pointer" } }}>

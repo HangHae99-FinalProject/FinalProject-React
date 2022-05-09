@@ -4,9 +4,16 @@ import styled from "styled-components";
 import rr from "../../assets/image 35.png";
 import Grid from "../../elements/Grid";
 import { actionCreates as applyActions } from "../../redux/modules/apply";
+import { actionCreators as chatActions } from "../../redux/modules/chat";
 
 const ApplyCard = (props) => {
   const dispatch = useDispatch();
+  const myUserId = localStorage.getItem("userId");
+
+  const addRoomData = {
+    toUserId: myUserId,
+    postId: props.id,
+  };
   const acceptedDto = {
     userId: props.userId,
     postId: props.id,
@@ -20,10 +27,14 @@ const ApplyCard = (props) => {
     dispatch(applyActions.__postReject(acceptedDto));
   };
 
+  const chatHandelBtn = () => {
+    dispatch(chatActions.__addRoom(addRoomData));
+  };
+
   return (
     <Container>
       <Profile>
-        <img src={props.post.profileImg} alt="profile" />
+        <img src={props.profileImg} alt="profile" />
         <div style={{ margin: "0 4%" }}>
           <p style={{ fontSize: "20px", fontWeight: "700" }}>
             {props.nickname}
@@ -64,7 +75,9 @@ const ApplyCard = (props) => {
         <span className="okButton" onClick={requestHandelBtn}>
           수락
         </span>
-        <span className="chatButton">체팅</span>
+        <span className="chatButton" onClick={chatHandelBtn}>
+          체팅
+        </span>
         <span className="noButton" onClick={rejectHandelBtn}>
           거절
         </span>

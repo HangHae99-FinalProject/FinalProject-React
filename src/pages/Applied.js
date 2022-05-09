@@ -14,14 +14,19 @@ const Applied = () => {
   const param = useParams();
   const id = param.postid;
 
-  const subscriberList = useSelector((state) => state.apply.subscriberList);
+  const subscriber = useSelector((state) => state.apply.subscriberList);
+  const subscriberList = subscriber.applyUserLists;
+
+  const majorList = subscriber.majorList?.map((a) => a.majorName);
+  const numOfPeopleSet = subscriber.majorList?.map((a) => a.numOfPeopleSet);
+  const numOfPeopleApply = subscriber.majorList?.map((a) => a.numOfPeopleApply);
+
+  console.log(majorList);
   console.log(subscriberList);
-  // const majorName = subscriberList?.map((a) =>
-  //   a.post.majorList.map((a) => a.majorName)
-  // );
-  // console.log(majorName[0]);
-  // console.log(majorName.length);
-  const acceptListList = useSelector((state) => state.apply.acceptListList);
+
+  const acceptListList = useSelector(
+    (state) => state.apply.acceptListList.applyUserLists
+  );
   console.log(acceptListList);
   const subscriberCnt = subscriberList?.length;
   const acceptListCnt = acceptListList?.length;
@@ -72,12 +77,21 @@ const Applied = () => {
       </HeadBox>
       <MidBox>
         <span className="Recruitment">모집현황</span>
+
         <ButtonBox>
-          <Grid _className={"majorName"}>배우:1명</Grid>
-          <Grid _className={"PeopleCnt"} _onClick={modalHandelBtn}>
-            +4
-          </Grid>
+          {majorList && numOfPeopleApply && numOfPeopleSet ? (
+            <>
+              <Grid _className={"majorName"}>
+                {majorList[0]}
+                {numOfPeopleApply[0]}/{numOfPeopleSet[0]}
+              </Grid>
+              <Grid _className={"PeopleCnt"} _onClick={modalHandelBtn}>
+                +{majorList.length}
+              </Grid>
+            </>
+          ) : null}
         </ButtonBox>
+
         <div className="Line" />
         {is_open === false ? (
           <>
@@ -101,7 +115,7 @@ const Applied = () => {
           </>
         )}
       </MidBox>
-      {/* <CardBox>
+      <CardBox>
         {is_open === false ? (
           <>
             {subscriberList?.map((a, idx) => {
@@ -115,7 +129,7 @@ const Applied = () => {
             })}
           </>
         )}
-      </CardBox> */}
+      </CardBox>
       <ReactModal
         state={ModalState}
         isOpen={ModalState}

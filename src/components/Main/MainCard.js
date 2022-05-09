@@ -59,13 +59,13 @@ const MainCard = (item) => {
                   ? "#4299E9"
                   : major[0] === "성우"
                   ? "#FFD082"
-                  : null
+                  : "#f5fcff"
               }
             >
-              <p>{major[0]}</p>
+              <p style={{ fontSize: "14px" }}>{major[0]}</p>
             </Grid>
             <Grid _className={"PeopleCnt"}>
-              <p>+{majorCnt}</p>
+              <p style={{ fontSize: "14px" }}>+{majorCnt}</p>
             </Grid>
           </ButtonBox>
         </div>
@@ -75,13 +75,16 @@ const MainCard = (item) => {
 };
 const ButtonBox = styled.div`
   margin-top: -5px;
-  margin-left: 30px;
+  margin-left: 22px;
   display: flex;
-  justify-content: flex-end;
+
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
   .majorName {
     margin-right: 5px;
-    width: 70px;
+    min-width: 80px;
+    width: auto;
     height: 34px;
     border-radius: 14px;
     display: flex;
@@ -100,10 +103,6 @@ const ButtonBox = styled.div`
     justify-content: center;
     align-items: center;
     color: #fff;
-  }
-  p {
-    font-size: 15px;
-    font-weight: 700;
   }
 `;
 
@@ -144,13 +143,14 @@ const TitleBox = styled.div`
 `;
 
 const Container = styled.div`
-  height: 459px;
-  width: 330px;
+  height: 430px;
+  width: 292px;
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin: 35px 30px 10px 20px;
-  display: inline-block;
+
+  float: left;
   overflow: scroll;
   overflow-x: hidden;
   cursor: pointer;
@@ -197,8 +197,8 @@ const Container = styled.div`
 `;
 
 const MainImage = styled.img`
-  height: 310px;
-  width: 310px;
+  height: 260px;
+  width: 304px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

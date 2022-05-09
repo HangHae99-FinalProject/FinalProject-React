@@ -63,6 +63,7 @@ const __getSubscriber =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await applyApi.getSubscriber(postId);
+      console.log(data);
       dispatch(setSubscriber(data));
     } catch (err) {
       console.log(err);

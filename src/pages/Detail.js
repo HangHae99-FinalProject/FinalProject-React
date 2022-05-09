@@ -18,9 +18,8 @@ const Detail = () => {
   const dispatch = useDispatch();
   const [ModalState, setModalState] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
-  const [selected, setSelected] = useState(false);
   const [is_comment, setIs_comment] = useState("");
-  const { pathName } = useLocation();
+  const pathName = useLocation();
 
   const id = param.postid;
 
@@ -30,6 +29,7 @@ const Detail = () => {
   const is_login = cookies.get("isLogin");
 
   const detailList = useSelector((state) => state.post.detailList);
+  console.log(detailList);
   const majorList = detailList.majorList;
 
   const userId = Number(localUserId) === detailList.userId ? true : false;
@@ -59,10 +59,6 @@ const Detail = () => {
     if (detailList.userStatus === "applicant") {
       dispatch(PostActions.__deleteApply(id));
       alert("신청이 취소되었습니다!");
-      return;
-    }
-    if (detailList.currentStatus === "RECRUITING_COMPLETE") {
-      alert("모집이 마감된 글입니다!");
       return;
     }
     if (detailList.userStatus === "starter") {
@@ -104,28 +100,51 @@ const Detail = () => {
       <Container>
         <HeadBox>
           <Profile>
-            <img src={detailList.pofileImg} alt="profile" />
+            <img src={detailList.profileImg} alt="profile" />
             <p>
               {detailList.nickname} ㅣ {createdAt}
             </p>
           </Profile>
           <HeadBtnBox>
-            {detailList.userStatus === "applicant" ? (
-              <Btn1 onClick={applyHandelButton}>취소하기</Btn1>
+            {detailList.currentStatus === "RECRUITING_COMPLETE" ? (
+              <>
+                {detailList.userStatus === "starter" ? (
+                  <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
+                ) : (
+                  <Btn3>모집완료</Btn3>
+                )}
+              </>
             ) : null}
-            {detailList.userStatus === "anonymous" ? (
-              <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
+            {detailList.currentStatus === "RECRUITING_CLOSE" ? (
+              <>
+                {detailList.userStatus === "starter" ? (
+                  <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
+                ) : (
+                  <Btn3>정원마감</Btn3>
+                )}
+              </>
             ) : null}
-            {detailList.userStatus === "user" ? (
-              <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
+            {detailList.currentStatus === "ONGOING" ? (
+              <>
+                {detailList.userStatus === "applicant" ? (
+                  <Btn1 onClick={applyHandelButton}>취소하기</Btn1>
+                ) : null}
+                {detailList.userStatus === "anonymous" ? (
+                  <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
+                ) : null}
+                {detailList.userStatus === "user" ? (
+                  <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
+                ) : null}
+                {detailList.userStatus === "member" ? (
+                  <Btn3>합류완료</Btn3>
+                ) : null}
+
+                {detailList.userStatus === "starter" ? (
+                  <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
+                ) : null}
+              </>
             ) : null}
-            {detailList.userStatus === "member" ? <Btn3>합류완료</Btn3> : null}
-            {/* {detailList.currentStatus === "RECRUITING_COMPLETE" ? (
-              <Btn3>모집완료</Btn3>
-            ) : null} */}
-            {detailList.userStatus === "starter" ? (
-              <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
-            ) : null}
+
             {userId ? (
               <>
                 <Btn2 onClick={handleWrite}>수정하기</Btn2>
@@ -281,106 +300,6 @@ const Detail = () => {
                   </CateBtn>
                 );
               })}
-
-              {/* <CateBtn
-                onClick={() => {
-                  is_cate === "영상" ? setIs_Cate("") : setIs_Cate("영상");
-                  setSelected(true);
-                }}
-              >
-                <Grid
-                  _className={is_cate === "영상" ? "active" : "default"}
-                  bg={is_cate === "영상" ? "#6AD8F5" : "#f5fcff"}
-                >
-                  <p>영상</p>
-                </Grid>
-              </CateBtn>
-
-              <CateBtn
-                onClick={() => {
-                  is_cate === "배우" ? setIs_Cate("") : setIs_Cate("배우");
-                  setSelected(true);
-                }}
-              >
-                <Grid
-                  _className={is_cate === "배우" ? "active" : "default"}
-                  bg={is_cate === "배우" ? "#F58467" : "#f5fcff"}
-                >
-                  <p>배우</p>
-                </Grid>
-              </CateBtn>
-
-              <CateBtn
-                onClick={() => {
-                  is_cate === "사진" ? setIs_Cate("") : setIs_Cate("사진");
-                  setSelected(true);
-                }}
-              >
-                <Grid
-                  _className={is_cate === "사진" ? "active" : "default"}
-                  bg={is_cate === "사진" ? "#4299E9" : "#f5fcff"}
-                >
-                  <p>사진</p>
-                </Grid>
-              </CateBtn>
-
-              <CateBtn
-                onClick={() => {
-                  is_cate === "프로그래밍"
-                    ? setIs_Cate("")
-                    : setIs_Cate("프로그래밍");
-                  setSelected(true);
-                }}
-              >
-                <Grid
-                  _className={is_cate === "프로그래밍" ? "active" : "default"}
-                  bg={is_cate === "프로그래밍" ? "#5BC8D2" : "#f5fcff"}
-                >
-                  <p>프로그래밍</p>
-                </Grid>
-              </CateBtn>
-
-              <CateBtn
-                onClick={() => {
-                  is_cate === "모델" ? setIs_Cate("") : setIs_Cate("모델");
-                  setSelected(true);
-                }}
-              >
-                <Grid
-                  _className={is_cate === "모델" ? "active" : "default"}
-                  bg={is_cate === "모델" ? "#FE674C" : "#f5fcff"}
-                >
-                  <p>모델</p>
-                </Grid>
-              </CateBtn>
-
-              <CateBtn
-                onClick={() => {
-                  is_cate === "성우" ? setIs_Cate("") : setIs_Cate("성우");
-                  setSelected(true);
-                }}
-              >
-                <Grid
-                  _className={is_cate === "성우" ? "active" : "default"}
-                  bg={is_cate === "성우" ? "#FFD082" : "#f5fcff"}
-                >
-                  <p>성우</p>
-                </Grid>
-              </CateBtn>
-
-              <CateBtn
-                onClick={() => {
-                  is_cate === "음향" ? setIs_Cate("") : setIs_Cate("음향");
-                  setSelected(true);
-                }}
-              >
-                <Grid
-                  _className={is_cate === "음향" ? "active" : "default"}
-                  bg={is_cate === "음향" ? "#FFEF62" : "#f5fcff"}
-                >
-                  <p>음향</p>
-                </Grid>
-              </CateBtn> */}
             </Category>
             <ModalInput>
               <input
@@ -715,7 +634,6 @@ const Profile = styled.div`
   float: left;
   display: flex;
   flex-direction: row;
-  align-items: center;
 
   img {
     width: 50px;
@@ -727,7 +645,7 @@ const Profile = styled.div`
   p {
     display: flex;
     margin-left: 0.5rem;
-    margin-right: 45rem;
+    margin-right: 43rem;
     font-size: 18px;
     font-weight: 400;
     text-align: center;

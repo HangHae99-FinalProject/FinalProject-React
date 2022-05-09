@@ -66,7 +66,8 @@ const User = (props) => {
   const getIntro = useSelector((state) => state.user.userInfo?.intro);
   const getMajor = useSelector((state) => state.user.userInfo?.major);
   const getPortfolioLink = useSelector((state) => state.user.userInfo?.portfolioLink);
-  const getLikeCount = useSelector((state) => state.user.userInfo?.likeCount);
+  // const getLikeCount = useSelector((state) => state.user.userInfo?.likeCount);
+  const getLikeCount = 51;
   const getNickname = useSelector((state) => state.user.userInfo?.nickname);
   const getProfileImg = useSelector((state) => state.user.userInfo?.profileImg);
   const getProjectCount = useSelector((state) => state.user.userInfo?.projectCount);
@@ -79,6 +80,9 @@ const User = (props) => {
   // console.log(getProjectCount);
   // console.log(getUserPortfolioImgList);
 
+  const likeRatio = `${(201 / 100) * 100}%`;
+  console.log(likeRatio);
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -89,21 +93,18 @@ const User = (props) => {
   }, []);
 
   return (
-    <Container>
+    <Grid sx={{ width: "1920px" }}>
       <Grid
         container
         direction="column"
         justifyContent="center"
         alignItems="center"
-        sx={{ marginTop: "20px", flexGrow: 1, padding: "4px", minWidth: "640px" }}
+        sx={{ marginTop: "20px", flexGrow: 1, width: "100%" }}
       >
-        <Box
-          component="form"
+        <Grid
           sx={{
-            "& .MuiTextField-root": { marginLeft: "24px", width: "60vw" },
+            "& .MuiTextField-root": { marginLeft: "24px", width: "1370px" },
           }}
-          noValidate
-          autoComplete="off"
         >
           <Grid>
             <Grid container direction="row" justifyContent="space-between" alignItems="center">
@@ -130,8 +131,8 @@ const User = (props) => {
               alignItems="center"
               sx={{
                 position: "relative",
-                minWidth: "640px",
-                maxWidth: "900px",
+                // minWidth: "640px",
+                width: "1370px",
                 // height: "350px",
                 border: "1px solid #c6c6c6",
                 borderRadius: "10px",
@@ -169,7 +170,7 @@ const User = (props) => {
                     </Typography>
                   </Grid>
                   <Grid>
-                    <Typography sx={{ fontSize: "10px" }}>100% 만족! 프로 선장러</Typography>
+                    <Typography sx={{ fontSize: "10px" }}>{}100% 만족! 프로 선장러</Typography>
                   </Grid>
                 </Grid>
               </Grid>
@@ -219,10 +220,10 @@ const User = (props) => {
               </Grid>
             </Grid>
           </Grid>
-        </Box>
-        <Grid>
+        </Grid>
+        <Grid sx={{ marginTop: "24px", width: "1270px", height: "450" }}>
           {/* 이미지 슬라이드 작업 할 것. */}
-          <DetailImage/>
+          <DetailImage image={getUserPortfolioImgList} />
         </Grid>
         {/* <Grid
           container
@@ -309,7 +310,7 @@ const User = (props) => {
           </Grid>
         </Grid> */}
       </Grid>
-    </Container>
+    </Grid>
   );
 };
 

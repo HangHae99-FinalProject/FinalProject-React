@@ -1,33 +1,31 @@
-import React, { useEffect } from "react";
-import _styled from "styled-components";
+import React, { useEffect, useState } from "react";
 import rr from "../assets/image 35.png";
-import { useDispatch, useSelector } from "react-redux";
-import store, { history } from "../redux/configureStore";
-import { actionCreators as userActions } from "../redux/modules/user";
-import { actionCreators as userInfoActions } from "../redux/modules/myPage";
-import DetailImage from "../components/Detail/DetailImage";
-import TabPanel from "../components/MyPage/TabPanel";
-
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import { Rowing } from "@mui/icons-material";
+import ReactModal from "react-modal";
+import _styled from "styled-components";
 import { useParams } from "react-router-dom";
+import { history } from "../redux/configureStore";
+import TabPanel from "../components/MyPage/TabPanel";
+import { useDispatch, useSelector } from "react-redux";
+import DetailImage from "../components/Detail/DetailImage";
+import { actionCreators as userInfoActions } from "../redux/modules/myPage";
+
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import List from "@mui/material/List";
+import Button from "@mui/material/Button";
+import ListItem from "@mui/material/ListItem";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import ListItemText from "@mui/material/ListItemText";
+import PanToolRoundedIcon from "@mui/icons-material/PanToolRounded";
+import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
+import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 
 const a11yProps = (index) => {
   return {
@@ -36,35 +34,32 @@ const a11yProps = (index) => {
   };
 };
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  height: 60,
-  lineHeight: "60px",
-}));
-
-const lightTheme = createTheme({ palette: { mode: "light" } });
+const bull = (
+  <Box component="span" sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}>
+    •
+  </Box>
+);
 
 const User = (props) => {
-  const param = useParams()
+  const param = useParams();
   const postId = param.postid;
   const dispatch = useDispatch();
-  const getIntro = useSelector((state) => state.myPage.userInfo.intro);
-  const getMajor = useSelector((state) => state.myPage.userInfo.major);
-  const getPortfolioLink = useSelector((state) => state.myPage.userInfo.portfolioLink);
-  // const getLikeCount = useSelector((state) => state.user.userInfo.likeCount);
+  const [is_open, setIs_open] = useState(false);
+  const [ModalState, setModalState] = useState(false);
+  const modalHandelBtn = () => {
+    setModalState(!ModalState);
+    console.log(ModalState);
+  };
+
+  const getUserInfo = useSelector((state) => state.myPage.userInfo);
   const getLikeCount = 51;
-  const getNickname = useSelector((state) => state.myPage.userInfo.nickname);
-  const getProfileImg = useSelector((state) => state.myPage.userInfo.profileImg);
-  const getProjectCount = useSelector((state) => state.myPage.userInfo.projectCount);
-  const getUserPortfolioImgList = useSelector(
-    (state) => state.myPage.userInfo.userPortfolioImgList
-  );
-  const getAppliedList = useSelector((state) => state.myPage.appliedList?.data);
+  const getAppliedList = useSelector((state) => state.myPage.appliedList.data);
   const getRecruitList = useSelector((state) => state.myPage.recruitList?.data);
-  const getApplierList = useSelector((state) => state.myPage.applierList)
-  console.log(getRecruitList);
+  const getApplierList = useSelector((state) => state.myPage.applierList);
+  const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data);
+  const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
+  // const getLikeCount = useSelector((state) => state.user.userInfo.likeCount);
+  console.log(getAppliedOverList);
 
   const [value, setValue] = React.useState(0);
 
@@ -72,19 +67,128 @@ const User = (props) => {
     setValue(newValue);
   };
 
-  // const getApplierBtn = ()=>{
-  //   dispatch(userInfoActions.__getApplier(postId));
-  // }
-
   useEffect(() => {
     dispatch(userInfoActions.__getUserInfo());
     dispatch(userInfoActions.__getApplied());
     dispatch(userInfoActions.__getRecruit());
+    dispatch(userInfoActions.__getRecruitOver());
     return;
   }, []);
 
   return (
     <Grid sx={{ width: "1920px" }}>
+      <ReactModal
+        state={ModalState}
+        isOpen={ModalState}
+        ariaHideApp={false}
+        onRequestClose={() => setModalState(false)}
+        closeTimeoutMS={200}
+        style={{
+          overlay: {
+            zIndex: 99,
+            backgroundColor: "rgba(0,0,0,0.5)",
+          },
+          content: {
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            borderRadius: "20px",
+            minHeight: "600px",
+            height: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+            width: "1200px",
+            padding: 0,
+            transition: "0.3s",
+          },
+        }}
+      >
+        <Grid>
+          <Grid>
+            <Grid>
+              <Typography sx={{ fontSize: "32px", fontWeight: "bold" }}>
+                함께 모험한 선장들의 리뷰를 남겨주세요.
+              </Typography>
+            </Grid>
+            <Grid container direction="row" justifyContent="center" alignItems="center">
+              {getAppliedOverList?.map((appliedOverList, idx) => {
+                return (
+                  <Card key={idx}
+                    sx={{ width: "248px", height: "248px", margin: "auto", borderRadius: "14px" }}
+                  >
+                    <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
+                      <Grid container direction="row" justifyContent="center" alignItems="center">
+                        <img
+                          src={getUserInfo.profileImg}
+                          alt="profileImg"
+                          style={{
+                            width: "80px",
+                            height: "80px",
+                            border: "1px solid #818181",
+                            borderRadius: "50%",
+                            marginRight: "5px",
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            width: "85px",
+                            height: "23px",
+                            marginLeft: "5px",
+                            fontSize: "16px",
+                          }}
+                        >
+                          USERNAME
+                        </Typography>
+                      </Grid>
+                    </CardContent>
+                    <CardActions>
+                      <Grid
+                        container
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Button
+                          sx={{
+                            width: "180px",
+                            height: "40px",
+                            background: "#4299E9",
+                            borderRadius: "14px",
+                            marginBottom: "5px",
+                          }}
+                          variant="contained"
+                        >
+                          <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또 모험 같이해요!
+                        </Button>
+                        <Button
+                          sx={{
+                            width: "180px",
+                            height: "40px",
+                            background: "#FE5953",
+                            borderRadius: "14px",
+                            marginTop: "5px",
+                          }}
+                          variant="contained"
+                        >
+                          <PanToolRoundedIcon sx={{ marginRight: "12px" }} />
+                          모험은 여기까지..
+                        </Button>
+                      </Grid>
+                    </CardActions>
+                  </Card>
+                );
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
+      </ReactModal>
+
       <Grid
         container
         direction="column"
@@ -122,9 +226,7 @@ const User = (props) => {
               alignItems="center"
               sx={{
                 position: "relative",
-                // minWidth: "640px",
                 width: "1370px",
-                // height: "350px",
                 border: "1px solid #c6c6c6",
                 borderRadius: "10px",
                 padding: "14px",
@@ -140,7 +242,7 @@ const User = (props) => {
                 >
                   <Profile>
                     <div style={{ margin: "auto", width: "auto", height: "auto" }}>
-                      <img src={getProfileImg} alt="profileImg" />
+                      <img src={getUserInfo.profileImg} alt="profileImg" />
                     </div>
                   </Profile>
                   <Grid container direction="row" justifyContent="center" alignItems="center">
@@ -172,25 +274,14 @@ const User = (props) => {
                     variant="contained"
                     sx={{ borderRadius: "20px", marginLeft: "24px" }}
                   >
-                    {getMajor}
+                    {getUserInfo.major}
                   </Button>
                 </Grid>
-                {/* <Grid>
-                  <TextField
-                    id="myMajor"
-                    label="전공"
-                    defaultValue="OO대학교 시각 디자인을 전공하고 있습니다."
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    sx={{ marginTop: "24px", minWidth: "340px", width: "auto", maxWidth: "700px" }}
-                  />
-                </Grid> */}
                 <Grid>
                   <TextField
                     id="myIntro"
                     multiline
-                    defaultValue={getIntro}
+                    defaultValue={getUserInfo.intro}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -201,7 +292,7 @@ const User = (props) => {
                   <TextField
                     id="myIntro"
                     multiline
-                    defaultValue={getPortfolioLink}
+                    defaultValue={getUserInfo.portfolioLink}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -215,7 +306,7 @@ const User = (props) => {
         <Grid sx={{ marginTop: "24px", width: "1270px", height: "450" }}>
           {/* 이미지 슬라이드 작업 할 것. */}
           <ImageBox>
-            <DetailImage image={getUserPortfolioImgList} />
+            <DetailImage image={getUserInfo.userPortfolioImgList} />
           </ImageBox>
         </Grid>
         <Grid
@@ -236,12 +327,12 @@ const User = (props) => {
                 label="모집중"
                 {...a11yProps(1)}
               />
-              <Tab sx={{ width: "430px" }} label="진행완료" {...a11yProps(2)} />
+              <Tab sx={{ width: "430px" }} label="모집완료? 진행완료?" {...a11yProps(2)} />
             </Tabs>
           </Grid>
           <TabPanel value={value} index={0}>
             <List
-              sx={{ width: "1370px", height: "90px" }}
+              sx={{ padding: "0px 16px", width: "1370px", height: "110px" }}
               component="nav"
               aria-label="mailbox folders"
             >
@@ -249,20 +340,31 @@ const User = (props) => {
                 return (
                   <ListItem
                     sx={{
-                      height: "90px",
+                      padding: "0px 16px",
                     }}
                     button
                     key={idx}
                     divider
                   >
-                    <ListItemText
-                      onClick={() => {
-                        history.push(`/detail/${appliedList.postId}`);
+                    <Grid
+                      sx={{
+                        margin: "5px 0px",
+                        height: "90px",
                       }}
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
                     >
-                      {appliedList.title}
-                      <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
-                    </ListItemText>
+                      <ListItemText
+                        onClick={() => {
+                          history.push(`/detail/${appliedList.postId}`);
+                        }}
+                      >
+                        {appliedList.title}
+                        <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                      </ListItemText>
+                    </Grid>
                   </ListItem>
                 );
               })}
@@ -270,7 +372,7 @@ const User = (props) => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             <List
-              sx={{ width: "1370px", height: "90px" }}
+              sx={{ padding: "0px 16px", width: "1370px", height: "110px" }}
               component="nav"
               aria-label="mailbox folders"
             >
@@ -278,21 +380,60 @@ const User = (props) => {
                 return (
                   <ListItem
                     sx={{
-                      height: "90px",
+                      padding: "0px 16px",
                     }}
                     button
                     key={idx}
                     divider
                   >
-                    <ListItemText
-                      onClick={() => {
-                        dispatch(userInfoActions.__getApplier(postId));
-                        history.push(`/detail/${recruitList.postId}`);
+                    <Grid
+                      sx={{
+                        margin: "5px 0px",
+                        height: "90px",
                       }}
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
                     >
-                      {recruitList.title}
-                      <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
-                    </ListItemText>
+                      <ListItemText
+                        onClick={() => {
+                          // dispatch(userInfoActions.__getApplier(postId));
+                          history.push(`/detail/${recruitList.postId}`);
+                        }}
+                      >
+                        {recruitList.title}
+                        <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                      </ListItemText>
+
+                      <Grid>
+                        <Grid>
+                          <Button
+                            sx={{
+                              color: "#FE5953",
+                              border: "1px solid #FE5953",
+                              marginBotton: "5px",
+                              width: "190px",
+                              height: "40px",
+                            }}
+                            variant="outlined"
+                          >
+                            {recruitList.userApplyList.length}명의 선장이 신청했어요!
+                          </Button>
+                        </Grid>
+                        <Grid>
+                          <Button
+                            sx={{ marginTop: "5px", width: "190px", height: "40px" }}
+                            variant="contained"
+                            onClick={() => {
+                              history.push(`/applied/${recruitList.postId}`);
+                            }}
+                          >
+                            선장명단 보러가기
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Grid>
                   </ListItem>
                 );
               })}
@@ -300,24 +441,58 @@ const User = (props) => {
           </TabPanel>
           <TabPanel value={value} index={2}>
             <List
-              sx={{ width: "1370px", height: "90px" }}
+              sx={{ padding: "0px 16px", width: "1370px", height: "110px" }}
               component="nav"
               aria-label="mailbox folders"
             >
-              <ListItem sx={{ height: "90px" }} button>
-                <ListItemText primary="진행완료1" />
-              </ListItem>
-              <Divider />
-              <ListItem button divider>
-                <ListItemText primary="진행완료2" />
-              </ListItem>
-              <ListItem button>
-                <ListItemText primary="진행완료3" />
-              </ListItem>
-              <Divider light />
-              <ListItem button>
-                <ListItemText primary="진행완료4" />
-              </ListItem>
+              {getRecruitOverList?.map((recruitOverList, idx) => {
+                return (
+                  <ListItem
+                    sx={{
+                      padding: "0px 16px",
+                    }}
+                    button
+                    key={idx}
+                    divider
+                  >
+                    <Grid
+                      sx={{
+                        margin: "5px 0px",
+                        height: "90px",
+                      }}
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <ListItemText
+                        onClick={() => {
+                          // dispatch(userInfoActions.__getApplier(postId));
+                          history.push(`/detail/${recruitOverList.postId}`);
+                        }}
+                      >
+                        {recruitOverList.title}
+                        <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                      </ListItemText>
+
+                      <Grid>
+                        <Grid>
+                          <Button
+                            sx={{ marginTop: "5px", width: "190px", height: "40px" }}
+                            variant="contained"
+                            onClick={() => {
+                              modalHandelBtn();
+                              dispatch(userInfoActions.__getAppliedOver(recruitOverList.postId));
+                            }}
+                          >
+                            선장리뷰
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                );
+              })}
             </List>
           </TabPanel>
         </Grid>

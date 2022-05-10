@@ -84,6 +84,7 @@ const __login = (userEmail, password) => {
       localStorage.setItem("profileImgUrl", profileImg);
       localStorage.setItem("major", major);
       dispatch(login());
+      window.alert(`${nickname}님 반갑습니다~`);
       history.replace("/");
     } catch (err) {
       console.log(err);
@@ -140,18 +141,23 @@ const __nicknameCheck =
   };
 
 const __logout = () => {
-  return function (dispatch, getState) {
-    cookies.remove("isLogin");
-    cookies.remove("accessToken");
-    cookies.remove("refreshToken");
-    localStorage.removeItem("major");
-    localStorage.removeItem("email");
-    localStorage.removeItem("nickname");
-    localStorage.removeItem("profileImgUrl");
-    localStorage.removeItem("userId");
-    dispatch(logout());
-    window.alert("로그아웃되었습니다.");
-    history.replace("/");
+  return async function (dispatch, getState) {
+    try {
+      localStorage.removeItem("major");
+      localStorage.removeItem("email");
+      localStorage.removeItem("nickname");
+      localStorage.removeItem("profileImgUrl");
+      localStorage.removeItem("userId");
+      cookies.remove("isLogin", { path: "/" });
+      cookies.remove("accessToken", { path: "/" });
+      cookies.remove("refreshToken", { path: "/" });
+
+      window.alert("로그아웃되었습니다.");
+      history.replace("/");
+      await dispatch(logout());
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
@@ -169,7 +175,6 @@ const __loginCheck = () => {
     }
   };
 };
-
 
 // const __signup =
 //   (email, password, pwCheck, nickname) =>
@@ -229,8 +234,8 @@ export default handleActions(
   {
     [LOG_IN]: (state, action) =>
       produce(state, (draft) => {
-        cookies.set("isLogin", "success");
-        draft.user = action.payload.user;
+        cookies.set("isLogin", "success", { path: "/" });
+        // draft.user = action.payload.user;
         draft.isLogin = true;
       }),
     // [SET_USER]: (state, action) =>

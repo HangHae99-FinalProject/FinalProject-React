@@ -36,7 +36,7 @@ const cookies = new Cookies();
 
 function Header(props) {
   const dispatch = useDispatch();
-  const isCookies = cookies.get("isLogin") ? true : false;
+  const isCookies = cookies.get("isLogin", { path: "/" }) ? true : false;
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
   console.log(isLogin);
@@ -68,6 +68,7 @@ function Header(props) {
     history.push("/signup");
   };
 
+
   return (
     <Grid sx={{ maxWidth: "1920px" }}>
       <AppBar position="static" sx={{ background: "white", boxShadow: "none" }}>
@@ -83,12 +84,7 @@ function Header(props) {
               <img src={logo} alt="logo" style={{ height: "40px" }} />
             </Grid>
             <Grid sx={{ width: "30%" }}>
-              <Grid
-                container
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
+              <Grid container direction="row" justifyContent="space-between" alignItems="center">
                 <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
                   <Typography>Home</Typography>
                 </Grid>

@@ -53,7 +53,7 @@ function Header(props) {
     history.push("/");
   };
   const goChat = () => {
-    history.push("/chatlist/:id");
+    history.push("/chatlist");
   };
   const goLogin = () => {
     history.push("/login");
@@ -93,7 +93,10 @@ function Header(props) {
                   <Typography>Home</Typography>
                 </Grid>
                 {isCookies === true ? (
-                  <Grid sx={{ display: { cursor: "pointer" } }}>
+                  <Grid
+                    sx={{ display: { cursor: "pointer" } }}
+                    onClick={goChat}
+                  >
                     <Badge badgeContent={4} color="error">
                       <Typography>ChatOn</Typography>
                     </Badge>

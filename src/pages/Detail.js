@@ -29,7 +29,7 @@ const Detail = () => {
   const is_login = cookies.get("isLogin");
 
   const detailList = useSelector((state) => state.post.detailList);
-  console.log(detailList);
+
   const majorList = detailList.majorList;
 
   const userId = Number(localUserId) === detailList.userId ? true : false;
@@ -93,7 +93,7 @@ const Detail = () => {
     return () => {
       dispatch(imgActions.initPre());
     };
-  }, [pathName]);
+  }, [dispatch, pathName]);
 
   return (
     <>

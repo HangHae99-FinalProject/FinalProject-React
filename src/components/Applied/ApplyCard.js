@@ -9,9 +9,10 @@ import { actionCreators as chatActions } from "../../redux/modules/chat";
 const ApplyCard = (props) => {
   const dispatch = useDispatch();
   const myUserId = localStorage.getItem("userId");
+  console.log(props);
 
   const addRoomData = {
-    toUserId: myUserId,
+    toUserId: props.userId,
     postId: props.id,
   };
   const acceptedDto = {

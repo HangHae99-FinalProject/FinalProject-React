@@ -4,8 +4,8 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { chatApi } from "../../api/chatApi";
 
-let sockjs = new SockJS("http://3.34.135.82:8080/webSocket");
-let client = Stomp.over(sockjs);
+const sockjs = new SockJS("http://3.34.135.82:8080/webSocket");
+const client = Stomp.over(sockjs);
 // client.connect({}, onC)
 client.debug = null;
 

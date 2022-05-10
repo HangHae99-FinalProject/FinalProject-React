@@ -35,9 +35,11 @@ function App() {
   const client = useSelector((state) => state.chat.client);
   useEffect(() => {
     client.connect({}, () => {
+      console.log(client);
       dispatch(chatActions.setStomp(client));
     });
   }, []);
+  console.log(client);
   return (
     <Grid height="100%">
       <Header></Header>

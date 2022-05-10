@@ -51,7 +51,7 @@ const __postRequest =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await applyApi.postRequest(acceptedDto);
-
+      console.log(data);
       dispatch(addRequest(acceptedDto.userId));
     } catch (err) {
       console.log(err);
@@ -94,17 +94,17 @@ export default handleActions(
       }),
     [ADD_REQUEST]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.majorIdx);
-        draft.subscriberList = draft.subscriberList.filter(
-          (a, idx) => a.userId !== action.payload.userId
-        );
+        draft.subscriberList.applyUserLists =
+          draft.subscriberList.applyUserLists.filter(
+            (a, idx) => a.userId !== action.payload.userId
+          );
       }),
     [DELETE_APPLY]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.userId);
-        draft.subscriberList = draft.subscriberList.filter(
-          (a, idx) => a.userId !== action.payload.userId
-        );
+        draft.subscriberList.applyUserLists =
+          draft.subscriberList.applyUserLists.filter(
+            (a, idx) => a.userId !== action.payload.userId
+          );
       }),
   },
   initialState

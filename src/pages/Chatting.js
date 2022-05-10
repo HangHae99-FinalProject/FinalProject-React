@@ -11,6 +11,7 @@ const Chatting = () => {
 
   const [rooms, setRooms] = useState([]);
   const [stomp, setStomp] = useState();
+
   console.log(client);
 
   useEffect(() => {
@@ -23,6 +24,7 @@ const Chatting = () => {
         // let
       })
       .catch((err) => console.log(err));
+    // client.subscribe();
   }, []);
   return (
     <Container>

@@ -22,7 +22,7 @@ const Applied = () => {
   const numOfPeopleApply = subscriber.majorList?.map((a) => a.numOfPeopleApply);
 
   console.log(majorList);
-  console.log(subscriberList);
+  console.log(subscriber);
 
   const acceptListList = useSelector(
     (state) => state.apply.acceptListList.applyUserLists

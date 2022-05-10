@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styled_2 from "styled-components";
 import rr from "../assets/image 35.png";
 import { Grid } from "../elements/Index";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/userInfo";
 import Uploads from "../elements/Upload";
 
@@ -26,6 +26,7 @@ import { styled } from "@mui/material/styles";
 
 const EditUser = () => {
   const dispatch = useDispatch();
+  const getUserInfo = useSelector((state) => state.myPage.userInfo);
 
   const [selected, setSelected] = useState(false);
   const [profileImgUrl, setProfileImgUrl] = useState("");
@@ -86,7 +87,7 @@ const EditUser = () => {
         >
           <Grid_2 sx={{ width: "auto", marginTop: "34px" }}>
             <Profile>
-              <img src={rr} alt="profile" />
+              <img src={getUserInfo.profileImg} alt="profile" />
             </Profile>
           </Grid_2>
           <Grid_2

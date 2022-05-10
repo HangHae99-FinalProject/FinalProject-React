@@ -17,7 +17,9 @@ const GET_USER = "myPage/GET_USER";
 const GET_APPLIED = "myPage/GET_APPLIED";
 const GET_RECRUIT = "myPage/GET_RECRUIT";
 const GET_APPLIER = "myPage/GET_APPLIER";
-// const SET_USER = "user/SET_USER";
+const GET_RECRUIT_OVER = "myPage/GET_RECRUIT_OVER";
+const GET_APPLIED_OVER = "myPage/GET_APPLIED_OVER";
+const PUT_USER_INFO_MOD = "maPage/PUT_USER_INFO_MOD";
 
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
@@ -35,7 +37,9 @@ const getUser = createAction(GET_USER, (data_list) => ({ data_list }));
 const getApplied = createAction(GET_APPLIED, (appliedData) => ({ appliedData }));
 const getRecruit = createAction(GET_RECRUIT, (recruitData) => ({ recruitData }));
 const getApplier = createAction(GET_APPLIER, (applierData) => ({ applierData }));
-// const setUser = createAction(SET_USER, (user) => ({ user }));
+const getRecruitOver = createAction(GET_RECRUIT_OVER, (recruitOverData) => ({ recruitOverData }));
+const getAppliedOver = createAction(GET_APPLIED_OVER, (appliedOverData) => ({ appliedOverData }));
+const putUserInfoMod = createAction(PUT_USER_INFO_MOD, (userInfoModData) => ({ userInfoModData }));
 
 //initialState
 const initialState = {
@@ -48,22 +52,25 @@ const initialState = {
   appliedList: [{}],
   recruitList: [{}],
   applierList: [],
+  recruitOverList: [{}],
+  appliedOverList: [],
 };
 
 //middleware actions
+//유저 정보 조회
 const __getUserInfo = (userId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const { data } = await userInfoApi.getUserInfo(userId);
       dispatch(getUser(data));
-      // const {userId, nickname, profileImg, major, intro, portfolioLink, currentImgUrl, imgs } = {...data};
-
       //   console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
 };
+
+//유저정보 "신청중" 조회
 const __getApplied = () => {
   return async function (dispatch, getState, { history }) {
     try {
@@ -76,6 +83,7 @@ const __getApplied = () => {
   };
 };
 
+//유저정보 "모집중" 조회
 const __getRecruit = (userId) => {
   return async function (dispatch, getState, { history }) {
     try {
@@ -88,12 +96,49 @@ const __getRecruit = (userId) => {
   };
 };
 
+//유저정보 "모집중-신청자 명단" 조회
 const __getApplier = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const applierData = await userInfoApi.getApplierList(postId);
-      console.log(applierData);
+      // console.log(applierData);
       dispatch(getApplier(applierData));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//유저정보 "모집마감" 조회
+const __getRecruitOver = (userId) => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const recruitOverData = await userInfoApi.getRecruitOverList(userId);
+      // console.log(recruitOverData);
+      dispatch(getRecruitOver(recruitOverData));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//유저정보 "모집마감-모집글 참가자" 조회
+const __getAppliedOver = (postId) => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const appliedOverData = await userInfoApi.getAppliedOverList(postId);
+      // console.log(appliedOverData);
+      dispatch(getAppliedOver(appliedOverData));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//유저 정보 수정
+const __putUserInfoMod = (userId) => {
+  return async function (dispatch, getState, { history }) {
+    try {
     } catch (err) {
       console.log(err);
     }
@@ -109,7 +154,7 @@ export default handleActions(
       }),
     [GET_APPLIED]: (state, action) =>
       produce(state, (draft) => {
-        draft.appliedList = action.payload?.appliedData;
+        draft.appliedList = action.payload.appliedData;
       }),
     [GET_RECRUIT]: (state, action) =>
       produce(state, (draft) => {
@@ -118,6 +163,14 @@ export default handleActions(
     [GET_APPLIER]: (state, action) =>
       produce(state, (draft) => {
         draft.applierList = action.payload?.applierData;
+      }),
+    [GET_RECRUIT_OVER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.recruitOverList = action.payload?.recruitOverData;
+      }),
+    [GET_APPLIED_OVER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.appliedOverList = action.payload.appliedOverData;
       }),
   },
   initialState
@@ -129,6 +182,8 @@ const actionCreators = {
   __getApplied,
   __getRecruit,
   __getApplier,
+  __getRecruitOver,
+  __getAppliedOver,
 };
 
 export { actionCreators };

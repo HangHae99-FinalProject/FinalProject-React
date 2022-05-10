@@ -71,6 +71,16 @@ function NicknameFormHelperText() {
   return <FormHelperText>{helperText}</FormHelperText>;
 }
 
+function MajorFormHelperText() {
+  const { focused } = useFormControl() || {};
+
+  const helperText = React.useMemo(() => {
+    return "전공을 선택해 주세요.";
+  }, [focused]);
+
+  return <FormHelperText>{helperText}</FormHelperText>;
+}
+
 const Signup = () => {
   const dispatch = useDispatch();
 
@@ -261,15 +271,18 @@ const Signup = () => {
           <Grid sx={{ marginTop: "20px" }}>
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label"></InputLabel>
                 <Select
                   required
-                  labelId="demo-simple-select-label"
+                  labelId="major"
                   id="demo-simple-select"
                   value={major}
+                  displayEmpty
                   onChange={onMajorHandler}
-                  placeholder="전공을 선택해 주세요."
+                  inputProps={{ "aria-label": "select major" }}
                 >
+                  <MenuItem disabled value="">
+                    <em style={{color:"#888888", fontStyle:"normal"}}>전공을 선택해 주세요</em>
+                  </MenuItem>
                   <MenuItem value={"미술/디자인"}>미술/디자인</MenuItem>
                   <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
                   <MenuItem value={"영상"}>영상</MenuItem>
@@ -279,6 +292,7 @@ const Signup = () => {
                   <MenuItem value={"성우"}>성우</MenuItem>
                   <MenuItem value={"음향"}>음향</MenuItem>
                 </Select>
+                <MajorFormHelperText />
               </FormControl>
             </Box>
           </Grid>

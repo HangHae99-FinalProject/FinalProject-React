@@ -24,14 +24,19 @@ const Main = () => {
   //지역 옵션
   const locations = [
     { id: 1, locationName: "전체" },
-    { id: 2, locationName: "동대문구" },
-    { id: 3, locationName: "마포구" },
-    { id: 4, locationName: "서대문구" },
-    { id: 5, locationName: "성북구" },
+    { id: 2, locationName: "서울" },
+    { id: 3, locationName: "경기" },
+    { id: 4, locationName: "강원" },
+    { id: 5, locationName: "전북" },
+    { id: 6, locationName: "전라" },
+    { id: 7, locationName: "충북" },
+    { id: 8, locationName: "충남" },
+    { id: 9, locationName: "경남" },
+    { id: 10, locationName: "경북" },
+    { id: 11, locationName: "제주" },
   ];
 
   useEffect(() => {
-    dispatch(postActions.__getPost());
     return () => {
       dispatch(recruitActions.initRecruit());
       dispatch(postActions.clearPost());
@@ -225,7 +230,11 @@ const Main = () => {
         </div>
 
         {/* 메인카드 */}
-        <MainList />
+        <MainList
+          location={is_location}
+          category={is_cate}
+          selected={selected}
+        />
       </Container>
     </>
   );

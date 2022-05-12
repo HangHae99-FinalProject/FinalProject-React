@@ -23,7 +23,12 @@ const MainCard = (item) => {
         history.push(`/detail/${postId}`);
       }}
     >
-      <MainImage src={item.item.imgUrl} alt="mainImage" />
+      {item.item.imgUrl.length !== 0 ? (
+        <MainImage src={item.item.imgUrl[0].imgUrl} alt="mainImage" />
+      ) : (
+        <MainImage src={dd} alt="defaultImg" />
+      )}
+
       <TitleBox>
         <span>{item.item.title}</span>
       </TitleBox>

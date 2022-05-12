@@ -8,11 +8,14 @@ import Grid from "../elements/Grid";
 import { IoPaperPlane } from "react-icons/io5";
 import { history } from "../redux/configureStore";
 import { actionCreators as chatActions } from "../redux/modules/chat";
-
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+let stompClient = null;
 const Chat = (data) => {
   console.log(data);
-
+  const dispatch = useDispatch();
   const client = useSelector((state) => state.chat.client);
+  console.log(client);
   const nickName = localStorage.getItem("nickname");
   const myUserId = localStorage.getItem("userId");
 
@@ -36,6 +39,22 @@ const Chat = (data) => {
     userId: myUserId,
   };
 
+  // const onConnect = () => {
+
+  // };
+
+  // const onError = (err) => {
+  //   console.log("Error! : " + err);
+  //   console.log(/Lost connection/g.test(err));
+  // };
+  // const stompConnect = () => {
+  //   const sockjs = new SockJS("http://3.34.135.82:8080/webSocket");
+
+  //   stompClient = Stomp.over(sockjs);
+  //   console.log(stompClient);
+  //   stompClient.connect({}, onConnect, onError);
+  // };
+
   const handleEvent = (e) => {
     if (e.nativeEvent.isComposing) {
       return;
@@ -51,27 +70,28 @@ const Chat = (data) => {
   }, []);
 
   useEffect(() => {
+    // stompConnect();
     chatApi
       .roadMessage(roadMessageBox)
       .then((res) => {
         console.log(res);
         setMessageList(res.data.message);
         // client.unsubscribe(`/sub/${myUserId}`);
-        // client.send("/pub/join", {}, JSON.stringify(`${roomName}`));
-        client.subscribe(`/sub/${roomName}`, (data) => {
-          const onMessage = JSON.parse(data.body);
-          console.log(onMessage);
-          setMessageList((messageList) => messageList.concat(onMessage));
-          console.log(messageList);
-          if (onMessage.type === "EXIT") {
-            setActive(true);
-            setIs_exit(true);
-          }
-        });
       })
       .catch((err) => {
         console.log(err);
       });
+    client.send("/pub/join", {}, JSON.stringify(`${roomName}`));
+    client.subscribe(`/sub/${roomName}`, (data) => {
+      const onMessage = JSON.parse(data.body);
+      console.log(onMessage);
+      setMessageList((messageList) => messageList.concat(onMessage));
+      console.log(messageList);
+      if (onMessage.type === "EXIT") {
+        setActive(true);
+        setIs_exit(true);
+      }
+    });
     return () => {
       client.unsubscribe(`/sub/${roomName}`);
     };
@@ -118,10 +138,17 @@ const Chat = (data) => {
     scrollToBottom();
   }, [messageList]);
 
+  useEffect(() => {
+    client.connect({}, () => {
+      dispatch(chatActions.setStomp(client));
+    });
+  }, []);
+
   return (
     <>
       <Container>
         <Grid is_container _className="border-background">
+          <div></div>
           <ChatBox ref={scrollRef}>
             <div className="inner-chat-box">
               {messageList?.length === 0 ? (
@@ -187,12 +214,14 @@ const Chat = (data) => {
 
 const Container = styled.div`
   margin: 0 auto;
-  .border-background {
-    height: 100vh;
-    padding-top: 70px;
-    background-color: white;
+  width: 1000px;
+  height: 807px;
+  .chatting-headBox {
   }
-  .chatting-wrap {
+  .border-background {
+    background-color: #2967ac;
+  }
+  /* .chatting-wrap {
     margin-top: -20px;
     .chatting-header {
       width: 100%;
@@ -270,12 +299,12 @@ const Container = styled.div`
   }
   .chat-item {
     margin-top: 50px;
-  }
+  } */
 `;
 
 const ChatBox = styled.div`
   padding: 0 16px;
-  max-height: 81vh;
+  height: 682px;
   overflow-y: auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -283,12 +312,12 @@ const ChatBox = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
   .inner-chat-box {
-    margin-bottom: 52px;
+    /* margin-bottom: 52px; */
   }
   .enter-chat-box {
     display: flex;
     justify-content: center;
-    margin-top: 12px;
+    /* margin-top: 12px; */
     .enter-chat {
       font-size: 14px;
       color: var(--main-color);
@@ -309,23 +338,25 @@ const ChatBox = styled.div`
 `;
 
 const ChatInput = styled.div`
+  width: 1000px;
   position: fixed;
   bottom: 50px;
-  padding: 6px 16px;
+  padding: 0px 8px 0px 20px;
   margin-left: -16px;
   background-color: white;
   .input-inner {
     display: flex;
     align-items: center;
-
+    width: 100%;
+    margin-left: -20px;
     justify-content: space-between;
 
     input {
-      width: 355px;
-      height: 40px;
+      width: 1000px;
+      height: 60px;
       border: none;
       border-radius: 4px;
-      padding: 5px 10px;
+      /* padding: 5px 10px; */
       background-color: #0000000d;
       @media screen and (max-width: 415px) {
         width: 345px;

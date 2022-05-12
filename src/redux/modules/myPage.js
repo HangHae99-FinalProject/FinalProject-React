@@ -19,7 +19,9 @@ const GET_RECRUIT = "myPage/GET_RECRUIT";
 const GET_APPLIER = "myPage/GET_APPLIER";
 const GET_RECRUIT_OVER = "myPage/GET_RECRUIT_OVER";
 const GET_APPLIED_OVER = "myPage/GET_APPLIED_OVER";
-const PUT_USER_INFO_MOD = "maPage/PUT_USER_INFO_MOD";
+const POST_EVALUATION = "myPage/POST_EVALUATION";
+const PUT_USER_INFO_MOD = "myPage/PUT_USER_INFO_MOD";
+const SET_USER_INFO = "myPage/SET_USER_INFO";
 
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
@@ -39,6 +41,8 @@ const getRecruit = createAction(GET_RECRUIT, (recruitData) => ({ recruitData }))
 const getApplier = createAction(GET_APPLIER, (applierData) => ({ applierData }));
 const getRecruitOver = createAction(GET_RECRUIT_OVER, (recruitOverData) => ({ recruitOverData }));
 const getAppliedOver = createAction(GET_APPLIED_OVER, (appliedOverData) => ({ appliedOverData }));
+// const setUserInfo = createAction(SET_USER_INFO, (userInfo) => ({ userInfo }));
+const postEvaluation = createAction(POST_EVALUATION, (evaluationData) => ({ evaluationData }));
 const putUserInfoMod = createAction(PUT_USER_INFO_MOD, (userInfoModData) => ({ userInfoModData }));
 
 //initialState
@@ -54,6 +58,12 @@ const initialState = {
   applierList: [],
   recruitOverList: [{}],
   appliedOverList: [],
+  evaluationInfo: {
+    postId: "",
+    receiverId: "",
+    point: 0,
+  },
+  // requestDto: []
 };
 
 //middleware actions
@@ -122,7 +132,7 @@ const __getRecruitOver = (userId) => {
   };
 };
 
-//유저정보 "모집마감-모집글 참가자" 조회
+//유저정보 "모집마감탭-모집글 참가자" 조회
 const __getAppliedOver = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
@@ -135,10 +145,35 @@ const __getAppliedOver = (postId) => {
   };
 };
 
-//유저 정보 수정
-const __putUserInfoMod = (userId) => {
-  return async function (dispatch, getState, { history }) {
+//유저 평점 기록하기
+const __postEvaluation = (reqeustUserRate) => {
+  return async function (dispatch, getState, { hitory }) {
     try {
+      const evaluationData = await userInfoApi.postEvaluation(reqeustUserRate);
+      console.log(evaluationData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+//유저 정보 수정
+const __putUserInfoMod = (userId, data, files) => {
+  return async function (dispatch, getState, { history }) {
+    const formData = new FormData();
+    formData.append(
+      "requestDto",
+      new Blob([JSON.stringify(data)], {
+        type: "application/json",
+      })
+    );
+    files.map((e) => {
+      return formData.append("imgs", e);
+    });
+    console.log(formData)
+    try {
+      await userInfoApi.putUserInfoModData(userId, formData);
+      history.replace("/");
     } catch (err) {
       console.log(err);
     }
@@ -172,6 +207,18 @@ export default handleActions(
       produce(state, (draft) => {
         draft.appliedOverList = action.payload.appliedOverData;
       }),
+    // [SET_USER_INFO]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     draft.requestDto = action.payload.userInfo;
+    //   }),
+    [POST_EVALUATION]: (state, dispatch, action) =>
+      produce(
+        state,
+        (draft) => {
+          draft.evaluationInfo = action.payload.evaluationData;
+        },
+        console.log(action)
+      ),
   },
   initialState
 );
@@ -184,6 +231,10 @@ const actionCreators = {
   __getApplier,
   __getRecruitOver,
   __getAppliedOver,
+  __postEvaluation,
+  postEvaluation,
+  // setUserInfo
+  __putUserInfoMod
 };
 
 export { actionCreators };

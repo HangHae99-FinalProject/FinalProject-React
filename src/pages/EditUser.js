@@ -1,75 +1,147 @@
 /* eslint-disable*/
-import React, { useState } from "react";
-import styled_2 from "styled-components";
+import React, { useEffect, useState } from "react";
 import rr from "../assets/image 35.png";
+import _styled from "styled-components";
 import { Grid } from "../elements/Index";
+import Uploads from "../elements/Upload";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/userInfo";
-import Uploads from "../elements/Upload";
+import { actionCreators as userInfoActions } from "../redux/modules/myPage";
+import EditImage from "../elements/EditImage";
+import { history } from "../redux/configureStore";
 
 import Grid_2 from "@mui/material/Grid";
+import Badge from "@mui/material/Badge";
+import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
+import { styled } from "@mui/material/styles";
+import ImageList from "@mui/material/ImageList";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import { styled } from "@mui/material/styles";
+import ImageListItem from "@mui/material/ImageListItem";
+import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import { get } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
 const EditUser = () => {
+  const param = useParams()
   const dispatch = useDispatch();
-  const getUserInfo = useSelector((state) => state.myPage.userInfo);
-
+  const getUserInfo = useSelector((state) => state.myPage?.userInfo);
+  // const setUserInfo = useSelector((state) => state.myPage.requestDto);
+  // console.log(getUserInfo);
+  
   const [selected, setSelected] = useState(false);
-  const [profileImgUrl, setProfileImgUrl] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [is_cate, setIs_Cate] = useState("");
-  const [intro, setIntro] = useState("");
-  const [portfolioLink, setPortfolioLink] = useState("");
-  const [currentImgUrl, setCurrentImgUrl] = useState("");
+  // const [profileImgUrl, setProfileImgUrl] = useState("");
+  const [nickname, setNickname] = useState(getUserInfo?.nickname);
+  const [major, setMajor] = useState(getUserInfo?.major);
+  const [intro, setIntro] = useState(getUserInfo?.intro);
+  const [portfolioLink, setPortfolioLink] = useState(getUserInfo?.portfolioLink);
+  const [currentImgUrl, setCurrentImgUrl] = useState(getUserInfo?.userPortfolioImgList);
+  const [profileImgUrl, setProfileImgUrl] = useState(getUserInfo?.profileImg);
+  // console.log(nickname);
+  
+  // const onProfileImgUrlHandler = (e) => {
+    //   setProfileImgUrl(e.target.value);
+    // };
+    const onNicknameHandler = (e) => {
+      setNickname(e.target.value);
+    };
+    const onIntroHandler = (e) => {
+      setIntro(e.target.value);
+    };
+    const onPortfolioHandler = (e) => {
+      setPortfolioLink(e.target.value);
+    };
+    const onCurrentImgUrlHandler = (e) => {
+      setCurrentImgUrl(e.target.value);
+    };
+    
+    const Files = useSelector((state) => state.image.files);
+    // 파일만 넣을 빈 배열
+    let newFiles = [];
+    // URL을 분리할 배열
+    
+    for (let i = 0; i < Files.length; i++) {
+      // 조건을 걸어 파일안에 name이 있으면 파일을 넣음
+      if (Files[i].name) {
+        newFiles.push(Files[i]);
+      }
+    }
+    
+    const imgUrl = useSelector((state) => state.image.editUrl);
+    
+    const requestDto = {
+      profileImg: profileImgUrl,
+      nickname: nickname,
+      intro: intro,
+      major: major,
+      portfolioLink: portfolioLink,
+      currentImgUrl: currentImgUrl,
+    };
+    // console.log(requestDto)
+    
+    const userId = param.id
 
-  const onProfileImgUrlHandler = (e) => {
-    setProfileImgUrl(e.target.value);
+    //프로필이미지 POPOVER
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
-  const onNicknameHandler = (e) => {
-    setNickname(e.target.value);
+  const handleClose = () => {
+    setAnchorEl(null);
   };
-  const onIntroHandler = (e) => {
-    setIntro(e.target.value);
-  };
-  const onPortfolioHandler = (e) => {
-    setPortfolioLink(e.target.value);
-  };
-  const onCurrentImgUrlHandler = (e) => {
-    setCurrentImgUrl(e.target.value);
-  };
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   // 다중이미지 첨부 기능 작업할 것!!!!!
   const goEdit = () => {
-    // dispatch(userActions.__editUser(profileUrl, nickname, is_cate, intro, portfolioLink));
-    console.log(
-      "프로필:",
-      profileImgUrl,
-      "닉네임:",
-      nickname,
-      "전공:",
-      is_cate,
-      "자기소개:",
-      intro,
-      "포트폴리오:",
-      portfolioLink,
-      "현재첨부이미지",
-      currentImgUrl
-    );
+    if (requestDto.profileImgUrl === "") {
+      alert("프로필 이미지를 선택해 주세요.");
+      return;
+    }
+    if (requestDto.nickname === "") {
+      alert("닉네임을 입력해 주세요.");
+      return;
+    }
+    if (requestDto.intro === "") {
+      alert("자기소개를 입력해 주세요.");
+      return;
+    }
+    if (requestDto.major === "") {
+      alert("전공을 선택해 주세요.");
+      return;
+    }
+    if (requestDto.portfolioLink === "") {
+      alert("포트폴리오 링크를 입력해 주세요.");
+      return;
+    }
+    dispatch(userInfoActions.__putUserInfoMod(userId, requestDto, newFiles));
+    // history.replace(`/user/${id}`)
+    // console.log(
+    //   "프로필:",
+    //   profileImgUrl,
+    //   "닉네임:",
+    //   nickname,
+    //   "전공:",
+    //   major,
+    //   "자기소개:",
+    //   intro,
+    //   "포트폴리오:",
+    //   portfolioLink,
+    //   "현재첨부이미지",
+    //   currentImgUrl,
+    //   "신규이미지",
+    //   newFiles,
+    // );
   };
+
+  useEffect(() => {
+    dispatch(userInfoActions.__getUserInfo());
+    // dispatch(userInfoActions.setUserInfo(requestDto));
+    return;
+  }, []);
+
   return (
     <Container sx={{ margin: "0px 0px", padding: "16px", maxWidth: "1370px" }}>
       <form
@@ -87,8 +159,55 @@ const EditUser = () => {
         >
           <Grid_2 sx={{ width: "auto", marginTop: "34px" }}>
             <Profile>
-              <img src={getUserInfo.profileImg} alt="profile" />
+              <img
+                src={
+                  profileImgUrl == getUserInfo.profileImg ? getUserInfo.profileImg : profileImgUrl
+                }
+                alt="profile"
+              />
             </Profile>
+            <Badge
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              onClick={handleClick}
+            >
+              <AddCircleRoundedIcon fontSize="large" sx={{ color: "#2967AC" }} />
+            </Badge>
+            <Grid_2>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+              >
+                <Grid>
+                  <ImageList sx={{ margin: "0", width: 480, height: 480 }} cols={3} rowHeight={164}>
+                    {itemData.map((item) => (
+                      <ImageListItem
+                        key={item.img}
+                        sx={{ cursor: "pointer", width: "120px", height: "120px" }}
+                      >
+                        <img
+                          src={`${item.img}?w=120&h=120&fit=crop&auto=format`}
+                          srcSet={`${item.img}?w=120&h=120&fit=crop&auto=format&dpr=2 2x`}
+                          alt={item.title}
+                          loading="lazy"
+                          onClick={() => {
+                            setProfileImgUrl(item.img);
+                          }}
+                        />
+                      </ImageListItem>
+                    ))}
+                  </ImageList>
+                </Grid>
+              </Popover>
+            </Grid_2>
           </Grid_2>
           <Grid_2
             sx={{ marginTop: "24px", minWidth: "640px", width: "auto", maxWidth: "1370px" }}
@@ -123,9 +242,11 @@ const EditUser = () => {
                 </Grid_2>
                 <Grid_2>
                   <TextField
-                    id="myMajor"
-                    placeholder="닉네임을 입력해 주세요."
                     sx={{ minWidth: "480px", width: "60vw", maxWidth: "700px" }}
+                    id="myNickname"
+                    multiline
+                    defaultValue={nickname}
+                    placeholder="닉네임을 작성해 주세요."
                     onChange={onNicknameHandler}
                   />
                 </Grid_2>
@@ -159,133 +280,96 @@ const EditUser = () => {
                 </Grid_2>
                 <Grid_2>
                   <Category>
-                    {/* <Slider>
-          <Swiper
-            className="CateBtn-Container"
-            spaceBetween={10}
-            slidesPerView={9}
-            pagination={{ clickable: true }}
-          > */}
-                    {/* <SwiperSlide> */}
                     <CateBtn
                       onClick={() => {
-                        is_cate === "미술/디자인" ? setIs_Cate("") : setIs_Cate("미술/디자인");
+                        major === "미술/디자인" ? setMajor("") : setMajor("미술/디자인");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={is_cate === "미술/디자인" ? "default active" : "default"}>
-                        {/* <ImSpoonKnife className="icon" /> */}
+                      <Grid _className={major === "미술/디자인" ? "default active" : "default"}>
                         <p>미술/디자인</p>
                       </Grid>
                     </CateBtn>
-                    {/* </SwiperSlide> */}
-                    {/* <SwiperSlide> */}
                     <CateBtn
                       onClick={() => {
-                        is_cate === "영상" ? setIs_Cate("") : setIs_Cate("영상");
+                        major === "영상" ? setMajor("") : setMajor("영상");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={is_cate === "영상" ? "active" : "default"}>
-                        {/* <MdMenuBook className="icon" /> */}
+                      <Grid _className={major === "영상" ? "active" : "default"}>
                         <p>영상</p>
                       </Grid>
                     </CateBtn>
-                    {/* </SwiperSlide> */}
-                    {/* <SwiperSlide> */}
                     <CateBtn
                       onClick={() => {
-                        is_cate === "배우" ? setIs_Cate("") : setIs_Cate("배우");
+                        major === "배우" ? setMajor("") : setMajor("배우");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={is_cate === "배우" ? "active" : "default"}>
-                        {/* <IoShirt className="icon" size={28} /> */}
+                      <Grid _className={major === "배우" ? "active" : "default"}>
                         <p>배우</p>
                       </Grid>
                     </CateBtn>
-                    {/* </SwiperSlide> */}
-
-                    {/* <SwiperSlide> */}
                     <CateBtn
                       onClick={() => {
-                        is_cate === "사진" ? setIs_Cate("") : setIs_Cate("사진");
+                        major === "사진" ? setMajor("") : setMajor("사진");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={is_cate === "사진" ? "active" : "default"}>
-                        {/* <FaCouch className="icon" /> */}
+                      <Grid _className={major === "사진" ? "active" : "default"}>
                         <p>사진</p>
                       </Grid>
                     </CateBtn>
-                    {/* </SwiperSlide> */}
-                    {/* <SwiperSlide> */}
                     <CateBtn
                       onClick={() => {
-                        is_cate === "프로그래밍" ? setIs_Cate("") : setIs_Cate("프로그래밍");
+                        major === "프로그래밍" ? setMajor("") : setMajor("프로그래밍");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={is_cate === "프로그래밍" ? "active" : "default"}>
-                        {/* <CgSmartHomeRefrigerator className="icon" /> */}
+                      <Grid _className={major === "프로그래밍" ? "active" : "default"}>
                         <p>프로그래밍</p>
                       </Grid>
                     </CateBtn>
-                    {/* </SwiperSlide> */}
-                    {/* <SwiperSlide> */}
                     <CateBtn
                       onClick={() => {
-                        is_cate === "모델" ? setIs_Cate("") : setIs_Cate("모델");
+                        major === "모델" ? setMajor("") : setMajor("모델");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={is_cate === "모델" ? "active" : "default"}>
-                        {/* <RiCupFill className="icon" /> */}
+                      <Grid _className={major === "모델" ? "active" : "default"}>
                         <p>모델</p>
                       </Grid>
                     </CateBtn>
-                    {/* </SwiperSlide> */}
-                    {/* <SwiperSlide> */}
                     <CateBtn
                       onClick={() => {
-                        is_cate === "성우" ? setIs_Cate("") : setIs_Cate("성우");
+                        major === "성우" ? setMajor("") : setMajor("성우");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={is_cate === "성우" ? "active" : "default"}>
-                        {/* <IoExtensionPuzzle className="icon" /> */}
+                      <Grid _className={major === "성우" ? "active" : "default"}>
                         <p>성우</p>
                       </Grid>
                     </CateBtn>
-                    {/* </SwiperSlide> */}
-                    {/* <SwiperSlide> */}
                     <CateBtn
                       onClick={() => {
-                        is_cate === "음향" ? setIs_Cate("") : setIs_Cate("음향");
+                        major === "음향" ? setMajor("") : setMajor("음향");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={is_cate === "음향" ? "active" : "default"}>
-                        {/* <BiSmile className="icon" /> */}
+                      <Grid _className={major === "음향" ? "active" : "default"}>
                         <p>음향</p>
                       </Grid>
                     </CateBtn>
-                    {/* </SwiperSlide> */}
-                    {/* <SwiperSlide> */}
                     <CateBtn
                       onClick={() => {
-                        is_cate === "기타" ? setIs_Cate("") : setIs_Cate("기타");
+                        major === "기타" ? setMajor("") : setMajor("기타");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={is_cate === "기타" ? "active" : "default"}>
-                        {/* <BsThreeDots className="icon" /> */}
+                      <Grid _className={major === "기타" ? "active" : "default"}>
                         <p>기타</p>
                       </Grid>
                     </CateBtn>
-                    {/* </SwiperSlide> */}
-                    {/* </Swiper> */}
-                    {/* </Slider> */}
                   </Category>
                 </Grid_2>
               </Grid_2>
@@ -297,8 +381,9 @@ const EditUser = () => {
                   <Grid_2>
                     <TextField
                       sx={{ minWidth: "480px", width: "60vw", maxWidth: "700px" }}
-                      id="myMajor"
+                      id="myIntro"
                       multiline
+                      defaultValue={intro}
                       placeholder="자기소개를 부탁해요."
                       onChange={onIntroHandler}
                     />
@@ -337,6 +422,7 @@ const EditUser = () => {
                     <TextField
                       id="myIntro"
                       multiline
+                      defaultValue={portfolioLink}
                       placeholder="동영상 URL을 입력해 주세요."
                       sx={{ minWidth: "480px", width: "60vw", maxWidth: "700px" }}
                       onChange={onPortfolioHandler}
@@ -352,7 +438,7 @@ const EditUser = () => {
               alignItems="flex-start"
             >
               <Grid_2>
-                <Uploads />
+                <EditImage />
               </Grid_2>
             </Grid_2>
           </Grid_2>
@@ -362,9 +448,46 @@ const EditUser = () => {
   );
 };
 
-const Profile = styled_2.div`
-  /* margin-top: 5%; */
-  /* float: left; */
+const itemData = [
+  {
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdBIFGi%2FbtrBQEaifTI%2FxmQVjz68wumtm3qALoGLRK%2Fimg.jpg",
+    title: "1",
+  },
+  {
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FejeTRW%2FbtrBSB4v1k0%2FI5eRAtLlBPe4sy1tNMWOSK%2Fimg.jpg",
+    title: "2",
+  },
+  {
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F43IoU%2FbtrBTAxrhvo%2FUb9EckdwJuaJNwkzkjgu11%2Fimg.jpg",
+    title: "3",
+  },
+  {
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdXfxza%2FbtrBNl2XQ2c%2FszlS2kJfPbBvWfoJk8JNhk%2Fimg.jpg",
+    title: "4",
+  },
+  {
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcuNALP%2FbtrBUGDT1yt%2FkFKrej3hcagOtYfrmm5Xj1%2Fimg.jpg",
+    title: "5",
+  },
+  {
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcTyP1v%2FbtrBSZKYj9M%2FLkiJ9coX2WgYnulHHS3hW1%2Fimg.jpg",
+    title: "6",
+  },
+  {
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcOzaAR%2FbtrBOUcH7mf%2FgX80wXRtGQAXNPTPzsCMIK%2Fimg.jpg",
+    title: "7",
+  },
+  {
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FDzbRy%2FbtrBT3zdG2V%2FCxEiNkWgIWkcItdVRRITh0%2Fimg.jpg",
+    title: "8",
+  },
+  {
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FkQlaF%2FbtrBOTLEoOR%2F7lzyKMZzkPKm0smDxgPcp0%2Fimg.jpg",
+    title: "9",
+  },
+];
+
+const Profile = _styled.div`
   height: auto;
   width: auto;
   display: inline;
@@ -372,10 +495,8 @@ const Profile = styled_2.div`
   justify-content: center;
   align-items: center;
   img {
-    max-width: 80px;
-    min-width: 80px;
-    /* width: 20vw; */
-    height: auto;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     border-radius: 50%;
     border: 1px solid black;
@@ -386,7 +507,7 @@ const Profile = styled_2.div`
   }
 `;
 
-const Category = styled_2.div`
+const Category = _styled.div`
   /* margin-left: 3%; */
   /* margin-right: 3%; */
   display: flex;
@@ -394,7 +515,7 @@ const Category = styled_2.div`
   margin-bottom: 3%;
   justify-content: space-between;
 `;
-const CateBtn = styled_2.div`
+const CateBtn = _styled.div`
   width: 80px;
   height: 30px;
   border-radius: 10px;

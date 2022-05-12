@@ -1,6 +1,7 @@
 import instance from "./api";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import { formDataApi } from "./api";
 
 import { useSelector } from "react-redux";
 
@@ -23,13 +24,9 @@ export const userInfoApi = {
 
   getAppliedOverList: (postId) => instance.get(`/user/recruiting/evaluation/${postId}`),
 
-  postEvaluation: () =>
-    instance.post("/user/recruiting/evaluation", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }),
+  postEvaluation: (reqeustUserRate) =>
+    instance.post("/user/recruiting/evaluation", reqeustUserRate),
 
-  putUserInfoModData: (userId = localStorage.getItem("userId")) =>
-    instance.put(`/user/Info/${userId}/modify`),
+  putUserInfoModData: (userId, formData) =>
+    formDataApi.patch(`/user/info/${userId}/modify`, formData),
 };

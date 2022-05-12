@@ -1,61 +1,85 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import styled from "styled-components";
 import MainCard from "./MainCard";
 import flex from "../../themes/flex";
-import MuiGrid from "@mui/material/Grid";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { actionCreates as postActions } from "../../redux/modules/post";
+import Spinner from "../Spinner";
 
 const MainList = ({ location, category, selected }) => {
   // redux 가져오기
   const dispatch = useDispatch();
+  const page = useSelector((state) => state.post.page);
+  const postList = useSelector((state) => state.post.list);
 
   // console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
   // 지역, 카테고리 값 state로 관리
+  const [pages, setpages] = useState(page);
   const [area, setarea] = useState(location);
-  const [cate, setcate] = useState(category);
+  let is_select = selected;
 
   // 무한 스크롤 동작을 감지 하기 위한 상태값 관리
   const [hasMore, sethasMore] = useState(true);
-  const [items, setItems] = useState([]);
 
   // 스피너 및 게시물 없는거 감시 할 state
   const [is_loading, setIs_Loading] = useState(false);
 
-  const postList = useSelector((state) => state.post.list.data);
-
   // api로 넘겨줘야 할 값들
   // 동네 설정을 했을 때, 전체보기를 하기 위해 null 혹은 빈 값을 보내야하기때문에
   // 따로 조건문을 써서 값을 정해주었습니다.
+  const curLocation = () => {
+    if (location === "위치 설정" || location === "전체") {
+      return setarea("");
+    } else {
+      return setarea(location);
+    }
+  };
+
+  useEffect(() => {
+    curLocation();
+    setpages(0);
+  }, [location, category]);
+
+  useEffect(() => {
+    if (pages === 0) {
+      is_select = false;
+    }
+    dispatch(
+      postActions.__getPost(category, area, pages, is_select, is_loading)
+    );
+  }, [area, category, page]);
+
+  const getData = () => {
+    let data;
+    let count = pages + 1;
+    if (postList.length < 8) {
+      return;
+    }
+    dispatch(postActions.__getPost(category, area, count));
+    setpages(count);
+  };
 
   return (
     <React.Fragment>
       <MainContainer>
-        {/* {post_data.posts.length === 0 && category === '' &&  
-        <div className="spinner"><Spinner /></div>
-        }
-
+        {postList?.length === 0 && category === "" && (
+          <div className="spinner">
+            <Spinner />
+          </div>
+        )}
         <InfiniteScroll
-          dataLength={post_data.posts.length} //This is important field to render the next data
+          dataLength={postList.length}
           next={getData}
           hasMore={hasMore}
         >
-          {post_data.posts.length === 0 && is_loading === false && category !== '' ? (
-
-            <div className="no-post">
-              <NoPost />
-            </div>
-          ) : ( */}
-        <>
           <MainCardBox>
             {postList?.map((item, idx) => {
               return <MainCard item={item} key={idx} />;
             })}
           </MainCardBox>
-        </>
-        {/* )}      */}
-
-        {/* </InfiniteScroll> */}
+        </InfiniteScroll>
       </MainContainer>
     </React.Fragment>
   );

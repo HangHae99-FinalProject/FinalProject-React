@@ -208,9 +208,6 @@ const Write = () => {
               <MenuItem style={{ fontSize: "20px" }} value={"제주"}>
                 제주
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"온라인"}>
-                온라인
-              </MenuItem>
             </Select>
           </FormControl>
         </DropBox>

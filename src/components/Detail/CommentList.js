@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 
 const CommentList = (props) => {
+  console.log(props);
   const dispatch = useDispatch();
   const created = props.createdAt;
   const createdAt = created?.split(" ")[0];

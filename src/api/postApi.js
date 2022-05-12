@@ -4,7 +4,8 @@ import { notLogin } from "./api";
 
 export const postApi = {
   postWrite: (formData) => formDataApi.post("/api/post", formData),
-  getPost: () => notLogin.get("/api/category"),
+  getPost: (page, region, major) =>
+    notLogin.get(`/post/category/${page}?region=${region}&major=${major}`),
   getDetail: (postId) => notLogin.get(`/api/post/${postId}`),
   loginGetDetail: (postId) => instance.get(`/api/post/${postId}`),
   editPost: (postId, formData) =>

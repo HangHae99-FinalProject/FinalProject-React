@@ -9,14 +9,20 @@ import axios from "axios";
 const SET_POST = "SET_POST";
 const SET_DETAIL = "SET_DETAIL";
 const CLEAR_POST = "CLEAR_POST";
-
+const SET_CATE = "SET_CATE";
 // 신청하기
 const ADD_APPLY = "ADD_APPLY";
 const DELETE_APPLY = "DELETE_APPLY";
 const LOGIN_DETAIL = "LOGIN_DETAIL";
 
 // 액션 크리에이터
-const setPost = createAction(SET_POST, (post_list) => ({ post_list }));
+const setCate = createAction(SET_CATE, (post_list, page) => ({
+  post_list,
+  page,
+}));
+const setPost = createAction(SET_POST, (post_list) => ({
+  post_list,
+}));
 const setDetail = createAction(SET_DETAIL, (detail_list) => ({ detail_list }));
 const setLoginDetail = createAction(SET_DETAIL, (detail_list) => ({
   detail_list,
@@ -34,6 +40,8 @@ const initialState = {
   list: [],
   is_loading: false,
   detailList: [],
+  page: 0,
+  post_next: false,
 };
 
 //미들웨어
@@ -147,21 +155,49 @@ const __getDetail =
       console.log(data.data);
 
       dispatch(commentActions.getComment(data.data.commentList));
-      dispatch(setDetail(data.data));
+      dispatch(setDetail(data));
     } catch (err) {
       console.log(err);
     }
   };
 
 const __getPost =
-  () =>
+  (major, region, count, is_select, is_loading) =>
   async (dispatch, getState, { history }) => {
-    try {
-      const { data } = await postApi.getPost();
-      dispatch(setPost(data));
-    } catch (err) {
-      console.log(err);
+    if (is_select) {
+      count = 0;
     }
+    try {
+      const { data } = await postApi.getPost(count, region, major);
+
+      let is_next = null;
+      if (data.data.length < 8) {
+        is_next = false;
+      } else {
+        is_next = true;
+      }
+
+      if (is_select || count === 0) {
+        let post_list = {
+          posts: data.data,
+          page: count + 1,
+        };
+
+        dispatch(setCate(post_list));
+      } else if (count === 0 && data.data.length < 9) {
+        let post_list = {
+          posts: data.data,
+          page: count + 1,
+        };
+        dispatch(setCate(post_list));
+      } else {
+        let post_list = {
+          posts: data.data,
+          page: count + 1,
+        };
+        dispatch(setPost(post_list));
+      }
+    } catch {}
   };
 
 // 리덕스
@@ -169,8 +205,19 @@ export default handleActions(
   {
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.list = action.payload.post_list;
+        draft.list.push(...action.payload.post_list.posts);
+        if (action.payload.page) {
+          draft.page = action.payload.page;
+        }
         draft.is_loading = false;
+      }),
+    [SET_CATE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = [...action.payload.post_list.posts];
+
+        if (action.payload.post_list.page) {
+          draft.page = action.payload.post_list.page;
+        }
       }),
     [SET_DETAIL]: (state, action) =>
       produce(state, (draft) => {
@@ -207,6 +254,7 @@ const actionCreates = {
   __deleteApply,
   deleteApply,
   clearPost,
+  setCate,
 };
 
 export { actionCreates };

@@ -9,9 +9,9 @@ const ChattingItem = (p) => {
   const myUserId = localStorage.getItem("userId");
 
   // 부모 컴포넌트인 Chatting.js에서 랜더링 시켜주기 위한 useEffect
-  // useEffect(() => {
-  //   p.testOne();
-  // }, [p]);
+  useEffect(() => {
+    p.testOne();
+  }, [p]);
   const roomData = p.roomData; // Chat.js에 채팅카운트 넘겨주기 위한 props
 
   const goChat = () => {
@@ -35,18 +35,20 @@ const ChattingItem = (p) => {
         <div className="chat-info">
           <div className="nickname-time-wrap">
             <h1 className="nickname">{p.roomData.user.nickname}</h1>
-            <span>{p.roomData.lastMessage.createdAt}</span>
           </div>
-          <p className="content">{p.roomData.lastMessage.content}</p>
+          <span className="content">{p.roomData.lastMessage.content}</span>
         </div>
-        <div
-          className={
-            p.roomData.notReadingMessageCount ? "chatting-cnt" : "cnt-zero"
-          }
-        >
-          {p.roomData.notReadingMessageCount !== 0
-            ? p.roomData.notReadingMessageCount
-            : ""}
+        <div className="chat-list">
+          <span>{p.roomData.lastMessage.createdAt}</span>
+          <div
+            className={
+              p.roomData.notReadingMessageCount ? "chatting-cnt" : "cnt-zero"
+            }
+          >
+            {p.roomData.notReadingMessageCount !== 0
+              ? p.roomData.notReadingMessageCount
+              : ""}
+          </div>
         </div>
       </div>
     </ChattingWrap>
@@ -56,27 +58,30 @@ const ChattingItem = (p) => {
 export default ChattingItem;
 
 const ChattingWrap = styled.div`
+  display: flex;
   padding: 20px;
-  max-width: 428px;
+  max-width: 782px;
+  height: 76px;
   border-bottom: 3px solid #ededed;
   cursor: pointer;
   .content {
     overflow: hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+    display: flex;
+    font-size: 16px;
+    color: #9b9798;
+    margin-top: -10px;
+    margin-bottom: 8px;
   }
   .chatting-item-wrap {
     display: flex;
     align-items: center;
     .profile-img {
-      width: 70px;
-      height: 70px;
+      width: 50px;
+      height: 50px;
       margin-right: 20px;
       border-radius: 50%;
-      /* background-color: black; */
-      /* border: 1px solid gray; */
+      background: rgba(0, 0, 0, 0.2);
       img {
         width: 100%;
         height: 100%;
@@ -85,32 +90,41 @@ const ChattingWrap = styled.div`
       }
     }
     .chat-info {
-      width: 76%;
+      width: 90%;
       .nickname-time-wrap {
         display: flex;
         .nickname {
-          font-size: 17px;
-          margin-right: 10px;
-        }
-        span {
-          font-size: 12px;
-          margin-top: 4px;
+          font-size: 16px;
+          font-weight: 500;
+          margin-right: 33rem;
         }
       }
       p {
         font-size: 15px;
       }
     }
+
+    .chat-list {
+      width: 80px;
+      span {
+        color: #9b9798;
+      }
+    }
     .chatting-cnt {
-      background-color: #ff626f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background: #b9daf7;
+      border-radius: 12px;
       width: 22px;
       height: 22px;
-      color: white;
-      font-size: 12px;
+      color: #2967ac;
+      font-size: 16px;
       font-weight: bold;
-      line-height: 22px;
       border-radius: 50%;
       text-align: center;
+      margin-left: 20px;
     }
     .cnt-zero {
       background-color: #fff;

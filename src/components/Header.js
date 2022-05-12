@@ -68,6 +68,9 @@ function Header(props) {
     history.push("/signup");
   };
 
+React.useEffect(()=>{
+  dispatch(userActions.__loginCheck())
+},[])
 
   return (
     <Grid sx={{ maxWidth: "1920px" }}>

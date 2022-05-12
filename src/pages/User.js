@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import rr from "../assets/image 35.png";
+import amateurCap from "../assets/ama.svg";
+import juniorCap from "../assets/jr.svg";
+import proCap from "../assets/pro.svg";
 import ReactModal from "react-modal";
 import _styled from "styled-components";
 import { useParams } from "react-router-dom";
@@ -41,25 +44,47 @@ const bull = (
 );
 
 const User = (props) => {
-  const param = useParams();
-  const postId = param.postid;
+  // const param = useParams();
+  // const postId = param.postid;
+  const id = localStorage.getItem("userId");
   const dispatch = useDispatch();
   const [is_open, setIs_open] = useState(false);
   const [ModalState, setModalState] = useState(false);
+  const [postId, setPostId] = useState("");
+  const [receiverId, setReceiverId] = useState("");
   const modalHandelBtn = () => {
     setModalState(!ModalState);
     console.log(ModalState);
   };
-
   const getUserInfo = useSelector((state) => state.myPage.userInfo);
-  const getLikeCount = 51;
   const getAppliedList = useSelector((state) => state.myPage.appliedList.data);
   const getRecruitList = useSelector((state) => state.myPage.recruitList?.data);
   const getApplierList = useSelector((state) => state.myPage.applierList);
   const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data);
   const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
   // const getLikeCount = useSelector((state) => state.user.userInfo.likeCount);
-  console.log(getAppliedOverList);
+  console.log(getUserInfo);
+
+  const likeRatio = (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
+
+  var evaluationGrade = null;
+
+  if (likeRatio <= 40) {
+    evaluationGrade = `${likeRatio}% 만족! 아마추어 선장러`;
+  } else if (41 <= likeRatio <= 70) {
+    evaluationGrade = `${likeRatio}% 만족! 주니어 선장러`;
+  } else if (71 <= likeRatio <= 100) {
+    evaluationGrade = `${likeRatio}% 만족! 프로 선장러`;
+  }
+
+  // var medal = ""
+  // if (likeRatio <= 40) {
+  //  medal = <img src={amateurCap} alt="amateurCap"/>
+  // } else if (41 <= likeRatio <= 70) {
+  //   medal=<img src={juniorCap} alt="juniorCap"/>
+  // } else if (71 <= likeRatio <= 100) {
+  //   medal = <img src={proCap} alt="proCap"/>
+  // }
 
   const [value, setValue] = React.useState(0);
 
@@ -77,6 +102,7 @@ const User = (props) => {
 
   return (
     <Grid sx={{ width: "1920px" }}>
+      {/* 평점 모달창 */}
       <ReactModal
         state={ModalState}
         isOpen={ModalState}
@@ -119,13 +145,14 @@ const User = (props) => {
             <Grid container direction="row" justifyContent="center" alignItems="center">
               {getAppliedOverList?.map((appliedOverList, idx) => {
                 return (
-                  <Card key={idx}
+                  <Card
+                    key={idx}
                     sx={{ width: "248px", height: "248px", margin: "auto", borderRadius: "14px" }}
                   >
                     <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
                       <Grid container direction="row" justifyContent="center" alignItems="center">
                         <img
-                          src={getUserInfo.profileImg}
+                          src={appliedOverList.profileImg}
                           alt="profileImg"
                           style={{
                             width: "80px",
@@ -143,7 +170,7 @@ const User = (props) => {
                             fontSize: "16px",
                           }}
                         >
-                          USERNAME
+                          {appliedOverList.nickname}
                         </Typography>
                       </Grid>
                     </CardContent>
@@ -163,6 +190,17 @@ const User = (props) => {
                             marginBottom: "5px",
                           }}
                           variant="contained"
+                          onClick={() => {
+                            setReceiverId(appliedOverList.userId);
+
+                            dispatch(
+                              userInfoActions.__postEvaluation({
+                                postId: postId,
+                                receiverId: appliedOverList.userId,
+                                point: 1,
+                              })
+                            );
+                          }}
                         >
                           <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또 모험 같이해요!
                         </Button>
@@ -175,6 +213,17 @@ const User = (props) => {
                             marginTop: "5px",
                           }}
                           variant="contained"
+                          onClick={() => {
+                            setReceiverId(appliedOverList.userId);
+
+                            dispatch(
+                              userInfoActions.__postEvaluation({
+                                postId: postId,
+                                receiverId: appliedOverList.userId,
+                                point: 0,
+                              })
+                            );
+                          }}
                         >
                           <PanToolRoundedIcon sx={{ marginRight: "12px" }} />
                           모험은 여기까지..
@@ -189,6 +238,7 @@ const User = (props) => {
         </Grid>
       </ReactModal>
 
+      {/* 본문  */}
       <Grid
         container
         direction="column"
@@ -204,14 +254,16 @@ const User = (props) => {
           <Grid>
             <Grid container direction="row" justifyContent="space-between" alignItems="center">
               <Grid>
-                <Typography sx={{ fontWeight: "bold" }}>마이페이지</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  "{getUserInfo.nickname}" 님의 마이페이지
+                </Typography>
               </Grid>
               <Grid>
                 <Button
                   variant="contained"
                   sx={{ marginBottom: "14px", width: "100px", height: "40px", padding: "0" }}
                   onClick={() => {
-                    history.push("/edituser/:id");
+                    history.push(`/edituser/${id}`);
                   }}
                 >
                   프로필 수정
@@ -247,23 +299,18 @@ const User = (props) => {
                   </Profile>
                   <Grid container direction="row" justifyContent="center" alignItems="center">
                     <Typography sx={{ fontSize: "14px" }}>
-                      <svg
-                        width="21"
-                        height="21"
-                        viewBox="0 0 21 21"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M10.49 0.5C4.97 0.5 0.5 4.98 0.5 10.5C0.5 16.02 4.97 20.5 10.49 20.5C16.02 20.5 20.5 16.02 20.5 10.5C20.5 4.98 16.02 0.5 10.49 0.5ZM13.72 15.89L10.5 13.95L7.28 15.89C6.9 16.12 6.43 15.78 6.53 15.35L7.38 11.69L4.55 9.24C4.22 8.95 4.4 8.4 4.84 8.36L8.58 8.04L10.04 4.59C10.21 4.18 10.79 4.18 10.96 4.59L12.42 8.03L16.16 8.35C16.6 8.39 16.78 8.94 16.44 9.23L13.61 11.68L14.46 15.35C14.56 15.78 14.1 16.12 13.72 15.89Z"
-                          fill="#323232"
-                        />
-                      </svg>
+                      {likeRatio <= 40 ? (
+                        <img src={amateurCap} alt="amateurCap" />
+                      ) : 41 <= likeRatio <= 70 ? (
+                        <img src={juniorCap} alt="juniorCap" />
+                      ) : (
+                        <img src={proCap} alt="proCap" />
+                      )}
                       또 모험해요!
                     </Typography>
                   </Grid>
                   <Grid>
-                    <Typography sx={{ fontSize: "10px" }}>{}100% 만족! 프로 선장러</Typography>
+                    <Typography sx={{ fontSize: "10px" }}>{evaluationGrade}</Typography>
                   </Grid>
                 </Grid>
               </Grid>
@@ -481,6 +528,7 @@ const User = (props) => {
                             sx={{ marginTop: "5px", width: "190px", height: "40px" }}
                             variant="contained"
                             onClick={() => {
+                              setPostId(recruitOverList.postId);
                               modalHandelBtn();
                               dispatch(userInfoActions.__getAppliedOver(recruitOverList.postId));
                             }}

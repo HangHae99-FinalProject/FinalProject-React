@@ -152,9 +152,9 @@ const __logout = () => {
       cookies.remove("accessToken", { path: "/" });
       cookies.remove("refreshToken", { path: "/" });
 
+      await dispatch(logout());
       window.alert("로그아웃되었습니다.");
       history.replace("/");
-      await dispatch(logout());
     } catch (err) {
       console.log(err);
     }
@@ -164,9 +164,8 @@ const __logout = () => {
 const __loginCheck = () => {
   return function (dispatch, getState, { history }) {
     const tokenCheck = cookies.get("accessToken");
-    // console.log(userId);
-    // console.log(tokenCheck);
     if (tokenCheck) {
+      dispatch(login());
       return;
     } else {
       dispatch(logout());
@@ -246,6 +245,14 @@ export default handleActions(
     //   }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
+        localStorage.removeItem("major");
+        localStorage.removeItem("email");
+        localStorage.removeItem("nickname");
+        localStorage.removeItem("profileImgUrl");
+        localStorage.removeItem("userId");
+        cookies.remove("isLogin", { path: "/" });
+        cookies.remove("accessToken", { path: "/" });
+        cookies.remove("refreshToken", { path: "/" });
         draft.user = null;
         draft.isLogin = false;
       }),
@@ -261,6 +268,7 @@ const actionCreators = {
   __signup,
   __logout,
   __loginCheck,
+  login,
 };
 
 export { actionCreators };

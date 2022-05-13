@@ -13,12 +13,14 @@ const MainList = ({ location, category, selected }) => {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.post.page);
   const postList = useSelector((state) => state.post.list);
+  const searchList = useSelector((state) => state.post.search);
 
   // console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
   // 지역, 카테고리 값 state로 관리
   const [pages, setpages] = useState(page);
   const [area, setarea] = useState(location);
-
+  const [is_search, setIs_Search] = useState("");
+  const [is_searchValue, setIs_SearchValue] = useState("");
   let is_select = selected;
 
   // 무한 스크롤 동작을 감지 하기 위한 상태값 관리
@@ -49,12 +51,13 @@ const MainList = ({ location, category, selected }) => {
     }
     dispatch(
       postActions.__getPost(
-        category,
-        area,
         pages,
+        area,
+        category,
+        searchList.is_search,
+        searchList.is_searchValue,
 
-        is_select,
-        is_loading
+        is_select
       )
     );
   }, [area, category, page]);
@@ -65,7 +68,9 @@ const MainList = ({ location, category, selected }) => {
     if (postList.length < 8) {
       return;
     }
-    dispatch(postActions.__getPost(category, area, count));
+    dispatch(
+      postActions.__getPost(count, area, category, is_search, is_searchValue)
+    );
     setpages(count);
   };
 

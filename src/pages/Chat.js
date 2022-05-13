@@ -339,22 +339,23 @@ const Container = styled.div`
       }
 
       .drop-chat {
-        height: 165px;
-        width: 260px;
+        height: 179px;
+        width: 158px;
         /* border-radius: 12px; */
         background-color: white;
         position: absolute;
-        top: -6.3%;
-        left: 69.3%;
+        top: -8%;
+        left: 71.9%;
         transform: translate(-50%, 110%);
         display: flex;
         flex-direction: column;
+        text-align: center;
         justify-content: space-evenly;
         align-items: center;
         filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
         cursor: pointer;
         .unactive {
-          padding: 8px 8px;
+          /* padding: 8px 8px; */
           font-size: 16px;
         }
       }

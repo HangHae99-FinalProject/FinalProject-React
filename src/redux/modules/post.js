@@ -10,12 +10,14 @@ const SET_POST = "SET_POST";
 const SET_DETAIL = "SET_DETAIL";
 const CLEAR_POST = "CLEAR_POST";
 const SET_CATE = "SET_CATE";
+const GET_SEARCH = "GET_SEARCH";
 // 신청하기
 const ADD_APPLY = "ADD_APPLY";
 const DELETE_APPLY = "DELETE_APPLY";
 const LOGIN_DETAIL = "LOGIN_DETAIL";
 
 // 액션 크리에이터
+const setSearch = createAction(GET_SEARCH, (searchList) => ({ searchList }));
 const setCate = createAction(SET_CATE, (post_list, page) => ({
   post_list,
   page,
@@ -31,8 +33,6 @@ const clearPost = createAction(CLEAR_POST, () => ({}));
 // 신청하기
 const addApply = createAction(ADD_APPLY, (apply) => ({ apply }));
 const deleteApply = createAction(DELETE_APPLY, (apply) => ({ apply }));
-// const editPost = createAction(EDIT_POST, (post_list) => ({ post_list }));
-// const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 
 // 초기값
 const initialState = {
@@ -42,6 +42,7 @@ const initialState = {
   detailList: [],
   page: 0,
   post_next: false,
+  search: [],
 };
 
 //미들웨어
@@ -161,14 +162,21 @@ const __getDetail =
   };
 
 const __getPost =
-  (major, region, count, is_select) =>
+  (count, region, major, is_search, is_searchValue, is_select) =>
   async (dispatch, getState, { history }) => {
     if (is_select) {
       count = 0;
     }
     try {
-      const { data } = await postApi.getPost(count, region, major);
+      const { data } = await postApi.getPost(
+        count,
+        region,
+        major,
+        is_search,
+        is_searchValue
+      );
 
+      dispatch(setSearch({ is_search, is_searchValue }));
       let is_next = null;
       if (data.data.length < 8) {
         is_next = false;
@@ -218,6 +226,10 @@ export default handleActions(
           draft.page = action.payload.post_list.page;
         }
       }),
+    [GET_SEARCH]: (state, action) =>
+      produce(state, (draft) => {
+        draft.search = action.payload.searchList;
+      }),
     [SET_DETAIL]: (state, action) =>
       produce(state, (draft) => {
         draft.detailList = action.payload.detail_list;
@@ -254,6 +266,7 @@ const actionCreates = {
   deleteApply,
   clearPost,
   setCate,
+  setSearch,
 };
 
 export { actionCreates };

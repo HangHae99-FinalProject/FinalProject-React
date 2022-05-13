@@ -25,7 +25,6 @@ const Main = () => {
   const locations = [
     { id: 1, locationName: "전체" },
     { id: 2, locationName: "서울/경기" },
-
     { id: 3, locationName: "강원" },
     { id: 4, locationName: "전북" },
     { id: 5, locationName: "전라" },
@@ -47,7 +46,13 @@ const Main = () => {
     <>
       <Container>
         <MainImage>
-          <img src={mainImage} alt="MainImage" />
+          <img
+            src={mainImage}
+            alt="MainImage"
+            onClick={() => {
+              window.location.reload();
+            }}
+          />
         </MainImage>
         <Category>
           <CateBtn
@@ -180,9 +185,7 @@ const Main = () => {
           <LocationBox>
             <Grid
               _onClick={() => setIs_open(!is_open)}
-              _className={
-                is_location === "위치 설정하기" ? "default" : "active"
-              }
+              _className={is_location === "위치 설정" ? "default" : "active"}
             >
               <div
                 style={{
@@ -244,20 +247,14 @@ const Main = () => {
   );
 };
 
-// const BackImage = styled.div`
-//   background-image: url("https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png");
-//   width: 100%;
-//   height: 100%;
-//   overflow: hidden;
-//   /* position: absolute;
-//   bottom: 0px; */
-// `;
-
 const MainImage = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  img {
+    cursor: pointer;
+  }
 `;
 
 const Container = styled.div`
@@ -269,7 +266,7 @@ const BtnTest = styled.button`
   cursor: pointer;
   width: 150px;
   height: 63px;
-
+  margin-left: 30px;
   background: #ffd082;
   border: none;
   box-sizing: border-box;
@@ -289,14 +286,15 @@ const LocationBox = styled.div`
   width: 198px;
   height: 63px;
   margin-right: 1rem;
-  border-radius: 14px;
+
   position: relative;
   background-color: #2967ac;
   font-size: 24px;
   font-weight: 700;
   color: #f5fcff;
-  box-shadow: inset 0px 4px 13px #d7f1fd;
-  /* box-shadow: inset 0px 4px 13px #d7f1fd; */
+  box-shadow: inset 0px 2px 13px #d7f1fd;
+  border-radius: 14px;
+
   cursor: pointer;
   .icon {
     margin-right: 5px;
@@ -328,20 +326,19 @@ const LocationBox = styled.div`
   }
 
   .location-option {
-    margin: 28rem 0 0 -7%;
-
     position: absolute;
-    color: black;
-    background-color: rgba(255, 208, 130, 1);
-    box-shadow: inset 0px 4px 13px #d7f1fd;
-
-    border-radius: 6px;
+    margin-top: 50.9rem;
+    color: #fff;
+    background-color: #2967ac;
+    box-shadow: inset 0px 2px 13px #d7f1fd;
+    border-radius: 14px;
     z-index: 15;
     cursor: pointer;
     p {
       padding: 10px 10px;
       &:hover {
-        background-color: yellowgreen;
+        font-size: 27px;
+        font-weight: 700;
       }
     }
   }
@@ -357,14 +354,14 @@ const Category = styled.div`
 `;
 
 const CateBtn = styled.div`
-  margin: 0 5px;
+  margin: 0 7px;
   .default {
     width: 140px;
     height: 50px;
     border-radius: 14px;
 
     background-color: #f5fcff;
-    /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -374,7 +371,8 @@ const CateBtn = styled.div`
 
     p {
       text-align: center;
-      font-size: 15px;
+      font-size: 20px;
+      font-weight: 700;
 
       color: rgba(41, 103, 172, 1);
     }
@@ -397,10 +395,13 @@ const CateBtn = styled.div`
       font-size: 32px;
     }
     p {
-      font-size: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+
+      color: #fff;
 
       text-align: center;
-      color: #f5fcff;
     }
   }
   @keyframes loadEffect3 {

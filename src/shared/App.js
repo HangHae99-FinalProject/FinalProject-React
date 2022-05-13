@@ -71,7 +71,7 @@ function App() {
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #fffcf2;
+  /* background-color: #fffcf2; */
   margin: 0;
 `;
 

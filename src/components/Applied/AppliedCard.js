@@ -3,14 +3,42 @@ import styled from "styled-components";
 import rr from "../../assets/image 35.png";
 import Grid from "../../elements/Grid";
 
+import amateurCap from "../../assets/ama.svg";
+import juniorCap from "../../assets/jr.svg";
+import proCap from "../../assets/pro.svg";
+
 const AppliedCard = (item) => {
+  var likeRatio = (item?.likePoint / 100) * (100 / item?.projectCount) * 100;
+  if (isNaN(likeRatio)) {
+    likeRatio = 0;
+  }
+
+  var evaluationGrade = null;
+
+  if (likeRatio <= 40) {
+    evaluationGrade = `${likeRatio}% 만족! 아마추어 선장러`;
+  } else if (41 <= likeRatio <= 70) {
+    evaluationGrade = `${likeRatio}% 만족! 주니어 선장러`;
+  } else if (71 <= likeRatio <= 100) {
+    evaluationGrade = `${likeRatio}% 만족! 프로 선장러`;
+  }
+
   return (
     <Container>
       <Profile>
-        <img src={item.profileImg} alt="profile" />
-        <div style={{ margin: "0 4%" }}>
-          <p style={{ fontSize: "20px", fontWeight: "700" }}>{item.nickname}</p>
-          <p>70%만족! 주니어 선장러</p>
+        <img className="profile" src={item.profileImg} alt="profile" />
+        <div className="cardTitle">
+          <p style={{ fontSize: "23px", fontWeight: "700" }}>{item.nickname}</p>
+          <div className="ratingBox">
+            {likeRatio <= 40 ? (
+              <RatingImg src={amateurCap} alt="amateurCap" />
+            ) : 41 <= likeRatio <= 70 ? (
+              <RatingImg src={juniorCap} alt="juniorCap" />
+            ) : (
+              <RatingImg src={proCap} alt="proCap" />
+            )}
+            <span className="rating">{evaluationGrade}</span>
+          </div>
         </div>
       </Profile>
       <MidBtnBox>
@@ -86,7 +114,22 @@ const Profile = styled.div`
   flex-direction: row;
   align-items: center;
   margin: 3% 4%;
-  img {
+  .ratingBox {
+    display: flex;
+    flex-direction: row;
+    width: 270px;
+    align-items: center;
+    margin-top: -4%;
+  }
+  .cardTitle {
+    display: flex;
+    flex-direction: column;
+    margin: 0 4%;
+  }
+  .rating {
+    display: flex;
+  }
+  .profile {
     width: 120px;
     height: 120px;
     object-fit: cover;
@@ -98,8 +141,14 @@ const Profile = styled.div`
     margin-left: 0.5rem;
     font-size: 16px;
     text-align: center;
+    margin-top: 0px;
     width: 10rem;
   }
+`;
+
+const RatingImg = styled.img`
+  width: 22px;
+  margin-right: 2%;
 `;
 
 const Container = styled.div`

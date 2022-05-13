@@ -95,15 +95,7 @@ const Signup = () => {
   const [emailCheck, setEmailCheck] = React.useState(false);
   const [nicknameCheck, setNicknameCheck] = React.useState(false);
 
-  const emailCheckBtn = () => {
-    console.log("이메일체크:", email);
-    // dispatch(userAction.__emailCheck(email))
-  };
-  const nicknameCheckBtn = () => {
-    console.log("닉네임체크:", nickname);
-    // dispatch(userAction.__nicknameCheck(nickname))
-  };
-
+  
   const onEmailHandler = (e) => {
     setEmail(e.target.value);
   };
@@ -120,6 +112,14 @@ const Signup = () => {
     setMajor(e.target.value);
   };
   console.log(major);
+  const emailCheckBtn = () => {
+    console.log("이메일체크:", email);
+    dispatch(userActions.__emailCheck(email));
+  };
+  const nicknameCheckBtn = () => {
+    console.log("닉네임체크:", nickname);
+    // dispatch(userAction.__nicknameCheck(nickname))
+  };
 
   const goHome = () => {
     history.push("/");
@@ -281,7 +281,7 @@ const Signup = () => {
                   inputProps={{ "aria-label": "select major" }}
                 >
                   <MenuItem disabled value="">
-                    <em style={{color:"#888888", fontStyle:"normal"}}>전공을 선택해 주세요</em>
+                    <em style={{ color: "#888888", fontStyle: "normal" }}>전공을 선택해 주세요</em>
                   </MenuItem>
                   <MenuItem value={"미술/디자인"}>미술/디자인</MenuItem>
                   <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>

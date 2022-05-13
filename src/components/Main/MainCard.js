@@ -14,8 +14,6 @@ const MainCard = (item) => {
   const majorCnt = major.length;
 
   const created = item.item.createdAt;
-  const setCreatedAt = created.split(" ");
-  const createdAt = setCreatedAt[0];
 
   return (
     <Container
@@ -26,66 +24,66 @@ const MainCard = (item) => {
       {item.item.imgUrl.length !== 0 ? (
         <MainImage src={item.item.imgUrl[0].imgUrl} alt="mainImage" />
       ) : (
-        <MainImage src={dd} alt="defaultImg" />
+        <MainImage
+          src="https://velog.velcdn.com/images/tty5799/post/3fa2c200-7be0-4b39-bba3-bd9bf3d37f64/image.png"
+          alt="defaultImg"
+        />
       )}
 
       <TitleBox>
         <span>{item.item.title}</span>
       </TitleBox>
-      <MidBox>
-        <DateBox>
+      <div>
+        <ButtonBox>
+          <Grid
+            _className={"majorName"}
+            bg={
+              major[0] === "미술/디자인"
+                ? "#2967AC"
+                : major[0] === "음향"
+                ? "#FFEF62"
+                : major[0] === "영상"
+                ? "#6AD8F5"
+                : major[0] === "배우"
+                ? "#F58467"
+                : major[0] === "프로그래밍"
+                ? "#5BC8D2"
+                : major[0] === "모델"
+                ? "#FE674C"
+                : major[0] === "사진"
+                ? "#4299E9"
+                : major[0] === "성우"
+                ? "#FFD082"
+                : "#f5fcff"
+            }
+          >
+            <p style={{ fontSize: "14px" }}>{major[0]}</p>
+          </Grid>
+          <Grid _className={"PeopleCnt"}>
+            <p style={{ fontSize: "14px" }}>+{majorCnt}</p>
+          </Grid>
+        </ButtonBox>
+
+        <MidBox>
+          <DateBox>
+            <span>
+              {item.item.region} ㅣ {item.item.deadline} 예상
+            </span>
+          </DateBox>
+        </MidBox>
+        <CreateAtBox>
           <span>
-            {item.item.region} ㅣ {item.item.deadline} 예상
+            {created} ㅣ {item.item.nickname}
           </span>
-        </DateBox>
-      </MidBox>
-      <CreateAtBox>
-        <span>
-          {createdAt} ㅣ {item.item.nickname}
-        </span>
-        <div>
-          <ButtonBox>
-            <Grid
-              _className={"majorName"}
-              bg={
-                major[0] === "미술/디자인"
-                  ? "#2967AC"
-                  : major[0] === "음향"
-                  ? "#FFEF62"
-                  : major[0] === "영상"
-                  ? "#6AD8F5"
-                  : major[0] === "배우"
-                  ? "#F58467"
-                  : major[0] === "프로그래밍"
-                  ? "#5BC8D2"
-                  : major[0] === "모델"
-                  ? "#FE674C"
-                  : major[0] === "사진"
-                  ? "#4299E9"
-                  : major[0] === "성우"
-                  ? "#FFD082"
-                  : "#f5fcff"
-              }
-            >
-              <p style={{ fontSize: "14px" }}>{major[0]}</p>
-            </Grid>
-            <Grid _className={"PeopleCnt"}>
-              <p style={{ fontSize: "14px" }}>+{majorCnt}</p>
-            </Grid>
-          </ButtonBox>
-        </div>
-      </CreateAtBox>
+        </CreateAtBox>
+      </div>
     </Container>
   );
 };
 const ButtonBox = styled.div`
-  margin-top: -5px;
-  margin-left: 22px;
   display: flex;
+  margin: 10px 0 0px 15px;
 
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   .majorName {
     margin-right: 5px;
     min-width: 80px;
@@ -99,9 +97,9 @@ const ButtonBox = styled.div`
     color: #fff;
   }
   .PeopleCnt {
-    width: 45px;
+    width: 55px;
     height: 34px;
-    background-color: #b9daf6;
+    background-color: #2967ac;
     border-radius: 14px;
     display: flex;
     flex-direction: column;
@@ -114,7 +112,6 @@ const ButtonBox = styled.div`
 const CreateAtBox = styled.div`
   margin-left: 20px;
   display: flex;
-
   span {
     margin-top: 10px;
     margin-right: 5px;
@@ -126,7 +123,7 @@ const CreateAtBox = styled.div`
 
 const MidBox = styled.div`
   display: flex;
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 20px;
 `;
 
@@ -139,8 +136,10 @@ const DateBox = styled.div`
 `;
 
 const TitleBox = styled.div`
-  display: flex;
+  /* display: flex; */
   margin: 20px 0 0 15px;
+  width: 244px;
+  height: 55px;
   span {
     font-weight: 700;
     font-size: 22px;
@@ -148,7 +147,7 @@ const TitleBox = styled.div`
 `;
 
 const Container = styled.div`
-  height: 430px;
+  height: 380px;
   width: 292px;
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
@@ -202,8 +201,8 @@ const Container = styled.div`
 `;
 
 const MainImage = styled.img`
-  height: 260px;
-  width: 304px;
+  height: 190px;
+  width: 292px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

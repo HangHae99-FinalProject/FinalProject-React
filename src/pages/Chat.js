@@ -5,12 +5,15 @@ import { chatApi } from "../api/chatApi";
 import MyChat from "../components/Chat/MyChat";
 import NotMyChat from "../components/Chat/NotMyChat";
 import Grid from "../elements/Grid";
-import { IoPaperPlane } from "react-icons/io5";
+
 import { history } from "../redux/configureStore";
+import { IoPaperPlane } from "react-icons/io5";
+import { IoIosArrowBack } from "react-icons/io";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+
 import { actionCreators as chatActions } from "../redux/modules/chat";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
-let stompClient = null;
+import Spinner from "../components/Spinner";
+
 const Chat = (data) => {
   console.log(data);
   const dispatch = useDispatch();
@@ -19,10 +22,15 @@ const Chat = (data) => {
   const nickName = localStorage.getItem("nickname");
   const myUserId = localStorage.getItem("userId");
 
+  const [optionTwo, setOptionTwo] = useState(false);
+  const [optionThree, setOptionThree] = useState(false);
+  const [is_open, setIs_open] = useState(false);
+
   const [currentMes, setCurrentMes] = useState("");
   const [active, setActive] = useState(false);
   const [messageList, setMessageList] = useState([]);
   const [is_exit, setIs_exit] = useState(false); // 상대방 나갔는지 판단
+  const [is_loading, setIs_Loading] = useState(false); // 스피너
   const scrollRef = useRef();
 
   const receiverId = data.location.state.sender.userId;
@@ -38,22 +46,33 @@ const Chat = (data) => {
     toUserId: receiverId,
     userId: myUserId,
   };
+  useEffect(() => {
+    // stompConnect();
+    chatApi
+      .roadMessage(roadMessageBox)
+      .then((res) => {
+        console.log(res);
+        setMessageList(res.data.message);
+        setIs_Loading(true);
+        // client.unsubscribe(`/sub/${myUserId}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    client.send("/pub/join", {}, JSON.stringify(`${roomName}`));
+    client.subscribe(`/sub/${roomName}`, (data) => {
+      const onMessage = JSON.parse(data.body);
+      setMessageList((messageList) => messageList.concat(onMessage));
 
-  // const onConnect = () => {
-
-  // };
-
-  // const onError = (err) => {
-  //   console.log("Error! : " + err);
-  //   console.log(/Lost connection/g.test(err));
-  // };
-  // const stompConnect = () => {
-  //   const sockjs = new SockJS("http://3.34.135.82:8080/webSocket");
-
-  //   stompClient = Stomp.over(sockjs);
-  //   console.log(stompClient);
-  //   stompClient.connect({}, onConnect, onError);
-  // };
+      if (onMessage.type === "EXIT") {
+        setActive(true);
+        setIs_exit(true);
+      }
+    });
+    return () => {
+      client.unsubscribe(`/sub/${roomName}`);
+    };
+  }, []);
 
   const handleEvent = (e) => {
     if (e.nativeEvent.isComposing) {
@@ -69,34 +88,6 @@ const Chat = (data) => {
     setCurrentMes(e.target.value);
   }, []);
 
-  useEffect(() => {
-    // stompConnect();
-    chatApi
-      .roadMessage(roadMessageBox)
-      .then((res) => {
-        console.log(res);
-        setMessageList(res.data.message);
-        // client.unsubscribe(`/sub/${myUserId}`);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    client.send("/pub/join", {}, JSON.stringify(`${roomName}`));
-    client.subscribe(`/sub/${roomName}`, (data) => {
-      const onMessage = JSON.parse(data.body);
-      console.log(onMessage);
-      setMessageList((messageList) => messageList.concat(onMessage));
-      console.log(messageList);
-      if (onMessage.type === "EXIT") {
-        setActive(true);
-        setIs_exit(true);
-      }
-    });
-    return () => {
-      client.unsubscribe(`/sub/${roomName}`);
-    };
-  }, []);
-
   const sendMessage = () => {
     const messageDto = {
       type: "TALK",
@@ -105,12 +96,11 @@ const Chat = (data) => {
       senderId: myUserId,
       receiverId: receiverId,
     };
-    // if (currentMes === "") {
-    //   return;
-    // } else if (active === true) {
-    //   return;
-    // }
-
+    if (currentMes === "") {
+      return;
+    } else if (active === true) {
+      return;
+    }
     client.send("/pub/message", {}, JSON.stringify(messageDto));
     setCurrentMes("");
   };
@@ -138,16 +128,108 @@ const Chat = (data) => {
     scrollToBottom();
   }, [messageList]);
 
-  useEffect(() => {
-    client.connect({}, () => {
-      dispatch(chatActions.setStomp(client));
-    });
-  }, []);
+  const OptionTwoControl = () => {
+    setOptionThree(false);
+    if (optionTwo) {
+      setOptionTwo(false);
+    } else {
+      setOptionTwo(true);
+    }
+  };
+
+  const OptionThreeControl = () => {
+    setOptionTwo(false);
+    if (optionThree) {
+      setOptionThree(false);
+    } else {
+      setOptionThree(true);
+    }
+  };
+
+  const ModalControl = () => {
+    if (is_open) {
+      setIs_open(false);
+      document.body.style.cssText = `
+      position: none; 
+      overflow-y: none;
+      width: 100%;
+      `;
+    } else {
+      setIs_open(true);
+      document.body.style.cssText = `
+      position: fixed; 
+      overflow-y: scroll;
+      width: 100%;
+      `;
+    }
+  };
 
   return (
-    <>
+    <BackImage>
       <Container>
         <Grid is_container _className="border-background">
+          {is_loading === false && <Spinner />}
+          <div className="chatting-wrap">
+            <div className="chatting-header">
+              <div className="chatting-header-wrap">
+                <div className="arrow-back">
+                  <IoIosArrowBack
+                    fontSize="xx-large"
+                    style={{
+                      marginLeft: "6px",
+                    }}
+                    onClick={() => {
+                      history.goBack();
+                    }}
+                  />
+                </div>
+                <p className="header-title">
+                  {data.location.state.sender.nickname}님과 대화
+                </p>
+                {/* <Grid _className="ct-wrap"> */}
+                <BiDotsVerticalRounded
+                  onClick={ModalControl}
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    marginRight: "12px",
+                  }}
+                  className="point-icon"
+                />
+                {/* </Grid> */}
+              </div>
+              {is_open && (
+                <>
+                  <div className="modal-back"></div>
+                  <Grid _className="drop-chat">
+                    <p className="unactive" onClick={roomOut}>
+                      채팅방 나가기
+                    </p>
+
+                    <p
+                      className="unactive"
+                      onClick={() => {
+                        ModalControl();
+                        OptionTwoControl();
+                      }}
+                    >
+                      신고하기
+                    </p>
+
+                    <p
+                      className="unactive"
+                      onClick={() => {
+                        ModalControl();
+                        OptionThreeControl();
+                      }}
+                    >
+                      차단하기
+                    </p>
+                  </Grid>
+                </>
+              )}
+            </div>
+          </div>
           <div></div>
           <ChatBox ref={scrollRef}>
             <div className="inner-chat-box">
@@ -205,10 +287,9 @@ const Chat = (data) => {
               </Grid>
             </ChatInput>
           </ChatBox>
-          <button onClick={roomOut}>삭제</button>
         </Grid>
       </Container>
-    </>
+    </BackImage>
   );
 };
 
@@ -216,33 +297,31 @@ const Container = styled.div`
   margin: 0 auto;
   width: 1000px;
   height: 807px;
-  .chatting-headBox {
-  }
+
   .border-background {
     background-color: #2967ac;
   }
-  /* .chatting-wrap {
-    margin-top: -20px;
+  .chatting-wrap {
     .chatting-header {
       width: 100%;
-      max-width: 428px;
-      height: 50px;
+      max-width: 1000px;
+      height: 64px;
       background-color: white;
       box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
-      position: fixed;
+      /* position: fixed; */
       top: 0;
       z-index: 10;
 
       .chatting-header-wrap {
         height: 50px;
-        max-width: 429px;
+        max-width: 1000px;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
         .header-title {
-          font-size: 20px;
+          font-size: 24px;
           font-weight: bold;
           margin-left: 12px;
         }
@@ -259,22 +338,14 @@ const Container = styled.div`
         }
       }
 
-      .modal-back {
-        position: absolute;
-        top: 50px;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.25);
-      }
       .drop-chat {
         height: 165px;
         width: 260px;
-        border-radius: 12px;
+        /* border-radius: 12px; */
         background-color: white;
         position: absolute;
-        top: 300%;
-        left: 50%;
+        top: -6.3%;
+        left: 69.3%;
         transform: translate(-50%, 110%);
         display: flex;
         flex-direction: column;
@@ -299,12 +370,12 @@ const Container = styled.div`
   }
   .chat-item {
     margin-top: 50px;
-  } */
+  }
 `;
 
 const ChatBox = styled.div`
   padding: 0 16px;
-  height: 682px;
+  height: 670px;
   overflow-y: auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -312,15 +383,15 @@ const ChatBox = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
   .inner-chat-box {
-    /* margin-bottom: 52px; */
+    margin-bottom: 52px;
   }
   .enter-chat-box {
     display: flex;
     justify-content: center;
-    /* margin-top: 12px; */
+    margin-top: 12px;
     .enter-chat {
-      font-size: 14px;
-      color: var(--main-color);
+      font-size: 18px;
+      color: black;
     }
   }
   .exit-chat-box {
@@ -328,8 +399,8 @@ const ChatBox = styled.div`
     justify-content: center;
     margin-top: 5vh;
     .exit-chat {
-      font-size: 14px;
-      color: var(--main-color);
+      font-size: 18px;
+      color: black;
     }
   }
   .message {
@@ -338,7 +409,7 @@ const ChatBox = styled.div`
 `;
 
 const ChatInput = styled.div`
-  width: 1000px;
+  width: 972px;
   position: fixed;
   bottom: 50px;
   padding: 0px 8px 0px 20px;
@@ -350,14 +421,19 @@ const ChatInput = styled.div`
     width: 100%;
     margin-left: -20px;
     justify-content: space-between;
+    height: 60px;
 
     input {
-      width: 1000px;
+      font-size: 20px;
+      width: 100%;
       height: 60px;
       border: none;
       border-radius: 4px;
-      /* padding: 5px 10px; */
-      background-color: #0000000d;
+      padding: 0px 10px;
+      :focus {
+        outline: none;
+        outline-color: none;
+      }
       @media screen and (max-width: 415px) {
         width: 345px;
       }
@@ -375,11 +451,18 @@ const ChatInput = styled.div`
       }
     }
     .send-chat-icon {
-      margin: 0 0 4px 8px;
-      color: var(--main-color);
+      /* margin: 0 0 4px 8px; */
+      color: black;
       cursor: pointer;
     }
   }
+`;
+
+const BackImage = styled.div`
+  background-image: url("https://velog.velcdn.com/images/tty5799/post/1e685506-98e9-4c90-b688-43cb86e933a8/image.png");
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 export default Chat;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 
@@ -8,12 +8,12 @@ const CommentList = (props) => {
   const dispatch = useDispatch();
   const created = props.createdAt;
   const createdAt = created?.split(" ")[0];
-  const localUserId = localStorage.getItem("userId");
+  const localNickName = localStorage.getItem("nickname");
 
   const [is_comment, setIs_comment] = useState("");
   const [is_open, setIs_open] = useState(false);
 
-  const userId = Number(localUserId) === props.userId ? true : false;
+  const userNickName = localNickName === props.nickname ? true : false;
 
   const editComment = () => {
     setIs_open(!is_open);
@@ -65,7 +65,7 @@ const CommentList = (props) => {
             {createdAt}
           </p>
           <HeadBtnBox>
-            {userId ? (
+            {userNickName ? (
               <>
                 <Btn1 onClick={editComment}>수정</Btn1>
                 <Btn2 onClick={deleteComment}>삭제</Btn2>

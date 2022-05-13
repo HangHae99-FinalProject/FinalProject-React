@@ -32,7 +32,7 @@ const Chatting = () => {
     });
   }, []);
   return (
-    <Backimage>
+    <BackImage>
       <Container>
         <HeadBox>
           <span>채팅</span>
@@ -51,7 +51,7 @@ const Chatting = () => {
           })}
         </div>
       </Container>
-    </Backimage>
+    </BackImage>
   );
 };
 
@@ -79,12 +79,11 @@ const Container = styled.div`
   margin: 1% auto;
 `;
 
-const Backimage = styled.div`
+const BackImage = styled.div`
   background-image: url("https://velog.velcdn.com/images/tty5799/post/1e685506-98e9-4c90-b688-43cb86e933a8/image.png");
-  width: 1920px;
-  height: 1080px;
-  background-position: center;
-  background-size: cover;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 export default Chatting;

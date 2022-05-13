@@ -130,7 +130,7 @@ const __addPost =
       await postApi.postWrite(formData);
       history.replace("/");
     } catch (err) {
-      console.log(err);
+      console.log(err.errorMessage);
     }
   };
 
@@ -152,17 +152,16 @@ const __getDetail =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await postApi.getDetail(postId);
-      console.log(data.data);
 
       dispatch(commentActions.getComment(data.data.commentList));
-      dispatch(setDetail(data));
+      dispatch(setDetail(data.data));
     } catch (err) {
       console.log(err);
     }
   };
 
 const __getPost =
-  (major, region, count, is_select, is_loading) =>
+  (major, region, count, is_select) =>
   async (dispatch, getState, { history }) => {
     if (is_select) {
       count = 0;

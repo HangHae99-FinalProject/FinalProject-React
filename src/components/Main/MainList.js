@@ -18,6 +18,7 @@ const MainList = ({ location, category, selected }) => {
   // 지역, 카테고리 값 state로 관리
   const [pages, setpages] = useState(page);
   const [area, setarea] = useState(location);
+
   let is_select = selected;
 
   // 무한 스크롤 동작을 감지 하기 위한 상태값 관리
@@ -47,7 +48,14 @@ const MainList = ({ location, category, selected }) => {
       is_select = false;
     }
     dispatch(
-      postActions.__getPost(category, area, pages, is_select, is_loading)
+      postActions.__getPost(
+        category,
+        area,
+        pages,
+
+        is_select,
+        is_loading
+      )
     );
   }, [area, category, page]);
 
@@ -87,9 +95,7 @@ const MainList = ({ location, category, selected }) => {
 
 const MainCardBox = styled.div`
   width: auto;
-
   height: 800px;
-  text-align: center;
 
   @media screen and (max-height: 1000px) {
     height: 500px;

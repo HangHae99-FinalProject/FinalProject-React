@@ -6,7 +6,7 @@ import { chatApi } from "../../api/chatApi";
 
 const sockjs = new SockJS("http://3.34.135.82:8080/webSocket");
 const client = Stomp.over(sockjs);
-// client.connect({}, onC)
+
 client.debug = null;
 
 const SET_STOMP = "SET_STOMP";
@@ -39,17 +39,6 @@ const __addRoom =
       console.log(err);
     }
   };
-
-// const __roadRoom =
-//   () =>
-//   async (dispatch, getState, { history }) => {
-//     try {
-//       const { data } = await chatApi.roadRoom();
-//       console.log(data);
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
 
 export default handleActions(
   {

@@ -63,9 +63,14 @@ const User = (props) => {
   const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data);
   const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
   // const getLikeCount = useSelector((state) => state.user.userInfo.likeCount);
-  console.log(getUserInfo);
+  // console.log(getUserInfo);
 
-  const likeRatio = (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
+  var likeRatio = (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
+  if (isNaN(likeRatio)) {
+    likeRatio = 0;
+  }
+  // console.log("projectCount", getUserInfo.projectCount);
+  // console.log("likeRatio", likeRatio);
 
   var evaluationGrade = null;
 
@@ -93,12 +98,13 @@ const User = (props) => {
   };
 
   useEffect(() => {
+    dispatch(userInfoActions.initUserInfo());
     dispatch(userInfoActions.__getUserInfo());
     dispatch(userInfoActions.__getApplied());
     dispatch(userInfoActions.__getRecruit());
     dispatch(userInfoActions.__getRecruitOver());
     return;
-  }, []);
+  }, [dispatch]);
 
   return (
     <Grid sx={{ width: "1920px" }}>
@@ -317,7 +323,7 @@ const User = (props) => {
               <Grid>
                 <Grid>
                   <Button
-                    value="kkk"
+                    value="major"
                     variant="contained"
                     sx={{ borderRadius: "20px", marginLeft: "24px" }}
                   >
@@ -326,9 +332,9 @@ const User = (props) => {
                 </Grid>
                 <Grid>
                   <TextField
+                    value={getUserInfo.intro}
                     id="myIntro"
                     multiline
-                    defaultValue={getUserInfo.intro}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -337,9 +343,9 @@ const User = (props) => {
                 </Grid>
                 <Grid>
                   <TextField
+                    value={getUserInfo.portfolioLink}
                     id="myIntro"
                     multiline
-                    defaultValue={getUserInfo.portfolioLink}
                     InputProps={{
                       readOnly: true,
                     }}

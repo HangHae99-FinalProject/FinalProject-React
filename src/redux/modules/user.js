@@ -14,7 +14,7 @@ const cookies = new Cookies();
 //actions
 const LOG_IN = "user/LOG_IN";
 const LOG_OUT = "user/LOG_OUT";
-// const SET_USER = "user/SET_USER";
+// const EMAIL
 
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
@@ -31,7 +31,6 @@ const LOG_OUT = "user/LOG_OUT";
 // };
 const login = createAction(LOG_IN, (user) => ({ user }));
 const logout = createAction(LOG_OUT, (user) => ({ user }));
-// const setUser = createAction(SET_USER, (user) => ({ user }));
 
 //initialState
 const initialState = {
@@ -41,6 +40,8 @@ const initialState = {
     nickname: null,
   },
   userInfo: [],
+  checkEmailDuplication: null,
+  checkNicknameDuplication: null,
 };
 
 const userInitial = {
@@ -121,13 +122,20 @@ const __emailCheck =
   (email) =>
   async (dispatch, getState, { hisory }) => {
     try {
-      await userApi.emailCheck(email);
-      window.alert("입력하신 이메일은 사용이 가능합니다.");
+      const checkAlert = await axios.post("http://3.34.135.82:8080/user/emailCheck", { email });
+      console.log(checkAlert.data.errorCode);
+      if (checkAlert.data.errorCode === "200") {
+        window.alert("입력하신 이메일은 사용이 가능합니다.");
+      } else if (checkAlert.data.errorCode !== "200") {
+        window.alert("다른 이메일을 사용해주세요.");
+        return;
+      }
     } catch (err) {
       console.log(err);
       window.alert("입력하신 이메일은 사용이 불가능합니다.");
     }
   };
+
 const __nicknameCheck =
   (nickname) =>
   async (dispatch, getState, { hisory }) => {

@@ -3,14 +3,13 @@ import axios from "axios";
 
 export const userApi = {
   signup: (email, password, pwCheck, nickname, major) =>
-    axios.post("user/signup", { email, password, pwCheck, nickname, major }),
+    axios.post("/signup", { email, password, pwCheck, nickname, major }),
 
-  emailCheck: (email) => instance.post("/user/emailCheck", { email }),
+  emailCheck: (email) => axios.post("/user/email-check", {email}),
 
-  nicknameCheck: (nickname) =>
-    instance.post("/user/nicknameCheck", { nickname }),
+  nicknameCheck: (nickname) => axios.post("/nickname-check", nickname),
 
-  login: (email, password) => axios.post("user/login", { email, password }),
+  login: (email, password) => axios.post("/login", { email, password }),
 
   remove: () => instance.delete("/user/remove"),
 };

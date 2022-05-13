@@ -22,6 +22,8 @@ const GET_APPLIED_OVER = "myPage/GET_APPLIED_OVER";
 const POST_EVALUATION = "myPage/POST_EVALUATION";
 const PUT_USER_INFO_MOD = "myPage/PUT_USER_INFO_MOD";
 const SET_USER_INFO = "myPage/SET_USER_INFO";
+//클린업
+const INIT_USER_INFO = "myPage/INIT_USER_INFO";
 
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
@@ -44,6 +46,8 @@ const getAppliedOver = createAction(GET_APPLIED_OVER, (appliedOverData) => ({ ap
 // const setUserInfo = createAction(SET_USER_INFO, (userInfo) => ({ userInfo }));
 const postEvaluation = createAction(POST_EVALUATION, (evaluationData) => ({ evaluationData }));
 const putUserInfoMod = createAction(PUT_USER_INFO_MOD, (userInfoModData) => ({ userInfoModData }));
+//클린업
+const initUserInfo = createAction(INIT_USER_INFO, () => ({}));
 
 //initialState
 const initialState = {
@@ -170,7 +174,7 @@ const __putUserInfoMod = (userId, data, files) => {
     files.map((e) => {
       return formData.append("imgs", e);
     });
-    console.log(formData)
+    console.log(formData);
     try {
       await userInfoApi.putUserInfoModData(userId, formData);
       history.replace("/");
@@ -219,6 +223,10 @@ export default handleActions(
         },
         console.log(action)
       ),
+    [INIT_USER_INFO]: (state, {payload}) =>
+    produce(state, (draft) => {
+      draft.userInfo = []
+    })
   },
   initialState
 );
@@ -234,7 +242,8 @@ const actionCreators = {
   __postEvaluation,
   postEvaluation,
   // setUserInfo
-  __putUserInfoMod
+  __putUserInfoMod,
+  initUserInfo
 };
 
 export { actionCreators };

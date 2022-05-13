@@ -25,12 +25,12 @@ import { get } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
 const EditUser = () => {
-  const param = useParams()
+  const param = useParams();
   const dispatch = useDispatch();
   const getUserInfo = useSelector((state) => state.myPage?.userInfo);
   // const setUserInfo = useSelector((state) => state.myPage.requestDto);
   // console.log(getUserInfo);
-  
+
   const [selected, setSelected] = useState(false);
   // const [profileImgUrl, setProfileImgUrl] = useState("");
   const [nickname, setNickname] = useState(getUserInfo?.nickname);
@@ -40,52 +40,52 @@ const EditUser = () => {
   const [currentImgUrl, setCurrentImgUrl] = useState(getUserInfo?.userPortfolioImgList);
   const [profileImgUrl, setProfileImgUrl] = useState(getUserInfo?.profileImg);
   // console.log(nickname);
-  
-  // const onProfileImgUrlHandler = (e) => {
-    //   setProfileImgUrl(e.target.value);
-    // };
-    const onNicknameHandler = (e) => {
-      setNickname(e.target.value);
-    };
-    const onIntroHandler = (e) => {
-      setIntro(e.target.value);
-    };
-    const onPortfolioHandler = (e) => {
-      setPortfolioLink(e.target.value);
-    };
-    const onCurrentImgUrlHandler = (e) => {
-      setCurrentImgUrl(e.target.value);
-    };
-    
-    const Files = useSelector((state) => state.image.files);
-    // 파일만 넣을 빈 배열
-    let newFiles = [];
-    // URL을 분리할 배열
-    
-    for (let i = 0; i < Files.length; i++) {
-      // 조건을 걸어 파일안에 name이 있으면 파일을 넣음
-      if (Files[i].name) {
-        newFiles.push(Files[i]);
-      }
-    }
-    
-    const imgUrl = useSelector((state) => state.image.editUrl);
-    
-    const requestDto = {
-      profileImg: profileImgUrl,
-      nickname: nickname,
-      intro: intro,
-      major: major,
-      portfolioLink: portfolioLink,
-      currentImgUrl: currentImgUrl,
-    };
-    // console.log(requestDto)
-    
-    const userId = param.id
 
-    //프로필이미지 POPOVER
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const handleClick = (event) => {
+  // const onProfileImgUrlHandler = (e) => {
+  //   setProfileImgUrl(e.target.value);
+  // };
+  const onNicknameHandler = (e) => {
+    setNickname(e.target.value);
+  };
+  const onIntroHandler = (e) => {
+    setIntro(e.target.value);
+  };
+  const onPortfolioHandler = (e) => {
+    setPortfolioLink(e.target.value);
+  };
+  const onCurrentImgUrlHandler = (e) => {
+    setCurrentImgUrl(e.target.value);
+  };
+
+  const Files = useSelector((state) => state.image.files);
+  // 파일만 넣을 빈 배열
+  let newFiles = [];
+  // URL을 분리할 배열
+
+  for (let i = 0; i < Files.length; i++) {
+    // 조건을 걸어 파일안에 name이 있으면 파일을 넣음
+    if (Files[i].name) {
+      newFiles.push(Files[i]);
+    }
+  }
+
+  const imgUrl = useSelector((state) => state.image.editUrl);
+
+  const requestDto = {
+    profileImg: profileImgUrl,
+    nickname: nickname,
+    intro: intro,
+    major: major,
+    portfolioLink: portfolioLink,
+    currentImgUrl: currentImgUrl,
+  };
+  // console.log(requestDto)
+
+  const userId = param.id;
+
+  //프로필이미지 POPOVER
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

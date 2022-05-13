@@ -12,6 +12,8 @@ import Comment from "../components/Detail/Comment";
 import { imgActions } from "../redux/modules/image";
 import ModalImage from "../assets/Modal.svg";
 import Cookies from "universal-cookie";
+import { fontWeight } from "@mui/system";
+import Footer from "../elements/Footer";
 
 const Detail = () => {
   const param = useParams();
@@ -25,9 +27,7 @@ const Detail = () => {
 
   const localUserId = localStorage.getItem("userId");
 
-  const cookies = new Cookies();
-  const is_login = cookies.get("isLogin");
-
+  const is_login = useSelector((state) => state.user.isLogin);
   const detailList = useSelector((state) => state.post.detailList);
 
   const majorList = detailList.majorList;
@@ -84,6 +84,7 @@ const Detail = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
     if (is_login) {
       dispatch(PostActions.__loginGetDetail(id));
     } else {
@@ -200,6 +201,12 @@ const Detail = () => {
             <p style={{ fontSize: "20px", fontWeight: "700" }}>
               {detailList.region} 모집기간: {detailList.deadline}
             </p>
+            {detailList.link ? (
+              <p style={{ margin: "-10px 0 0px 0", fontWeight: "700" }}>
+                <a href={detailList.link}>추가 설명 링크</a>
+              </p>
+            ) : null}
+
             <p>{detailList.content}</p>
           </RightBox>
         </MidBox>
@@ -225,7 +232,6 @@ const Detail = () => {
               backgroundColor: "rgba(0,0,0,0.5)",
             },
             content: {
-              backgroundImage: { ModalImage },
               borderRadius: "20px",
               top: "calc(100% - 750px)",
               height: "600px",
@@ -237,83 +243,86 @@ const Detail = () => {
             },
           }}
         >
-          <ModalGrid>
-            <ModalTitle>
-              <p>신청 할 가테고리를 선택해주세요!</p>
-            </ModalTitle>
-            <Category>
-              {majorList?.map((a, idx) => {
-                return (
-                  <CateBtn
-                    key={idx}
-                    onClick={() => {
-                      if (a.majorName === "미술/디자인") {
-                        setIs_Cate("미술/디자인");
-                      } else if (a.majorName === "영상") {
-                        setIs_Cate("영상");
-                      } else if (a.majorName === "배우") {
-                        setIs_Cate("배우");
-                      } else if (a.majorName === "사진") {
-                        setIs_Cate("사진");
-                      } else if (a.majorName === "프로그래밍") {
-                        setIs_Cate("프로그래밍");
-                      } else if (a.majorName === "모델") {
-                        setIs_Cate("모델");
-                      } else if (a.majorName === "성우") {
-                        setIs_Cate("성우");
-                      } else if (a.majorName === "음향") {
-                        setIs_Cate("음향");
-                      }
-                      if (a.majorName === is_cate) {
-                        setIs_Cate("");
-                      }
-                    }}
-                  >
-                    <Grid
-                      _className={
-                        is_cate === a.majorName ? "active" : "default"
-                      }
-                      bg={
-                        a.majorName === "미술/디자인"
-                          ? "#2967AC"
-                          : a.majorName === "음향"
-                          ? "#FFEF62"
-                          : a.majorName === "영상"
-                          ? "#6AD8F5"
-                          : a.majorName === "배우"
-                          ? "#F58467"
-                          : a.majorName === "프로그래밍"
-                          ? "#5BC8D2"
-                          : a.majorName === "모델"
-                          ? "#FE674C"
-                          : a.majorName === "사진"
-                          ? "#4299E9"
-                          : a.majorName === "성우"
-                          ? "#FFD082"
-                          : "#f5fcff"
-                      }
+          <BackImage>
+            <ModalGrid>
+              <ModalTitle>
+                <p>신청 할 가테고리를 선택해주세요!</p>
+              </ModalTitle>
+              <Category>
+                {majorList?.map((a, idx) => {
+                  return (
+                    <CateBtn
+                      key={idx}
+                      onClick={() => {
+                        if (a.majorName === "미술/디자인") {
+                          setIs_Cate("미술/디자인");
+                        } else if (a.majorName === "영상") {
+                          setIs_Cate("영상");
+                        } else if (a.majorName === "배우") {
+                          setIs_Cate("배우");
+                        } else if (a.majorName === "사진") {
+                          setIs_Cate("사진");
+                        } else if (a.majorName === "프로그래밍") {
+                          setIs_Cate("프로그래밍");
+                        } else if (a.majorName === "모델") {
+                          setIs_Cate("모델");
+                        } else if (a.majorName === "성우") {
+                          setIs_Cate("성우");
+                        } else if (a.majorName === "음향") {
+                          setIs_Cate("음향");
+                        }
+                        if (a.majorName === is_cate) {
+                          setIs_Cate("");
+                        }
+                      }}
                     >
-                      <p>
-                        {a.majorName}ㅣ{a.numOfPeopleApply}/{a.numOfPeopleSet}
-                      </p>
-                    </Grid>
-                  </CateBtn>
-                );
-              })}
-            </Category>
-            <ModalInput>
-              <input
-                placeholder="모험에 대한 각오를 적어주세요! (20자이하)"
-                maxLength={20}
-                onChange={applyHandelChange}
-              />
-            </ModalInput>
-            <ModalBtn onClick={applyPostButton}>
-              <span>신청하기</span>
-            </ModalBtn>
-          </ModalGrid>
+                      <Grid
+                        _className={
+                          is_cate === a.majorName ? "active" : "default"
+                        }
+                        bg={
+                          a.majorName === "미술/디자인"
+                            ? "#2967AC"
+                            : a.majorName === "음향"
+                            ? "#FFEF62"
+                            : a.majorName === "영상"
+                            ? "#6AD8F5"
+                            : a.majorName === "배우"
+                            ? "#F58467"
+                            : a.majorName === "프로그래밍"
+                            ? "#5BC8D2"
+                            : a.majorName === "모델"
+                            ? "#FE674C"
+                            : a.majorName === "사진"
+                            ? "#4299E9"
+                            : a.majorName === "성우"
+                            ? "#FFD082"
+                            : "#f5fcff"
+                        }
+                      >
+                        <p>
+                          {a.majorName}ㅣ{a.numOfPeopleApply}/{a.numOfPeopleSet}
+                        </p>
+                      </Grid>
+                    </CateBtn>
+                  );
+                })}
+              </Category>
+              <ModalInput>
+                <input
+                  placeholder="모험에 대한 각오를 적어주세요! (20자이하)"
+                  maxLength={20}
+                  onChange={applyHandelChange}
+                />
+              </ModalInput>
+              <ModalBtn onClick={applyPostButton}>
+                <span>신청하기</span>
+              </ModalBtn>
+            </ModalGrid>
+          </BackImage>
         </ReactModal>
       </Container>
+      <Footer />
     </>
   );
 };
@@ -347,11 +356,12 @@ const ModalInput = styled.div`
     width: 100%;
     height: 40px;
     border: none;
+    background-color: transparent;
     border-bottom: 1px solid gray;
     font-size: 20px;
     color: gray;
     :focus {
-      outline-color: gray;
+      outline: none;
     }
     ::placeholder {
       font-size: 20px;
@@ -363,7 +373,7 @@ const ModalInput = styled.div`
 const Category = styled.div`
   display: flex;
   flex-wrap: wrap;
-  /* align-items: flex-start; */
+
   align-items: center;
 `;
 
@@ -373,12 +383,12 @@ const CateBtn = styled.div`
     min-width: 110px;
     padding: 16px;
     width: auto;
-    /* width: 140px; */
+
     height: 50px;
     border-radius: 14px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     background-color: #f5fcff;
-    /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -397,7 +407,6 @@ const CateBtn = styled.div`
     min-width: 110px;
     padding: 16px;
     width: auto;
-    /* width: 140px; */
     height: 50px;
     border-radius: 14px;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -460,7 +469,12 @@ const ModalTitle = styled.div`
     color: #555555;
   }
 `;
-
+const BackImage = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url("https://velog.velcdn.com/images/tty5799/post/7720c391-9cd1-4dca-bb62-bd044e1b4d70/image.png");
+  overflow: hidden;
+`;
 const ModalGrid = styled.div`
   margin: 10.5% auto;
   height: 346px;

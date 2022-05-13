@@ -45,18 +45,18 @@ const MyChatBox = styled.div`
   .messages {
     display: inline-block;
     padding: 8px 12px;
-    border-radius: 12px;
     text-align: left;
     line-height: 24px;
-    background-color: black;
-
-    font-size: 16px;
-    color: white;
+    background-color: #fff;
+    border: 1px solid #818181;
+    border-radius: 10px;
+    font-size: 20px;
+    color: black;
     max-width: 278px;
     word-break: break-all;
   }
   .createdAt {
-    font-size: 12px;
+    font-size: 16px;
     display: flex;
     align-items: flex-end;
     margin-right: 6px;

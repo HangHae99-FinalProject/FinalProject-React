@@ -3,12 +3,38 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { actionCreates as postActions } from "../../redux/modules/post";
 
-const MainSearch = () => {
+const MainSearch = ({ location, category, selected }) => {
+  const dispatch = useDispatch();
   const [is_search, setIs_Search] = useState("");
-
+  const [is_searchValue, setIs_SearchValue] = useState("");
+  const [area, setarea] = useState(location);
+  const [pages, setpages] = useState(0);
+  // console.log(area);
+  // console.log(category);
+  // console.log(location);
+  let is_select = selected;
   const searchHandleChange = (event) => {
     setIs_Search(event.target.value);
+  };
+
+  const searchValueHandle = (e) => {
+    setIs_SearchValue(e.target.value);
+  };
+
+  const searchButton = () => {
+    dispatch(
+      postActions.__getPost(
+        category,
+        area,
+        pages,
+        is_search,
+        is_searchValue,
+        is_select
+      )
+    );
   };
 
   return (
@@ -34,24 +60,22 @@ const MainSearch = () => {
           }}
         >
           <MenuItem value="" style={{ fontSize: "20px" }}>
-            <em>인원을 선택해주세요.</em>
+            <em>검색어 설정</em>
           </MenuItem>
-          <MenuItem style={{ fontSize: "20px" }} value={"1"}>
-            1명
+          <MenuItem style={{ fontSize: "20px" }} value={"title"}>
+            제목
           </MenuItem>
-          <MenuItem style={{ fontSize: "20px" }} value={"2"}>
-            2명
+          <MenuItem style={{ fontSize: "20px" }} value={"nickname"}>
+            유저이름
           </MenuItem>
-          <MenuItem style={{ fontSize: "20px" }} value={"3"}>
-            2명
-          </MenuItem>
-          <MenuItem style={{ fontSize: "20px" }} value={"4"}>
-            2명
+          <MenuItem style={{ fontSize: "20px" }} value={"content"}>
+            내용
           </MenuItem>
         </Select>
       </FormControl>
       <div>
-        <SearchInput />
+        <SearchInput onChange={searchValueHandle} />
+        <button onClick={searchButton}>테스트</button>
       </div>
     </div>
   );

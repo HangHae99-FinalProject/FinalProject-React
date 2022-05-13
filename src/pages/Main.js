@@ -24,16 +24,16 @@ const Main = () => {
   //지역 옵션
   const locations = [
     { id: 1, locationName: "전체" },
-    { id: 2, locationName: "서울" },
-    { id: 3, locationName: "경기" },
-    { id: 4, locationName: "강원" },
-    { id: 5, locationName: "전북" },
-    { id: 6, locationName: "전라" },
-    { id: 7, locationName: "충북" },
-    { id: 8, locationName: "충남" },
-    { id: 9, locationName: "경남" },
-    { id: 10, locationName: "경북" },
-    { id: 11, locationName: "제주" },
+    { id: 2, locationName: "서울/경기" },
+
+    { id: 3, locationName: "강원" },
+    { id: 4, locationName: "전북" },
+    { id: 5, locationName: "전라" },
+    { id: 6, locationName: "충북" },
+    { id: 7, locationName: "충남" },
+    { id: 8, locationName: "경남" },
+    { id: 9, locationName: "경북" },
+    { id: 10, locationName: "제주" },
   ];
 
   useEffect(() => {
@@ -219,7 +219,11 @@ const Main = () => {
               ) : null}
             </Grid>
           </LocationBox>
-          <MainSearch />
+          <MainSearch
+            location={is_location}
+            category={is_cate}
+            selected={selected}
+          />
           <BtnTest
             onClick={() => {
               history.push("/write");
@@ -239,6 +243,15 @@ const Main = () => {
     </>
   );
 };
+
+// const BackImage = styled.div`
+//   background-image: url("https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png");
+//   width: 100%;
+//   height: 100%;
+//   overflow: hidden;
+//   /* position: absolute;
+//   bottom: 0px; */
+// `;
 
 const MainImage = styled.div`
   display: flex;

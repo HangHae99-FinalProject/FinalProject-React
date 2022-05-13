@@ -24,16 +24,13 @@ const NotMineBox = styled.div`
   justify-content: start;
   margin: 12px 0px;
   .imgBox {
-    width: 43px;
-    height: 43px;
-    border-radius: 43px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff1f1;
     .profileImg {
-      width: 35px;
-      height: 35px;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
     }
   }
 
@@ -41,17 +38,20 @@ const NotMineBox = styled.div`
     display: inline-block;
     margin-left: 13px;
     padding: 8px 12px;
-    border-radius: 12px;
+    font-size: 20px;
     text-align: left;
     line-height: 24px;
-    background-color: black;
-    font-size: 16px;
-    color: #fff;
+    background-color: #fff;
+    border: 1px solid #555555;
+    border-radius: 10px;
+    border: 1px solid #818181;
+    font-size: 20px;
+    color: black;
     max-width: 278px;
     word-break: break-all;
   }
   .createdAt {
-    font-size: 12px;
+    font-size: 16px;
     display: flex;
     align-items: flex-end;
     margin-left: 6px;

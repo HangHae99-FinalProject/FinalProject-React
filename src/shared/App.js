@@ -16,6 +16,7 @@ import Write from "../pages/Write";
 import User from "../pages/User";
 import EditUser from "../pages/EditUser";
 import Chat from "../pages/Chat";
+import Footer from "../elements/Footer";
 
 //기타 임포트
 import { history } from "../redux/configureStore";
@@ -43,9 +44,8 @@ function App() {
 
   return (
     <>
-      <Header></Header>
-
       <ConnectedRouter history={history}>
+      <Header></Header>
         <Container>
           <Route path="/" exact component={Main} />
           <Route path="/signup" exact component={Signup} />
@@ -63,6 +63,7 @@ function App() {
           <Route path="/applied/:postid" exact component={Applied} />
         </Container>
       </ConnectedRouter>
+      {/* <Footer></Footer> */}
     </>
   );
 }

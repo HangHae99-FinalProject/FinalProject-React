@@ -209,6 +209,7 @@ const EditPost = () => {
             placeholder="내용을 입력하세요!"
             value={is_content}
             onChange={ContentHandleChange}
+            maxLength={250}
           />
         </ContentBox>
 

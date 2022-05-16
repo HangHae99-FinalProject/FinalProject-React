@@ -27,7 +27,7 @@ const Applied = () => {
   const acceptListList = useSelector(
     (state) => state.apply.acceptListList.applyUserLists
   );
-  console.log(acceptListList);
+
   const subscriberCnt = subscriberList?.length;
   const acceptListCnt = acceptListList?.length;
 
@@ -93,26 +93,36 @@ const Applied = () => {
         </ButtonBox>
 
         <div className="Line" />
+
         {is_open === false ? (
-          <>
-            <span>신청한 선장은</span>
+          <div className="midContent">
+            <span className="title">신청한 선장은</span>
             <span className="Personnel">{subscriberCnt}명</span>
-            <span>이에요.</span>
-            <span className="Last">마감하고 모험을 떠나볼까요?</span>
+            <span className="titleLast">이에요.</span>
+            {subscriberCnt === 0 ? (
+              <span className="Count">조금 기다려볼까요??</span>
+            ) : (
+              <span className="Last">마감하고 모험을 떠나볼까요?</span>
+            )}
+
             <span className="Deadline" onClick={deadlineHandelBtn}>
-              모잡마감하기
+              모집마감하기
             </span>
-          </>
+          </div>
         ) : (
-          <>
-            <span>참가한 선장은</span>
+          <div className="midContent">
+            <span className="title">참가한 선장은</span>
             <span className="Personnel">{acceptListCnt}명</span>
-            <span>이에요.</span>
-            <span className="Last">마감하고 모험을 떠나볼까요?</span>
+            <span className="titleLast">이에요.</span>
+            {acceptListCnt === 0 ? (
+              <span className="Count">조금 기다려볼까요??</span>
+            ) : (
+              <span className="Last">마감하고 모험을 떠나볼까요?</span>
+            )}
             <span className="Deadline" onClick={deadlineHandelBtn}>
-              모잡마감하기
+              모집마감하기
             </span>
-          </>
+          </div>
         )}
       </MidBox>
       <CardBox>
@@ -211,36 +221,55 @@ const MidBox = styled.div`
   display: flex;
   align-items: center;
   margin-top: 3rem;
-  width: 100%;
+  width: 1370px;
   border: 1px solid #c2c0c1;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   height: 126px;
-  span {
+  .Count {
     font-size: 20px;
-    color: #555555;
+    width: 20%;
+    margin-right: 78px;
+  }
+  .title {
+    font-size: 20px;
+    width: 15%;
+  }
+  .titleLast {
+    font-size: 20px;
+    width: 8%;
+  }
+  .midContent {
+    display: flex;
+    text-align: center;
+    width: 67%;
+    align-items: center;
   }
   .Recruitment {
+    width: 6%;
     font-size: 20px;
     font-weight: 700;
     color: #555555;
-    margin-left: 3rem;
-    margin-right: 1rem;
+    margin-left: 45px;
+    margin-right: 15px;
   }
   .Personnel {
     color: #555555;
     font-weight: 700;
     font-size: 21px;
+    width: 5%;
   }
   .Last {
-    margin-left: 0.8rem;
+    font-size: 20px;
+    width: 30%;
+    margin-left: 10px;
   }
   .Line {
     height: 35px;
     background-color: #555555;
     width: 2px;
-    margin-right: 2rem;
-    margin-left: 1rem;
+    margin-right: 20px;
+    margin-left: 20px;
   }
   .Deadline {
     display: flex;
@@ -248,7 +277,7 @@ const MidBox = styled.div`
     flex-direction: column;
     justify-content: center;
     border-radius: 14px;
-    margin-left: 20rem;
+    margin-left: 200px;
     border: 1px solid #555555;
     width: 200px;
     height: 60px;

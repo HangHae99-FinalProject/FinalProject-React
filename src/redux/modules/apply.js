@@ -6,7 +6,9 @@ const GET_SUBSCRIBER = "GET_SUBSCRIBER";
 const GET_ACCEPT = "GET_ACCEPT";
 const ADD_REQUEST = "ADD_REQUEST";
 const DELETE_APPLY = "DELETE_APPLY";
+const REFUSE_APPLY = "REFUSE_APPLY";
 
+const refuseApply = createAction(REFUSE_APPLY, (userId) => ({ userId }));
 const setSubscriber = createAction(GET_SUBSCRIBER, (subscriberList) => ({
   subscriberList,
 }));
@@ -45,6 +47,21 @@ const __postReject =
       console.log(err);
     }
   };
+const __postRefuse =
+  (refuseDto) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      await applyApi.postReject(refuseDto);
+
+      dispatch(refuseApply(refuseDto.userId));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+// const __postRefuse = (refuseDto) => {
+
+// }
 
 const __postRequest =
   (acceptedDto) =>
@@ -106,6 +123,13 @@ export default handleActions(
             (a, idx) => a.userId !== action.payload.userId
           );
       }),
+    [REFUSE_APPLY]: (state, action) =>
+      produce(state, (draft) => {
+        draft.acceptListList.applyUserLists =
+          draft.acceptListList.applyUserLists.filter(
+            (a, idx) => a.userId !== action.payload.userId
+          );
+      }),
   },
   initialState
 );
@@ -120,6 +144,8 @@ const actionCreates = {
   __postReject,
   deleteApply,
   __deadlinePatch,
+  refuseApply,
+  __postRefuse,
 };
 
 export { actionCreates };

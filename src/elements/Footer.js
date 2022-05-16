@@ -9,7 +9,9 @@ const Footer = () => {
     </Footers>
   );
 };
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+`;
 
 const Footers = styled.footer`
   z-index: 9999;

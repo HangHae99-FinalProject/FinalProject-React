@@ -19,7 +19,19 @@ const Main = () => {
   const [selected, setSelected] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
 
+  const is_login = useSelector((state) => state.user.isLogin);
+  console.log(is_login);
+
   const dispatch = useDispatch();
+
+  const writeBtn = () => {
+    if (is_login === false) {
+      alert("로그인을 먼저 해주세요!");
+      history.push("/login");
+      return;
+    }
+    history.push("/write");
+  };
 
   //지역 옵션
   const locations = [
@@ -227,13 +239,7 @@ const Main = () => {
             category={is_cate}
             selected={selected}
           />
-          <BtnTest
-            onClick={() => {
-              history.push("/write");
-            }}
-          >
-            글쓰기
-          </BtnTest>
+          <BtnTest onClick={writeBtn}>글쓰기</BtnTest>
         </div>
 
         {/* 메인카드 */}

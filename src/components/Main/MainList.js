@@ -112,9 +112,10 @@ const MainCardBox = styled.div`
 
 const MainContainer = styled.div`
   .spinner {
-    position: relative;
-    top: 25%;
-    left: 50%;
+    /* top: 90%; */
+    /* left: 90%; */
+    /* bottom: 50%; */
+    transform: translate(0);
   }
   .post-list {
     ${flex}

@@ -1,13 +1,34 @@
 import React from "react";
 import styled from "styled-components";
-import rr from "../../assets/image 35.png";
 import Grid from "../../elements/Grid";
 
 import amateurCap from "../../assets/ama.svg";
 import juniorCap from "../../assets/jr.svg";
 import proCap from "../../assets/pro.svg";
+import { FiX } from "react-icons/fi";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { actionCreates as applyActions } from "../../redux/modules/apply";
 
 const AppliedCard = (item) => {
+  const dispatch = useDispatch();
+  const param = useParams();
+
+  const refuseDto = {
+    userId: item.userId,
+    postId: param.postid,
+  };
+
+  const refuseHandelBtn = () => {
+    if (window.confirm("강퇴 하시겠습니까?")) {
+      alert("강퇴하셨습니다!");
+    } else {
+      alert("취소되었습니다!");
+      return;
+    }
+    dispatch(applyActions.__postRefuse(refuseDto));
+  };
+
   var likeRatio = (item?.likePoint / 100) * (100 / item?.projectCount) * 100;
   if (isNaN(likeRatio)) {
     likeRatio = 0;
@@ -25,8 +46,12 @@ const AppliedCard = (item) => {
 
   return (
     <Container>
+      <RefuseBtn>
+        <FiX className="refuse" onClick={refuseHandelBtn} />
+      </RefuseBtn>
       <Profile>
         <img className="profile" src={item.profileImg} alt="profile" />
+
         <div className="cardTitle">
           <p style={{ fontSize: "23px", fontWeight: "700" }}>{item.nickname}</p>
           <div className="ratingBox">
@@ -74,6 +99,25 @@ const AppliedCard = (item) => {
   );
 };
 
+const RefuseBtn = styled.div`
+  margin-left: 90%;
+  margin-top: 10px;
+  cursor: pointer;
+  .refuse {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-color: #fe5953;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    margin: 0;
+    color: #fff;
+    font-size: small;
+  }
+`;
+
 const CommentBox = styled.div`
   width: 379px;
   height: 149px;
@@ -113,7 +157,9 @@ const Profile = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 3% 4%;
+  margin: 1% 4%;
+  .refuseBtn {
+  }
   .ratingBox {
     display: flex;
     flex-direction: row;
@@ -152,8 +198,8 @@ const RatingImg = styled.img`
 `;
 
 const Container = styled.div`
-  height: 389px;
-  width: 399px;
+  height: 399px;
+  width: 414px;
   display: inline-block;
   margin-left: 2.5%;
   border: 1px solid #c2c0c1;

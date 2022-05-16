@@ -81,7 +81,6 @@ const __deletePost =
     try {
       const { data } = await postApi.deletePost(postId);
       history.replace("/");
-      alert("삭제가 완료됐습니다!");
     } catch (err) {
       console.log(err);
     }

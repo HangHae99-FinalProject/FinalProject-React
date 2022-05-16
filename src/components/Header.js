@@ -68,10 +68,14 @@ function Header(props) {
     history.push("/signup");
   };
 
-  // React.useEffect(()=>{
-  //   dispatch(userActions.__loginCheck())
-  // },[])
-  
+  // React.useEffect(() => {
+  //   dispatch(userActions.__loginCheck());
+  // }, []);
+
+  if (window.location.pathname === "/") {
+    return null;
+  }
+
   return (
     <Grid sx={{ maxWidth: "1920px" }}>
       <AppBar position="static" sx={{ background: "white", boxShadow: "none" }}>
@@ -87,7 +91,12 @@ function Header(props) {
               <img src={logo} alt="logo" style={{ height: "40px" }} />
             </Grid>
             <Grid sx={{ width: "30%" }}>
-              <Grid container direction="row" justifyContent="space-between" alignItems="center">
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
                 <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
                   <Typography>Home</Typography>
                 </Grid>

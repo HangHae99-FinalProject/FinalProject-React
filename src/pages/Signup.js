@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 import { emailCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
@@ -70,7 +70,6 @@ function NicknameFormHelperText() {
 
   return <FormHelperText>{helperText}</FormHelperText>;
 }
-
 function MajorFormHelperText() {
   const { focused } = useFormControl() || {};
 
@@ -83,6 +82,9 @@ function MajorFormHelperText() {
 
 const Signup = () => {
   const dispatch = useDispatch();
+  const checkEmailDup = useSelector((state) => state.user.checkEmailDup.data?.errorCode);
+  console.log(checkEmailDup);
+  // const initInput = useSelector((state) => state.user.initInput);
 
   //입력 정보 상태 관리
   const [email, setEmail] = React.useState("");
@@ -90,15 +92,19 @@ const Signup = () => {
   const [pwCheck, setPwCheck] = React.useState("");
   const [nickname, setNickname] = React.useState("");
   const [major, setMajor] = React.useState("");
-
+  const initInput = () => {
+    setEmail("");
+  };
   //중복검사 상태관리
   const [emailCheck, setEmailCheck] = React.useState(false);
   const [nicknameCheck, setNicknameCheck] = React.useState(false);
 
-  
-  const onEmailHandler = (e) => {
-    setEmail(e.target.value);
-  };
+  const onEmailHandler = React.useCallback(
+    (e) => {
+      setEmail(e.target.value);
+    },
+    []
+  );
   const onPasswordHandler = (e) => {
     setPassword(e.target.value);
   };
@@ -111,11 +117,18 @@ const Signup = () => {
   const onMajorHandler = (e) => {
     setMajor(e.target.value);
   };
-  console.log(major);
+  // console.log(major);
   const emailCheckBtn = () => {
-    console.log("이메일체크:", email);
+    // console.log("이메일체크:", email);
     dispatch(userActions.__emailCheck(email));
   };
+  // dispatch(userActions.initCheckEmailDup());
+  // if(checkEmailDup === "200"){
+  //   window.alert("사용 가능한 이메일입니다.")
+  // } else if (checkEmailDup !== "200") {
+  //   window.alert("다른 이메일을 사용해주세요.")
+  // }
+
   const nicknameCheckBtn = () => {
     console.log("닉네임체크:", nickname);
     // dispatch(userAction.__nicknameCheck(nickname))
@@ -145,6 +158,9 @@ const Signup = () => {
     dispatch(userActions.__signup(email, password, pwCheck, nickname, major));
   };
 
+  // if (checkEmailDup !== "200") {
+  //   initInput();
+  // }
   return (
     <React.Fragment>
       <Grid

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import rr from "../assets/image 35.png";
+import { pro1, pro2, pro3, pro4, pro5, pro6, pro7, pro8, pro9 } from "../assets/profileImage/ProfileImgs";
 import amateurCap from "../assets/ama.svg";
 import juniorCap from "../assets/jr.svg";
 import proCap from "../assets/pro.svg";
@@ -62,8 +62,16 @@ const User = (props) => {
   const getApplierList = useSelector((state) => state.myPage.applierList);
   const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data);
   const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
+  const getAppliedOverList_postUser = useSelector(
+    (state) => state.myPage.appliedOverList.data?.postUser
+  );
+  const getAppliedOverList_reqruit = useSelector(
+    (state) => state.myPage.appliedOverList.data?.recruitUserList
+  );
   // const getLikeCount = useSelector((state) => state.user.userInfo.likeCount);
-  // console.log(getUserInfo);
+  console.log(getAppliedOverList);
+  console.log(getAppliedOverList_postUser);
+  console.log(getAppliedOverList_reqruit);
 
   var likeRatio = (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
   if (isNaN(likeRatio)) {
@@ -149,7 +157,92 @@ const User = (props) => {
               </Typography>
             </Grid>
             <Grid container direction="row" justifyContent="center" alignItems="center">
-              {getAppliedOverList?.map((appliedOverList, idx) => {
+              {/* 모집글 작성자 */}
+              {getAppliedOverList_postUser !== null ? (
+                <Card
+                  sx={{ width: "248px", height: "248px", margin: "auto", borderRadius: "14px" }}
+                >
+                  <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
+                    <Grid container direction="row" justifyContent="center" alignItems="center">
+                      <img
+                        src={getAppliedOverList_postUser?.profileImg}
+                        alt="profileImg"
+                        style={{
+                          width: "80px",
+                          height: "80px",
+                          border: "1px solid #818181",
+                          borderRadius: "50%",
+                          marginRight: "5px",
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          width: "85px",
+                          height: "23px",
+                          marginLeft: "5px",
+                          fontSize: "16px",
+                        }}
+                      >
+                        {getAppliedOverList_postUser?.nickname}
+                      </Typography>
+                    </Grid>
+                  </CardContent>
+                  <CardActions>
+                    <Grid container direction="column" justifyContent="center" alignItems="center">
+                      <Button
+                        sx={{
+                          width: "180px",
+                          height: "40px",
+                          background: "#4299E9",
+                          borderRadius: "14px",
+                          marginBottom: "5px",
+                        }}
+                        variant="contained"
+                        onClick={() => {
+                          setReceiverId(getAppliedOverList_postUser.userId);
+
+                          dispatch(
+                            userInfoActions.__postEvaluation({
+                              postId: postId,
+                              receiverId: getAppliedOverList_postUser.userId,
+                              point: 1,
+                            })
+                          );
+                        }}
+                      >
+                        <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또 모험 같이해요!
+                      </Button>
+                      <Button
+                        sx={{
+                          width: "180px",
+                          height: "40px",
+                          background: "#FE5953",
+                          borderRadius: "14px",
+                          marginTop: "5px",
+                        }}
+                        variant="contained"
+                        onClick={() => {
+                          setReceiverId(getAppliedOverList_postUser.userId);
+
+                          dispatch(
+                            userInfoActions.__postEvaluation({
+                              postId: postId,
+                              receiverId: getAppliedOverList_postUser.userId,
+                              point: 0,
+                            })
+                          );
+                        }}
+                      >
+                        <PanToolRoundedIcon sx={{ marginRight: "12px" }} />
+                        모험은 여기까지..
+                      </Button>
+                    </Grid>
+                  </CardActions>
+                </Card>
+              ) : null}
+
+              {/* 지원자 리스트 */}
+              {getAppliedOverList_reqruit?.map((appliedOverList, idx) => {
                 return (
                   <Card
                     key={idx}
@@ -383,6 +476,7 @@ const User = (props) => {
               <Tab sx={{ width: "430px" }} label="모집완료? 진행완료?" {...a11yProps(2)} />
             </Tabs>
           </Grid>
+          {/* 신청중 탭 */}
           <TabPanel value={value} index={0}>
             <List
               sx={{ padding: "0px 16px", width: "1370px", height: "110px" }}
@@ -423,6 +517,7 @@ const User = (props) => {
               })}
             </List>
           </TabPanel>
+          {/* 모집중 탭 */}
           <TabPanel value={value} index={1}>
             <List
               sx={{ padding: "0px 16px", width: "1370px", height: "110px" }}
@@ -492,6 +587,7 @@ const User = (props) => {
               })}
             </List>
           </TabPanel>
+          {/* 모집완료 탭 */}
           <TabPanel value={value} index={2}>
             <List
               sx={{ padding: "0px 16px", width: "1370px", height: "110px" }}

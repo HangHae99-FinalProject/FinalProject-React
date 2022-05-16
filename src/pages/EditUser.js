@@ -1,7 +1,7 @@
 /* eslint-disable*/
 import React, { useEffect, useState } from "react";
-import rr from "../assets/image 35.png";
 import _styled from "styled-components";
+import { pro1, pro2, pro3, pro4, pro5, pro6, pro7, pro8, pro9 } from "../assets/profileImage/ProfileImgs";
 import { Grid } from "../elements/Index";
 import Uploads from "../elements/Upload";
 import { useDispatch, useSelector } from "react-redux";
@@ -187,21 +187,21 @@ const EditUser = () => {
                 }}
               >
                 <Grid>
-                  <ImageList sx={{ margin: "0", width: 480, height: 480 }} cols={3} rowHeight={164}>
+                  <ImageList sx={{  padding:"28.5px 24px", margin: "0", borderRadius:"5px" }} cols={3} rowHeight={120}>
                     {itemData.map((item) => (
                       <ImageListItem
-                        key={item.img}
-                        sx={{ cursor: "pointer", width: "120px", height: "120px" }}
+                      key={item.img}
+                      sx={{ margin:"10.5px 12px", cursor: "pointer", width: "120px", height: "120px", display:"corver" }}
                       >
                         <img
-                          src={`${item.img}?w=120&h=120&fit=crop&auto=format`}
-                          srcSet={`${item.img}?w=120&h=120&fit=crop&auto=format&dpr=2 2x`}
+                          src={item.img}
+                          srcSet={item.img}
                           alt={item.title}
                           loading="lazy"
                           onClick={() => {
                             setProfileImgUrl(item.img);
                           }}
-                        />
+                          />
                       </ImageListItem>
                     ))}
                   </ImageList>
@@ -259,14 +259,6 @@ const EditUser = () => {
                   </Button>
                 </Grid_2>
               </Grid_2>
-              {/* <Grid_2>
-              <TextField
-                id="myMajor"
-                label="전공"
-                defaultValue="시각 디자인"
-                sx={{ marginTop: "24px", minWidth: "430px" }}
-              />
-            </Grid_2> */}
               <Grid_2
                 container
                 direction="column"
@@ -389,25 +381,6 @@ const EditUser = () => {
                     />
                   </Grid_2>
                 </Grid_2>
-                {/* <Grid_2
-                  sx={{ marginTop: "24px" }}
-                  container
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                >
-                  <Grid_2 sx={{ width: "74px" }}>
-                    <Typography></Typography>
-                  </Grid_2>
-                  <Grid_2>
-                    <TextField
-                      sx={{ minWidth: "480px", width: "60vw", maxWidth: "700px" }}
-                      id="myIntro"
-                      multiline
-                      placeholder="주특기를 설명해 주세요."
-                    />
-                  </Grid_2>
-                </Grid_2> */}
                 <Grid_2
                   sx={{ marginTop: "24px" }}
                   container
@@ -450,39 +423,39 @@ const EditUser = () => {
 
 const itemData = [
   {
-    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdBIFGi%2FbtrBQEaifTI%2FxmQVjz68wumtm3qALoGLRK%2Fimg.jpg",
+    img: require(`../assets/profileImage/1.png`),
     title: "1",
   },
   {
-    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FejeTRW%2FbtrBSB4v1k0%2FI5eRAtLlBPe4sy1tNMWOSK%2Fimg.jpg",
+    img: require(`../assets/profileImage/2.png`),
     title: "2",
   },
   {
-    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F43IoU%2FbtrBTAxrhvo%2FUb9EckdwJuaJNwkzkjgu11%2Fimg.jpg",
+    img: require(`../assets/profileImage/3.png`),
     title: "3",
   },
   {
-    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdXfxza%2FbtrBNl2XQ2c%2FszlS2kJfPbBvWfoJk8JNhk%2Fimg.jpg",
+    img: require(`../assets/profileImage/4.png`),
     title: "4",
   },
   {
-    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcuNALP%2FbtrBUGDT1yt%2FkFKrej3hcagOtYfrmm5Xj1%2Fimg.jpg",
+    img: require(`../assets/profileImage/5.png`),
     title: "5",
   },
   {
-    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcTyP1v%2FbtrBSZKYj9M%2FLkiJ9coX2WgYnulHHS3hW1%2Fimg.jpg",
+    img: require(`../assets/profileImage/6.png`),
     title: "6",
   },
   {
-    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcOzaAR%2FbtrBOUcH7mf%2FgX80wXRtGQAXNPTPzsCMIK%2Fimg.jpg",
+    img: require(`../assets/profileImage/7.png`),
     title: "7",
   },
   {
-    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FDzbRy%2FbtrBT3zdG2V%2FCxEiNkWgIWkcItdVRRITh0%2Fimg.jpg",
+    img: require(`../assets/profileImage/8.png`),
     title: "8",
   },
   {
-    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FkQlaF%2FbtrBOTLEoOR%2F7lzyKMZzkPKm0smDxgPcp0%2Fimg.jpg",
+    img: require(`../assets/profileImage/9.png`),
     title: "9",
   },
 ];

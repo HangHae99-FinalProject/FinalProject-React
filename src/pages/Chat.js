@@ -270,23 +270,23 @@ const Chat = (data) => {
                 ""
               )}
             </div>
-            <ChatInput>
-              <Grid _className="input-inner">
-                <input
-                  type="text"
-                  value={currentMes}
-                  placeholder="메세지를 입력하세요."
-                  onChange={_onChange}
-                  onKeyDown={handleEvent}
-                />
-                <IoPaperPlane
-                  className="send-chat-icon"
-                  size="30"
-                  onClick={sendMessage}
-                />
-              </Grid>
-            </ChatInput>
           </ChatBox>
+          <ChatInput>
+            <Grid _className="input-inner">
+              <input
+                type="text"
+                value={currentMes}
+                placeholder="메세지를 입력하세요."
+                onChange={_onChange}
+                onKeyDown={handleEvent}
+              />
+              <IoPaperPlane
+                className="send-chat-icon"
+                size="30"
+                onClick={sendMessage}
+              />
+            </Grid>
+          </ChatInput>
         </Grid>
       </Container>
     </BackImage>
@@ -339,22 +339,23 @@ const Container = styled.div`
       }
 
       .drop-chat {
-        height: 165px;
-        width: 260px;
+        height: 179px;
+        width: 158px;
         /* border-radius: 12px; */
         background-color: white;
         position: absolute;
-        top: -6.3%;
-        left: 69.3%;
+        top: -8%;
+        left: 71.9%;
         transform: translate(-50%, 110%);
         display: flex;
         flex-direction: column;
+        text-align: center;
         justify-content: space-evenly;
         align-items: center;
         filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
         cursor: pointer;
         .unactive {
-          padding: 8px 8px;
+          /* padding: 8px 8px; */
           font-size: 16px;
         }
       }
@@ -410,10 +411,10 @@ const ChatBox = styled.div`
 
 const ChatInput = styled.div`
   width: 972px;
-  position: fixed;
-  bottom: 50px;
+  /* position: fixed; */
+  /* bottom: 50px; */
   padding: 0px 8px 0px 20px;
-  margin-left: -16px;
+
   background-color: white;
   .input-inner {
     display: flex;
@@ -434,21 +435,6 @@ const ChatInput = styled.div`
         outline: none;
         outline-color: none;
       }
-      @media screen and (max-width: 415px) {
-        width: 345px;
-      }
-      @media screen and (max-width: 405px) {
-        width: 340px;
-      }
-      @media screen and (max-width: 390px) {
-        width: 320px;
-      }
-      @media screen and (max-width: 375px) {
-        width: 305px;
-      }
-      @media screen and (max-width: 320px) {
-        width: 250px;
-      }
     }
     .send-chat-icon {
       /* margin: 0 0 4px 8px; */
@@ -462,6 +448,8 @@ const BackImage = styled.div`
   background-image: url("https://velog.velcdn.com/images/tty5799/post/1e685506-98e9-4c90-b688-43cb86e933a8/image.png");
   width: 100%;
   height: 100%;
+  background-position: center;
+  background-size: cover;
   overflow: hidden;
 `;
 

@@ -28,6 +28,7 @@ import Applied from "../pages/Applied";
 import Chatting from "../pages/Chatting";
 import { actionCreators as chatActions } from "../redux/modules/chat";
 import styled from "styled-components";
+import Landing from "../pages/Landing";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,9 +46,10 @@ function App() {
   return (
     <>
       <ConnectedRouter history={history}>
-      <Header></Header>
+        <Header></Header>
         <Container>
-          <Route path="/" exact component={Main} />
+          <Route path="/" exact component={Landing} />
+          <Route path="/main" exact component={Main} />
           <Route path="/signup" exact component={Signup} />
           <Route path="/login" exact component={Login} />
           <Route path="/post/:id" exact component={Post} />
@@ -71,7 +73,7 @@ function App() {
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #fffcf2;
+  /* background-color: #fffcf2; */
   margin: 0;
 `;
 

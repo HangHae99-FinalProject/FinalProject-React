@@ -7,6 +7,7 @@ import Grid from "../../elements/Grid";
 import { history } from "../../redux/configureStore";
 
 const MainCard = (item) => {
+  console.log(item);
   const postId = item.item.postId;
 
   const majorName = item.item.majorList;
@@ -59,9 +60,26 @@ const MainCard = (item) => {
           >
             <p style={{ fontSize: "14px" }}>{major[0]}</p>
           </Grid>
-          <Grid _className={"PeopleCnt"}>
-            <p style={{ fontSize: "14px" }}>+{majorCnt}</p>
-          </Grid>
+
+          {majorCnt === 1 ? null : majorCnt === 2 ? (
+            <Grid _className={"PeopleCnt"}>
+              <p style={{ fontSize: "14px" }}>+{majorCnt - 1}</p>
+            </Grid>
+          ) : (
+            <Grid _className={"PeopleCnt"}>
+              <p style={{ fontSize: "14px" }}>+{majorCnt}</p>
+            </Grid>
+          )}
+          {item.item.currentStatus === "RECRUITING_COMPLETE" ? (
+            <Grid _className={"complete"}>
+              <p style={{ fontSize: "14px" }}>모집완료</p>
+            </Grid>
+          ) : null}
+          {item.item.currentStatus === "RECRUITING_CLOSE" ? (
+            <Grid _className={"close"}>
+              <p style={{ fontSize: "14px" }}>정원마감</p>
+            </Grid>
+          ) : null}
         </ButtonBox>
 
         <MidBox>
@@ -83,7 +101,32 @@ const MainCard = (item) => {
 const ButtonBox = styled.div`
   display: flex;
   margin: 10px 0 0px 15px;
-
+  .close {
+    margin-right: 5px;
+    min-width: 80px;
+    width: auto;
+    height: 34px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    background-color: gray;
+  }
+  .complete {
+    margin-right: 5px;
+    min-width: 80px;
+    width: auto;
+    height: 34px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    background-color: gray;
+  }
   .majorName {
     margin-right: 5px;
     min-width: 80px;
@@ -97,6 +140,7 @@ const ButtonBox = styled.div`
     color: #fff;
   }
   .PeopleCnt {
+    margin-right: 50px;
     width: 55px;
     height: 34px;
     background-color: #2967ac;

@@ -43,6 +43,12 @@ const Detail = () => {
   };
 
   const postDelete = () => {
+    if (window.confirm("삭제 하시겠습니까?")) {
+      alert("삭제되었습니다!");
+    } else {
+      alert("취소되었습니다!");
+      return;
+    }
     dispatch(PostActions.__deletePost(id));
   };
 
@@ -206,8 +212,9 @@ const Detail = () => {
                 <a href={detailList.link}>추가 설명 링크</a>
               </p>
             ) : null}
-
-            <p>{detailList.content}</p>
+            <ContentScroll>
+              <p>{detailList.content}</p>
+            </ContentScroll>
           </RightBox>
         </MidBox>
 
@@ -233,10 +240,14 @@ const Detail = () => {
             },
             content: {
               borderRadius: "20px",
-              top: "calc(100% - 750px)",
+              top: "50%",
+              left: "50%",
+              right: "auto",
+              bottom: "auto",
+              transform: "translate(-50%, -50%)",
               height: "600px",
               width: "1200px",
-              left: "calc(100% - 1560px)",
+              position: "fixed",
               padding: 0,
 
               transition: "0.3s",
@@ -458,6 +469,17 @@ const CateBtn = styled.div`
 
       color: white;
     }
+  }
+`;
+
+const ContentScroll = styled.div`
+  height: 90px;
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 

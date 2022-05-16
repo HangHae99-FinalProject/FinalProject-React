@@ -8,8 +8,8 @@ const Spinner = () => {
     <Wrap>
       <div className="spinners">
         <MutatingDots
-          color="#FF8B95"
-          secondaryColor="#FF626F"
+          color="#2967AC"
+          secondaryColor="#6AD8F5"
           height={100}
           width={100}
         />
@@ -20,7 +20,7 @@ const Spinner = () => {
 
 export default Spinner;
 const Wrap = styled.div`
-  height: 100vh;
+  /* height: 100vh; */
   .spinners {
     position: absolute;
     top: 45%;

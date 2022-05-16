@@ -128,7 +128,7 @@ const Write = () => {
           </Text>
           <InputBox
             placeholder="제목을 20글자 이내 적어주세요!"
-            maxLength={25}
+            maxLength={20}
             value={is_title}
             onChange={TitleHandleChange}
           />
@@ -390,7 +390,7 @@ const Write = () => {
           <TextBox
             placeholder="내용을 입력하세요!"
             value={is_content}
-            maxLength={300}
+            maxLength={250}
             onChange={ContentHandleChange}
           />
         </ContentBox>

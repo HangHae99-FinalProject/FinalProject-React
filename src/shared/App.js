@@ -35,13 +35,13 @@ function App() {
   // useEffect(() => {
   //   dispatch(userActions.__loginCheck());
   // }, []);
-  const client = useSelector((state) => state.chat.client);
+  // const client = useSelector((state) => state.chat.client);
 
-  useEffect(() => {
-    client.connect({}, () => {
-      dispatch(chatActions.setStomp(client));
-    });
-  }, []);
+  // useEffect(() => {
+  //   client.connect({}, () => {
+  //     dispatch(chatActions.setStomp(client));
+  //   });
+  // }, []);
 
   return (
     <>
@@ -60,8 +60,8 @@ function App() {
           <Route path="/user" exact component={User} />
           <Route path="/user/:id" exact component={User} />
           <Route path="/edituser/:id" exact component={EditUser} />
-          <Route path="/chatlist" exact component={Chatting} />
-          <Route path="/chat" exact component={Chat} />
+          {/* <Route path="/chatlist" exact component={Chatting} /> */}
+          {/* <Route path="/chat" exact component={Chat} /> */}
           <Route path="/applied/:postid" exact component={Applied} />
         </Container>
       </ConnectedRouter>

@@ -186,7 +186,6 @@ const LoginBox = styled.div`
 const BackImage = styled.div`
   img {
     width: 93%;
-
     margin-top: 5%;
   }
 `;

@@ -15,10 +15,8 @@ import { actionCreators as chatActions } from "../redux/modules/chat";
 import Spinner from "../components/Spinner";
 
 const Chat = (data) => {
-  console.log(data);
-  const dispatch = useDispatch();
   const client = useSelector((state) => state.chat.client);
-  console.log(client);
+
   const nickName = localStorage.getItem("nickname");
   const myUserId = localStorage.getItem("userId");
 

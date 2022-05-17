@@ -73,7 +73,7 @@ const AppliedCard = (item) => {
             item.applyMajor === "미술/디자인"
               ? "#2967AC"
               : item.applyMajor === "음향"
-              ? "#FFEF62"
+              ? "#FFB673"
               : item.applyMajor === "영상"
               ? "#6AD8F5"
               : item.applyMajor === "배우"

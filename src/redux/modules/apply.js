@@ -30,7 +30,7 @@ const __deadlinePatch =
     try {
       await applyApi.deadlinePatch(postId);
 
-      history.replace("/");
+      history.replace("/main");
     } catch (err) {
       console.log(err);
     }

@@ -1,17 +1,15 @@
-import * as React from "react";
-
+import React from "react";
 import styled from "styled-components";
-import Grid from "../../elements/Grid";
 import { history } from "../../redux/configureStore";
+import Grid from "../../elements/Grid";
+const LandingCard = (item) => {
+  const postId = item.postId;
 
-const MainCard = (item) => {
-  const postId = item.item.postId;
-
-  const majorName = item.item.majorList;
+  const majorName = item.majorList;
   const major = majorName.map((a) => a.majorName);
   const majorCnt = major.length;
 
-  const created = item.item.createdAt;
+  const created = item.createdAt;
 
   return (
     <Container
@@ -19,8 +17,8 @@ const MainCard = (item) => {
         history.push(`/detail/${postId}`);
       }}
     >
-      {item.item.imgUrl.length !== 0 ? (
-        <MainImage src={item.item.imgUrl[0].imgUrl} alt="mainImage" />
+      {item.imgUrl.length !== 0 ? (
+        <MainImage src={item.imgUrl[0].imgUrl} alt="mainImage" />
       ) : (
         <MainImage
           src="https://velog.velcdn.com/images/tty5799/post/3fa2c200-7be0-4b39-bba3-bd9bf3d37f64/image.png"
@@ -29,7 +27,7 @@ const MainCard = (item) => {
       )}
 
       <TitleBox>
-        <span>{item.item.title}</span>
+        <span>{item.title}</span>
       </TitleBox>
       <div>
         <ButtonBox>
@@ -67,28 +65,18 @@ const MainCard = (item) => {
               <p style={{ fontSize: "14px" }}>+{majorCnt}</p>
             </Grid>
           )}
-          {item.item.currentStatus === "RECRUITING_COMPLETE" ? (
-            <Grid _className={"complete"}>
-              <p style={{ fontSize: "14px" }}>모집완료</p>
-            </Grid>
-          ) : null}
-          {item.item.currentStatus === "RECRUITING_CLOSE" ? (
-            <Grid _className={"close"}>
-              <p style={{ fontSize: "14px" }}>정원마감</p>
-            </Grid>
-          ) : null}
         </ButtonBox>
 
         <MidBox>
           <DateBox>
             <span>
-              {item.item.region} ㅣ {item.item.deadline} 예상
+              {item.region} ㅣ {item.deadline} 예상
             </span>
           </DateBox>
         </MidBox>
         <CreateAtBox>
           <span>
-            {created} ㅣ {item.item.nickname}
+            {created} ㅣ {item.nickname}
           </span>
         </CreateAtBox>
       </div>
@@ -193,7 +181,7 @@ const Container = styled.div`
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  margin: 35px 30px 10px 20px;
+  margin: 35px 10px 10px 20px;
 
   float: left;
   overflow: scroll;
@@ -249,4 +237,4 @@ const MainImage = styled.img`
   background-position: center;
 `;
 
-export default MainCard;
+export default LandingCard;

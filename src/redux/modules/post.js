@@ -11,12 +11,14 @@ const SET_DETAIL = "SET_DETAIL";
 const CLEAR_POST = "CLEAR_POST";
 const SET_CATE = "SET_CATE";
 const GET_SEARCH = "GET_SEARCH";
+const GET_LANDING = "GET_LANDING";
 // 신청하기
 const ADD_APPLY = "ADD_APPLY";
 const DELETE_APPLY = "DELETE_APPLY";
 const LOGIN_DETAIL = "LOGIN_DETAIL";
 
 // 액션 크리에이터
+const getLanding = createAction(GET_LANDING, (post_list) => ({ post_list }));
 const setSearch = createAction(GET_SEARCH, (searchList) => ({ searchList }));
 const setCate = createAction(SET_CATE, (post_list, page) => ({
   post_list,
@@ -43,14 +45,21 @@ const initialState = {
   page: 0,
   post_next: false,
   search: [],
+  landingList: [],
 };
 
 //미들웨어
 
-// 신청하기
-// const aaa = () => {
-//   return postApi.deleteApply(postId);
-// };
+const __getLanding =
+  () =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.getLanding();
+      dispatch(getLanding(data.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
 const __postApply =
   (postId, data) =>
@@ -80,7 +89,7 @@ const __deletePost =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await postApi.deletePost(postId);
-      history.replace("/");
+      history.replace("/main");
     } catch (err) {
       console.log(err);
     }
@@ -103,7 +112,7 @@ const __editPost =
     try {
       await postApi.editPost(postId, formData);
 
-      history.replace("/");
+      history.replace("/main");
     } catch (err) {
       console.log(err);
     }
@@ -128,7 +137,7 @@ const __addPost =
 
     try {
       await postApi.postWrite(formData);
-      history.replace("/");
+      history.replace("/main");
     } catch (err) {
       console.log(err.errorMessage);
     }
@@ -245,6 +254,10 @@ export default handleActions(
       produce(state, (draft) => {
         return initialState;
       }),
+    [GET_LANDING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.landingList = action.payload.post_list;
+      }),
   },
   initialState
 );
@@ -266,6 +279,8 @@ const actionCreates = {
   clearPost,
   setCate,
   setSearch,
+  getLanding,
+  __getLanding,
 };
 
 export { actionCreates };

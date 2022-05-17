@@ -2,14 +2,14 @@ import instance from "./api";
 import axios from "axios";
 
 export const userApi = {
-  signup: (email, password, pwCheck, nickname, major) =>
-    axios.post("/signup", { email, password, pwCheck, nickname, major }),
+  signup: (memberId, password, pwCheck) =>
+    axios.post("/signup", { memberId, password, pwCheck }),
 
-  emailCheck: (email) => axios.post("/user/email-check", {email}),
+  memberIdCheck: (memberId) => axios.post("/user/memberIdCheck", {memberId}),
 
   nicknameCheck: (nickname) => axios.post("/nickname-check", nickname),
 
-  login: (email, password) => axios.post("/login", { email, password }),
+  login: (memberId, password) => axios.post("/login", { memberId, password }),
 
   remove: () => instance.delete("/user/remove"),
 };

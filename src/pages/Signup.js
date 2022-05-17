@@ -6,6 +6,7 @@ import { history } from "../redux/configureStore";
 import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
 import { userApi } from "../api/userApi";
 import signupBackground from "../assets/signupBackground.png";
+import axios from "axios";
 
 //MUI import
 // import Grid from "../elements/Grid";
@@ -111,6 +112,8 @@ const Signup = () => {
   const [nickname, setNickname] = React.useState("");
   const [major, setMajor] = React.useState("");
   const [activationBtn, setActivationBtn] = React.useState(false);
+  const [checkMemberIdError, setCheckMemberError] = React.useState(false);
+  console.log(checkMemberIdError);
 
   //중복검사 상태관리
   const [emailCheck, setEmailCheck] = React.useState(false);
@@ -136,14 +139,26 @@ const Signup = () => {
     setMajor(e.target.value);
   };
   // console.log(major);
-  const memberIdCheckBtn = () => {
-    // console.log("이메일체크:", email);
-    dispatch(userActions.__emailCheck(memberId));
+  const memberIdCheckBtn = async () => {
+    // console.log("멤버아이디:", memberId);
+    // dispatch(userActions.__emailCheck(memberId));
+    // userApi.memberIdCheck(memberId)
+    try {
+      const checkMemberId = await axios.post("http://3.34.135.82:8080/user/memberIdCheck", {
+        memberId,
+      });
+      console.log(checkMemberId);
+    } catch (err) {
+      console.log(err);
+      setCheckMemberError(true);
+    }
+    
   };
 
   const nicknameCheckBtn = () => {
     console.log("닉네임체크:", nickname);
     // dispatch(userAction.__nicknameCheck(nickname))
+    
   };
 
   const goHome = () => {
@@ -288,6 +303,7 @@ const Signup = () => {
           onSubmit={(event) => {
             event.preventDefault();
             goSignup();
+            handleOpen();
           }}
         >
           <Grid container direction="row" justifyContent="space-between" alignItems="flex-start">

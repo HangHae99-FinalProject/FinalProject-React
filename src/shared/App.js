@@ -29,19 +29,20 @@ import Chatting from "../pages/Chatting";
 import { actionCreators as chatActions } from "../redux/modules/chat";
 import styled from "styled-components";
 import Landing from "../pages/Landing";
+import OAuthRedirect from "../components/OAuthRedirect";
 
 function App() {
   const dispatch = useDispatch();
   // useEffect(() => {
   //   dispatch(userActions.__loginCheck());
   // }, []);
-  // const client = useSelector((state) => state.chat.client);
+  const client = useSelector((state) => state.chat.client);
 
-  // useEffect(() => {
-  //   client.connect({}, () => {
-  //     dispatch(chatActions.setStomp(client));
-  //   });
-  // }, []);
+  useEffect(() => {
+    client.connect({}, () => {
+      dispatch(chatActions.setStomp(client));
+    });
+  }, []);
 
   return (
     <>
@@ -52,6 +53,7 @@ function App() {
           <Route path="/main" exact component={Main} />
           <Route path="/signup" exact component={Signup} />
           <Route path="/login" exact component={Login} />
+          <Route path="/user/kakao/login" exact component={OAuthRedirect} />
           <Route path="/post/:id" exact component={Post} />
           <Route path="/detail/:postid" exact component={Detail} />
           <Route path="/detail" exact component={Detail} />
@@ -60,8 +62,8 @@ function App() {
           <Route path="/user" exact component={User} />
           <Route path="/user/:id" exact component={User} />
           <Route path="/edituser/:id" exact component={EditUser} />
-          {/* <Route path="/chatlist" exact component={Chatting} /> */}
-          {/* <Route path="/chat" exact component={Chat} /> */}
+          <Route path="/chatlist" exact component={Chatting} />
+          <Route path="/chat" exact component={Chat} />
           <Route path="/applied/:postid" exact component={Applied} />
         </Container>
       </ConnectedRouter>
@@ -73,7 +75,6 @@ function App() {
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  /* background-color: #fffcf2; */
   margin: 0;
 `;
 

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 import { memberIdCheckRE, pwCheckRE } from "../shared/common";
+import kakaoBtn from "../assets/kakao_login.png";
 
 //MUI import
 import FormControl, { useFormControl } from "@mui/material/FormControl";
@@ -45,6 +46,13 @@ const Login = () => {
   const dispatch = useDispatch();
   const [memberId, setmemberId] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const apiKey = process.env.REACT_APP_KAKAO_API_KEY;
+  const redirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+  const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUri}&response_type=code`;
+  console.log(apiKey);
+  console.log(redirectUri);
+  console.log(kakaoUrl);
 
   const onMemberIdHandler = (e) => {
     setmemberId(e.target.value);
@@ -122,6 +130,13 @@ const Login = () => {
             </Stack>
           </Grid>
         </form>
+        <img
+          src={kakaoBtn}
+          alt="kakaoLogin"
+          onClick={() => {
+            window.location.href = kakaoUrl;
+          }}
+        />
       </Grid>
     </React.Fragment>
   );

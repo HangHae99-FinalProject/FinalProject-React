@@ -91,23 +91,17 @@ function Header(props) {
               <img src={logo} alt="logo" style={{ height: "40px" }} />
             </Grid>
             <Grid sx={{ width: "30%" }}>
-              <Grid
-                container
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
-                  <Typography>Home</Typography>
-                </Grid>
+              <Grid container direction="row" justifyContent="space-between" alignItems="center">
                 {isCookies === true ? (
-                  <Grid
-                    sx={{ display: { cursor: "pointer" } }}
-                    onClick={goChat}
-                  >
+                  <Grid sx={{ display: { cursor: "pointer" } }} onClick={goChat}>
                     <Badge badgeContent={4} color="error">
                       <Typography>ChatOn</Typography>
                     </Badge>
+                  </Grid>
+                ) : null}
+                {isCookies === true ? (
+                  <Grid sx={{ display: { cursor: "pointer" } }} onClick={"/"}>
+                    <Typography>등대</Typography>
                   </Grid>
                 ) : null}
                 <Grid sx={{ display: { cursor: "pointer" } }}>

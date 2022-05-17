@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { pro1, pro2, pro3, pro4, pro5, pro6, pro7, pro8, pro9 } from "../assets/profileImage/ProfileImgs";
+import {
+  pro1,
+  pro2,
+  pro3,
+  pro4,
+  pro5,
+  pro6,
+  pro7,
+  pro8,
+  pro9,
+} from "../assets/profileImage/ProfileImgs";
 import amateurCap from "../assets/ama.svg";
 import juniorCap from "../assets/jr.svg";
 import proCap from "../assets/pro.svg";
@@ -35,6 +45,12 @@ const a11yProps = (index) => {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
+};
+
+const focus = {
+  ":focus": {
+    outline: "none",
+  },
 };
 
 const bull = (
@@ -423,27 +439,23 @@ const User = (props) => {
                     {getUserInfo.major}
                   </Button>
                 </Grid>
+                {/* 자기소개 */}
                 <Grid>
-                  <TextField
-                    value={getUserInfo.intro}
+                  <Typography
                     id="myIntro"
-                    multiline
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    sx={{ marginTop: "24px", minWidth: "340px", width: "auto", maxWidth: "700px" }}
-                  />
+                    sx={{ marginTop: "20px", marginLeft: "24px", width: "900px"}}
+                  >
+                    {getUserInfo.intro}
+                  </Typography>
                 </Grid>
+                {/* 포트폴리오링크 */}
                 <Grid>
-                  <TextField
-                    value={getUserInfo.portfolioLink}
-                    id="myIntro"
-                    multiline
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    sx={{ marginTop: "24px", minWidth: "340px", width: "auto", maxWidth: "700px" }}
-                  />
+                  <Typography
+                    id="myPortfolioLink"
+                    sx={{ marginTop: "14px", marginLeft: "24px", width: "900px" }}
+                  >
+                    {getUserInfo.portfolioLink}
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>

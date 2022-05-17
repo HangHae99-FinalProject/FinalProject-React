@@ -1,8 +1,8 @@
-export const emailCheckRE = (email) => {
-  //email 형식
-  let _reg = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/g;
+export const memberIdCheckRE = (memberId) => {
+  //memberId 형식
+  let _reg = /^[a-zA-Z0-9]{4,12}$/g;
 
-  return _reg.test(email);
+  return _reg.test(memberId);
 };
 
 export const nicknameCheckRE = (nickname) => {

@@ -3,7 +3,9 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
-import { emailCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
+import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
+import { userApi } from "../api/userApi";
+import signupBackground from "../assets/signupBackground.png";
 
 //MUI import
 // import Grid from "../elements/Grid";
@@ -17,16 +19,19 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
+import Popover from "@mui/material/Popover";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 
 function IdFormHelperText() {
   const { focused } = useFormControl() || {};
 
   const helperText = React.useMemo(() => {
     if (focused) {
-      return "예. abcd@efgh.com";
+      return "예. 영문 대소문자, 한글, 숫자 포함 4~12자 입니다.";
     }
 
-    return "이메일을 입력해 주세요.";
+    return "아이디를 입력해 주세요.";
   }, [focused]);
 
   return <FormHelperText>{helperText}</FormHelperText>;
@@ -80,6 +85,19 @@ function MajorFormHelperText() {
   return <FormHelperText>{helperText}</FormHelperText>;
 }
 
+//추가 정보 기입 모달
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "480px",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 const Signup = () => {
   const dispatch = useDispatch();
   const checkEmailDup = useSelector((state) => state.user.checkEmailDup.data?.errorCode);
@@ -87,47 +105,41 @@ const Signup = () => {
   // const initInput = useSelector((state) => state.user.initInput);
 
   //입력 정보 상태 관리
-  const [email, setEmail] = React.useState("");
+  const [memberId, setMemberId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [pwCheck, setPwCheck] = React.useState("");
   const [nickname, setNickname] = React.useState("");
   const [major, setMajor] = React.useState("");
-  const initInput = () => {
-    setEmail("");
-  };
+  const [activationBtn, setActivationBtn] = React.useState(false);
+
   //중복검사 상태관리
   const [emailCheck, setEmailCheck] = React.useState(false);
   const [nicknameCheck, setNicknameCheck] = React.useState(false);
 
-  const onEmailHandler = React.useCallback(
-    (e) => {
-      setEmail(e.target.value);
-    },
-    []
-  );
+  const onMemberIdHandler = (e) => {
+    e.preventDefault();
+    setMemberId(e.target.value);
+  };
   const onPasswordHandler = (e) => {
+    e.preventDefault();
     setPassword(e.target.value);
   };
   const onPwCheckHandler = (e) => {
+    e.preventDefault();
     setPwCheck(e.target.value);
   };
   const onNicknameHandler = (e) => {
+    e.preventDefault();
     setNickname(e.target.value);
   };
   const onMajorHandler = (e) => {
     setMajor(e.target.value);
   };
   // console.log(major);
-  const emailCheckBtn = () => {
+  const memberIdCheckBtn = () => {
     // console.log("이메일체크:", email);
-    dispatch(userActions.__emailCheck(email));
+    dispatch(userActions.__emailCheck(memberId));
   };
-  // dispatch(userActions.initCheckEmailDup());
-  // if(checkEmailDup === "200"){
-  //   window.alert("사용 가능한 이메일입니다.")
-  // } else if (checkEmailDup !== "200") {
-  //   window.alert("다른 이메일을 사용해주세요.")
-  // }
 
   const nicknameCheckBtn = () => {
     console.log("닉네임체크:", nickname);
@@ -138,15 +150,20 @@ const Signup = () => {
     history.push("/");
   };
 
+  //추가 정보 기입 모달
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const goSignup = () => {
-    if (!emailCheckRE(email)) {
+    if (!memberIdCheckRE(memberId)) {
       window.alert("이메일 형식을 확인해주세요.");
       return;
     }
-    if (!nicknameCheckRE(nickname)) {
-      window.alert("닉네임 형식을 확인해주세요.");
-      return;
-    }
+    // if (!nicknameCheckRE(nickname)) {
+    //   window.alert("닉네임 형식을 확인해주세요.");
+    //   return;
+    // }
     if (!pwCheckRE(password)) {
       window.alert("패스워드 형식을 확인해주세요.");
       return;
@@ -155,14 +172,103 @@ const Signup = () => {
       window.alert("패스워드와 패스워드 확인이 일치하지 않습니다.");
       return;
     }
-    dispatch(userActions.__signup(email, password, pwCheck, nickname, major));
+    dispatch(userActions.__signup(memberId, password, pwCheck));
+    // console.log(memberId, password, pwCheck)
+  };
+  const goAdditionalInfo = () => {
+    if (!nicknameCheckRE(nickname)) {
+      window.alert("닉네임 형식을 확인해주세요.");
+      return;
+    }
+
+    // dispatch(userActions.__signup(nickname, major));
   };
 
-  // if (checkEmailDup !== "200") {
-  //   initInput();
-  // }
+  React.useEffect(() => {
+    if (checkEmailDup === "200") {
+      setActivationBtn(true);
+    }
+  });
+
   return (
     <React.Fragment>
+      {/* 추가정보 기입 모달 */}
+      <Grid>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Grid container direction="column" justifyContent="center" alignItems="center">
+              <img src={require(`../assets/signupLogo.png`)} alt="signupLogo" />
+              <Grid container direction="row" justifyContent="space-between" alignItems="center">
+                <OutlinedInput
+                  required
+                  name="nickname"
+                  type="text"
+                  id="myNickname"
+                  placeholder="닉네임을 입력해 주세요"
+                  variant="standard"
+                  onChange={onNicknameHandler}
+                  sx={{ width: "65%" }}
+                />
+                <Grid>
+                  <Button
+                    variant="outlined"
+                    onClick={nicknameCheckBtn}
+                    sx={{ width: "110px", height: "55px", padding: "0" }}
+                  >
+                    중복확인
+                  </Button>
+                </Grid>
+              </Grid>
+              <Grid sx={{ marginTop: "20px" }}>
+                <Box sx={{ width: "480px" }}>
+                  <FormControl fullWidth>
+                    <Select
+                      required
+                      labelId="major"
+                      id="demo-simple-select"
+                      value={major}
+                      displayEmpty
+                      onChange={onMajorHandler}
+                      inputProps={{ "aria-label": "select major" }}
+                    >
+                      <MenuItem disabled value="">
+                        <em style={{ color: "#888888", fontStyle: "normal" }}>
+                          전공을 선택해 주세요
+                        </em>
+                      </MenuItem>
+                      <MenuItem value={"미술/디자인"}>미술/디자인</MenuItem>
+                      <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
+                      <MenuItem value={"영상"}>영상</MenuItem>
+                      <MenuItem value={"사진"}>사진</MenuItem>
+                      <MenuItem value={"모델"}>모델</MenuItem>
+                      <MenuItem value={"배우"}>배우</MenuItem>
+                      <MenuItem value={"성우"}>성우</MenuItem>
+                      <MenuItem value={"음향"}>음향</MenuItem>
+                    </Select>
+                    <MajorFormHelperText />
+                  </FormControl>
+                </Box>
+              </Grid>
+              <Box>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    history.replace("/login");
+                  }}
+                >
+                  다음으로
+                </Button>
+              </Box>
+            </Grid>
+          </Box>
+        </Modal>
+      </Grid>
+      {/* 여기까지가 추가정보 기입 모달 */}
       <Grid
         container
         direction="column"
@@ -171,9 +277,12 @@ const Signup = () => {
         spacing={2}
         margin="80px auto"
         padding="2px"
+        src={require(`../assets/signupBackground.png`)}
       >
         <div>
-          <h3>Sign Up</h3>
+          <h3>
+            Sign Up <button onClick={handleOpen}>임시 추가정보 기입</button>
+          </h3>
         </div>
         <form
           onSubmit={(event) => {
@@ -195,15 +304,15 @@ const Signup = () => {
                     name="email"
                     type="text"
                     id="_email"
-                    placeholder="이메일을 입력해 주세요"
+                    placeholder="아이디를 입력해 주세요"
                     variant="standard"
-                    onChange={onEmailHandler}
+                    onChange={onMemberIdHandler}
                     sx={{ width: "65%" }}
                   />
                   <Grid>
                     <Button
                       variant="outlined"
-                      onClick={emailCheckBtn}
+                      onClick={memberIdCheckBtn}
                       sx={{ width: "110px", height: "55px", padding: "0" }}
                     >
                       중복확인
@@ -215,46 +324,7 @@ const Signup = () => {
               </FormControl>
             </Grid>
           </Grid>
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            alignItems="flex-start"
-            mt={2}
-          >
-            <Grid>
-              <FormControl sx={{ width: "115%" }}>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="flex-start"
-                >
-                  <OutlinedInput
-                    required
-                    name="nickname"
-                    type="text"
-                    id="_nickname"
-                    placeholder="닉네임을 입력해 주세요"
-                    variant="standard"
-                    onChange={onNicknameHandler}
-                    sx={{ width: "65%" }}
-                  />
-                  <Grid>
-                    <Button
-                      variant="outlined"
-                      onClick={nicknameCheckBtn}
-                      sx={{ width: "110px", height: "55px", padding: "0" }}
-                    >
-                      중복확인
-                    </Button>
-                  </Grid>
-                </Grid>
 
-                <NicknameFormHelperText />
-              </FormControl>
-            </Grid>
-          </Grid>
           <Grid sx={{ marginTop: "20px" }}>
             <FormControl sx={{ width: "35ch" }}>
               <OutlinedInput
@@ -283,35 +353,7 @@ const Signup = () => {
               <PwCfnFormHelperText />
             </FormControl>
           </Grid>
-          {/* 전공추가 */}
-          <Grid sx={{ marginTop: "20px" }}>
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <Select
-                  required
-                  labelId="major"
-                  id="demo-simple-select"
-                  value={major}
-                  displayEmpty
-                  onChange={onMajorHandler}
-                  inputProps={{ "aria-label": "select major" }}
-                >
-                  <MenuItem disabled value="">
-                    <em style={{ color: "#888888", fontStyle: "normal" }}>전공을 선택해 주세요</em>
-                  </MenuItem>
-                  <MenuItem value={"미술/디자인"}>미술/디자인</MenuItem>
-                  <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
-                  <MenuItem value={"영상"}>영상</MenuItem>
-                  <MenuItem value={"사진"}>사진</MenuItem>
-                  <MenuItem value={"모델"}>모델</MenuItem>
-                  <MenuItem value={"배우"}>배우</MenuItem>
-                  <MenuItem value={"성우"}>성우</MenuItem>
-                  <MenuItem value={"음향"}>음향</MenuItem>
-                </Select>
-                <MajorFormHelperText />
-              </FormControl>
-            </Box>
-          </Grid>
+
           <Grid
             container
             direction="row"
@@ -320,6 +362,15 @@ const Signup = () => {
             margin="30px auto"
           >
             <Stack spacing={4} direction="row">
+              {/* {activationBtn === false ? (
+                <Button disabled type="submit" variant="contained">
+                  Sign Up
+                </Button>
+              ) : (
+                <Button type="submit" variant="contained">
+                  Sign Up
+                </Button>
+              )} */}
               <Button type="submit" variant="contained">
                 Sign Up
               </Button>

@@ -26,7 +26,7 @@ const __addRoom =
   async (dispatch, getState, { history }) => {
     try {
       const res = await chatApi.addRoom(data);
-      console.log(res);
+
       history.push({
         pathname: `/chat`,
         state: {

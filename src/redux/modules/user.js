@@ -53,16 +53,17 @@ const userInitial = {
 };
 
 //middleware actions
-const __login = (memberid, password) => {
+const __login = (_memberId, password) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const {
-        data: { accessToken, refreshToken, accessTokenExpiresIn },
-      } = await axios.post("http://3.34.135.82:8080/user/login", {
-        memberId:memberid,
+      const loginData = await axios.post("http://3.34.135.82:8080/user/login", {
+        memberId:_memberId,
         password,
       });
-      console.log(accessToken)
+      const {accessToken, refreshToken, accessTokenExpiresIn } = loginData.data.data.token
+      // console.log(accessToken)
+      // console.log(refreshToken)
+      // console.log(accessTokenExpiresIn)
       const { sub, memberId, nickname, major } = jwt_decode(accessToken);
       console.log(
         "userid:",
@@ -104,10 +105,10 @@ const __signup = (memberId, password, pwCheck) => {
         pwCheck,
       });
       console.log(signup);
-      if (signup.data) {
-        window.alert("회원가입이 완료되었습니다.");
-        history.replace("/login");
-      }
+      // if (signup.data) {
+      //   window.alert("회원가입이 완료되었습니다.");
+      //   history.replace("/login");
+      // }
     } catch (err) {
       console.log(err);
       if (err.errorCode === 400) {

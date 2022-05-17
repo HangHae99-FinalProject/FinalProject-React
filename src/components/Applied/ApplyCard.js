@@ -76,7 +76,7 @@ const ApplyCard = (props) => {
             props.applyMajor === "미술/디자인"
               ? "#2967AC"
               : props.applyMajor === "음향"
-              ? "#FFEF62"
+              ? "#FFB673"
               : props.applyMajor === "영상"
               ? "#6AD8F5"
               : props.applyMajor === "배우"

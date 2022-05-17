@@ -50,7 +50,7 @@ function Header(props) {
 
   const menuId = "primary-search-account-menu";
   const goHome = () => {
-    history.push("/");
+    history.push("/main");
   };
   const goChat = () => {
     history.push("/chatlist");

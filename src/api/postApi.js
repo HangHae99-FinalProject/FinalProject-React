@@ -8,10 +8,7 @@ export const postApi = {
     notLogin.get(
       `/post/filter/${page}?region=${region}&major=${major}&searchKey=${searchKey}&searchValue=${searchValue}`
     ),
-  // getPostt: (page, region, major, searchKey, searchValue) =>
-  //   notLogin.get(
-  //     `/search/${page}?region=${region}&major=${major}`
-  //   ),
+  getLanding: () => notLogin.get("/api/preview"),
   getDetail: (postId) => notLogin.get(`/api/post/${postId}`),
   loginGetDetail: (postId) => instance.get(`/api/post/${postId}`),
   editPost: (postId, formData) =>

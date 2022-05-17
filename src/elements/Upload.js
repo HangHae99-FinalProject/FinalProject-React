@@ -25,14 +25,14 @@ const Uploads = () => {
       imageUrlList.push(currentImageUrl);
     }
 
-    if (imageUrlList.length > 5) {
-      alert("사진은 최대 5장만 가능합니다!");
+    if (imageUrlList.length > 4) {
+      alert("사진은 최대 4장만 가능합니다!");
     } else {
       setImgPreview(imageUrlList);
     }
 
-    if (imageUrlList.length > 10) {
-      window.alert("이미지는 최대 10개까지 가능합니다!");
+    if (imageUrlList.length > 4) {
+      window.alert("이미지는 최대 4개까지 가능합니다!");
     } else {
       let imgList = [];
       // 파일들을 꺼내 배열안에 넣어줌
@@ -52,7 +52,6 @@ const Uploads = () => {
 
   const UrlButton = () => {
     dispatch(imgActions.setURL(is_Url));
-    // setIs_url("");
   };
 
   const handleDeleteImage = (id) => {

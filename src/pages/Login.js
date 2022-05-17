@@ -3,7 +3,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
-import { emailCheckRE, pwCheckRE } from "../shared/common";
+import { memberIdCheckRE, pwCheckRE } from "../shared/common";
 
 //MUI import
 import FormControl, { useFormControl } from "@mui/material/FormControl";
@@ -19,10 +19,10 @@ function IdFormHelperText() {
 
   const helperText = React.useMemo(() => {
     if (focused) {
-      return "예. abcd@efgh.com";
+      return "예. 영문 대소문자, 한글, 숫자 포함 4~12자 입니다.";
     }
 
-    return "이메일을 입력해 주세요.";
+    return "아이디를 입력해 주세요.";
   }, [focused]);
 
   return <FormHelperText>{helperText}</FormHelperText>;
@@ -43,11 +43,11 @@ function PwFormHelperText() {
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [email, setEmail] = React.useState("");
+  const [memberId, setmemberId] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const onEmailHandler = (e) => {
-    setEmail(e.target.value);
+  const onMemberIdHandler = (e) => {
+    setmemberId(e.target.value);
   };
   const onPasswordHandler = (e) => {
     setPassword(e.target.value);
@@ -58,8 +58,8 @@ const Login = () => {
   };
 
   const goLogin = () => {
-    if (!emailCheckRE(email)) {
-      window.alert("이메일 형식을 확인해주세요.");
+    if (!memberIdCheckRE(memberId)) {
+      window.alert("아이디 형식을 확인해주세요.");
       return;
     }
 
@@ -68,7 +68,7 @@ const Login = () => {
       return;
     }
 
-    dispatch(userActions.__login(email, password));
+    dispatch(userActions.__login(memberId, password));
   };
 
   return (
@@ -90,10 +90,10 @@ const Login = () => {
             <FormControl sx={{ width: "35ch" }}>
               <OutlinedInput
                 required
-                id="_email"
+                id="_memberId"
                 placeholder="이메일를 입력해 주세요"
                 variant="standard"
-                onChange={onEmailHandler}
+                onChange={onMemberIdHandler}
               />
               <IdFormHelperText />
             </FormControl>

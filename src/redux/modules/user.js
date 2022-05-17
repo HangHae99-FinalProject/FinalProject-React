@@ -53,25 +53,24 @@ const userInitial = {
 };
 
 //middleware actions
-const __login = (userEmail, password) => {
+const __login = (memberid, password) => {
   return async function (dispatch, getState, { history }) {
     try {
       const {
         data: { accessToken, refreshToken, accessTokenExpiresIn },
       } = await axios.post("http://3.34.135.82:8080/user/login", {
-        email: userEmail,
+        memberId:memberid,
         password,
       });
-      const { sub, email, nickname, profileImg, major } = jwt_decode(accessToken);
+      console.log(accessToken)
+      const { sub, memberId, nickname, major } = jwt_decode(accessToken);
       console.log(
         "userid:",
         sub,
-        "이메일:",
-        email,
+        "memberId:",
+        memberId,
         "닉네임:",
         nickname,
-        "프로필:",
-        profileImg,
         "전공:",
         major
       );
@@ -84,9 +83,8 @@ const __login = (userEmail, password) => {
         maxAge: 604800, // 7일
       });
       localStorage.setItem("userId", sub);
-      localStorage.setItem("email", email);
+      localStorage.setItem("memberId", memberId);
       localStorage.setItem("nickname", nickname);
-      localStorage.setItem("profileImgUrl", profileImg);
       localStorage.setItem("major", major);
       dispatch(login());
       window.alert(`${nickname}님 반갑습니다~`);
@@ -97,15 +95,13 @@ const __login = (userEmail, password) => {
   };
 };
 
-const __signup = (email, password, pwCheck, nickname, major) => {
+const __signup = (memberId, password, pwCheck) => {
   return async (dispatch, getState, { history }) => {
     try {
       const signup = await axios.post("http://3.34.135.82:8080/user/signup", {
-        email,
+        memberId,
         password,
         pwCheck,
-        nickname,
-        major,
       });
       console.log(signup);
       if (signup.data) {
@@ -160,9 +156,8 @@ const __logout = () => {
   return async function (dispatch, getState) {
     try {
       localStorage.removeItem("major");
-      localStorage.removeItem("email");
+      localStorage.removeItem("memberId");
       localStorage.removeItem("nickname");
-      localStorage.removeItem("profileImgUrl");
       localStorage.removeItem("userId");
       cookies.remove("isLogin", { path: "/" });
       cookies.remove("accessToken", { path: "/" });

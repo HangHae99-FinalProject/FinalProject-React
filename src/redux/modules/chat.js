@@ -4,10 +4,10 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { chatApi } from "../../api/chatApi";
 
-const sockjs = new SockJS("http://3.34.135.82:8080/webSocket");
-const client = Stomp.over(sockjs);
+// const sockjs = new SockJS("http://3.34.135.82:8080/webSocket");
+// const client = Stomp.over(sockjs);
 
-client.debug = null;
+// client.debug = null;
 
 const SET_STOMP = "SET_STOMP";
 const ADD_ROOM = "ADD_ROOM";
@@ -18,7 +18,7 @@ const addRoom = createAction(ADD_ROOM, (data) => ({ data }));
 const roadRoom = createAction(ROAD_ROOM, (data) => ({ data }));
 
 const initialState = {
-  client: client,
+  // client: client,
 };
 
 const __addRoom =

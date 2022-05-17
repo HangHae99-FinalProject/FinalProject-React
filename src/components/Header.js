@@ -91,9 +91,17 @@ function Header(props) {
               <img src={logo} alt="logo" style={{ height: "40px" }} />
             </Grid>
             <Grid sx={{ width: "30%" }}>
-              <Grid container direction="row" justifyContent="space-between" alignItems="center">
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
                 {isCookies === true ? (
-                  <Grid sx={{ display: { cursor: "pointer" } }} onClick={goChat}>
+                  <Grid
+                    sx={{ display: { cursor: "pointer" } }}
+                    onClick={goChat}
+                  >
                     <Badge badgeContent={4} color="error">
                       <Typography>ChatOn</Typography>
                     </Badge>

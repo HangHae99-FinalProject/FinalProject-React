@@ -35,13 +35,13 @@ function App() {
   // useEffect(() => {
   //   dispatch(userActions.__loginCheck());
   // }, []);
-  // const client = useSelector((state) => state.chat.client);
+  const client = useSelector((state) => state.chat.client);
 
-  // useEffect(() => {
-  //   client.connect({}, () => {
-  //     dispatch(chatActions.setStomp(client));
-  //   });
-  // }, []);
+  useEffect(() => {
+    client.connect({}, () => {
+      dispatch(chatActions.setStomp(client));
+    });
+  }, []);
 
   return (
     <>

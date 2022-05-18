@@ -1,6 +1,5 @@
 import instance, { notLogin } from "./api";
 import axios from "axios";
-import { notLogin } from "./api";
 
 export const userApi = {
   signup: (memberId, password, pwCheck) =>

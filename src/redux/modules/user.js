@@ -37,7 +37,7 @@ const checkEmailDup = createAction(CHECK_EMAIL_DUP, (checkEmailAlert) => ({
   checkEmailAlert,
 }));
 const initCheckEmailDup = createAction(INIT_CHECK_EMAIL_DUP, () => ({}));
-const kakaoLogin = createAction(KAKAO_LOGIN, (user) => ({ user }));
+const kakaoLogin = createAction(KAKAO_LOGIN, (user, id) => ({ user, id }));
 //initialState
 const initialState = {
   isLogin: false,
@@ -49,6 +49,8 @@ const initialState = {
   checkEmailDup: {},
   checkNicknameDup: {},
   initInput: "",
+  profileSet: true,
+  kakaoId: "",
 };
 
 const userInitial = {
@@ -57,10 +59,13 @@ const userInitial = {
 
 //middleware actions
 const __kakaoLogin = (code) => {
-  return async function (dispatch, getState, { hisory }) {
+  return async function (dispatch, getState, { history }) {
     try {
-      const { data } = await userApi.kakaoGet(code);
+      const data = await userApi.kakaoGet(code);
       console.log(data);
+      if (data.data.profileSet === false) {
+        dispatch(kakaoLogin(data.data.profileSet, data.data.id));
+      }
     } catch (err) {
       console.log(err);
     }
@@ -140,8 +145,6 @@ const __signup = (memberId, password, pwCheck) => {
 const __additionalInfo = (_userId, nickname, major) => {
   return async (dispatch, getState, { history }) => {
     try {
-      const _userId = localStorage.getItem("userId");
-      console.log(_userId);
       const additionalInfo = await axios.post(
         "https://everymohum.shop/user/signup/addInfo",
         {
@@ -267,6 +270,12 @@ export default handleActions(
     [INIT_CHECK_EMAIL_DUP]: (state, action) =>
       produce(state, (draft) => {
         draft.checkEmailDup = {};
+      }),
+    [KAKAO_LOGIN]: (state, action) =>
+      produce(state, (draft) => {
+        console.log(action.payload.user);
+        draft.profileSet = action.payload.user;
+        draft.kakaoId = action.payload.id;
       }),
   },
   initialState

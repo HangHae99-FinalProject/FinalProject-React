@@ -4,7 +4,7 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { chatApi } from "../../api/chatApi";
 
-const sockjs = new SockJS("http://3.34.135.82:8080/webSocket");
+const sockjs = new SockJS("https://everymohum.shop/webSocket");
 const client = Stomp.over(sockjs);
 
 client.debug = null;
@@ -26,7 +26,7 @@ const __addRoom =
   async (dispatch, getState, { history }) => {
     try {
       const res = await chatApi.addRoom(data);
-      console.log(res);
+
       history.push({
         pathname: `/chat`,
         state: {
@@ -54,7 +54,6 @@ const actionCreators = {
   setStomp,
   __addRoom,
   addRoom,
-  // __roadRoom,
   roadRoom,
 };
 

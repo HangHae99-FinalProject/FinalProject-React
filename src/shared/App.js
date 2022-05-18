@@ -29,6 +29,7 @@ import Chatting from "../pages/Chatting";
 import { actionCreators as chatActions } from "../redux/modules/chat";
 import styled from "styled-components";
 import Landing from "../pages/Landing";
+import OAuthRedirect from "../components/OAuthRedirect";
 
 function App() {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ function App() {
           <Route path="/main" exact component={Main} />
           <Route path="/signup" exact component={Signup} />
           <Route path="/login" exact component={Login} />
+          <Route path="/user/kakao/login" exact component={OAuthRedirect} />
           <Route path="/post/:id" exact component={Post} />
           <Route path="/detail/:postid" exact component={Detail} />
           <Route path="/detail" exact component={Detail} />
@@ -73,7 +75,6 @@ function App() {
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  /* background-color: #fffcf2; */
   margin: 0;
 `;
 

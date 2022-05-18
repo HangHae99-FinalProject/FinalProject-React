@@ -10,9 +10,6 @@ import { actionCreates as PostActions } from "../redux/modules/post";
 import { useParams, useLocation } from "react-router-dom";
 import Comment from "../components/Detail/Comment";
 import { imgActions } from "../redux/modules/image";
-import ModalImage from "../assets/Modal.svg";
-import Cookies from "universal-cookie";
-import { fontWeight } from "@mui/system";
 import Footer from "../elements/Footer";
 
 const Detail = () => {
@@ -166,7 +163,6 @@ const Detail = () => {
         <MidBox>
           <LeftBox>
             <p>{detailList.title}</p>
-
             <ButtonBox>
               {detailList.majorList?.map((a, idx) => {
                 return (

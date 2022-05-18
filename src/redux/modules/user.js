@@ -16,7 +16,7 @@ const LOG_IN = "user/LOG_IN";
 const LOG_OUT = "user/LOG_OUT";
 const CHECK_EMAIL_DUP = "user/CHECK_EMAIL_DUP";
 const INIT_CHECK_EMAIL_DUP = "user/INIT_CHECK_EMAIL_DUP";
-
+const KAKAO_LOGIN = "KAKAO_LOGIN";
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
 // const logIn = (user) => {
@@ -30,11 +30,14 @@ const INIT_CHECK_EMAIL_DUP = "user/INIT_CHECK_EMAIL_DUP";
 //     }
 //   }
 // };
+
 const login = createAction(LOG_IN, (user) => ({ user }));
 const logout = createAction(LOG_OUT, (user) => ({ user }));
-const checkEmailDup = createAction(CHECK_EMAIL_DUP, (checkEmailAlert) => ({ checkEmailAlert }));
+const checkEmailDup = createAction(CHECK_EMAIL_DUP, (checkEmailAlert) => ({
+  checkEmailAlert,
+}));
 const initCheckEmailDup = createAction(INIT_CHECK_EMAIL_DUP, () => ({}));
-
+const kakaoLogin = createAction(KAKAO_LOGIN, (user) => ({ user }));
 //initialState
 const initialState = {
   isLogin: false,
@@ -53,6 +56,17 @@ const userInitial = {
 };
 
 //middleware actions
+const __kakaoLogin = (code) => {
+  return async function (dispatch, getState, { hisory }) {
+    try {
+      const { data } = await userApi.kakaoGet(code);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 const __login = (_memberId, password) => {
   return async function (dispatch, getState, { history }) {
     try {
@@ -61,12 +75,22 @@ const __login = (_memberId, password) => {
         memberId: _memberId,
         password,
       });
-      const { accessToken, refreshToken, accessTokenExpiresIn } = loginData.data.data.token;
+      const { accessToken, refreshToken, accessTokenExpiresIn } =
+        loginData.data.data.token;
       // console.log(accessToken)
       // console.log(refreshToken)
       // console.log(accessTokenExpiresIn)
       const { sub, memberId, nickname, major } = jwt_decode(accessToken);
-      console.log("userid:", sub, "memberId:", memberId, "닉네임:", nickname, "전공:", major);
+      console.log(
+        "userid:",
+        sub,
+        "memberId:",
+        memberId,
+        "닉네임:",
+        nickname,
+        "전공:",
+        major
+      );
       cookies.set("accessToken", accessToken, {
         path: "/",
         maxAge: 3600, // 60분
@@ -99,7 +123,9 @@ const __signup = (memberId, password, pwCheck) => {
       console.log(signup);
       localStorage.setItem("userId", signup.data.data.userId);
       if (signup.data) {
-        window.alert("회원가입이 완료되었습니다. 추가 정보를 입력하시면 사용이 편리해집니다.");
+        window.alert(
+          "회원가입이 완료되었습니다. 추가 정보를 입력하시면 사용이 편리해집니다."
+        );
         // history.replace("/login");
       }
     } catch (err) {
@@ -115,12 +141,15 @@ const __additionalInfo = (_userId, nickname, major) => {
   return async (dispatch, getState, { history }) => {
     try {
       const _userId = localStorage.getItem("userId");
-      console.log(_userId)
-      const additionalInfo = await axios.post("https://everymohum.shop/user/signup/addInfo", {
-        userId: _userId,
-        nickname:nickname,
-        major:major,
-      });
+      console.log(_userId);
+      const additionalInfo = await axios.post(
+        "https://everymohum.shop/user/signup/addInfo",
+        {
+          userId: _userId,
+          nickname: nickname,
+          major: major,
+        }
+      );
       console.log(additionalInfo);
       // localStorage.setItem("userId", signup.data.data.userId);
       if (additionalInfo.data) {
@@ -141,9 +170,12 @@ const __emailCheck =
   (email) =>
   async (dispatch, getState, { hisory }) => {
     try {
-      const checkEmailAlert = await axios.post("https://everymohum.shop/user/emailCheck", {
-        email,
-      });
+      const checkEmailAlert = await axios.post(
+        "https://everymohum.shop/user/emailCheck",
+        {
+          email,
+        }
+      );
       console.log(checkEmailAlert);
       // dispatch(checkEmailDup(checkEmailAlert));
       if (checkEmailAlert.data.errorCode === "200") {
@@ -250,6 +282,8 @@ const actionCreators = {
   __loginCheck,
   login,
   initCheckEmailDup,
+  kakaoLogin,
+  __kakaoLogin,
   __additionalInfo,
 };
 

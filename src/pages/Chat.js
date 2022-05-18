@@ -15,10 +15,8 @@ import { actionCreators as chatActions } from "../redux/modules/chat";
 import Spinner from "../components/Spinner";
 
 const Chat = (data) => {
-  console.log(data);
-  const dispatch = useDispatch();
   const client = useSelector((state) => state.chat.client);
-  console.log(client);
+
   const nickName = localStorage.getItem("nickname");
   const myUserId = localStorage.getItem("userId");
 
@@ -81,29 +79,29 @@ const Chat = (data) => {
     if (e.key !== "Enter") {
       return;
     }
-    sendMessage();
+    // sendMessage();
   };
 
   const _onChange = useCallback((e) => {
     setCurrentMes(e.target.value);
   }, []);
 
-  const sendMessage = () => {
-    const messageDto = {
-      type: "TALK",
-      message: currentMes,
-      roomName: roomName,
-      senderId: myUserId,
-      receiverId: receiverId,
-    };
-    if (currentMes === "") {
-      return;
-    } else if (active === true) {
-      return;
-    }
-    client.send("/pub/message", {}, JSON.stringify(messageDto));
-    setCurrentMes("");
-  };
+  // const sendMessage = () => {
+  //   const messageDto = {
+  //     type: "TALK",
+  //     message: currentMes,
+  //     roomName: roomName,
+  //     senderId: myUserId,
+  //     receiverId: receiverId,
+  //   };
+  //   if (currentMes === "") {
+  //     return;
+  //   } else if (active === true) {
+  //     return;
+  //   }
+  //   client.send("/pub/message", {}, JSON.stringify(messageDto));
+  //   setCurrentMes("");
+  // };
 
   const roomOut = () => {
     const box = {
@@ -283,7 +281,7 @@ const Chat = (data) => {
               <IoPaperPlane
                 className="send-chat-icon"
                 size="30"
-                onClick={sendMessage}
+                // onClick={sendMessage}
               />
             </Grid>
           </ChatInput>

@@ -100,7 +100,7 @@ function Header(props) {
                   </Grid>
                 ) : null}
                 {isCookies === true ? (
-                  <Grid sx={{ display: { cursor: "pointer" } }} onClick={"/"}>
+                  <Grid sx={{ display: { cursor: "pointer" } }}>
                     <Typography>등대</Typography>
                   </Grid>
                 ) : null}

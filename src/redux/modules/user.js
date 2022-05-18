@@ -56,25 +56,17 @@ const userInitial = {
 const __login = (_memberId, password) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const loginData = await axios.post("http://3.34.135.82:8080/user/login", {
-        memberId:_memberId,
+      // const loginData = await userApi.login( _memberId , password);
+      const loginData = await axios.post("https://everymohum.shop/user/login", {
+        memberId: _memberId,
         password,
       });
-      const {accessToken, refreshToken, accessTokenExpiresIn } = loginData.data.data.token
+      const { accessToken, refreshToken, accessTokenExpiresIn } = loginData.data.data.token;
       // console.log(accessToken)
       // console.log(refreshToken)
       // console.log(accessTokenExpiresIn)
       const { sub, memberId, nickname, major } = jwt_decode(accessToken);
-      console.log(
-        "userid:",
-        sub,
-        "memberId:",
-        memberId,
-        "닉네임:",
-        nickname,
-        "전공:",
-        major
-      );
+      console.log("userid:", sub, "memberId:", memberId, "닉네임:", nickname, "전공:", major);
       cookies.set("accessToken", accessToken, {
         path: "/",
         maxAge: 3600, // 60분
@@ -99,16 +91,42 @@ const __login = (_memberId, password) => {
 const __signup = (memberId, password, pwCheck) => {
   return async (dispatch, getState, { history }) => {
     try {
-      const signup = await axios.post("http://3.34.135.82:8080/user/signup", {
+      const signup = await axios.post("https://everymohum.shop/user/signup", {
         memberId,
         password,
         pwCheck,
       });
       console.log(signup);
-      // if (signup.data) {
-      //   window.alert("회원가입이 완료되었습니다.");
-      //   history.replace("/login");
-      // }
+      localStorage.setItem("userId", signup.data.data.userId);
+      if (signup.data) {
+        window.alert("회원가입이 완료되었습니다. 추가 정보를 입력하시면 사용이 편리해집니다.");
+        // history.replace("/login");
+      }
+    } catch (err) {
+      console.log(err);
+      if (err.errorCode === 400) {
+        window.alert("오류가 발생했습니다.");
+        console.log(err.errorCode, err.errorMessage);
+      }
+    }
+  };
+};
+const __additionalInfo = (_userId, nickname, major) => {
+  return async (dispatch, getState, { history }) => {
+    try {
+      const _userId = localStorage.getItem("userId");
+      console.log(_userId)
+      const additionalInfo = await axios.post("https://everymohum.shop/user/signup/addInfo", {
+        userId: _userId,
+        nickname:nickname,
+        major:major,
+      });
+      console.log(additionalInfo);
+      // localStorage.setItem("userId", signup.data.data.userId);
+      if (additionalInfo.data) {
+        window.alert("로그인 페이지로 이동합니다.");
+        history.replace("/login");
+      }
     } catch (err) {
       console.log(err);
       if (err.errorCode === 400) {
@@ -123,7 +141,7 @@ const __emailCheck =
   (email) =>
   async (dispatch, getState, { hisory }) => {
     try {
-      const checkEmailAlert = await axios.post("http://3.34.135.82:8080/user/emailCheck", {
+      const checkEmailAlert = await axios.post("https://everymohum.shop/user/emailCheck", {
         email,
       });
       console.log(checkEmailAlert);
@@ -232,6 +250,7 @@ const actionCreators = {
   __loginCheck,
   login,
   initCheckEmailDup,
+  __additionalInfo,
 };
 
 export { actionCreators };

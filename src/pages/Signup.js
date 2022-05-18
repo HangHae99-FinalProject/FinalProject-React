@@ -24,19 +24,6 @@ import Popover from "@mui/material/Popover";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 
-function IdFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    if (focused) {
-      return "예. 영문 대소문자, 한글, 숫자 포함 4~12자 입니다.";
-    }
-
-    return "아이디를 입력해 주세요.";
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
 function PwFormHelperText() {
   const { focused } = useFormControl() || {};
 
@@ -59,19 +46,6 @@ function PwCfnFormHelperText() {
     }
 
     return "비밀번호를 다시 입력해 주세요.";
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
-function NicknameFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    if (focused) {
-      return "영문 대소문자, 한글, 숫자 포함 4~10자 입니다.";
-    }
-
-    return "닉네임을 입력해 주세요.";
   }, [focused]);
 
   return <FormHelperText>{helperText}</FormHelperText>;
@@ -112,13 +86,47 @@ const Signup = () => {
   const [nickname, setNickname] = React.useState("");
   const [major, setMajor] = React.useState("");
   const [activationBtn, setActivationBtn] = React.useState(false);
-  const [checkMemberIdError, setCheckMemberError] = React.useState(false);
+  const [checkMemberIdError, setCheckMemberIdError] = React.useState(null);
+  const [checkNicknameError, setCheckNicknameError] = React.useState(null);
   console.log(checkMemberIdError);
 
   //중복검사 상태관리
   const [emailCheck, setEmailCheck] = React.useState(false);
   const [nicknameCheck, setNicknameCheck] = React.useState(false);
 
+  function IdFormHelperText() {
+    const { focused } = useFormControl() || {};
+
+    const helperText = React.useMemo(() => {
+      if (focused) {
+        return "예. 영문 대소문자, 한글, 숫자 포함 4~12자 입니다.";
+      } else if (checkMemberIdError === false) {
+        return "중복된 아이디입니다.";
+      } else if (checkMemberIdError === true) {
+        return "사용 가능한 아이디입니다.";
+      }
+      return "아이디를 입력해 주세요.";
+    }, [focused]);
+
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
+  function NicknameFormHelperText() {
+    const { focused } = useFormControl() || {};
+
+    const helperText = React.useMemo(() => {
+      if (focused) {
+        return "예. 영문 대소문자, 한글, 숫자 포함 4~10자 입니다.";
+      } else if (checkNicknameError === false) {
+        return "중복된 닉네임입니다.";
+      } else if (checkNicknameError === true) {
+        return "사용 가능한 닉네임입니다.";
+      }
+
+      return "닉네임을 입력해 주세요.";
+    }, [focused]);
+
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
   const onMemberIdHandler = (e) => {
     e.preventDefault();
     setMemberId(e.target.value);
@@ -140,25 +148,34 @@ const Signup = () => {
   };
   // console.log(major);
   const memberIdCheckBtn = async () => {
-    // console.log("멤버아이디:", memberId);
-    // dispatch(userActions.__emailCheck(memberId));
-    // userApi.memberIdCheck(memberId)
     try {
-      const checkMemberId = await axios.post("http://3.34.135.82:8080/user/memberIdCheck", {
+      const checkMemberId = await axios.post("https://everymohum.shop/user/memberIdCheck", {
         memberId,
       });
-      console.log(checkMemberId);
+      console.log(checkMemberId.status);
+      checkMemberId.status == 200 && setCheckMemberIdError(true);
+      // window.alert("사용이 가능한 아이디입니다.");
     } catch (err) {
       console.log(err);
-      setCheckMemberError(true);
+      setCheckMemberIdError(false);
+      // window.alert("중복된 아이디입니다.");
     }
-    
   };
 
-  const nicknameCheckBtn = () => {
-    console.log("닉네임체크:", nickname);
-    // dispatch(userAction.__nicknameCheck(nickname))
-    
+  const nicknameCheckBtn = async () => {
+    try {
+      const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
+        nickname,
+        major,
+      });
+      console.log(checkNickname.status);
+      checkNickname.status == 200 && setCheckNicknameError(true);
+      // window.alert("사용이 가능한 아이디입니다.");
+    } catch (err) {
+      console.log(err);
+      setCheckNicknameError(false);
+      // window.alert("중복된 아이디입니다.");
+    }
   };
 
   const goHome = () => {
@@ -175,10 +192,7 @@ const Signup = () => {
       window.alert("이메일 형식을 확인해주세요.");
       return;
     }
-    // if (!nicknameCheckRE(nickname)) {
-    //   window.alert("닉네임 형식을 확인해주세요.");
-    //   return;
-    // }
+
     if (!pwCheckRE(password)) {
       window.alert("패스워드 형식을 확인해주세요.");
       return;
@@ -195,8 +209,10 @@ const Signup = () => {
       window.alert("닉네임 형식을 확인해주세요.");
       return;
     }
-
-    // dispatch(userActions.__signup(nickname, major));
+    
+    const _userId = localStorage.getItem("userId");
+    dispatch(userActions.__additionalInfo(_userId, nickname, major));
+    console.log(nickname, major);
   };
 
   React.useEffect(() => {
@@ -211,76 +227,96 @@ const Signup = () => {
       <Grid>
         <Modal
           open={open}
-          onClose={handleClose}
+          // onClose={handleClosse}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
-            <Grid container direction="column" justifyContent="center" alignItems="center">
-              <img src={require(`../assets/signupLogo.png`)} alt="signupLogo" />
-              <Grid container direction="row" justifyContent="space-between" alignItems="center">
-                <OutlinedInput
-                  required
-                  name="nickname"
-                  type="text"
-                  id="myNickname"
-                  placeholder="닉네임을 입력해 주세요"
-                  variant="standard"
-                  onChange={onNicknameHandler}
-                  sx={{ width: "65%" }}
-                />
-                <Grid>
-                  <Button
-                    variant="outlined"
-                    onClick={nicknameCheckBtn}
-                    sx={{ width: "110px", height: "55px", padding: "0" }}
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              goAdditionalInfo();
+            }}
+          >
+            <Box sx={style}>
+              <Grid container direction="column" justifyContent="center" alignItems="center">
+                <img src={require(`../assets/signupLogo.png`)} alt="signupLogo" />
+                <FormControl sx={{ width: "100%" }}>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
                   >
-                    중복확인
-                  </Button>
-                </Grid>
-              </Grid>
-              <Grid sx={{ marginTop: "20px" }}>
-                <Box sx={{ width: "480px" }}>
-                  <FormControl fullWidth>
-                    <Select
+                    <OutlinedInput
                       required
-                      labelId="major"
-                      id="demo-simple-select"
-                      value={major}
-                      displayEmpty
-                      onChange={onMajorHandler}
-                      inputProps={{ "aria-label": "select major" }}
-                    >
-                      <MenuItem disabled value="">
-                        <em style={{ color: "#888888", fontStyle: "normal" }}>
-                          전공을 선택해 주세요
-                        </em>
-                      </MenuItem>
-                      <MenuItem value={"미술/디자인"}>미술/디자인</MenuItem>
-                      <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
-                      <MenuItem value={"영상"}>영상</MenuItem>
-                      <MenuItem value={"사진"}>사진</MenuItem>
-                      <MenuItem value={"모델"}>모델</MenuItem>
-                      <MenuItem value={"배우"}>배우</MenuItem>
-                      <MenuItem value={"성우"}>성우</MenuItem>
-                      <MenuItem value={"음향"}>음향</MenuItem>
-                    </Select>
-                    <MajorFormHelperText />
-                  </FormControl>
+                      name="nickname"
+                      type="text"
+                      id="myNickname"
+                      placeholder="닉네임을 입력해 주세요"
+                      variant="standard"
+                      onChange={onNicknameHandler}
+                      sx={{ width: "65%" }}
+                    />
+                    <Grid>
+                      <Button
+                        variant="outlined"
+                        onClick={nicknameCheckBtn}
+                        sx={{ width: "110px", height: "55px", padding: "0" }}
+                      >
+                        중복확인
+                      </Button>
+                    </Grid>
+                  </Grid>
+                  <NicknameFormHelperText />
+                </FormControl>
+                <Grid sx={{ marginTop: "20px" }}>
+                  <Box sx={{ width: "480px" }}>
+                    <FormControl fullWidth>
+                      <Select
+                        required
+                        labelId="major"
+                        id="demo-simple-select"
+                        value={major}
+                        displayEmpty
+                        onChange={onMajorHandler}
+                        inputProps={{ "aria-label": "select major" }}
+                      >
+                        <MenuItem disabled value="">
+                          <em style={{ color: "#888888", fontStyle: "normal" }}>
+                            전공을 선택해 주세요
+                          </em>
+                        </MenuItem>
+                        <MenuItem value={"미술/디자인"}>미술/디자인</MenuItem>
+                        <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
+                        <MenuItem value={"영상"}>영상</MenuItem>
+                        <MenuItem value={"사진"}>사진</MenuItem>
+                        <MenuItem value={"모델"}>모델</MenuItem>
+                        <MenuItem value={"배우"}>배우</MenuItem>
+                        <MenuItem value={"성우"}>성우</MenuItem>
+                        <MenuItem value={"음향"}>음향</MenuItem>
+                      </Select>
+                      <MajorFormHelperText />
+                    </FormControl>
+                  </Box>
+                </Grid>
+                <Box>
+                  {checkNicknameError === false ? (
+                    <Button disabled type="submit" variant="contained">
+                      등록완료
+                    </Button>
+                  ) : checkNicknameError === null ? (
+                    <Button disabled type="submit" variant="contained">
+                      등록완료
+                    </Button>
+                  ) : (
+                    <Button type="submit" variant="contained">
+                      등록완료
+                    </Button>
+                  )}
                 </Box>
               </Grid>
-              <Box>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    history.replace("/login");
-                  }}
-                >
-                  다음으로
-                </Button>
-              </Box>
-            </Grid>
-          </Box>
+            </Box>
+          </form>
         </Modal>
       </Grid>
       {/* 여기까지가 추가정보 기입 모달 */}
@@ -378,7 +414,11 @@ const Signup = () => {
             margin="30px auto"
           >
             <Stack spacing={4} direction="row">
-              {/* {activationBtn === false ? (
+              {checkMemberIdError === false ? (
+                <Button disabled type="submit" variant="contained">
+                  Sign Up
+                </Button>
+              ) : checkMemberIdError === null ? (
                 <Button disabled type="submit" variant="contained">
                   Sign Up
                 </Button>
@@ -386,10 +426,10 @@ const Signup = () => {
                 <Button type="submit" variant="contained">
                   Sign Up
                 </Button>
-              )} */}
-              <Button type="submit" variant="contained">
+              )}
+              {/* <Button type="submit" variant="contained">
                 Sign Up
-              </Button>
+              </Button> */}
               <Button variant="outlined" onClick={goHome}>
                 cancel
               </Button>

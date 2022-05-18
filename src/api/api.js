@@ -6,7 +6,7 @@ const cookies = new Cookies();
 axios.defaults.withCredentials = true;
 
 const instance = axios.create({
-  baseURL: "http://3.34.135.82:8080/",
+  baseURL: "https://everymohum.shop/",
   headers: { "content-type": "application/json;charset=UTF-8" },
 });
 
@@ -19,14 +19,14 @@ instance.interceptors.request.use(function (config) {
 });
 
 export const notLogin = axios.create({
-  baseURL: "http://3.34.135.82:8080/",
+  baseURL: "https://everymohum.shop/",
   headers: {
     "content-type": "multipart/form-data",
   },
 });
 
 export const formDataApi = axios.create({
-  baseURL: "http://3.34.135.82:8080/",
+  baseURL: "https://everymohum.shop/",
   headers: {
     "content-type": "multipart/form-data",
   },

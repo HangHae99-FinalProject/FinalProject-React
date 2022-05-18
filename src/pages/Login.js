@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
-import { memberIdCheckRE, pwCheckRE } from "../shared/common";
+import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
 import kakaoBtn from "../assets/kakao_login.png";
 
 //MUI import
@@ -14,6 +14,11 @@ import Grid from "../elements/Grid";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import axios from "axios";
+import Box from "@mui/material/Box";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 function IdFormHelperText() {
   const { focused } = useFormControl() || {};
@@ -50,9 +55,10 @@ const Login = () => {
   const apiKey = process.env.REACT_APP_KAKAO_API_KEY;
   const redirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUri}&response_type=code`;
-  console.log(apiKey);
-  console.log(redirectUri);
-  console.log(kakaoUrl);
+
+  const onLoginHandler = () => {
+    window.location.href = kakaoUrl;
+  };
 
   const onMemberIdHandler = (e) => {
     setmemberId(e.target.value);
@@ -130,13 +136,7 @@ const Login = () => {
             </Stack>
           </Grid>
         </form>
-        <img
-          src={kakaoBtn}
-          alt="kakaoLogin"
-          onClick={() => {
-            window.location.href = kakaoUrl;
-          }}
-        />
+        <img src={kakaoBtn} alt="kakaoLogin" onClick={onLoginHandler} />
       </Grid>
     </React.Fragment>
   );

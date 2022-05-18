@@ -6,6 +6,7 @@ import ChattingItem from "../components/Chat/ChattingItem";
 import { actionCreators as chatActios } from "../redux/modules/chat";
 
 const Chatting = () => {
+  const dispatch = useDispatch();
   const client = useSelector((state) => state.chat.client);
 
   const [rooms, setRooms] = useState([]);
@@ -22,14 +23,17 @@ const Chatting = () => {
     chatApi
       .roadRoom()
       .then((res) => {
+        // client.connect({}, () => {
+        //   dispatch(chatActios.setStomp(client));
+        // });
         console.log(res.data);
         setRooms(res.data);
       })
       .catch((err) => console.log(err));
-    client.subscribe(`/sub/${myUserId}`, (data) => {
-      const onMessage = JSON.parse(data.body);
-      setNewMsgData(onMessage);
-    });
+    // client.subscribe(`/sub/${myUserId}`, (data) => {
+    //   const onMessage = JSON.parse(data.body);
+    //   setNewMsgData(onMessage);
+    // });
   }, []);
   return (
     <BackImage>

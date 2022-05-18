@@ -1,7 +1,17 @@
 /* eslint-disable*/
 import React, { useEffect, useState } from "react";
 import _styled from "styled-components";
-import { pro1, pro2, pro3, pro4, pro5, pro6, pro7, pro8, pro9 } from "../assets/profileImage/ProfileImgs";
+import {
+  pro1,
+  pro2,
+  pro3,
+  pro4,
+  pro5,
+  pro6,
+  pro7,
+  pro8,
+  pro9,
+} from "../assets/profileImage/ProfileImgs";
 import { Grid } from "../elements/Index";
 import Uploads from "../elements/Upload";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +35,9 @@ import { get } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
 const EditUser = () => {
+  console.log(
+    "https://velog.velcdn.com/images/tty5799/post/4c81b900-5ebd-491e-8f9c-4dbb464c277f/image.png"
+  );
   const param = useParams();
   const dispatch = useDispatch();
   const getUserInfo = useSelector((state) => state.myPage?.userInfo);
@@ -36,8 +49,12 @@ const EditUser = () => {
   const [nickname, setNickname] = useState(getUserInfo?.nickname);
   const [major, setMajor] = useState(getUserInfo?.major);
   const [intro, setIntro] = useState(getUserInfo?.intro);
-  const [portfolioLink, setPortfolioLink] = useState(getUserInfo?.portfolioLink);
-  const [currentImgUrl, setCurrentImgUrl] = useState(getUserInfo?.userPortfolioImgList);
+  const [portfolioLink, setPortfolioLink] = useState(
+    getUserInfo?.portfolioLink
+  );
+  const [currentImgUrl, setCurrentImgUrl] = useState(
+    getUserInfo?.userPortfolioImgList
+  );
   const [profileImgUrl, setProfileImgUrl] = useState(getUserInfo?.profileImg);
   // console.log(nickname);
 
@@ -161,7 +178,9 @@ const EditUser = () => {
             <Profile>
               <img
                 src={
-                  profileImgUrl == getUserInfo.profileImg ? getUserInfo.profileImg : profileImgUrl
+                  profileImgUrl == getUserInfo.profileImg
+                    ? getUserInfo.profileImg
+                    : profileImgUrl
                 }
                 alt="profile"
               />
@@ -173,7 +192,10 @@ const EditUser = () => {
               }}
               onClick={handleClick}
             >
-              <AddCircleRoundedIcon fontSize="large" sx={{ color: "#2967AC" }} />
+              <AddCircleRoundedIcon
+                fontSize="large"
+                sx={{ color: "#2967AC" }}
+              />
             </Badge>
             <Grid_2>
               <Popover
@@ -187,11 +209,25 @@ const EditUser = () => {
                 }}
               >
                 <Grid>
-                  <ImageList sx={{  padding:"28.5px 24px", margin: "0", borderRadius:"5px" }} cols={3} rowHeight={120}>
+                  <ImageList
+                    sx={{
+                      padding: "28.5px 24px",
+                      margin: "0",
+                      borderRadius: "5px",
+                    }}
+                    cols={3}
+                    rowHeight={120}
+                  >
                     {itemData.map((item) => (
                       <ImageListItem
-                      key={item.img}
-                      sx={{ margin:"10.5px 12px", cursor: "pointer", width: "120px", height: "120px", display:"corver" }}
+                        key={item.img}
+                        sx={{
+                          margin: "10.5px 12px",
+                          cursor: "pointer",
+                          width: "120px",
+                          height: "120px",
+                          display: "corver",
+                        }}
                       >
                         <img
                           src={item.img}
@@ -201,7 +237,7 @@ const EditUser = () => {
                           onClick={() => {
                             setProfileImgUrl(item.img);
                           }}
-                          />
+                        />
                       </ImageListItem>
                     ))}
                   </ImageList>
@@ -210,21 +246,38 @@ const EditUser = () => {
             </Grid_2>
           </Grid_2>
           <Grid_2
-            sx={{ marginTop: "24px", minWidth: "640px", width: "auto", maxWidth: "1370px" }}
+            sx={{
+              marginTop: "24px",
+              minWidth: "640px",
+              width: "auto",
+              maxWidth: "1370px",
+            }}
             container
             direction="column"
             justifyContent="flex-start"
             alignItems="flex-start"
           >
             <Grid_2 sx={{ marginTop: "24px" }}>
-              <Grid_2 container direction="row" justifyContent="flex-start" alignItems="center">
+              <Grid_2
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+              >
                 <Grid_2 sx={{ width: "74px" }}></Grid_2>
-                <Grid_2 sx={{ minWidth: "480px", width: "60vw", maxWidth: "700px" }}></Grid_2>
+                <Grid_2
+                  sx={{ minWidth: "480px", width: "60vw", maxWidth: "700px" }}
+                ></Grid_2>
                 <Grid_2>
                   <Button
                     type="submit"
                     variant="contained"
-                    sx={{ marginLeft: "4px", width: "100px", height: "40px", padding: "0" }}
+                    sx={{
+                      marginLeft: "4px",
+                      width: "100px",
+                      height: "40px",
+                      padding: "0",
+                    }}
                   >
                     수정완료
                   </Button>
@@ -253,7 +306,12 @@ const EditUser = () => {
                 <Grid_2>
                   <Button
                     variant="outlined"
-                    sx={{ marginLeft: "4px", width: "100px", height: "40px", padding: "0" }}
+                    sx={{
+                      marginLeft: "4px",
+                      width: "100px",
+                      height: "40px",
+                      padding: "0",
+                    }}
                   >
                     중복확인
                   </Button>
@@ -274,11 +332,17 @@ const EditUser = () => {
                   <Category>
                     <CateBtn
                       onClick={() => {
-                        major === "미술/디자인" ? setMajor("") : setMajor("미술/디자인");
+                        major === "미술/디자인"
+                          ? setMajor("")
+                          : setMajor("미술/디자인");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={major === "미술/디자인" ? "default active" : "default"}>
+                      <Grid
+                        _className={
+                          major === "미술/디자인" ? "default active" : "default"
+                        }
+                      >
                         <p>미술/디자인</p>
                       </Grid>
                     </CateBtn>
@@ -288,7 +352,9 @@ const EditUser = () => {
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={major === "영상" ? "active" : "default"}>
+                      <Grid
+                        _className={major === "영상" ? "active" : "default"}
+                      >
                         <p>영상</p>
                       </Grid>
                     </CateBtn>
@@ -298,7 +364,9 @@ const EditUser = () => {
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={major === "배우" ? "active" : "default"}>
+                      <Grid
+                        _className={major === "배우" ? "active" : "default"}
+                      >
                         <p>배우</p>
                       </Grid>
                     </CateBtn>
@@ -308,17 +376,25 @@ const EditUser = () => {
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={major === "사진" ? "active" : "default"}>
+                      <Grid
+                        _className={major === "사진" ? "active" : "default"}
+                      >
                         <p>사진</p>
                       </Grid>
                     </CateBtn>
                     <CateBtn
                       onClick={() => {
-                        major === "프로그래밍" ? setMajor("") : setMajor("프로그래밍");
+                        major === "프로그래밍"
+                          ? setMajor("")
+                          : setMajor("프로그래밍");
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={major === "프로그래밍" ? "active" : "default"}>
+                      <Grid
+                        _className={
+                          major === "프로그래밍" ? "active" : "default"
+                        }
+                      >
                         <p>프로그래밍</p>
                       </Grid>
                     </CateBtn>
@@ -328,7 +404,9 @@ const EditUser = () => {
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={major === "모델" ? "active" : "default"}>
+                      <Grid
+                        _className={major === "모델" ? "active" : "default"}
+                      >
                         <p>모델</p>
                       </Grid>
                     </CateBtn>
@@ -338,7 +416,9 @@ const EditUser = () => {
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={major === "성우" ? "active" : "default"}>
+                      <Grid
+                        _className={major === "성우" ? "active" : "default"}
+                      >
                         <p>성우</p>
                       </Grid>
                     </CateBtn>
@@ -348,7 +428,9 @@ const EditUser = () => {
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={major === "음향" ? "active" : "default"}>
+                      <Grid
+                        _className={major === "음향" ? "active" : "default"}
+                      >
                         <p>음향</p>
                       </Grid>
                     </CateBtn>
@@ -358,7 +440,9 @@ const EditUser = () => {
                         setSelected(true);
                       }}
                     >
-                      <Grid _className={major === "기타" ? "active" : "default"}>
+                      <Grid
+                        _className={major === "기타" ? "active" : "default"}
+                      >
                         <p>기타</p>
                       </Grid>
                     </CateBtn>
@@ -366,13 +450,22 @@ const EditUser = () => {
                 </Grid_2>
               </Grid_2>
               <Grid_2>
-                <Grid_2 container direction="row" justifyContent="flex-start" alignItems="center">
+                <Grid_2
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                >
                   <Grid_2 sx={{ width: "74px" }}>
                     <Typography>자기소개</Typography>
                   </Grid_2>
                   <Grid_2>
                     <TextField
-                      sx={{ minWidth: "480px", width: "60vw", maxWidth: "700px" }}
+                      sx={{
+                        minWidth: "480px",
+                        width: "60vw",
+                        maxWidth: "700px",
+                      }}
                       id="myIntro"
                       multiline
                       defaultValue={intro}
@@ -397,7 +490,11 @@ const EditUser = () => {
                       multiline
                       defaultValue={portfolioLink}
                       placeholder="동영상 URL을 입력해 주세요."
-                      sx={{ minWidth: "480px", width: "60vw", maxWidth: "700px" }}
+                      sx={{
+                        minWidth: "480px",
+                        width: "60vw",
+                        maxWidth: "700px",
+                      }}
                       onChange={onPortfolioHandler}
                     />
                   </Grid_2>

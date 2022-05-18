@@ -103,6 +103,7 @@ const OAuthRedirect = () => {
     }
 
     // const _userId = localStorage.getItem("userId");
+    console.log(kakaoId);
     dispatch(userActions.__additionalInfo(kakaoId, nickname, major));
     console.log(nickname, major);
   };
@@ -116,7 +117,6 @@ const OAuthRedirect = () => {
   }, [profileSet]);
   useEffect(() => {
     dispatch(userActions.__kakaoLogin(code));
-    console.log(profileSet);
   }, []);
 
   return (

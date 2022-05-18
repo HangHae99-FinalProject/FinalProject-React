@@ -33,9 +33,9 @@ import OAuthRedirect from "../components/OAuthRedirect";
 
 function App() {
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(userActions.__loginCheck());
-  // }, []);
+  useEffect(() => {
+    dispatch(userActions.__loginCheck());
+  }, []);
   const client = useSelector((state) => state.chat.client);
 
   useEffect(() => {

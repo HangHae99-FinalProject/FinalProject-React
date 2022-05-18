@@ -40,6 +40,7 @@ function Header(props) {
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
   console.log(isLogin);
+
   // console.log(id);
 
   // React.useEffect(() => {
@@ -87,9 +88,14 @@ function Header(props) {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
-              <img src={logo} alt="logo" style={{ height: "40px" }} />
-            </Grid>
+            {window.location.pathname === "/main" ? null : (
+              <>
+                <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
+                  <img src={logo} alt="logo" style={{ height: "40px" }} />
+                </Grid>
+              </>
+            )}
+
             <Grid sx={{ width: "30%" }}>
               <Grid
                 container
@@ -97,7 +103,7 @@ function Header(props) {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                {isCookies === true ? (
+                {isLogin && isCookies === true ? (
                   <Grid
                     sx={{ display: { cursor: "pointer" } }}
                     onClick={goChat}
@@ -107,13 +113,13 @@ function Header(props) {
                     </Badge>
                   </Grid>
                 ) : null}
-                {isCookies === true ? (
+                {isLogin && isCookies === true ? (
                   <Grid sx={{ display: { cursor: "pointer" } }}>
                     <Typography>등대</Typography>
                   </Grid>
                 ) : null}
                 <Grid sx={{ display: { cursor: "pointer" } }}>
-                  {isCookies === true ? (
+                  {isLogin && isCookies === true ? (
                     <Grid onClick={goLogout}>
                       <Typography>Logout</Typography>
                     </Grid>
@@ -124,7 +130,7 @@ function Header(props) {
                   )}
                 </Grid>
                 <Grid sx={{ display: { cursor: "pointer" } }}>
-                  {isCookies === true ? (
+                  {isLogin && isCookies === true ? (
                     <Typography onClick={goUserPage}>MyPage</Typography>
                   ) : (
                     <Typography onClick={goSignup}>SignUp</Typography>

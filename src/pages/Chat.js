@@ -287,7 +287,7 @@ const Chat = (data) => {
               <IoPaperPlane
                 className="send-chat-icon"
                 size="30"
-                // onClick={sendMessage}
+                onClick={sendMessage}
               />
             </Grid>
           </ChatInput>

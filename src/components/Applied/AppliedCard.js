@@ -9,6 +9,7 @@ import { FiX } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { actionCreates as applyActions } from "../../redux/modules/apply";
+import { history } from "../../redux/configureStore";
 
 const AppliedCard = (item) => {
   const dispatch = useDispatch();
@@ -17,6 +18,10 @@ const AppliedCard = (item) => {
   const refuseDto = {
     userId: item.userId,
     postId: param.postid,
+  };
+
+  const handleUserPage = () => {
+    history.push(`/user/${item.userId}`);
   };
 
   const refuseHandelBtn = () => {
@@ -50,7 +55,12 @@ const AppliedCard = (item) => {
         <FiX className="refuse" onClick={refuseHandelBtn} />
       </RefuseBtn>
       <Profile>
-        <img className="profile" src={item.profileImg} alt="profile" />
+        <img
+          className="profile"
+          src={item.profileImg}
+          alt="profile"
+          onClick={handleUserPage}
+        />
 
         <div className="cardTitle">
           <p style={{ fontSize: "23px", fontWeight: "700" }}>{item.nickname}</p>
@@ -176,6 +186,7 @@ const Profile = styled.div`
     display: flex;
   }
   .profile {
+    cursor: pointer;
     width: 120px;
     height: 120px;
     object-fit: cover;

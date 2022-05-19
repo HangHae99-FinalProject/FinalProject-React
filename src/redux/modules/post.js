@@ -241,10 +241,12 @@ export default handleActions(
     [SET_DETAIL]: (state, action) =>
       produce(state, (draft) => {
         draft.detailList = action.payload.detail_list;
+        draft.is_loading = true;
       }),
     [LOGIN_DETAIL]: (state, action) =>
       produce(state, (draft) => {
         draft.detailList = action.payload.detail_list;
+        draft.is_loading = true;
       }),
     [ADD_APPLY]: (state, action) =>
       produce(state, (draft) => {

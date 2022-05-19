@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
-
+import { history } from "../../redux/configureStore";
 const CommentList = (props) => {
-  console.log(props);
   const dispatch = useDispatch();
   const created = props.createdAt;
   const createdAt = created?.split(" ")[0];
@@ -15,6 +14,14 @@ const CommentList = (props) => {
 
   const userNickName = localNickName === props.nickname ? true : false;
 
+  const handleUserPage = () => {
+    if (!localNickName) {
+      alert("로그인을 먼저 해주세요!");
+      history.push("/login");
+      return;
+    }
+    history.push(`/user/${props.userId}`);
+  };
   const editComment = () => {
     setIs_open(!is_open);
     setIs_comment(props.comment);
@@ -52,7 +59,12 @@ const CommentList = (props) => {
     <>
       <div className="comment">
         <Comments>
-          <img src={props.profileImg} alt="profile" />
+          <img
+            src={props.profileImg}
+            alt="profile"
+            onClick={handleUserPage}
+            style={{ cursor: "pointer" }}
+          />
           <p className="name">{props.nickname}</p>
 
           <p

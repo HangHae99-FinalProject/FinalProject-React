@@ -291,7 +291,7 @@ const MidBox = styled.div`
   height: 126px;
   .Count {
     font-size: 20px;
-    width: 20%;
+    width: 21%;
     margin-right: 78px;
   }
   .title {

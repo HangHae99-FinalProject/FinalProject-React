@@ -38,14 +38,28 @@ const INIT_USER_INFO = "myPage/INIT_USER_INFO";
 //   }
 // };
 const getUser = createAction(GET_USER, (data_list) => ({ data_list }));
-const getApplied = createAction(GET_APPLIED, (appliedData) => ({ appliedData }));
-const getRecruit = createAction(GET_RECRUIT, (recruitData) => ({ recruitData }));
-const getApplier = createAction(GET_APPLIER, (applierData) => ({ applierData }));
-const getRecruitOver = createAction(GET_RECRUIT_OVER, (recruitOverData) => ({ recruitOverData }));
-const getAppliedOver = createAction(GET_APPLIED_OVER, (appliedOverData) => ({ appliedOverData }));
+const getApplied = createAction(GET_APPLIED, (appliedData) => ({
+  appliedData,
+}));
+const getRecruit = createAction(GET_RECRUIT, (recruitData) => ({
+  recruitData,
+}));
+const getApplier = createAction(GET_APPLIER, (applierData) => ({
+  applierData,
+}));
+const getRecruitOver = createAction(GET_RECRUIT_OVER, (recruitOverData) => ({
+  recruitOverData,
+}));
+const getAppliedOver = createAction(GET_APPLIED_OVER, (appliedOverData) => ({
+  appliedOverData,
+}));
 // const setUserInfo = createAction(SET_USER_INFO, (userInfo) => ({ userInfo }));
-const postEvaluation = createAction(POST_EVALUATION, (evaluationData) => ({ evaluationData }));
-const putUserInfoMod = createAction(PUT_USER_INFO_MOD, (userInfoModData) => ({ userInfoModData }));
+const postEvaluation = createAction(POST_EVALUATION, (evaluationData) => ({
+  evaluationData,
+}));
+const putUserInfoMod = createAction(PUT_USER_INFO_MOD, (userInfoModData) => ({
+  userInfoModData,
+}));
 //클린업
 const initUserInfo = createAction(INIT_USER_INFO, () => ({}));
 
@@ -76,6 +90,7 @@ const __getUserInfo = (userId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const { data } = await userInfoApi.getUserInfo(userId);
+
       dispatch(getUser(data));
       //   console.log(data);
     } catch (err) {
@@ -164,6 +179,9 @@ const __postEvaluation = (reqeustUserRate) => {
 //유저 정보 수정
 const __putUserInfoMod = (userId, data, files) => {
   return async function (dispatch, getState, { history }) {
+    console.log(data);
+    const newProfileImg = data.profileImg;
+    localStorage.setItem("profileImg", newProfileImg);
     const formData = new FormData();
     formData.append(
       "requestDto",
@@ -223,10 +241,10 @@ export default handleActions(
         },
         console.log(action)
       ),
-    [INIT_USER_INFO]: (state, {payload}) =>
-    produce(state, (draft) => {
-      draft.userInfo = []
-    })
+    [INIT_USER_INFO]: (state, { payload }) =>
+      produce(state, (draft) => {
+        draft.userInfo = [];
+      }),
   },
   initialState
 );
@@ -243,7 +261,7 @@ const actionCreators = {
   postEvaluation,
   // setUserInfo
   __putUserInfoMod,
-  initUserInfo
+  initUserInfo,
 };
 
 export { actionCreators };

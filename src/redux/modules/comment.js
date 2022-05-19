@@ -44,7 +44,7 @@ const __addComment =
       const createdAt = year + "-" + month + "-" + date;
 
       const nickname = localStorage.getItem("nickname");
-      const profileImg = localStorage.getItem("profileImgUrl");
+      const profileImg = localStorage.getItem("profileImg");
       const commentId = data.data.commentId;
 
       dispatch(

@@ -1,15 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  pro1,
-  pro2,
-  pro3,
-  pro4,
-  pro5,
-  pro6,
-  pro7,
-  pro8,
-  pro9,
-} from "../assets/profileImage/ProfileImgs";
 import amateurCap from "../assets/ama.svg";
 import juniorCap from "../assets/jr.svg";
 import proCap from "../assets/pro.svg";
@@ -21,6 +10,7 @@ import TabPanel from "../components/MyPage/TabPanel";
 import { useDispatch, useSelector } from "react-redux";
 import DetailImage from "../components/Detail/DetailImage";
 import { actionCreators as userInfoActions } from "../redux/modules/myPage";
+import Pagination from "../components/MyPage/Pagination";
 
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -94,7 +84,6 @@ const User = (props) => {
   const getAppliedOverList_reqruit = useSelector(
     (state) => state.myPage.appliedOverList.data?.recruitUserList
   );
-  // const getLikeCount = useSelector((state) => state.user.userInfo.likeCount);
 
   const pathName = useLocation();
   const userId = pathName.pathname.split("/")[2];
@@ -104,8 +93,6 @@ const User = (props) => {
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }
-  // console.log("projectCount", getUserInfo.projectCount);
-  // console.log("likeRatio", likeRatio);
 
   var evaluationGrade = null;
 
@@ -116,15 +103,6 @@ const User = (props) => {
   } else if (71 <= likeRatio <= 100) {
     evaluationGrade = `${likeRatio}% 만족! 프로 선장러`;
   }
-
-  // var medal = ""
-  // if (likeRatio <= 40) {
-  //  medal = <img src={amateurCap} alt="amateurCap"/>
-  // } else if (41 <= likeRatio <= 70) {
-  //   medal=<img src={juniorCap} alt="juniorCap"/>
-  // } else if (71 <= likeRatio <= 100) {
-  //   medal = <img src={proCap} alt="proCap"/>
-  // }
 
   const [value, setValue] = React.useState(0);
 
@@ -553,7 +531,7 @@ const User = (props) => {
             alignItems="flex-start"
           >
             <Typography>나의 프로젝트</Typography>
-            {/* 페이지네이션 */}
+            {/* 페이지네이션 게시물 수 셀렉터 */}
             <label>
               페이지당 표시할 게시물 수:&nbsp;
               <select
@@ -566,41 +544,45 @@ const User = (props) => {
                 <option value="9">9</option>
               </select>
             </label>
-            {/* 여기까지 페이지네이션 */}
+            {/* 여기까지 페이지네이션 게시물 수 셀렉터 */}
           </Grid>
-          <Grid
-            sx={{
-              padding: "0px 20px",
-              borderBottom: 1,
-              borderColor: "divider",
-            }}
-          >
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-            >
-              <Tab sx={{ width: "430px" }} label="신청중" {...a11yProps(0)} />
+
+          <Grid sx={{ padding: "0px 20px", borderBottom: 1, borderColor: "divider" }}>
+            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+              <Tab
+                sx={{ width: "430px" }}
+                label="신청중"
+                {...a11yProps(0)}
+                // onClick={() => {
+                //   dispatch(userInfoActions.__getApplied());
+                // }}
+              />
               <Tab
                 sx={{ width: "430px", marginLeft: "20px", marginRight: "20px" }}
                 label="모집중"
                 {...a11yProps(1)}
+                // onClick={() => {
+                //   dispatch(userInfoActions.__getRecruit());
+                // }}
               />
               <Tab
                 sx={{ width: "430px" }}
                 label="모집완료? 진행완료?"
                 {...a11yProps(2)}
+                // onClick={() => {
+                //   dispatch(userInfoActions.__getRecruitOver());
+                // }}
               />
             </Tabs>
           </Grid>
           {/* 신청중 탭 */}
-          <TabPanel value={value} index={0}>
+          {/* <TabPanel value={value} index={0}>
             <List
               sx={{ padding: "0px 16px", width: "1370px", height: "110px" }}
               component="nav"
               aria-label="mailbox folders"
             >
-              {getAppliedList?.map((appliedList, idx) => {
+              {getAppliedList?.slice(offset, offset + limit)?.map((appliedList, idx) => {
                 return (
                   <ListItem
                     sx={{
@@ -634,8 +616,17 @@ const User = (props) => {
                   </ListItem>
                 );
               })}
+              <footer>
+                <Pagination
+                  total={getAppliedList?.length}
+                  limit={limit}
+                  page={page}
+                  setPage={setPage}
+                />
+              </footer>
             </List>
-          </TabPanel>
+          </TabPanel> */}
+          {/* 여기까지 신청중 탭 */}
           {/* 모집중 탭 */}
           <TabPanel value={value} index={1}>
             <List
@@ -643,7 +634,7 @@ const User = (props) => {
               component="nav"
               aria-label="mailbox folders"
             >
-              {getRecruitList?.map((recruitList, idx) => {
+              {getRecruitList?.slice(offset, offset + limit).map((recruitList, idx) => {
                 return (
                   <ListItem
                     sx={{
@@ -711,6 +702,14 @@ const User = (props) => {
                   </ListItem>
                 );
               })}
+              <footer>
+                <Pagination
+                  total={getRecruitList?.length}
+                  limit={limit}
+                  page={page}
+                  setPage={setPage}
+                />
+              </footer>
             </List>
           </TabPanel>
           {/* 여기까지 모집중 탭 */}
@@ -721,7 +720,7 @@ const User = (props) => {
               component="nav"
               aria-label="mailbox folders"
             >
-              {getRecruitOverList?.map((recruitOverList, idx) => {
+              {getRecruitOverList?.slice(offset, offset + limit).map((recruitOverList, idx) => {
                 return (
                   <ListItem
                     sx={{
@@ -780,8 +779,17 @@ const User = (props) => {
                   </ListItem>
                 );
               })}
+              <footer>
+                <Pagination
+                  total={getRecruitOverList?.length}
+                  limit={limit}
+                  page={page}
+                  setPage={setPage}
+                />
+              </footer>
             </List>
           </TabPanel>
+          {/* 여기까지 모집완료 탭 */}
         </Grid>
       </Grid>
     </Grid>

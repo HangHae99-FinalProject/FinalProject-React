@@ -66,7 +66,7 @@ const __kakaoLogin = (code) => {
         dispatch(kakaoLogin(data.data.profileSet, data.data.userId));
       } else {
         const accessToken = data.data.accessToken;
-        console.log(accessToken);
+
         const { sub, memberId, nickname, major } = jwt_decode(accessToken);
         localStorage.setItem("userId", sub);
         localStorage.setItem("memberId", memberId);
@@ -246,11 +246,12 @@ const __loginCheck = () => {
     if (tokenCheck) {
       dispatch(login());
       return;
-    } else {
-      dispatch(logout());
-      console.log("로그인을 다시 해주세요");
-      history.replace("/");
     }
+    // else {
+    //   dispatch(logout());
+    //   console.log("로그인을 다시 해주세요");
+    //   history.replace("/");
+    // }
   };
 };
 

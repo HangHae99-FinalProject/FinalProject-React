@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import AppliedCard from "../components/Applied/AppliedCard";
 import ApplyCard from "../components/Applied/ApplyCard";
-
+import Footer from "../elements/Footer";
 import ReactModal from "react-modal";
 import Grid from "../elements/Grid";
 import { actionCreates as applyActions } from "../redux/modules/apply";
@@ -20,9 +20,6 @@ const Applied = () => {
   const majorList = subscriber.majorList?.map((a) => a.majorName);
   const numOfPeopleSet = subscriber.majorList?.map((a) => a.numOfPeopleSet);
   const numOfPeopleApply = subscriber.majorList?.map((a) => a.numOfPeopleApply);
-
-  console.log(majorList);
-  console.log(subscriber);
 
   const acceptListList = useSelector(
     (state) => state.apply.acceptListList.applyUserLists
@@ -59,125 +56,184 @@ const Applied = () => {
   }, []);
 
   return (
-    <Container>
-      <HeadBox>
-        <span
-          className={is_open === false ? "active" : "default"}
-          onClick={openHandelBtn}
-        >
-          신청자 목록
-        </span>
-        <span style={{ fontSize: "24px", fontWeight: "700" }}> ㅣ </span>
-        <span
-          className={is_open === true ? "active" : "default"}
-          onClick={openHandelApply}
-        >
-          선장 목록
-        </span>
-      </HeadBox>
-      <MidBox>
-        <span className="Recruitment">모집현황</span>
+    <>
+      <Container>
+        <HeadBox>
+          <span
+            className={is_open === false ? "active" : "default"}
+            onClick={openHandelBtn}
+          >
+            신청자 목록
+          </span>
+          <span style={{ fontSize: "24px", fontWeight: "700" }}> ㅣ </span>
+          <span
+            className={is_open === true ? "active" : "default"}
+            onClick={openHandelApply}
+          >
+            선장 목록
+          </span>
+        </HeadBox>
+        <MidBox>
+          <span className="Recruitment">모집현황</span>
 
-        <ButtonBox>
-          {majorList && numOfPeopleApply && numOfPeopleSet ? (
+          <ButtonBox>
+            {majorList && numOfPeopleApply && numOfPeopleSet ? (
+              <>
+                <Grid
+                  _className={"majorName"}
+                  bg={
+                    majorList[0] === "미술/디자인"
+                      ? "#2967AC"
+                      : majorList[0] === "음향"
+                      ? "#FFB673"
+                      : majorList[0] === "영상"
+                      ? "#6AD8F5"
+                      : majorList[0] === "배우"
+                      ? "#F58467"
+                      : majorList[0] === "프로그래밍"
+                      ? "#5BC8D2"
+                      : majorList[0] === "모델"
+                      ? "#FE674C"
+                      : majorList[0] === "사진"
+                      ? "#4299E9"
+                      : majorList[0] === "성우"
+                      ? "#FFD082"
+                      : "#f5fcff"
+                  }
+                >
+                  {majorList[0]}
+                  {numOfPeopleApply[0]}/{numOfPeopleSet[0]}
+                </Grid>
+                {majorList.length === 1 ? null : majorList.length === 2 ? (
+                  <Grid _className={"PeopleCnt"}>+{majorList.length - 1}</Grid>
+                ) : (
+                  <Grid _className={"PeopleCnt"} _onClick={modalHandelBtn}>
+                    +{majorList.length}
+                  </Grid>
+                )}
+              </>
+            ) : null}
+          </ButtonBox>
+
+          <div className="Line" />
+
+          {is_open === false ? (
+            <div className="midContent">
+              <span className="title">신청한 선장은</span>
+              <span className="Personnel">{subscriberCnt}명</span>
+              <span className="titleLast">이에요.</span>
+              {subscriberCnt === 0 ? (
+                <span className="Count">조금 기다려볼까요??</span>
+              ) : (
+                <span className="Last">마감하고 모험을 떠나볼까요?</span>
+              )}
+
+              <span className="Deadline" onClick={deadlineHandelBtn}>
+                모집마감하기
+              </span>
+            </div>
+          ) : (
+            <div className="midContent">
+              <span className="title">참가한 선장은</span>
+              <span className="Personnel">{acceptListCnt}명</span>
+              <span className="titleLast">이에요.</span>
+              {acceptListCnt === 0 ? (
+                <span className="Count">조금 기다려볼까요??</span>
+              ) : (
+                <span className="Last">마감하고 모험을 떠나볼까요?</span>
+              )}
+              <span className="Deadline" onClick={deadlineHandelBtn}>
+                모집마감하기
+              </span>
+            </div>
+          )}
+        </MidBox>
+        <CardBox>
+          {is_open === false ? (
             <>
-              <Grid _className={"majorName"}>
-                {majorList[0]}
-                {numOfPeopleApply[0]}/{numOfPeopleSet[0]}
-              </Grid>
-              <Grid _className={"PeopleCnt"} _onClick={modalHandelBtn}>
-                +{majorList.length}
-              </Grid>
+              {subscriberList?.map((a, idx) => {
+                return <ApplyCard {...a} id={id} key={idx} />;
+              })}
             </>
-          ) : null}
-        </ButtonBox>
+          ) : (
+            <>
+              {acceptListList?.map((a, idx) => {
+                return <AppliedCard {...a} key={idx} />;
+              })}
+            </>
+          )}
+        </CardBox>
 
-        <div className="Line" />
-
-        {is_open === false ? (
-          <div className="midContent">
-            <span className="title">신청한 선장은</span>
-            <span className="Personnel">{subscriberCnt}명</span>
-            <span className="titleLast">이에요.</span>
-            {subscriberCnt === 0 ? (
-              <span className="Count">조금 기다려볼까요??</span>
-            ) : (
-              <span className="Last">마감하고 모험을 떠나볼까요?</span>
-            )}
-
-            <span className="Deadline" onClick={deadlineHandelBtn}>
-              모집마감하기
+        <ReactModal
+          state={ModalState}
+          isOpen={ModalState}
+          ariaHideApp={false}
+          onRequestClose={() => setModalState(false)}
+          closeTimeoutMS={200}
+          style={{
+            overlay: {
+              zIndex: 3,
+              backgroundColor: "rgba(0,0,0,0.5)",
+            },
+            content: {
+              borderRadius: "20px",
+              top: "calc(100% - 620px)",
+              maxHeight: "343px",
+              height: "auto",
+              display: "flex",
+              width: "200px",
+              left: "calc(100% - 1500px)",
+              padding: 0,
+              transition: "0.3s",
+            },
+          }}
+        >
+          <ModalGrid>
+            <ModalMajor>
+              {subscriber.majorList?.map((a, idx) => {
+                return (
+                  <Grid
+                    key={idx}
+                    _className="majorName"
+                    bg={
+                      a.majorName === "미술/디자인"
+                        ? "#2967AC"
+                        : a.majorName === "음향"
+                        ? "#FFB673"
+                        : a.majorName === "영상"
+                        ? "#6AD8F5"
+                        : a.majorName === "배우"
+                        ? "#F58467"
+                        : a.majorName === "프로그래밍"
+                        ? "#5BC8D2"
+                        : a.majorName === "모델"
+                        ? "#FE674C"
+                        : a.majorName === "사진"
+                        ? "#4299E9"
+                        : a.majorName === "성우"
+                        ? "#FFD082"
+                        : "#f5fcff"
+                    }
+                  >
+                    <p>
+                      {a.majorName}ㅣ{a.numOfPeopleApply}/{a.numOfPeopleSet}
+                    </p>
+                  </Grid>
+                );
+              })}
+            </ModalMajor>
+            <span
+              onClick={() => {
+                setModalState(false);
+              }}
+            >
+              확인
             </span>
-          </div>
-        ) : (
-          <div className="midContent">
-            <span className="title">참가한 선장은</span>
-            <span className="Personnel">{acceptListCnt}명</span>
-            <span className="titleLast">이에요.</span>
-            {acceptListCnt === 0 ? (
-              <span className="Count">조금 기다려볼까요??</span>
-            ) : (
-              <span className="Last">마감하고 모험을 떠나볼까요?</span>
-            )}
-            <span className="Deadline" onClick={deadlineHandelBtn}>
-              모집마감하기
-            </span>
-          </div>
-        )}
-      </MidBox>
-      <CardBox>
-        {is_open === false ? (
-          <>
-            {subscriberList?.map((a, idx) => {
-              return <ApplyCard {...a} id={id} key={idx} />;
-            })}
-          </>
-        ) : (
-          <>
-            {acceptListList?.map((a, idx) => {
-              return <AppliedCard {...a} key={idx} />;
-            })}
-          </>
-        )}
-      </CardBox>
-      <ReactModal
-        state={ModalState}
-        isOpen={ModalState}
-        ariaHideApp={false}
-        onRequestClose={() => setModalState(false)}
-        closeTimeoutMS={200}
-        style={{
-          overlay: {
-            zIndex: 3,
-            backgroundColor: "rgba(0,0,0,0.5)",
-          },
-          content: {
-            borderRadius: "20px",
-            top: "calc(100% - 620px)",
-            maxHeight: "343px",
-            height: "auto",
-            display: "flex",
-            width: "200px",
-            left: "calc(100% - 1520px)",
-            padding: 0,
-            transition: "0.3s",
-          },
-        }}
-      >
-        <ModalGrid>
-          <ModalMajor>
-            <Grid _className={"majorName"}>배우:1명</Grid>
-            <Grid _className={"majorName"}>배우:1명</Grid>
-            <Grid _className={"majorName"}>배우:1명</Grid>
-            <Grid _className={"majorName"}>배우:1명</Grid>
-            <Grid _className={"majorName"}>배우:1명</Grid>
-            <Grid _className={"majorName"}>배우:1명</Grid>
-            <Grid _className={"majorName"}>미술/디자인:1명</Grid>
-          </ModalMajor>
-          <span>확인</span>
-        </ModalGrid>
-      </ReactModal>
-    </Container>
+          </ModalGrid>
+        </ReactModal>
+      </Container>
+      <Footer />
+    </>
   );
 };
 
@@ -192,7 +248,6 @@ const ModalMajor = styled.div`
     padding: 16px;
     width: auto;
     height: 47px;
-    background-color: #b9daf6;
     border-radius: 14px;
     display: flex;
     flex-direction: column;
@@ -207,7 +262,15 @@ const ModalGrid = styled.div`
   margin: 10.5% auto;
   min-height: 214px;
   height: auto;
+  text-align: right;
   span {
+    cursor: pointer;
+    font-size: 14px;
+    color: #2967ac;
+    font-weight: 700;
+    right: 69%;
+    position: fixed;
+    top: 65%;
   }
 `;
 
@@ -319,7 +382,6 @@ const ButtonBox = styled.div`
     padding: 16px;
     width: auto;
     height: 47px;
-    background-color: #b9daf6;
     border-radius: 14px;
     display: flex;
     flex-direction: column;
@@ -350,6 +412,7 @@ const ButtonBox = styled.div`
 
 const Container = styled.div`
   width: 1370px;
+  height: 1020px;
   margin: 3% auto;
 `;
 

@@ -15,7 +15,7 @@ const ChattingItem = (p) => {
   const roomData = p.roomData; // Chat.js에 채팅카운트 넘겨주기 위한 props
 
   const goChat = () => {
-    stompClient.unsubscribe(`/sub/${myUserId}`);
+    stompClient.subscribe(`/sub/${myUserId}`);
     history.push({
       pathname: `/chat`,
       state: {

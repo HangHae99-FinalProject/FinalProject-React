@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Grid from "../elements/Grid";
 import Text from "../elements/Text";
-import Uploads from "../elements/Upload";
-import { BiX } from "react-icons/bi";
 
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -15,6 +12,7 @@ import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
 import EditImage from "../elements/EditImage";
 import { imgActions } from "../redux/modules/image";
+import Footer from "../elements/Footer";
 
 const EditPost = () => {
   const post_list = useSelector((state) => state.post.detailList);
@@ -226,6 +224,7 @@ const EditPost = () => {
           </CloseBtn>
         </BtnBox>
       </Container>
+      <Footer />
     </>
   );
 };

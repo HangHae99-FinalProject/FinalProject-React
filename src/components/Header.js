@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import store, { history } from "../redux/configureStore";
 import Cookies from "universal-cookie";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,7 +40,8 @@ function Header(props) {
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
   console.log(isLogin);
-
+  const pathName = useLocation();
+  console.log(pathName);
   // console.log(id);
 
   // React.useEffect(() => {
@@ -73,7 +74,11 @@ function Header(props) {
   //   dispatch(userActions.__loginCheck());
   // }, []);
 
-  if (window.location.pathname === "/") {
+  if (pathName.pathname === "/user/kakao/login") {
+    return null;
+  }
+
+  if (pathName.pathname === "/") {
     return null;
   }
 
@@ -88,7 +93,7 @@ function Header(props) {
             justifyContent="space-between"
             alignItems="center"
           >
-            {window.location.pathname === "/main" ? null : (
+            {pathName.pathname === "/main" ? null : (
               <>
                 <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
                   <img src={logo} alt="logo" style={{ height: "40px" }} />

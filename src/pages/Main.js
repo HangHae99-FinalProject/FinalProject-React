@@ -19,6 +19,7 @@ const Main = () => {
   const [is_open, setIs_open] = useState(false);
   const [selected, setSelected] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
+  const [is_scroll, setIs_scroll] = useState(window.scrollY);
 
   const is_login = useSelector((state) => state.user.isLogin);
 
@@ -48,11 +49,12 @@ const Main = () => {
   ];
 
   useEffect(() => {
+    setIs_scroll();
     return () => {
       dispatch(recruitActions.initRecruit());
       dispatch(postActions.clearPost());
     };
-  }, [dispatch]);
+  }, [dispatch, is_scroll]);
 
   return (
     <>

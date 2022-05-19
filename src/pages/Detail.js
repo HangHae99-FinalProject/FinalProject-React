@@ -11,6 +11,8 @@ import { useParams, useLocation } from "react-router-dom";
 import Comment from "../components/Detail/Comment";
 import { imgActions } from "../redux/modules/image";
 import Footer from "../elements/Footer";
+import Spinner from "../components/Spinner";
+import { actionCreates as postActions } from "../redux/modules/post";
 
 const Detail = () => {
   const param = useParams();
@@ -18,14 +20,17 @@ const Detail = () => {
   const [ModalState, setModalState] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
   const [is_comment, setIs_comment] = useState("");
+
   const pathName = useLocation();
 
   const id = param.postid;
 
   const localUserId = localStorage.getItem("userId");
 
+  const is_loading = useSelector((state) => state.post.is_loading);
   const is_login = useSelector((state) => state.user.isLogin);
   const detailList = useSelector((state) => state.post.detailList);
+  console.log(detailList.userId);
 
   const majorList = detailList.majorList;
 
@@ -49,6 +54,15 @@ const Detail = () => {
     dispatch(PostActions.__deletePost(id));
   };
 
+  const handleUserPage = () => {
+    if (detailList.userStatus === "anonymous") {
+      alert("로그인을 먼저 해주세요!");
+      history.push("/login");
+      return;
+    }
+    history.push(`/user/${detailList.userId}`);
+  };
+
   const handleWrite = () => {
     history.push(`/editpost/${id}`);
   };
@@ -56,7 +70,7 @@ const Detail = () => {
   const applyHandelButton = () => {
     if (detailList.userStatus === "anonymous") {
       alert("로그인을 먼저 해주세요!");
-      history.replace("/login");
+      history.push("/login");
       return;
     }
     if (detailList.userStatus === "applicant") {
@@ -96,240 +110,253 @@ const Detail = () => {
 
     return () => {
       dispatch(imgActions.initPre());
+      dispatch(postActions.clearPost());
     };
   }, [dispatch, pathName]);
 
   return (
     <>
-      <Container>
-        <HeadBox>
-          <Profile>
-            <img src={detailList.profileImg} alt="profile" />
-            <p>
-              {detailList.nickname} ㅣ {createdAt}
-            </p>
-          </Profile>
-          <HeadBtnBox>
-            {detailList.currentStatus === "RECRUITING_COMPLETE" ? (
-              <>
-                {detailList.userStatus === "starter" ? (
-                  <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
-                ) : (
-                  <Btn3>모집완료</Btn3>
-                )}
-              </>
-            ) : null}
-            {detailList.currentStatus === "RECRUITING_CLOSE" ? (
-              <>
-                {detailList.userStatus === "starter" ? (
-                  <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
-                ) : (
-                  <Btn3>정원마감</Btn3>
-                )}
-              </>
-            ) : null}
-            {detailList.currentStatus === "ONGOING" ? (
-              <>
-                {detailList.userStatus === "applicant" ? (
-                  <Btn1 onClick={applyHandelButton}>취소하기</Btn1>
-                ) : null}
-                {detailList.userStatus === "anonymous" ? (
-                  <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
-                ) : null}
-                {detailList.userStatus === "user" ? (
-                  <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
-                ) : null}
-                {detailList.userStatus === "member" ? (
-                  <Btn3>합류완료</Btn3>
-                ) : null}
-
-                {detailList.userStatus === "starter" ? (
-                  <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
-                ) : null}
-              </>
-            ) : null}
-
-            {userId ? (
-              <>
-                <Btn2 onClick={handleWrite}>수정하기</Btn2>
-                <Btn4 onClick={postDelete}>삭제하기</Btn4>
-              </>
-            ) : (
-              <Btn2>스크랩</Btn2>
-            )}
-          </HeadBtnBox>
-        </HeadBox>
-
-        <MidBox>
-          <LeftBox>
-            <p>{detailList.title}</p>
-            <ButtonBox>
-              {detailList.majorList?.map((a, idx) => {
-                return (
-                  <div key={idx}>
-                    <Grid
-                      _className="majorName"
-                      bg={
-                        a.majorName === "미술/디자인"
-                          ? "#2967AC"
-                          : a.majorName === "음향"
-                          ? "#FFB673"
-                          : a.majorName === "영상"
-                          ? "#6AD8F5"
-                          : a.majorName === "배우"
-                          ? "#F58467"
-                          : a.majorName === "프로그래밍"
-                          ? "#5BC8D2"
-                          : a.majorName === "모델"
-                          ? "#FE674C"
-                          : a.majorName === "사진"
-                          ? "#4299E9"
-                          : a.majorName === "성우"
-                          ? "#FFD082"
-                          : null
-                      }
-                    >
-                      <p style={{ fontSize: "16px" }}>
-                        {a.majorName} : {a.numOfPeopleSet}명
-                      </p>
-                    </Grid>
-                  </div>
-                );
-              })}
-            </ButtonBox>
-          </LeftBox>
-          <Line />
-          <RightBox>
-            <p style={{ fontSize: "20px", fontWeight: "700" }}>
-              {detailList.region} 모집기간: {detailList.deadline}
-            </p>
-            {detailList.link ? (
-              <p style={{ margin: "-10px 0 0px 0", fontWeight: "700" }}>
-                <a href={detailList.link}>추가 설명 링크</a>
-              </p>
-            ) : null}
-            <ContentScroll>
-              <p>{detailList.content}</p>
-            </ContentScroll>
-          </RightBox>
-        </MidBox>
-
-        {/* 이미지 컴포넌트 */}
-        <ImageBox>
-          <DetailImage image={detailList.imgList} />
-        </ImageBox>
-
-        {/* 댓글 컴포넌트 */}
-        <Comment userId={userId} />
-
-        {/* 신청 모달 */}
-        <ReactModal
-          state={ModalState}
-          isOpen={ModalState}
-          ariaHideApp={false}
-          onRequestClose={() => setModalState(false)}
-          closeTimeoutMS={200}
-          style={{
-            overlay: {
-              zIndex: 3,
-              backgroundColor: "rgba(0,0,0,0.5)",
-            },
-            content: {
-              borderRadius: "20px",
-              top: "50%",
-              left: "50%",
-              right: "auto",
-              bottom: "auto",
-              transform: "translate(-50%, -50%)",
-              height: "600px",
-              width: "1200px",
-              position: "fixed",
-              padding: 0,
-
-              transition: "0.3s",
-            },
-          }}
-        >
-          <BackImage>
-            <ModalGrid>
-              <ModalTitle>
-                <p>신청 할 가테고리를 선택해주세요!</p>
-              </ModalTitle>
-              <Category>
-                {majorList?.map((a, idx) => {
-                  return (
-                    <CateBtn
-                      key={idx}
-                      onClick={() => {
-                        if (a.majorName === "미술/디자인") {
-                          setIs_Cate("미술/디자인");
-                        } else if (a.majorName === "영상") {
-                          setIs_Cate("영상");
-                        } else if (a.majorName === "배우") {
-                          setIs_Cate("배우");
-                        } else if (a.majorName === "사진") {
-                          setIs_Cate("사진");
-                        } else if (a.majorName === "프로그래밍") {
-                          setIs_Cate("프로그래밍");
-                        } else if (a.majorName === "모델") {
-                          setIs_Cate("모델");
-                        } else if (a.majorName === "성우") {
-                          setIs_Cate("성우");
-                        } else if (a.majorName === "음향") {
-                          setIs_Cate("음향");
-                        }
-                        if (a.majorName === is_cate) {
-                          setIs_Cate("");
-                        }
-                      }}
-                    >
-                      <Grid
-                        _className={
-                          is_cate === a.majorName ? "active" : "default"
-                        }
-                        bg={
-                          a.majorName === "미술/디자인"
-                            ? "#2967AC"
-                            : a.majorName === "음향"
-                            ? "#FFB673"
-                            : a.majorName === "영상"
-                            ? "#6AD8F5"
-                            : a.majorName === "배우"
-                            ? "#F58467"
-                            : a.majorName === "프로그래밍"
-                            ? "#5BC8D2"
-                            : a.majorName === "모델"
-                            ? "#FE674C"
-                            : a.majorName === "사진"
-                            ? "#4299E9"
-                            : a.majorName === "성우"
-                            ? "#FFD082"
-                            : "#f5fcff"
-                        }
-                      >
-                        <p>
-                          {a.majorName}ㅣ{a.numOfPeopleApply}/{a.numOfPeopleSet}
-                        </p>
-                      </Grid>
-                    </CateBtn>
-                  );
-                })}
-              </Category>
-              <ModalInput>
-                <input
-                  placeholder="모험에 대한 각오를 적어주세요! (20자이하)"
-                  maxLength={20}
-                  onChange={applyHandelChange}
+      {is_loading === false ? (
+        <Spinner />
+      ) : (
+        <>
+          <Container>
+            <HeadBox>
+              <Profile>
+                <img
+                  src={detailList.profileImg}
+                  alt="profile"
+                  onClick={handleUserPage}
+                  style={{ cursor: "pointer" }}
                 />
-              </ModalInput>
-              <ModalBtn onClick={applyPostButton}>
-                <span>신청하기</span>
-              </ModalBtn>
-            </ModalGrid>
-          </BackImage>
-        </ReactModal>
-      </Container>
-      <Footer />
+                <p>
+                  {detailList.nickname} ㅣ {createdAt}
+                </p>
+              </Profile>
+              <HeadBtnBox>
+                {detailList.currentStatus === "RECRUITING_COMPLETE" ? (
+                  <>
+                    {detailList.userStatus === "starter" ? (
+                      <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
+                    ) : (
+                      <Btn3>모집완료</Btn3>
+                    )}
+                  </>
+                ) : null}
+                {detailList.currentStatus === "RECRUITING_CLOSE" ? (
+                  <>
+                    {detailList.userStatus === "starter" ? (
+                      <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
+                    ) : (
+                      <Btn3>정원마감</Btn3>
+                    )}
+                  </>
+                ) : null}
+                {detailList.currentStatus === "ONGOING" ? (
+                  <>
+                    {detailList.userStatus === "applicant" ? (
+                      <Btn1 onClick={applyHandelButton}>취소하기</Btn1>
+                    ) : null}
+                    {detailList.userStatus === "anonymous" ? (
+                      <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
+                    ) : null}
+                    {detailList.userStatus === "user" ? (
+                      <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
+                    ) : null}
+                    {detailList.userStatus === "member" ? (
+                      <Btn3>합류완료</Btn3>
+                    ) : null}
+
+                    {detailList.userStatus === "starter" ? (
+                      <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
+                    ) : null}
+                  </>
+                ) : null}
+
+                {userId ? (
+                  <>
+                    <Btn2 onClick={handleWrite}>수정하기</Btn2>
+                    <Btn4 onClick={postDelete}>삭제하기</Btn4>
+                  </>
+                ) : (
+                  <Btn2>스크랩</Btn2>
+                )}
+              </HeadBtnBox>
+            </HeadBox>
+
+            <MidBox>
+              <LeftBox>
+                <p>{detailList.title}</p>
+                <ButtonBox>
+                  {detailList.majorList?.map((a, idx) => {
+                    return (
+                      <div key={idx}>
+                        <Grid
+                          _className="majorName"
+                          bg={
+                            a.majorName === "미술/디자인"
+                              ? "#2967AC"
+                              : a.majorName === "음향"
+                              ? "#FFB673"
+                              : a.majorName === "영상"
+                              ? "#6AD8F5"
+                              : a.majorName === "배우"
+                              ? "#F58467"
+                              : a.majorName === "프로그래밍"
+                              ? "#5BC8D2"
+                              : a.majorName === "모델"
+                              ? "#FE674C"
+                              : a.majorName === "사진"
+                              ? "#4299E9"
+                              : a.majorName === "성우"
+                              ? "#FFD082"
+                              : null
+                          }
+                        >
+                          <p style={{ fontSize: "16px" }}>
+                            {a.majorName} : {a.numOfPeopleSet}명
+                          </p>
+                        </Grid>
+                      </div>
+                    );
+                  })}
+                </ButtonBox>
+              </LeftBox>
+              <Line />
+              <RightBox>
+                <p style={{ fontSize: "20px", fontWeight: "700" }}>
+                  {detailList.region} 모집기간: {detailList.deadline}
+                </p>
+                {detailList.link ? (
+                  <p style={{ margin: "-10px 0 0px 0", fontWeight: "700" }}>
+                    <a href={detailList.link}>추가 설명 링크</a>
+                  </p>
+                ) : null}
+                <ContentScroll>
+                  <p>{detailList.content}</p>
+                </ContentScroll>
+              </RightBox>
+            </MidBox>
+
+            {/* 이미지 컴포넌트 */}
+            <ImageBox>
+              <DetailImage image={detailList.imgList} />
+            </ImageBox>
+
+            {/* 댓글 컴포넌트 */}
+            <Comment userId={userId} />
+
+            {/* 신청 모달 */}
+            <ReactModal
+              state={ModalState}
+              isOpen={ModalState}
+              ariaHideApp={false}
+              onRequestClose={() => setModalState(false)}
+              closeTimeoutMS={200}
+              style={{
+                overlay: {
+                  zIndex: 3,
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                },
+                content: {
+                  borderRadius: "20px",
+                  top: "50%",
+                  left: "50%",
+                  right: "auto",
+                  bottom: "auto",
+                  transform: "translate(-50%, -50%)",
+                  height: "600px",
+                  width: "1200px",
+                  position: "fixed",
+                  padding: 0,
+
+                  transition: "0.3s",
+                },
+              }}
+            >
+              <BackImage>
+                <ModalGrid>
+                  <ModalTitle>
+                    <p>신청 할 가테고리를 선택해주세요!</p>
+                  </ModalTitle>
+                  <Category>
+                    {majorList?.map((a, idx) => {
+                      return (
+                        <CateBtn
+                          key={idx}
+                          onClick={() => {
+                            if (a.majorName === "미술/디자인") {
+                              setIs_Cate("미술/디자인");
+                            } else if (a.majorName === "영상") {
+                              setIs_Cate("영상");
+                            } else if (a.majorName === "배우") {
+                              setIs_Cate("배우");
+                            } else if (a.majorName === "사진") {
+                              setIs_Cate("사진");
+                            } else if (a.majorName === "프로그래밍") {
+                              setIs_Cate("프로그래밍");
+                            } else if (a.majorName === "모델") {
+                              setIs_Cate("모델");
+                            } else if (a.majorName === "성우") {
+                              setIs_Cate("성우");
+                            } else if (a.majorName === "음향") {
+                              setIs_Cate("음향");
+                            }
+                            if (a.majorName === is_cate) {
+                              setIs_Cate("");
+                            }
+                          }}
+                        >
+                          <Grid
+                            _className={
+                              is_cate === a.majorName ? "active" : "default"
+                            }
+                            bg={
+                              a.majorName === "미술/디자인"
+                                ? "#2967AC"
+                                : a.majorName === "음향"
+                                ? "#FFB673"
+                                : a.majorName === "영상"
+                                ? "#6AD8F5"
+                                : a.majorName === "배우"
+                                ? "#F58467"
+                                : a.majorName === "프로그래밍"
+                                ? "#5BC8D2"
+                                : a.majorName === "모델"
+                                ? "#FE674C"
+                                : a.majorName === "사진"
+                                ? "#4299E9"
+                                : a.majorName === "성우"
+                                ? "#FFD082"
+                                : "#f5fcff"
+                            }
+                          >
+                            <p>
+                              {a.majorName}ㅣ{a.numOfPeopleApply}/
+                              {a.numOfPeopleSet}
+                            </p>
+                          </Grid>
+                        </CateBtn>
+                      );
+                    })}
+                  </Category>
+                  <ModalInput>
+                    <input
+                      placeholder="모험에 대한 각오를 적어주세요! (20자이하)"
+                      maxLength={20}
+                      onChange={applyHandelChange}
+                    />
+                  </ModalInput>
+                  <ModalBtn onClick={applyPostButton}>
+                    <span>신청하기</span>
+                  </ModalBtn>
+                </ModalGrid>
+              </BackImage>
+            </ReactModal>
+          </Container>
+          <Footer />
+        </>
+      )}
     </>
   );
 };

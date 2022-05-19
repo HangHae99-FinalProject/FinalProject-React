@@ -67,11 +67,13 @@ const __kakaoLogin = (code) => {
       } else {
         const accessToken = data.data.accessToken;
 
-        const { sub, memberId, nickname, major } = jwt_decode(accessToken);
+        const { sub, memberId, nickname, major, profileImg } =
+          jwt_decode(accessToken);
         localStorage.setItem("userId", sub);
         localStorage.setItem("memberId", memberId);
         localStorage.setItem("nickname", nickname);
         localStorage.setItem("major", major);
+        localStorage.setItem("profileImg", profileImg);
         cookies.set("accessToken", accessToken, {
           path: "/",
           // maxAge: 3600, // 60분
@@ -99,7 +101,9 @@ const __login = (_memberId, password) => {
       // console.log(accessToken)
       // console.log(refreshToken)
       // console.log(accessTokenExpiresIn)
-      const { sub, memberId, nickname, major } = jwt_decode(accessToken);
+
+      const { sub, memberId, nickname, major, profileImg } =
+        jwt_decode(accessToken);
       console.log(
         "userid:",
         sub,
@@ -123,6 +127,7 @@ const __login = (_memberId, password) => {
       localStorage.setItem("memberId", memberId);
       localStorage.setItem("nickname", nickname);
       localStorage.setItem("major", major);
+      localStorage.setItem("profileImg", profileImg);
       dispatch(login());
       window.alert(`${nickname}님 반갑습니다~`);
       history.replace("/main");
@@ -224,6 +229,7 @@ const __nicknameCheck =
 const __logout = () => {
   return async function (dispatch, getState) {
     try {
+      localStorage.removeItem("userId");
       localStorage.removeItem("major");
       localStorage.removeItem("memberId");
       localStorage.removeItem("nickname");

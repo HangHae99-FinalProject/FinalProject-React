@@ -100,10 +100,10 @@ const __getUserInfo = (userId) => {
 };
 
 //유저정보 "신청중" 조회
-const __getApplied = () => {
+const __getApplied = (userId) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const appliedData = await userInfoApi.getAppliedList();
+      const appliedData = await userInfoApi.getAppliedList(userId);
       // console.log(appliedData.data);
       dispatch(getApplied(appliedData));
     } catch (err) {

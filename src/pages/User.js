@@ -98,7 +98,6 @@ const User = (props) => {
 
   const pathName = useLocation();
   const userId = pathName.pathname.split("/")[2];
-  console.log(userId);
 
   var likeRatio =
     (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
@@ -136,11 +135,11 @@ const User = (props) => {
   useEffect(() => {
     dispatch(userInfoActions.initUserInfo());
     dispatch(userInfoActions.__getUserInfo(userId));
-    dispatch(userInfoActions.__getApplied());
-    dispatch(userInfoActions.__getRecruit());
-    dispatch(userInfoActions.__getRecruitOver());
+    dispatch(userInfoActions.__getApplied(userId));
+    dispatch(userInfoActions.__getRecruit(userId));
+    dispatch(userInfoActions.__getRecruitOver(userId));
     return;
-  }, [dispatch]);
+  }, [userId]);
 
   return (
     <Grid sx={{ width: "1920px" }}>

@@ -101,8 +101,7 @@ const __login = (_memberId, password) => {
       // console.log(accessToken)
       // console.log(refreshToken)
       // console.log(accessTokenExpiresIn)
-      const ddd = jwt_decode(accessToken);
-      console.log(ddd);
+
       const { sub, memberId, nickname, major, profileImg } =
         jwt_decode(accessToken);
       console.log(

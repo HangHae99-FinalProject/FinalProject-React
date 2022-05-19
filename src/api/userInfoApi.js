@@ -9,10 +9,12 @@ const cookies = new Cookies();
 const accessToken = cookies.get("accessToken");
 
 export const userInfoApi = {
-  getUserInfo: (userId = localStorage.getItem("userId")) => instance.get(`/user/info/${userId}`),
+  getUserInfo: (userId) => instance.get(`/user/info/${userId}`),
 
   getAppliedList: () =>
-    instance.get("/user/applied", { headers: { Authorization: `Bearer ${accessToken}` } }),
+    instance.get("/user/applied", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }),
 
   getRecruitList: (userId = localStorage.getItem("userId")) =>
     instance.get(`/user/recruiting/${userId}`),
@@ -22,7 +24,8 @@ export const userInfoApi = {
   getRecruitOverList: (userId = localStorage.getItem("userId")) =>
     instance.get(`/user/over/${userId}`),
 
-  getAppliedOverList: (postId) => instance.get(`/user/recruiting/evaluation/${postId}`),
+  getAppliedOverList: (postId) =>
+    instance.get(`/user/recruiting/evaluation/${postId}`),
 
   postEvaluation: (reqeustUserRate) =>
     instance.post("/user/recruiting/evaluation", reqeustUserRate),

@@ -5,14 +5,17 @@ import LandingCard from "../components/Landing/LandingCard";
 import { actionCreates as postActions } from "../redux/modules/post";
 import { FiChevronRight } from "react-icons/fi";
 import { history } from "../redux/configureStore";
+import { useLocation } from "react-router-dom";
 
 const Landing = () => {
   const dispatch = useDispatch();
   const landingList = useSelector((state) => state.post.landingList);
+  const pathName = useLocation();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(postActions.__getLanding());
-  }, [dispatch]);
+  }, [dispatch, pathName]);
 
   const loginHandelBtn = () => {
     history.push("/login");

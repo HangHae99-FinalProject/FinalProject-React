@@ -9,6 +9,7 @@ import { actionCreators as chatActions } from "../../redux/modules/chat";
 import amateurCap from "../../assets/ama.svg";
 import juniorCap from "../../assets/jr.svg";
 import proCap from "../../assets/pro.svg";
+import { history } from "../../redux/configureStore";
 const ApplyCard = (props) => {
   const dispatch = useDispatch();
 
@@ -36,6 +37,10 @@ const ApplyCard = (props) => {
     postId: props.id,
   };
 
+  const handleUserPage = () => {
+    history.push(`/user/${props.userId}`);
+  };
+
   const requestHandelBtn = () => {
     dispatch(applyActions.__postRequest(acceptedDto));
   };
@@ -52,7 +57,12 @@ const ApplyCard = (props) => {
     <>
       <Container>
         <Profile>
-          <img className="profile" src={props.profileImg} alt="profile" />
+          <img
+            className="profile"
+            src={props.profileImg}
+            alt="profile"
+            onClick={handleUserPage}
+          />
           <div className="cardTitle">
             <p style={{ fontSize: "23px", fontWeight: "700" }}>
               {props.nickname}
@@ -229,6 +239,7 @@ const Profile = styled.div`
     display: flex;
   }
   .profile {
+    cursor: pointer;
     width: 120px;
     height: 120px;
     object-fit: cover;

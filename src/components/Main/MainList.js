@@ -14,6 +14,7 @@ const MainList = ({ location, category, selected }) => {
   const page = useSelector((state) => state.post.page);
   const postList = useSelector((state) => state.post.list);
   const searchList = useSelector((state) => state.post.search);
+  const [is_scroll, setIs_scroll] = useState(window.scrollY);
 
   // console.log("리덕스 저장되서 받아온 값(useSelector) ", post_data);
   // 지역, 카테고리 값 state로 관리

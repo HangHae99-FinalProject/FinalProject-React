@@ -154,7 +154,7 @@ const EditUser = () => {
   };
 
   useEffect(() => {
-    dispatch(userInfoActions.__getUserInfo());
+    dispatch(userInfoActions.__getUserInfo(userId));
     // dispatch(userInfoActions.setUserInfo(requestDto));
     return;
   }, []);
@@ -210,7 +210,11 @@ const EditUser = () => {
               >
                 <Grid>
                   <ImageList
-                    sx={{ padding: "28.5px 24px", margin: "0", borderRadius: "5px" }}
+                    sx={{
+                      padding: "28.5px 24px",
+                      margin: "0",
+                      borderRadius: "5px",
+                    }}
                     cols={3}
                     rowHeight={120}
                   >

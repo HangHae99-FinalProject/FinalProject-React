@@ -15,7 +15,7 @@ import juniorCap from "../assets/jr.svg";
 import proCap from "../assets/pro.svg";
 import ReactModal from "react-modal";
 import _styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { history } from "../redux/configureStore";
 import TabPanel from "../components/MyPage/TabPanel";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,7 +54,10 @@ const focus = {
 };
 
 const bull = (
-  <Box component="span" sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}>
+  <Box
+    component="span"
+    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+  >
     •
   </Box>
 );
@@ -79,8 +82,12 @@ const User = (props) => {
   const getAppliedList = useSelector((state) => state.myPage.appliedList.data);
   const getRecruitList = useSelector((state) => state.myPage.recruitList?.data);
   const getApplierList = useSelector((state) => state.myPage.applierList);
-  const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data);
-  const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
+  const getRecruitOverList = useSelector(
+    (state) => state.myPage.recruitOverList.data
+  );
+  const getAppliedOverList = useSelector(
+    (state) => state.myPage.appliedOverList.data
+  );
   const getAppliedOverList_postUser = useSelector(
     (state) => state.myPage.appliedOverList.data?.postUser
   );
@@ -88,11 +95,13 @@ const User = (props) => {
     (state) => state.myPage.appliedOverList.data?.recruitUserList
   );
   // const getLikeCount = useSelector((state) => state.user.userInfo.likeCount);
-  console.log(getAppliedOverList);
-  console.log(getAppliedOverList_postUser);
-  console.log(getAppliedOverList_reqruit);
 
-  var likeRatio = (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
+  const pathName = useLocation();
+  const userId = pathName.pathname.split("/")[2];
+  console.log(userId);
+
+  var likeRatio =
+    (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }
@@ -126,7 +135,7 @@ const User = (props) => {
 
   useEffect(() => {
     dispatch(userInfoActions.initUserInfo());
-    dispatch(userInfoActions.__getUserInfo());
+    dispatch(userInfoActions.__getUserInfo(userId));
     dispatch(userInfoActions.__getApplied());
     dispatch(userInfoActions.__getRecruit());
     dispatch(userInfoActions.__getRecruitOver());
@@ -175,14 +184,29 @@ const User = (props) => {
                 함께 모험한 선장들의 리뷰를 남겨주세요.
               </Typography>
             </Grid>
-            <Grid container direction="row" justifyContent="center" alignItems="center">
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
               {/* 모집글 작성자 */}
               {getAppliedOverList_postUser !== null ? (
                 <Card
-                  sx={{ width: "248px", height: "248px", margin: "auto", borderRadius: "14px" }}
+                  sx={{
+                    width: "248px",
+                    height: "248px",
+                    margin: "auto",
+                    borderRadius: "14px",
+                  }}
                 >
                   <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
-                    <Grid container direction="row" justifyContent="center" alignItems="center">
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
                       <img
                         src={getAppliedOverList_postUser?.profileImg}
                         alt="profileImg"
@@ -207,7 +231,12 @@ const User = (props) => {
                     </Grid>
                   </CardContent>
                   <CardActions>
-                    <Grid container direction="column" justifyContent="center" alignItems="center">
+                    <Grid
+                      container
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
                       <Button
                         sx={{
                           width: "180px",
@@ -229,7 +258,8 @@ const User = (props) => {
                           );
                         }}
                       >
-                        <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또 모험 같이해요!
+                        <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또
+                        모험 같이해요!
                       </Button>
                       <Button
                         sx={{
@@ -265,10 +295,20 @@ const User = (props) => {
                 return (
                   <Card
                     key={idx}
-                    sx={{ width: "248px", height: "248px", margin: "auto", borderRadius: "14px" }}
+                    sx={{
+                      width: "248px",
+                      height: "248px",
+                      margin: "auto",
+                      borderRadius: "14px",
+                    }}
                   >
                     <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
-                      <Grid container direction="row" justifyContent="center" alignItems="center">
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
                         <img
                           src={appliedOverList.profileImg}
                           alt="profileImg"
@@ -320,7 +360,8 @@ const User = (props) => {
                             );
                           }}
                         >
-                          <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또 모험 같이해요!
+                          <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또
+                          모험 같이해요!
                         </Button>
                         <Button
                           sx={{
@@ -370,22 +411,34 @@ const User = (props) => {
           }}
         >
           <Grid>
-            <Grid container direction="row" justifyContent="space-between" alignItems="center">
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <Grid>
                 <Typography sx={{ fontWeight: "bold" }}>
                   "{getUserInfo.nickname}" 님의 마이페이지
                 </Typography>
               </Grid>
               <Grid>
-                <Button
-                  variant="contained"
-                  sx={{ marginBottom: "14px", width: "100px", height: "40px", padding: "0" }}
-                  onClick={() => {
-                    history.push(`/edituser/${id}`);
-                  }}
-                >
-                  프로필 수정
-                </Button>
+                {userId === id ? (
+                  <Button
+                    variant="contained"
+                    sx={{
+                      marginBottom: "14px",
+                      width: "100px",
+                      height: "40px",
+                      padding: "0",
+                    }}
+                    onClick={() => {
+                      history.push(`/edituser/${id}`);
+                    }}
+                  >
+                    프로필 수정
+                  </Button>
+                ) : null}
               </Grid>
             </Grid>
             <Grid
@@ -411,11 +464,18 @@ const User = (props) => {
                   alignItems="center"
                 >
                   <Profile>
-                    <div style={{ margin: "auto", width: "auto", height: "auto" }}>
+                    <div
+                      style={{ margin: "auto", width: "auto", height: "auto" }}
+                    >
                       <img src={getUserInfo.profileImg} alt="profileImg" />
                     </div>
                   </Profile>
-                  <Grid container direction="row" justifyContent="center" alignItems="center">
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
                     <Typography sx={{ fontSize: "14px" }}>
                       {likeRatio <= 40 ? (
                         <img src={amateurCap} alt="amateurCap" />
@@ -428,7 +488,9 @@ const User = (props) => {
                     </Typography>
                   </Grid>
                   <Grid>
-                    <Typography sx={{ fontSize: "10px" }}>{evaluationGrade}</Typography>
+                    <Typography sx={{ fontSize: "10px" }}>
+                      {evaluationGrade}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
@@ -446,7 +508,11 @@ const User = (props) => {
                 <Grid>
                   <Typography
                     id="myIntro"
-                    sx={{ marginTop: "20px", marginLeft: "24px", width: "900px" }}
+                    sx={{
+                      marginTop: "20px",
+                      marginLeft: "24px",
+                      width: "900px",
+                    }}
                   >
                     {getUserInfo.intro}
                   </Typography>
@@ -455,7 +521,11 @@ const User = (props) => {
                 <Grid>
                   <Typography
                     id="myPortfolioLink"
-                    sx={{ marginTop: "14px", marginLeft: "24px", width: "900px" }}
+                    sx={{
+                      marginTop: "14px",
+                      marginLeft: "24px",
+                      width: "900px",
+                    }}
                   >
                     {getUserInfo.portfolioLink}
                   </Typography>
@@ -477,7 +547,12 @@ const User = (props) => {
           alignItems="center"
           sx={{ width: "1370px", marginTop: "24px" }}
         >
-          <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
             <Typography>나의 프로젝트</Typography>
             {/* 페이지네이션 */}
             <label>
@@ -494,15 +569,29 @@ const User = (props) => {
             </label>
             {/* 여기까지 페이지네이션 */}
           </Grid>
-          <Grid sx={{ padding: "0px 20px", borderBottom: 1, borderColor: "divider" }}>
-            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Grid
+            sx={{
+              padding: "0px 20px",
+              borderBottom: 1,
+              borderColor: "divider",
+            }}
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
               <Tab sx={{ width: "430px" }} label="신청중" {...a11yProps(0)} />
               <Tab
                 sx={{ width: "430px", marginLeft: "20px", marginRight: "20px" }}
                 label="모집중"
                 {...a11yProps(1)}
               />
-              <Tab sx={{ width: "430px" }} label="모집완료? 진행완료?" {...a11yProps(2)} />
+              <Tab
+                sx={{ width: "430px" }}
+                label="모집완료? 진행완료?"
+                {...a11yProps(2)}
+              />
             </Tabs>
           </Grid>
           {/* 신청중 탭 */}
@@ -538,7 +627,9 @@ const User = (props) => {
                         }}
                       >
                         {appliedList.title}
-                        <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                        <ArrowForwardIosRoundedIcon
+                          style={{ verticalAlign: "middle" }}
+                        />
                       </ListItemText>
                     </Grid>
                   </ListItem>
@@ -580,7 +671,9 @@ const User = (props) => {
                         }}
                       >
                         {recruitList.title}
-                        <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                        <ArrowForwardIosRoundedIcon
+                          style={{ verticalAlign: "middle" }}
+                        />
                       </ListItemText>
 
                       <Grid>
@@ -595,12 +688,17 @@ const User = (props) => {
                             }}
                             variant="outlined"
                           >
-                            {recruitList.userApplyList.length}명의 선장이 신청했어요!
+                            {recruitList.userApplyList.length}명의 선장이
+                            신청했어요!
                           </Button>
                         </Grid>
                         <Grid>
                           <Button
-                            sx={{ marginTop: "5px", width: "190px", height: "40px" }}
+                            sx={{
+                              marginTop: "5px",
+                              width: "190px",
+                              height: "40px",
+                            }}
                             variant="contained"
                             onClick={() => {
                               history.push(`/applied/${recruitList.postId}`);
@@ -651,18 +749,28 @@ const User = (props) => {
                         }}
                       >
                         {recruitOverList.title}
-                        <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                        <ArrowForwardIosRoundedIcon
+                          style={{ verticalAlign: "middle" }}
+                        />
                       </ListItemText>
 
                       <Grid>
                         <Grid>
                           <Button
-                            sx={{ marginTop: "5px", width: "190px", height: "40px" }}
+                            sx={{
+                              marginTop: "5px",
+                              width: "190px",
+                              height: "40px",
+                            }}
                             variant="contained"
                             onClick={() => {
                               setPostId(recruitOverList.postId);
                               modalHandelBtn();
-                              dispatch(userInfoActions.__getAppliedOver(recruitOverList.postId));
+                              dispatch(
+                                userInfoActions.__getAppliedOver(
+                                  recruitOverList.postId
+                                )
+                              );
                             }}
                           >
                             선장리뷰

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreates as RecruitActions } from "../redux/modules/recruit";
 import { actionCreates as PostActions } from "../redux/modules/post";
 import { history } from "../redux/configureStore";
+import Footer from "../elements/Footer";
 
 const Write = () => {
   const dispatch = useDispatch();
@@ -407,6 +408,7 @@ const Write = () => {
           </CloseBtn>
         </BtnBox>
       </Container>
+      <Footer />
     </>
   );
 };

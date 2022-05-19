@@ -11,7 +11,6 @@ import juniorCap from "../../assets/jr.svg";
 import proCap from "../../assets/pro.svg";
 const ApplyCard = (props) => {
   const dispatch = useDispatch();
-  console.log(props);
 
   var likeRatio = (props?.likePoint / 100) * (100 / props?.projectCount) * 100;
   if (isNaN(likeRatio)) {
@@ -50,66 +49,68 @@ const ApplyCard = (props) => {
   };
 
   return (
-    <Container>
-      <Profile>
-        <img className="profile" src={props.profileImg} alt="profile" />
-        <div className="cardTitle">
-          <p style={{ fontSize: "23px", fontWeight: "700" }}>
-            {props.nickname}
-          </p>
-          <div className="ratingBox">
-            {likeRatio <= 40 ? (
-              <RatingImg src={amateurCap} alt="amateurCap" />
-            ) : 41 <= likeRatio <= 70 ? (
-              <RatingImg src={juniorCap} alt="juniorCap" />
-            ) : (
-              <RatingImg src={proCap} alt="proCap" />
-            )}
-            <span className="rating">{evaluationGrade}</span>
+    <>
+      <Container>
+        <Profile>
+          <img className="profile" src={props.profileImg} alt="profile" />
+          <div className="cardTitle">
+            <p style={{ fontSize: "23px", fontWeight: "700" }}>
+              {props.nickname}
+            </p>
+            <div className="ratingBox">
+              {likeRatio <= 40 ? (
+                <RatingImg src={amateurCap} alt="amateurCap" />
+              ) : 41 <= likeRatio <= 70 ? (
+                <RatingImg src={juniorCap} alt="juniorCap" />
+              ) : (
+                <RatingImg src={proCap} alt="proCap" />
+              )}
+              <span className="rating">{evaluationGrade}</span>
+            </div>
           </div>
-        </div>
-      </Profile>
-      <MidBtnBox>
-        <Grid
-          _className="majorName"
-          bg={
-            props.applyMajor === "미술/디자인"
-              ? "#2967AC"
-              : props.applyMajor === "음향"
-              ? "#FFB673"
-              : props.applyMajor === "영상"
-              ? "#6AD8F5"
-              : props.applyMajor === "배우"
-              ? "#F58467"
-              : props.applyMajor === "프로그래밍"
-              ? "#5BC8D2"
-              : props.applyMajor === "모델"
-              ? "#FE674C"
-              : props.applyMajor === "사진"
-              ? "#4299E9"
-              : props.applyMajor === "성우"
-              ? "#FFD082"
-              : null
-          }
-        >
-          <p>{props.applyMajor}</p>
-        </Grid>
-      </MidBtnBox>
-      <CommentBox>
-        <span>{props.message}</span>
-      </CommentBox>
-      <BottomBtn>
-        <span className="okButton" onClick={requestHandelBtn}>
-          수락
-        </span>
-        <span className="chatButton" onClick={chatHandelBtn}>
-          체팅
-        </span>
-        <span className="noButton" onClick={rejectHandelBtn}>
-          거절
-        </span>
-      </BottomBtn>
-    </Container>
+        </Profile>
+        <MidBtnBox>
+          <Grid
+            _className="majorName"
+            bg={
+              props.applyMajor === "미술/디자인"
+                ? "#2967AC"
+                : props.applyMajor === "음향"
+                ? "#FFB673"
+                : props.applyMajor === "영상"
+                ? "#6AD8F5"
+                : props.applyMajor === "배우"
+                ? "#F58467"
+                : props.applyMajor === "프로그래밍"
+                ? "#5BC8D2"
+                : props.applyMajor === "모델"
+                ? "#FE674C"
+                : props.applyMajor === "사진"
+                ? "#4299E9"
+                : props.applyMajor === "성우"
+                ? "#FFD082"
+                : null
+            }
+          >
+            <p>{props.applyMajor}</p>
+          </Grid>
+        </MidBtnBox>
+        <CommentBox>
+          <span>{props.message}</span>
+        </CommentBox>
+        <BottomBtn>
+          <span className="okButton" onClick={requestHandelBtn}>
+            수락
+          </span>
+          <span className="chatButton" onClick={chatHandelBtn}>
+            체팅
+          </span>
+          <span className="noButton" onClick={rejectHandelBtn}>
+            거절
+          </span>
+        </BottomBtn>
+      </Container>
+    </>
   );
 };
 

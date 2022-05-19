@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import footerImage from "../assets/Footer.svg";
+import footer from "../assets/Footer2.svg";
 
 const Footer = () => {
   return (
     <Footers>
-      <Image src={footerImage} alt="footer" />
+      <Image src={footer} alt="footer" />
     </Footers>
   );
 };

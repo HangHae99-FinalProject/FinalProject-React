@@ -1,15 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  pro1,
-  pro2,
-  pro3,
-  pro4,
-  pro5,
-  pro6,
-  pro7,
-  pro8,
-  pro9,
-} from "../assets/profileImage/ProfileImgs";
 import amateurCap from "../assets/ama.svg";
 import juniorCap from "../assets/jr.svg";
 import proCap from "../assets/pro.svg";
@@ -21,6 +10,7 @@ import TabPanel from "../components/MyPage/TabPanel";
 import { useDispatch, useSelector } from "react-redux";
 import DetailImage from "../components/Detail/DetailImage";
 import { actionCreators as userInfoActions } from "../redux/modules/myPage";
+import Pagination from "../components/MyPage/Pagination";
 
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -75,29 +65,26 @@ const User = (props) => {
     setModalState(!ModalState);
     console.log(ModalState);
   };
-  const getUserInfo = useSelector((state) => state.myPage.userInfo);
-  const getAppliedList = useSelector((state) => state.myPage.appliedList.data);
-  const getRecruitList = useSelector((state) => state.myPage.recruitList?.data);
-  const getApplierList = useSelector((state) => state.myPage.applierList);
-  const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data);
-  const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
+  const getUserInfo = useSelector((state) => state.myPage?.userInfo);
+  const getAppliedList = useSelector((state) => state.myPage.appliedList.data); //신청중 리스트
+  const getRecruitList = useSelector((state) => state.myPage.recruitList.data); //모집중 리스트
+  const getApplierList = useSelector((state) => state.myPage?.applierList);
+  const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data); //모집완료 리스트
+  console.log("신청중리스트", getAppliedList);
+  console.log("모집중리스트", getRecruitList);
+  console.log("모집완료리스트", getRecruitOverList);
+  const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList?.data);
   const getAppliedOverList_postUser = useSelector(
     (state) => state.myPage.appliedOverList.data?.postUser
   );
   const getAppliedOverList_reqruit = useSelector(
     (state) => state.myPage.appliedOverList.data?.recruitUserList
   );
-  // const getLikeCount = useSelector((state) => state.user.userInfo.likeCount);
-  console.log(getAppliedOverList);
-  console.log(getAppliedOverList_postUser);
-  console.log(getAppliedOverList_reqruit);
 
   var likeRatio = (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }
-  // console.log("projectCount", getUserInfo.projectCount);
-  // console.log("likeRatio", likeRatio);
 
   var evaluationGrade = null;
 
@@ -109,15 +96,6 @@ const User = (props) => {
     evaluationGrade = `${likeRatio}% 만족! 프로 선장러`;
   }
 
-  // var medal = ""
-  // if (likeRatio <= 40) {
-  //  medal = <img src={amateurCap} alt="amateurCap"/>
-  // } else if (41 <= likeRatio <= 70) {
-  //   medal=<img src={juniorCap} alt="juniorCap"/>
-  // } else if (71 <= likeRatio <= 100) {
-  //   medal = <img src={proCap} alt="proCap"/>
-  // }
-
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -125,7 +103,14 @@ const User = (props) => {
   };
 
   useEffect(() => {
-    dispatch(userInfoActions.initUserInfo());
+    // dispatch(
+    //   userInfoActions.initUserInfo(),
+    //   userInfoActions.__getUserInfo(),
+    //   userInfoActions.__getApplied(),
+    //   userInfoActions.__getRecruit(),
+    //   userInfoActions.__getRecruitOver()
+    // );
+    // dispatch(userInfoActions.initUserInfo());
     dispatch(userInfoActions.__getUserInfo());
     dispatch(userInfoActions.__getApplied());
     dispatch(userInfoActions.__getRecruit());
@@ -479,7 +464,7 @@ const User = (props) => {
         >
           <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
             <Typography>나의 프로젝트</Typography>
-            {/* 페이지네이션 */}
+            {/* 페이지네이션 게시물 수 셀렉터 */}
             <label>
               페이지당 표시할 게시물 수:&nbsp;
               <select
@@ -492,27 +477,44 @@ const User = (props) => {
                 <option value="9">9</option>
               </select>
             </label>
-            {/* 여기까지 페이지네이션 */}
+            {/* 여기까지 페이지네이션 게시물 수 셀렉터 */}
           </Grid>
           <Grid sx={{ padding: "0px 20px", borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab sx={{ width: "430px" }} label="신청중" {...a11yProps(0)} />
+              <Tab
+                sx={{ width: "430px" }}
+                label="신청중"
+                {...a11yProps(0)}
+                // onClick={() => {
+                //   dispatch(userInfoActions.__getApplied());
+                // }}
+              />
               <Tab
                 sx={{ width: "430px", marginLeft: "20px", marginRight: "20px" }}
                 label="모집중"
                 {...a11yProps(1)}
+                // onClick={() => {
+                //   dispatch(userInfoActions.__getRecruit());
+                // }}
               />
-              <Tab sx={{ width: "430px" }} label="모집완료? 진행완료?" {...a11yProps(2)} />
+              <Tab
+                sx={{ width: "430px" }}
+                label="모집완료? 진행완료?"
+                {...a11yProps(2)}
+                // onClick={() => {
+                //   dispatch(userInfoActions.__getRecruitOver());
+                // }}
+              />
             </Tabs>
           </Grid>
           {/* 신청중 탭 */}
-          <TabPanel value={value} index={0}>
+          {/* <TabPanel value={value} index={0}>
             <List
               sx={{ padding: "0px 16px", width: "1370px", height: "110px" }}
               component="nav"
               aria-label="mailbox folders"
             >
-              {getAppliedList?.map((appliedList, idx) => {
+              {getAppliedList?.slice(offset, offset + limit)?.map((appliedList, idx) => {
                 return (
                   <ListItem
                     sx={{
@@ -544,8 +546,17 @@ const User = (props) => {
                   </ListItem>
                 );
               })}
+              <footer>
+                <Pagination
+                  total={getAppliedList?.length}
+                  limit={limit}
+                  page={page}
+                  setPage={setPage}
+                />
+              </footer>
             </List>
-          </TabPanel>
+          </TabPanel> */}
+          {/* 여기까지 신청중 탭 */}
           {/* 모집중 탭 */}
           <TabPanel value={value} index={1}>
             <List
@@ -553,7 +564,7 @@ const User = (props) => {
               component="nav"
               aria-label="mailbox folders"
             >
-              {getRecruitList?.map((recruitList, idx) => {
+              {getRecruitList?.slice(offset, offset + limit).map((recruitList, idx) => {
                 return (
                   <ListItem
                     sx={{
@@ -614,6 +625,14 @@ const User = (props) => {
                   </ListItem>
                 );
               })}
+              <footer>
+                <Pagination
+                  total={getRecruitList?.length}
+                  limit={limit}
+                  page={page}
+                  setPage={setPage}
+                />
+              </footer>
             </List>
           </TabPanel>
           {/* 여기까지 모집중 탭 */}
@@ -624,7 +643,7 @@ const User = (props) => {
               component="nav"
               aria-label="mailbox folders"
             >
-              {getRecruitOverList?.map((recruitOverList, idx) => {
+              {getRecruitOverList?.slice(offset, offset + limit).map((recruitOverList, idx) => {
                 return (
                   <ListItem
                     sx={{
@@ -673,8 +692,17 @@ const User = (props) => {
                   </ListItem>
                 );
               })}
+              <footer>
+                <Pagination
+                  total={getRecruitOverList?.length}
+                  limit={limit}
+                  page={page}
+                  setPage={setPage}
+                />
+              </footer>
             </List>
           </TabPanel>
+          {/* 여기까지 모집완료 탭 */}
         </Grid>
       </Grid>
     </Grid>

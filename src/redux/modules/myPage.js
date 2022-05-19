@@ -11,6 +11,7 @@ import axios from "axios";
 import { ConstructionOutlined } from "@mui/icons-material";
 
 const cookies = new Cookies();
+const id = localStorage.getItem("userId");
 
 //actions
 const GET_USER = "myPage/GET_USER";
@@ -57,10 +58,10 @@ const initialState = {
     nickname: null,
   },
   userInfo: [],
-  appliedList: [{}],
-  recruitList: [{}],
+  appliedList: [],
+  recruitList: [],
   applierList: [],
-  recruitOverList: [{}],
+  recruitOverList: [],
   appliedOverList: [],
   evaluationInfo: {
     postId: "",
@@ -177,7 +178,7 @@ const __putUserInfoMod = (userId, data, files) => {
     console.log(formData);
     try {
       await userInfoApi.putUserInfoModData(userId, formData);
-      history.replace("/");
+      history.replace(`/user/${id}`);
     } catch (err) {
       console.log(err);
     }
@@ -197,15 +198,15 @@ export default handleActions(
       }),
     [GET_RECRUIT]: (state, action) =>
       produce(state, (draft) => {
-        draft.recruitList = action.payload?.recruitData;
+        draft.recruitList = action.payload.recruitData;
       }),
     [GET_APPLIER]: (state, action) =>
       produce(state, (draft) => {
-        draft.applierList = action.payload?.applierData;
+        draft.applierList = action.payload.applierData;
       }),
     [GET_RECRUIT_OVER]: (state, action) =>
       produce(state, (draft) => {
-        draft.recruitOverList = action.payload?.recruitOverData;
+        draft.recruitOverList = action.payload.recruitOverData;
       }),
     [GET_APPLIED_OVER]: (state, action) =>
       produce(state, (draft) => {

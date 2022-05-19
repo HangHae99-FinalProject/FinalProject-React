@@ -142,12 +142,12 @@ const __signup = (memberId, password, pwCheck) => {
       });
       console.log(signup);
       localStorage.setItem("userId", signup.data.data.userId);
-      if (signup.data) {
-        window.alert(
-          "회원가입이 완료되었습니다. 추가 정보를 입력하시면 사용이 편리해집니다."
-        );
-        // history.replace("/login");
-      }
+      // if (signup.data) {
+      //   window.alert(
+      //     "회원가입이 완료되었습니다. 추가 정보를 입력하시면 사용이 편리해집니다."
+      //   );
+      //   // history.replace("/login");
+      // }
     } catch (err) {
       console.log(err);
       if (err.errorCode === 400) {

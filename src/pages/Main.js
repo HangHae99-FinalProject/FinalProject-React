@@ -13,15 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import MainSearch from "../components/Main/MainSearch";
 import { history } from "../redux/configureStore";
 import Footer from "../elements/Footer";
-import { useLocation } from "react-router-dom";
 
 const Main = () => {
   const [is_location, setLocation] = useState("위치 설정");
   const [is_open, setIs_open] = useState(false);
   const [selected, setSelected] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
-  // const [is_scroll, setIs_scroll] = useState(window.scrollY);
-  const pathName = useLocation();
+  const [is_scroll, setIs_scroll] = useState(window.scrollY);
 
   const is_login = useSelector((state) => state.user.isLogin);
 
@@ -51,12 +49,12 @@ const Main = () => {
   ];
 
   useEffect(() => {
-    // window.scrollY();
+    setIs_scroll();
     return () => {
       dispatch(recruitActions.initRecruit());
       dispatch(postActions.clearPost());
     };
-  }, [dispatch, pathName]);
+  }, [dispatch, is_scroll]);
 
   return (
     <>

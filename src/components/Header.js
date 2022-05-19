@@ -36,7 +36,8 @@ const cookies = new Cookies();
 
 function Header(props) {
   const dispatch = useDispatch();
-  const isCookies = cookies.get("isLogin", { path: "/" }) ? true : false;
+  // const isCookies = cookies.get("isLogin", { path: "/" }) ? true : false;
+  const isCookies = cookies.get("accessToken", { path: "/" }) ? true : false;
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
   console.log(isLogin);

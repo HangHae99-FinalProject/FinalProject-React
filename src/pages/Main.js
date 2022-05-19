@@ -63,6 +63,7 @@ const Main = () => {
             alt="MainImage"
             onClick={() => {
               window.location.reload();
+              // history.push("/main")
             }}
           />
         </MainImage>

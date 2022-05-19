@@ -112,7 +112,8 @@ const __login = (_memberId, password) => {
       );
       cookies.set("accessToken", accessToken, {
         path: "/",
-        // maxAge: 3600, // 60분
+        maxAge: 86400, // 60분
+        // maxAge: 10, // 10초
       });
       cookies.set("refreshToken", refreshToken, {
         path: "/",
@@ -124,7 +125,7 @@ const __login = (_memberId, password) => {
       localStorage.setItem("major", major);
       dispatch(login());
       window.alert(`${nickname}님 반갑습니다~`);
-      history.replace("/");
+      history.replace("/main");
     } catch (err) {
       console.log(err);
     }
@@ -226,10 +227,10 @@ const __logout = () => {
       localStorage.removeItem("major");
       localStorage.removeItem("memberId");
       localStorage.removeItem("nickname");
-      localStorage.removeItem("userId");
+      // localStorage.removeItem("userId");
       cookies.remove("isLogin", { path: "/" });
       cookies.remove("accessToken", { path: "/" });
-      cookies.remove("refreshToken", { path: "/" });
+      // cookies.remove("refreshToken", { path: "/" });
 
       await dispatch(logout());
       window.alert("로그아웃되었습니다.");
@@ -271,10 +272,10 @@ export default handleActions(
         localStorage.removeItem("email");
         localStorage.removeItem("nickname");
         localStorage.removeItem("profileImgUrl");
-        localStorage.removeItem("userId");
+        // localStorage.removeItem("userId");
         cookies.remove("isLogin", { path: "/" });
         cookies.remove("accessToken", { path: "/" });
-        cookies.remove("refreshToken", { path: "/" });
+        // cookies.remove("refreshToken", { path: "/" });
         draft.user = null;
         draft.isLogin = false;
       }),

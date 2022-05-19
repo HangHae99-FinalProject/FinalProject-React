@@ -210,11 +210,7 @@ const EditUser = () => {
               >
                 <Grid>
                   <ImageList
-                    sx={{
-                      padding: "28.5px 24px",
-                      margin: "0",
-                      borderRadius: "5px",
-                    }}
+                    sx={{ padding: "28.5px 24px", margin: "0", borderRadius: "5px" }}
                     cols={3}
                     rowHeight={120}
                   >
@@ -520,39 +516,39 @@ const EditUser = () => {
 
 const itemData = [
   {
-    img: require(`../assets/profileImage/1.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FuF6wx%2FbtrCxFSgc0N%2FHy7KcDq4WN1RUXjWTMSI1K%2Fimg.png",
     title: "1",
   },
   {
-    img: require(`../assets/profileImage/2.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb3EnyV%2FbtrCvZqIHbx%2FkZmT6e5EHOWqYuBpzACQt1%2Fimg.png",
     title: "2",
   },
   {
-    img: require(`../assets/profileImage/3.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fwuu1p%2FbtrCvKHi66H%2FDVhJJEOZfAnJX7sTpXYMWk%2Fimg.png",
     title: "3",
   },
   {
-    img: require(`../assets/profileImage/4.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FoEO5Z%2FbtrCvKgcVCe%2FnE4R2zy7k8hvtrTdd2tlpK%2Fimg.png",
     title: "4",
   },
   {
-    img: require(`../assets/profileImage/5.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpbROz%2FbtrCyYqibEj%2FofkKW469iJItQmnsFye3m0%2Fimg.png",
     title: "5",
   },
   {
-    img: require(`../assets/profileImage/6.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FecCP89%2FbtrCumtnxPS%2FKfaGFKmwh0R4ywSvBwhCv1%2Fimg.png",
     title: "6",
   },
   {
-    img: require(`../assets/profileImage/7.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FU1aS5%2FbtrCydVwn2d%2F6Hc6p465wemrQyR4scHfZ0%2Fimg.png",
     title: "7",
   },
   {
-    img: require(`../assets/profileImage/8.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fdax6ur%2FbtrCuVh3a3B%2FkPJx86n0RczXHHeGfinTmK%2Fimg.png",
     title: "8",
   },
   {
-    img: require(`../assets/profileImage/9.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FGf5en%2FbtrCyZQg1tT%2FzXC3QpkztZx9eUnLIeCRhk%2Fimg.png",
     title: "9",
   },
 ];

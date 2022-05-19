@@ -12,6 +12,7 @@ import { actionCreates as recruitActions } from "../redux/modules/recruit";
 import { useDispatch, useSelector } from "react-redux";
 import MainSearch from "../components/Main/MainSearch";
 import { history } from "../redux/configureStore";
+import Footer from "../elements/Footer";
 
 const Main = () => {
   const [is_location, setLocation] = useState("위치 설정");
@@ -20,7 +21,6 @@ const Main = () => {
   const [is_cate, setIs_Cate] = useState("");
 
   const is_login = useSelector((state) => state.user.isLogin);
-  console.log(is_login);
 
   const dispatch = useDispatch();
 
@@ -250,9 +250,22 @@ const Main = () => {
           selected={selected}
         />
       </Container>
+      <BackImage>
+        <img
+          src="https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png"
+          alt="backImg"
+        />
+      </BackImage>
     </>
   );
 };
+
+const BackImage = styled.div`
+  z-index: 9999;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+`;
 
 const MainImage = styled.div`
   display: flex;

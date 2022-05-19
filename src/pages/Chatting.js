@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { chatApi } from "../api/chatApi";
 import ChattingItem from "../components/Chat/ChattingItem";
+import Spinner from "../components/Spinner";
+import Footer from "../elements/Footer";
 import { actionCreators as chatActios } from "../redux/modules/chat";
 
 const Chatting = () => {
+  const dispatch = useDispatch();
   const client = useSelector((state) => state.chat.client);
 
   const [rooms, setRooms] = useState([]);
@@ -13,47 +16,85 @@ const Chatting = () => {
   const [test, setTest] = useState(true);
   const [newMsgData, setNewMsgData] = useState("");
   const myUserId = localStorage.getItem("userId");
+  const [is_loading, setIs_Loading] = useState(false);
 
   const testOne = () => {
     setTest(false);
   };
 
   useEffect(() => {
+    setIs_Loading(true);
     chatApi
       .roadRoom()
       .then((res) => {
-        console.log(res.data);
         setRooms(res.data);
+        setIs_Loading(false);
       })
       .catch((err) => console.log(err));
-    client.subscribe(`/sub/${myUserId}`, (data) => {
-      const onMessage = JSON.parse(data.body);
-      setNewMsgData(onMessage);
-    });
+    // client.subscribe(`/sub/${myUserId}`, (data) => {
+    //   console.log(data);
+    //   const onMessage = JSON.parse(data.body);
+    //   console.log(onMessage);
+    // setNewMsgData(onMessage);
+    // const updateCountDto = {
+    //   roomName: onMessage.roomName,
+    //   userId: myUserId,
+    // };
+    // chatApi
+    //   .roomCount(updateCountDto)
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    // });
   }, []);
   return (
-    <BackImage>
-      <Container>
-        <HeadBox>
-          <span>채팅</span>
-        </HeadBox>
-        <div>
-          {rooms.map((p, idx) => {
-            return (
-              <ChattingItem
-                testOne={testOne}
-                roomData={p}
-                client={client}
-                key={idx}
-                stomp={stomp}
-              />
-            );
-          })}
-        </div>
-      </Container>
-    </BackImage>
+    <>
+      <BackImage>
+        {is_loading === true && <Spinner />}
+        <Container>
+          <HeadBox>
+            <span>채팅</span>
+          </HeadBox>
+          <div>
+            {rooms.length === 0 && is_loading === false && (
+              <NoChatImage>
+                <img
+                  src="https://velog.velcdn.com/images/tty5799/post/5004946d-e4ad-4c5d-8855-67107d89ce05/image.png"
+                  alt="noChatImg"
+                />
+              </NoChatImage>
+            )}
+
+            {rooms.map((p, idx) => {
+              return (
+                <ChattingItem
+                  testOne={testOne}
+                  roomData={p}
+                  client={client}
+                  key={idx}
+                  stomp={stomp}
+                />
+              );
+            })}
+          </div>
+        </Container>
+        <Footer />
+      </BackImage>
+    </>
   );
 };
+
+const NoChatImage = styled.div`
+  display: flex;
+  margin-top: 25%;
+
+  img {
+    margin: 0 auto;
+  }
+`;
 
 const HeadBox = styled.div`
   height: 60px;

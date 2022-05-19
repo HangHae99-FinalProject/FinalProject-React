@@ -37,7 +37,7 @@ const checkEmailDup = createAction(CHECK_EMAIL_DUP, (checkEmailAlert) => ({
   checkEmailAlert,
 }));
 const initCheckEmailDup = createAction(INIT_CHECK_EMAIL_DUP, () => ({}));
-const kakaoLogin = createAction(KAKAO_LOGIN, (user) => ({ user }));
+const kakaoLogin = createAction(KAKAO_LOGIN, (user, id) => ({ user, id }));
 //initialState
 const initialState = {
   isLogin: false,
@@ -49,6 +49,8 @@ const initialState = {
   checkEmailDup: {},
   checkNicknameDup: {},
   initInput: "",
+  profileSet: true,
+  kakaoId: "",
 };
 
 const userInitial = {
@@ -57,10 +59,27 @@ const userInitial = {
 
 //middleware actions
 const __kakaoLogin = (code) => {
-  return async function (dispatch, getState, { hisory }) {
+  return async function (dispatch, getState, { history }) {
     try {
       const { data } = await userApi.kakaoGet(code);
-      console.log(data);
+      if (data.data.profileSet === false) {
+        dispatch(kakaoLogin(data.data.profileSet, data.data.userId));
+      } else {
+        const accessToken = data.data.accessToken;
+
+        const { sub, memberId, nickname, major } = jwt_decode(accessToken);
+        localStorage.setItem("userId", sub);
+        localStorage.setItem("memberId", memberId);
+        localStorage.setItem("nickname", nickname);
+        localStorage.setItem("major", major);
+        cookies.set("accessToken", accessToken, {
+          path: "/",
+          // maxAge: 3600, // 60분
+        });
+
+        dispatch(login());
+        history.replace("/main");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -98,7 +117,7 @@ const __login = (_memberId, password) => {
       });
       cookies.set("refreshToken", refreshToken, {
         path: "/",
-        maxAge: 604800, // 7일
+        // maxAge: 604800, // 7일
       });
       localStorage.setItem("userId", sub);
       localStorage.setItem("memberId", memberId);
@@ -141,8 +160,6 @@ const __signup = (memberId, password, pwCheck) => {
 const __additionalInfo = (_userId, nickname, major) => {
   return async (dispatch, getState, { history }) => {
     try {
-      const _userId = localStorage.getItem("userId");
-      console.log(_userId);
       const additionalInfo = await axios.post(
         "https://everymohum.shop/user/signup/addInfo",
         {
@@ -230,11 +247,12 @@ const __loginCheck = () => {
     if (tokenCheck) {
       dispatch(login());
       return;
-    } else {
-      dispatch(logout());
-      console.log("로그인을 다시 해주세요");
-      history.replace("/");
     }
+    // else {
+    //   dispatch(logout());
+    //   console.log("로그인을 다시 해주세요");
+    //   history.replace("/");
+    // }
   };
 };
 
@@ -268,6 +286,12 @@ export default handleActions(
     [INIT_CHECK_EMAIL_DUP]: (state, action) =>
       produce(state, (draft) => {
         draft.checkEmailDup = {};
+      }),
+    [KAKAO_LOGIN]: (state, action) =>
+      produce(state, (draft) => {
+        console.log(action.payload.id);
+        draft.profileSet = action.payload.user;
+        draft.kakaoId = action.payload.id;
       }),
   },
   initialState

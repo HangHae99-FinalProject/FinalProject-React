@@ -13,8 +13,10 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import { actionCreators as chatActions } from "../redux/modules/chat";
 import Spinner from "../components/Spinner";
+import Footer from "../elements/Footer";
 
 const Chat = (data) => {
+  const dispatch = useDispatch();
   const client = useSelector((state) => state.chat.client);
 
   const nickName = localStorage.getItem("nickname");
@@ -45,20 +47,23 @@ const Chat = (data) => {
     userId: myUserId,
   };
   useEffect(() => {
-    // stompConnect();
+    client.connect({}, () => {
+      dispatch(chatActions.setStomp(client));
+    });
     chatApi
       .roadMessage(roadMessageBox)
       .then((res) => {
         console.log(res);
         setMessageList(res.data.message);
         setIs_Loading(true);
-        // client.unsubscribe(`/sub/${myUserId}`);
       })
       .catch((err) => {
         console.log(err);
       });
+    // client.unsubscribe(`/sub/${myUserId}`);
     client.send("/pub/join", {}, JSON.stringify(`${roomName}`));
     client.subscribe(`/sub/${roomName}`, (data) => {
+      console.log(data);
       const onMessage = JSON.parse(data.body);
       setMessageList((messageList) => messageList.concat(onMessage));
 
@@ -79,29 +84,29 @@ const Chat = (data) => {
     if (e.key !== "Enter") {
       return;
     }
-    // sendMessage();
+    sendMessage();
   };
 
   const _onChange = useCallback((e) => {
     setCurrentMes(e.target.value);
   }, []);
 
-  // const sendMessage = () => {
-  //   const messageDto = {
-  //     type: "TALK",
-  //     message: currentMes,
-  //     roomName: roomName,
-  //     senderId: myUserId,
-  //     receiverId: receiverId,
-  //   };
-  //   if (currentMes === "") {
-  //     return;
-  //   } else if (active === true) {
-  //     return;
-  //   }
-  //   client.send("/pub/message", {}, JSON.stringify(messageDto));
-  //   setCurrentMes("");
-  // };
+  const sendMessage = () => {
+    const messageDto = {
+      type: "TALK",
+      message: currentMes,
+      roomName: roomName,
+      senderId: myUserId,
+      receiverId: receiverId,
+    };
+    if (currentMes === "") {
+      return;
+    } else if (active === true) {
+      return;
+    }
+    client.send("/pub/message", {}, JSON.stringify(messageDto));
+    setCurrentMes("");
+  };
 
   const roomOut = () => {
     const box = {
@@ -161,6 +166,8 @@ const Chat = (data) => {
       `;
     }
   };
+
+  useEffect(() => {});
 
   return (
     <BackImage>
@@ -281,18 +288,19 @@ const Chat = (data) => {
               <IoPaperPlane
                 className="send-chat-icon"
                 size="30"
-                // onClick={sendMessage}
+                onClick={sendMessage}
               />
             </Grid>
           </ChatInput>
         </Grid>
       </Container>
+      <Footer />
     </BackImage>
   );
 };
 
 const Container = styled.div`
-  margin: 0 auto;
+  margin: 3% auto;
   width: 1000px;
   height: 807px;
 

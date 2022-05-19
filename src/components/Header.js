@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import store, { history } from "../redux/configureStore";
 import Cookies from "universal-cookie";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,6 +41,8 @@ function Header(props) {
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
   console.log(isLogin);
+  const pathName = useLocation();
+  console.log(pathName);
   // console.log(id);
 
   // React.useEffect(() => {
@@ -73,7 +75,11 @@ function Header(props) {
   //   dispatch(userActions.__loginCheck());
   // }, []);
 
-  if (window.location.pathname === "/") {
+  if (pathName.pathname === "/user/kakao/login") {
+    return null;
+  }
+
+  if (pathName.pathname === "/") {
     return null;
   }
 
@@ -88,9 +94,14 @@ function Header(props) {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
-              <img src={logo} alt="logo" style={{ height: "40px" }} />
-            </Grid>
+            {pathName.pathname === "/main" ? null : (
+              <>
+                <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
+                  <img src={logo} alt="logo" style={{ height: "40px" }} />
+                </Grid>
+              </>
+            )}
+
             <Grid sx={{ width: "30%" }}>
               <Grid
                 container
@@ -98,7 +109,7 @@ function Header(props) {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                {isLogin === true ? (
+                {isLogin && isCookies === true ? (
                   <Grid
                     sx={{ display: { cursor: "pointer" } }}
                     onClick={goChat}
@@ -108,13 +119,13 @@ function Header(props) {
                     </Badge>
                   </Grid>
                 ) : null}
-                {isLogin === true ? (
+                {isLogin && isCookies === true ? (
                   <Grid sx={{ display: { cursor: "pointer" } }}>
                     <Typography>등대</Typography>
                   </Grid>
                 ) : null}
                 <Grid sx={{ display: { cursor: "pointer" } }}>
-                  {isLogin === true ? (
+                  {isLogin && isCookies === true ? (
                     <Grid onClick={goLogout}>
                       <Typography>Logout</Typography>
                     </Grid>
@@ -125,7 +136,7 @@ function Header(props) {
                   )}
                 </Grid>
                 <Grid sx={{ display: { cursor: "pointer" } }}>
-                  {isLogin === true ? (
+                  {isLogin && isCookies === true ? (
                     <Typography onClick={goUserPage}>MyPage</Typography>
                   ) : (
                     <Typography onClick={goSignup}>SignUp</Typography>

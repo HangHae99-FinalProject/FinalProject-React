@@ -1,7 +1,26 @@
 /* eslint-disable*/
 import React, { useEffect, useState } from "react";
 import _styled from "styled-components";
-import { pro1, pro2, pro3, pro4, pro5, pro6, pro7, pro8, pro9 } from "../assets/profileImage/ProfileImgs";
+import {
+  pro1,
+  pro2,
+  pro3,
+  pro4,
+  pro5,
+  pro6,
+  pro7,
+  pro8,
+  pro9,
+} from "../assets/profileImage/ProfileImgs";
+// import pro1 from "../assets/profileImage/1.png"
+// import pro2 from "../assets/profileImage/2.png"
+// import pro3 from "../assets/profileImage/3.png"
+// import pro4 from "../assets/profileImage/4.png"
+// import pro5 from "../assets/profileImage/5.png"
+// import pro6 from "../assets/profileImage/6.png"
+// import pro7 from "../assets/profileImage/7.png"
+// import pro8 from "../assets/profileImage/8.png"
+// import pro9 from "../assets/profileImage/9.png"
 import { Grid } from "../elements/Index";
 import Uploads from "../elements/Upload";
 import { useDispatch, useSelector } from "react-redux";
@@ -187,11 +206,21 @@ const EditUser = () => {
                 }}
               >
                 <Grid>
-                  <ImageList sx={{  padding:"28.5px 24px", margin: "0", borderRadius:"5px" }} cols={3} rowHeight={120}>
+                  <ImageList
+                    sx={{ padding: "28.5px 24px", margin: "0", borderRadius: "5px" }}
+                    cols={3}
+                    rowHeight={120}
+                  >
                     {itemData.map((item) => (
                       <ImageListItem
-                      key={item.img}
-                      sx={{ margin:"10.5px 12px", cursor: "pointer", width: "120px", height: "120px", display:"corver" }}
+                        key={item.img}
+                        sx={{
+                          margin: "10.5px 12px",
+                          cursor: "pointer",
+                          width: "120px",
+                          height: "120px",
+                          display: "corver",
+                        }}
                       >
                         <img
                           src={item.img}
@@ -201,7 +230,7 @@ const EditUser = () => {
                           onClick={() => {
                             setProfileImgUrl(item.img);
                           }}
-                          />
+                        />
                       </ImageListItem>
                     ))}
                   </ImageList>
@@ -423,39 +452,39 @@ const EditUser = () => {
 
 const itemData = [
   {
-    img: require(`../assets/profileImage/1.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FuF6wx%2FbtrCxFSgc0N%2FHy7KcDq4WN1RUXjWTMSI1K%2Fimg.png",
     title: "1",
   },
   {
-    img: require(`../assets/profileImage/2.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb3EnyV%2FbtrCvZqIHbx%2FkZmT6e5EHOWqYuBpzACQt1%2Fimg.png",
     title: "2",
   },
   {
-    img: require(`../assets/profileImage/3.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fwuu1p%2FbtrCvKHi66H%2FDVhJJEOZfAnJX7sTpXYMWk%2Fimg.png",
     title: "3",
   },
   {
-    img: require(`../assets/profileImage/4.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FoEO5Z%2FbtrCvKgcVCe%2FnE4R2zy7k8hvtrTdd2tlpK%2Fimg.png",
     title: "4",
   },
   {
-    img: require(`../assets/profileImage/5.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpbROz%2FbtrCyYqibEj%2FofkKW469iJItQmnsFye3m0%2Fimg.png",
     title: "5",
   },
   {
-    img: require(`../assets/profileImage/6.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FecCP89%2FbtrCumtnxPS%2FKfaGFKmwh0R4ywSvBwhCv1%2Fimg.png",
     title: "6",
   },
   {
-    img: require(`../assets/profileImage/7.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FU1aS5%2FbtrCydVwn2d%2F6Hc6p465wemrQyR4scHfZ0%2Fimg.png",
     title: "7",
   },
   {
-    img: require(`../assets/profileImage/8.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fdax6ur%2FbtrCuVh3a3B%2FkPJx86n0RczXHHeGfinTmK%2Fimg.png",
     title: "8",
   },
   {
-    img: require(`../assets/profileImage/9.png`),
+    img: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FGf5en%2FbtrCyZQg1tT%2FzXC3QpkztZx9eUnLIeCRhk%2Fimg.png",
     title: "9",
   },
 ];

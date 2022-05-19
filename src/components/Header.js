@@ -36,7 +36,8 @@ const cookies = new Cookies();
 
 function Header(props) {
   const dispatch = useDispatch();
-  const isCookies = cookies.get("isLogin", { path: "/" }) ? true : false;
+  // const isCookies = cookies.get("isLogin", { path: "/" }) ? true : false;
+  const isCookies = cookies.get("accessToken", { path: "/" }) ? true : false;
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
   console.log(isLogin);
@@ -97,7 +98,7 @@ function Header(props) {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                {isCookies === true ? (
+                {isLogin === true ? (
                   <Grid
                     sx={{ display: { cursor: "pointer" } }}
                     onClick={goChat}
@@ -107,13 +108,13 @@ function Header(props) {
                     </Badge>
                   </Grid>
                 ) : null}
-                {isCookies === true ? (
+                {isLogin === true ? (
                   <Grid sx={{ display: { cursor: "pointer" } }}>
                     <Typography>등대</Typography>
                   </Grid>
                 ) : null}
                 <Grid sx={{ display: { cursor: "pointer" } }}>
-                  {isCookies === true ? (
+                  {isLogin === true ? (
                     <Grid onClick={goLogout}>
                       <Typography>Logout</Typography>
                     </Grid>
@@ -124,7 +125,7 @@ function Header(props) {
                   )}
                 </Grid>
                 <Grid sx={{ display: { cursor: "pointer" } }}>
-                  {isCookies === true ? (
+                  {isLogin === true ? (
                     <Typography onClick={goUserPage}>MyPage</Typography>
                   ) : (
                     <Typography onClick={goSignup}>SignUp</Typography>

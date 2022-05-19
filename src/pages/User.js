@@ -68,6 +68,9 @@ const User = (props) => {
   const [ModalState, setModalState] = useState(false);
   const [postId, setPostId] = useState("");
   const [receiverId, setReceiverId] = useState("");
+  const [limit, setLimit] = useState(3); //페이지당 표시할 게시물 수
+  const [page, setPage] = useState(1); //페이지 번호
+  const offset = (page - 1) * limit; //페이징 처리
   const modalHandelBtn = () => {
     setModalState(!ModalState);
     console.log(ModalState);
@@ -352,7 +355,7 @@ const User = (props) => {
           </Grid>
         </Grid>
       </ReactModal>
-
+      {/* 여기까지 평점 모달창 */}
       {/* 본문  */}
       <Grid
         container
@@ -443,7 +446,7 @@ const User = (props) => {
                 <Grid>
                   <Typography
                     id="myIntro"
-                    sx={{ marginTop: "20px", marginLeft: "24px", width: "900px"}}
+                    sx={{ marginTop: "20px", marginLeft: "24px", width: "900px" }}
                   >
                     {getUserInfo.intro}
                   </Typography>
@@ -474,8 +477,22 @@ const User = (props) => {
           alignItems="center"
           sx={{ width: "1370px", marginTop: "24px" }}
         >
-          <Grid container direction="row" justifyContent="flex-start" alignItems="center">
+          <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
             <Typography>나의 프로젝트</Typography>
+            {/* 페이지네이션 */}
+            <label>
+              페이지당 표시할 게시물 수:&nbsp;
+              <select
+                type="number"
+                value={limit}
+                onChange={({ target: { value } }) => setLimit(Number(value))}
+              >
+                <option value="3">3</option>
+                <option value="6">6</option>
+                <option value="9">9</option>
+              </select>
+            </label>
+            {/* 여기까지 페이지네이션 */}
           </Grid>
           <Grid sx={{ padding: "0px 20px", borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -599,6 +616,7 @@ const User = (props) => {
               })}
             </List>
           </TabPanel>
+          {/* 여기까지 모집중 탭 */}
           {/* 모집완료 탭 */}
           <TabPanel value={value} index={2}>
             <List

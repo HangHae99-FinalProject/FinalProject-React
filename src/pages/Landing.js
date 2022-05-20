@@ -30,26 +30,31 @@ const Landing = () => {
   return (
     <Container>
       <HeadImage>
-        <BackImage>
-          <img
-            src="https://velog.velcdn.com/images/tty5799/post/44b3ddb0-6532-431f-a249-933b59d8b327/image.png"
-            alt="backImg"
-          />
-        </BackImage>
-        <TitleImg>
-          <img
-            src="https://velog.velcdn.com/images/tty5799/post/ca07d3ee-2bdb-4825-b3f3-cb1f3582e818/image.png"
-            alt="titleImg"
-          />
-          <LoginBox>
-            <span className="login" onClick={loginHandelBtn}>
-              LOG IN
-            </span>
-            <span className="signup" onClick={signUpHandelBtn}>
-              SIGN UP
-            </span>
-          </LoginBox>
-        </TitleImg>
+        <div>
+          <BackImage>
+            <img
+              src="https://velog.velcdn.com/images/tty5799/post/44b3ddb0-6532-431f-a249-933b59d8b327/image.png"
+              alt="backImg"
+              className="tilt-in-tl"
+            />
+          </BackImage>
+        </div>
+        <div className="tilt-in-fwd-tr">
+          <TitleImg>
+            <img
+              src="https://velog.velcdn.com/images/tty5799/post/ca07d3ee-2bdb-4825-b3f3-cb1f3582e818/image.png"
+              alt="titleImg"
+            />
+            <LoginBox>
+              <span className="login" onClick={loginHandelBtn}>
+                LOG IN
+              </span>
+              <span className="signup" onClick={signUpHandelBtn}>
+                SIGN UP
+              </span>
+            </LoginBox>
+          </TitleImg>
+        </div>
       </HeadImage>
       <PreviewBox>
         <PreviewCard>
@@ -205,6 +210,78 @@ const HeadImage = styled.div`
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
+
+  .tilt-in-tl {
+    -webkit-animation: tilt-in-tl 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: tilt-in-tl 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  @-webkit-keyframes tilt-in-tl {
+    0% {
+      -webkit-transform: rotateY(35deg) rotateX(20deg) translate(-250px, -250px)
+        skew(12deg, 15deg);
+      transform: rotateY(35deg) rotateX(20deg) translate(-250px, -250px)
+        skew(12deg, 15deg);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateY(0) rotateX(0deg) translate(0, 0)
+        skew(0deg, 0deg);
+      transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
+      opacity: 1;
+    }
+  }
+  @keyframes tilt-in-tl {
+    0% {
+      -webkit-transform: rotateY(35deg) rotateX(20deg) translate(-250px, -250px)
+        skew(12deg, 15deg);
+      transform: rotateY(35deg) rotateX(20deg) translate(-250px, -250px)
+        skew(12deg, 15deg);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateY(0) rotateX(0deg) translate(0, 0)
+        skew(0deg, 0deg);
+      transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
+      opacity: 1;
+    }
+  }
+
+  .tilt-in-fwd-tr {
+    -webkit-animation: tilt-in-fwd-tr 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      both;
+    animation: tilt-in-fwd-tr 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  @-webkit-keyframes tilt-in-fwd-tr {
+    0% {
+      -webkit-transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
+        skew(-35deg, 10deg);
+      transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
+        skew(-35deg, 10deg);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateY(0) rotateX(0deg) translate(0, 0)
+        skew(0deg, 0deg);
+      transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
+      opacity: 1;
+    }
+  }
+  @keyframes tilt-in-fwd-tr {
+    0% {
+      -webkit-transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
+        skew(-35deg, 10deg);
+      transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
+        skew(-35deg, 10deg);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateY(0) rotateX(0deg) translate(0, 0)
+        skew(0deg, 0deg);
+      transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
+      opacity: 1;
+    }
+  }
 `;
 
 export default Landing;

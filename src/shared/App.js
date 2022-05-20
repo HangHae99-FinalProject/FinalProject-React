@@ -67,6 +67,9 @@ function App() {
       dispatch(chatActions.setStomp(client));
     });
   }, []);
+  console.log(
+    "                               __ \n                              /\\ \\\n  ___ ___      ___            \\ \\ \\___     __  __    ___ ___ \n/' __` __`\\   / __`\\  _______  \\ \\  _ `\\  /\\ \\/\\ \\ /' __` __`\\ \n/\\ \\/\\ \\/\\ \\ /\\ \\L\\ \\/\\______\\  \\ \\ \\ \\ \\ \\ \\ \\_\\ \\/\\ \\/\\ \\/\\ \\ \n\\ \\_\\ \\_\\ \\_\\\\ \\____/\\/______/   \\ \\_\\ \\_\\ \\ \\____/\\ \\_\\ \\_\\ \\_\\ \n \\/_/\\/_/\\/_/ \\/___/              \\/_/\\/_/  \\/___/  \\/_/\\/_/\\/_/ "
+  );
 
   return (
     <>
@@ -80,7 +83,6 @@ function App() {
           <Route path="/user/kakao/login" exact component={OAuthRedirect} />
           <Route path="/post/:id" exact component={Post} />
           <Route path="/detail/:postid" exact component={Detail} />
-          <Route path="/detail" exact component={Detail} />
           <Route path="/write" exact component={Write} />
           <Route path="/editpost/:postid" exact component={EditPost} />
           <Route path="/user" exact component={User} />

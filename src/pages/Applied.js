@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Redirect, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import AppliedCard from "../components/Applied/AppliedCard";
 import ApplyCard from "../components/Applied/ApplyCard";
@@ -12,6 +12,9 @@ import { actionCreates as applyActions } from "../redux/modules/apply";
 const Applied = () => {
   const dispatch = useDispatch();
   const param = useParams();
+  const { pathname } = useLocation();
+  const from = localStorage.getItem("from");
+
   const id = param.postid;
 
   const subscriber = useSelector((state) => state.apply.subscriberList);
@@ -27,6 +30,8 @@ const Applied = () => {
 
   const subscriberCnt = subscriberList?.length;
   const acceptListCnt = acceptListList?.length;
+
+  const user = localStorage.getItem("userId");
 
   const [is_open, setIs_open] = useState(false);
   const [ModalState, setModalState] = useState(false);
@@ -54,6 +59,15 @@ const Applied = () => {
       return;
     }
   }, []);
+
+  if (!user) {
+    alert("로그인을 먼저 해주세요!");
+    return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />;
+  }
+
+  if (from) {
+    localStorage.removeItem("from");
+  }
 
   return (
     <>

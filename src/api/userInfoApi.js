@@ -27,4 +27,6 @@ export const userInfoApi = {
 
   putUserInfoModData: (userId, formData) =>
     formDataApi.patch(`/user/info/${userId}/modify`, formData),
+
+  emailCheck: (email) => instance.get(`/user/email?email=${email}`),
 };

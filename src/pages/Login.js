@@ -19,6 +19,8 @@ import axios from "axios";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { Redirect } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 function IdFormHelperText() {
   const { focused } = useFormControl() || {};
@@ -47,7 +49,9 @@ function PwFormHelperText() {
   return <FormHelperText>{helperText}</FormHelperText>;
 }
 
-const Login = () => {
+const cookies = new Cookies();
+
+const Login = ({ location }) => {
   const dispatch = useDispatch();
   const [memberId, setmemberId] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -55,6 +59,10 @@ const Login = () => {
   const apiKey = process.env.REACT_APP_KAKAO_API_KEY;
   const redirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUri}&response_type=code`;
+
+  if (location?.state) {
+    localStorage.setItem("from", location?.state?.from);
+  }
 
   const onLoginHandler = () => {
     window.location.href = kakaoUrl;

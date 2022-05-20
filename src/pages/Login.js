@@ -33,9 +33,7 @@ const Login = ({ location }) => {
   const redirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUri}&response_type=code`;
 
-  if (location?.state) {
-    localStorage.setItem("from", location?.state?.from);
-  }
+  const user = localStorage.getItem("userId");
 
   // 헬퍼텍스트 -아이디, 패스워드
   function IdFormHelperText() {
@@ -94,6 +92,14 @@ const Login = ({ location }) => {
 
     dispatch(userActions.__login(memberId, password));
   };
+
+  if (location?.state) {
+    localStorage.setItem("from", location?.state?.from);
+  }
+
+  if (user) {
+    history.replace("/main");
+  }
 
   return (
     <React.Fragment>

@@ -14,6 +14,7 @@
     "@testing-library/user-event": "^13.2.1",
     "axios": "^0.26.1",
     "connected-react-router": "6.8.0",
+    "event-source-polyfill": "^1.0.26",
     "glober": "^0.0.3",
     "history": "4.10.1",
     "immer": "^9.0.12",

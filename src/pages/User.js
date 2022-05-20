@@ -44,7 +44,10 @@ const focus = {
 };
 
 const bull = (
-  <Box component="span" sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}>
+  <Box
+    component="span"
+    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+  >
     •
   </Box>
 );
@@ -71,8 +74,12 @@ const User = (props) => {
   const getAppliedList = useSelector((state) => state.myPage.appliedList?.data); //신청중 리스트
   const getRecruitList = useSelector((state) => state.myPage.recruitList?.data); //모집중 리스트
   const getApplierList = useSelector((state) => state.myPage.applierList);
-  const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data); //모집완료 리스트
-  const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
+  const getRecruitOverList = useSelector(
+    (state) => state.myPage.recruitOverList.data
+  ); //모집완료 리스트
+  const getAppliedOverList = useSelector(
+    (state) => state.myPage.appliedOverList.data
+  );
   console.log("신청중리스트", getAppliedList?.length);
   console.log("모집중리스트", getRecruitList);
   console.log("모집완료리스트", getRecruitOverList);
@@ -84,10 +91,11 @@ const User = (props) => {
   );
 
   const pathName = useLocation();
-  console.log(pathName)
+  console.log(pathName);
   const userId = pathName.pathname.split("/")[2];
 
-  var likeRatio = (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
+  var likeRatio =
+    (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }
@@ -166,7 +174,12 @@ const User = (props) => {
                 함께 모험한 선장들의 리뷰를 남겨주세요.
               </Typography>
             </Grid>
-            <Grid container direction="row" justifyContent="center" alignItems="center">
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+            >
               {/* 모집글 작성자 */}
               {getAppliedOverList_postUser !== null ? (
                 <Card
@@ -178,7 +191,12 @@ const User = (props) => {
                   }}
                 >
                   <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
-                    <Grid container direction="row" justifyContent="center" alignItems="center">
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
                       <img
                         src={getAppliedOverList_postUser?.profileImg}
                         alt="profileImg"
@@ -203,7 +221,12 @@ const User = (props) => {
                     </Grid>
                   </CardContent>
                   <CardActions>
-                    <Grid container direction="column" justifyContent="center" alignItems="center">
+                    <Grid
+                      container
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
                       <Button
                         sx={{
                           width: "180px",
@@ -225,7 +248,8 @@ const User = (props) => {
                           );
                         }}
                       >
-                        <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또 모험 같이해요!
+                        <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또
+                        모험 같이해요!
                       </Button>
                       <Button
                         sx={{
@@ -269,7 +293,12 @@ const User = (props) => {
                     }}
                   >
                     <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
-                      <Grid container direction="row" justifyContent="center" alignItems="center">
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
                         <img
                           src={appliedOverList.profileImg}
                           alt="profileImg"
@@ -321,7 +350,8 @@ const User = (props) => {
                             );
                           }}
                         >
-                          <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또 모험 같이해요!
+                          <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또
+                          모험 같이해요!
                         </Button>
                         <Button
                           sx={{
@@ -426,11 +456,18 @@ const User = (props) => {
                   alignItems="center"
                 >
                   <Profile>
-                    <div style={{ margin: "auto", width: "auto", height: "auto" }}>
+                    <div
+                      style={{ margin: "auto", width: "auto", height: "auto" }}
+                    >
                       <img src={getUserInfo.profileImg} alt="profileImg" />
                     </div>
                   </Profile>
-                  <Grid container direction="row" justifyContent="center" alignItems="center">
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
                     <Typography sx={{ fontSize: "14px" }}>
                       {likeRatio <= 40 ? (
                         <img src={amateurCap} alt="amateurCap" />
@@ -443,7 +480,9 @@ const User = (props) => {
                     </Typography>
                   </Grid>
                   <Grid>
-                    <Typography sx={{ fontSize: "10px" }}>{evaluationGrade}</Typography>
+                    <Typography sx={{ fontSize: "10px" }}>
+                      {evaluationGrade}
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
@@ -500,7 +539,12 @@ const User = (props) => {
           alignItems="center"
           sx={{ width: "1370px", marginTop: "24px" }}
         >
-          <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
             <Typography>나의 프로젝트</Typography>
             {/* 페이지네이션 게시물 수 셀렉터 */}
             <label>
@@ -585,15 +629,6 @@ const User = (props) => {
                         justifyContent="space-between"
                         alignItems="center"
                       >
-<<<<<<< HEAD
-                        {appliedList.title}
-                        <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
-                      </ListItemText>
-                    </Grid>
-                  </ListItem>
-                );
-              })}
-=======
                         <ListItemText
                           onClick={() => {
                             history.push(`/detail/${appliedList.postId}`);
@@ -608,7 +643,6 @@ const User = (props) => {
                     </ListItem>
                   );
                 })}
->>>>>>> f948d8f (신청페이지)
               <footer>
                 <Pagination
                   total={getAppliedList?.length}
@@ -649,11 +683,6 @@ const User = (props) => {
                         justifyContent="space-between"
                         alignItems="center"
                       >
-<<<<<<< HEAD
-                        {recruitList.title}
-                        <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
-                      </ListItemText>
-=======
                         <ListItemText
                           onClick={() => {
                             // dispatch(userInfoActions.__getApplier(postId));
@@ -665,38 +694,8 @@ const User = (props) => {
                             style={{ verticalAlign: "middle" }}
                           />
                         </ListItemText>
->>>>>>> f948d8f (신청페이지)
 
                         <Grid>
-<<<<<<< HEAD
-                          <Button
-                            sx={{
-                              color: "#FE5953",
-                              border: "1px solid #FE5953",
-                              marginBotton: "5px",
-                              width: "190px",
-                              height: "40px",
-                            }}
-                            variant="outlined"
-                          >
-                            {recruitList.userApplyList.length}명의 선장이 신청했어요!
-                          </Button>
-                        </Grid>
-                        <Grid>
-                          <Button
-                            sx={{
-                              marginTop: "5px",
-                              width: "190px",
-                              height: "40px",
-                            }}
-                            variant="contained"
-                            onClick={() => {
-                              history.push(`/applied/${recruitList.postId}`);
-                            }}
-                          >
-                            선장명단 보러가기
-                          </Button>
-=======
                           <Grid>
                             <Button
                               sx={{
@@ -727,7 +726,6 @@ const User = (props) => {
                               선장명단 보러가기
                             </Button>
                           </Grid>
->>>>>>> f948d8f (신청페이지)
                         </Grid>
                       </Grid>
                     </ListItem>
@@ -773,11 +771,6 @@ const User = (props) => {
                         justifyContent="space-between"
                         alignItems="center"
                       >
-<<<<<<< HEAD
-                        {recruitOverList.title}
-                        <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
-                      </ListItemText>
-=======
                         <ListItemText
                           onClick={() => {
                             // dispatch(userInfoActions.__getApplier(postId));
@@ -789,26 +782,8 @@ const User = (props) => {
                             style={{ verticalAlign: "middle" }}
                           />
                         </ListItemText>
->>>>>>> f948d8f (신청페이지)
 
                         <Grid>
-<<<<<<< HEAD
-                          <Button
-                            sx={{
-                              marginTop: "5px",
-                              width: "190px",
-                              height: "40px",
-                            }}
-                            variant="contained"
-                            onClick={() => {
-                              setPostId(recruitOverList.postId);
-                              modalHandelBtn();
-                              dispatch(userInfoActions.__getAppliedOver(recruitOverList.postId));
-                            }}
-                          >
-                            선장리뷰
-                          </Button>
-=======
                           <Grid>
                             <Button
                               sx={{
@@ -830,7 +805,6 @@ const User = (props) => {
                               선장리뷰
                             </Button>
                           </Grid>
->>>>>>> f948d8f (신청페이지)
                         </Grid>
                       </Grid>
                     </ListItem>

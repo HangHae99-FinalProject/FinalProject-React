@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const Pagination = ({ total, limit, page, setPage }) => {
+  if (!total) {
+    return null;
+  }
   const numPages = Math.ceil(total / limit);
 
   return (
@@ -47,7 +50,7 @@ const Button = styled.button`
   font-size: 1rem;
 
   &:hover {
-    background: #4299E9;
+    background: #4299e9;
     cursor: pointer;
     transform: translateY(-4px);
   }
@@ -60,7 +63,7 @@ const Button = styled.button`
   }
 
   &[aria-current] {
-    background: #4299E9;
+    background: #4299e9;
     color: white;
     font-weight: bold;
     cursor: revert;

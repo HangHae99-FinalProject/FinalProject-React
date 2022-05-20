@@ -94,7 +94,7 @@ function Header(props) {
             justifyContent="space-between"
             alignItems="center"
           >
-            {pathName.pathname === "/main" ? null : (
+            {pathName.pathname === "/main" ? <Grid></Grid> : (
               <>
                 <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
                   <img src={logo} alt="logo" style={{ height: "40px" }} />

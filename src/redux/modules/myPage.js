@@ -23,6 +23,7 @@ const GET_APPLIED_OVER = "myPage/GET_APPLIED_OVER";
 const POST_EVALUATION = "myPage/POST_EVALUATION";
 const PUT_USER_INFO_MOD = "myPage/PUT_USER_INFO_MOD";
 const SET_USER_INFO = "myPage/SET_USER_INFO";
+const GET_EMAIL = "GET_EMAIL";
 //클린업
 const INIT_USER_INFO = "myPage/INIT_USER_INFO";
 
@@ -38,6 +39,7 @@ const INIT_USER_INFO = "myPage/INIT_USER_INFO";
 //       state.user = action.user;
 //   }
 // };
+const getEmail = createAction(GET_EMAIL, (data) => ({ data }));
 const getUser = createAction(GET_USER, (data_list) => ({ data_list }));
 const getApplied = createAction(GET_APPLIED, (appliedData) => ({
   appliedData,
@@ -86,6 +88,18 @@ const initialState = {
 };
 
 //middleware actions
+
+const __getEmail = (email) => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const { data } = await userInfoApi.emailCheck(email);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 //유저 정보 조회
 const __getUserInfo = (userId) => {
   return async function (dispatch, getState, { history }) {
@@ -263,6 +277,8 @@ const actionCreators = {
   // setUserInfo
   __putUserInfoMod,
   initUserInfo,
+  getEmail,
+  __getEmail,
 };
 
 export { actionCreators };

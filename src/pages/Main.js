@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MainSearch from "../components/Main/MainSearch";
 import { history } from "../redux/configureStore";
 import Footer from "../elements/Footer";
+import { Redirect } from "react-router-dom";
 
 const Main = () => {
   const [is_location, setLocation] = useState("위치 설정");
@@ -22,6 +23,8 @@ const Main = () => {
   const [is_scroll, setIs_scroll] = useState(window.scrollY);
 
   const is_login = useSelector((state) => state.user.isLogin);
+
+  const from = localStorage.getItem("from");
 
   const dispatch = useDispatch();
 
@@ -55,6 +58,10 @@ const Main = () => {
       dispatch(postActions.clearPost());
     };
   }, [dispatch, is_scroll]);
+
+  if (from) {
+    return <Redirect to={{ pathname: from }} />;
+  }
 
   return (
     <>

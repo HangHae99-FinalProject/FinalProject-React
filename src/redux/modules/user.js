@@ -66,7 +66,11 @@ const __kakaoLogin = (code) => {
         dispatch(kakaoLogin(data.data.profileSet, data.data.userId));
       } else {
         const accessToken = data.data.accessToken;
-
+        console.log(accessToken);
+        cookies.set("accessToken", accessToken, {
+          path: "/",
+          // maxAge: 3600, // 60분
+        });
         const { sub, memberId, nickname, major, profileImg } =
           jwt_decode(accessToken);
         localStorage.setItem("userId", sub);
@@ -74,10 +78,6 @@ const __kakaoLogin = (code) => {
         localStorage.setItem("nickname", nickname);
         localStorage.setItem("major", major);
         localStorage.setItem("profileImg", profileImg);
-        cookies.set("accessToken", accessToken, {
-          path: "/",
-          // maxAge: 3600, // 60분
-        });
 
         dispatch(login());
         history.replace("/main");
@@ -233,6 +233,7 @@ const __logout = () => {
       localStorage.removeItem("major");
       localStorage.removeItem("memberId");
       localStorage.removeItem("nickname");
+      localStorage.removeItem("profileImg");
       // localStorage.removeItem("userId");
       cookies.remove("isLogin", { path: "/" });
       cookies.remove("accessToken", { path: "/" });
@@ -249,7 +250,7 @@ const __logout = () => {
 
 const __loginCheck = () => {
   return function (dispatch, getState, { history }) {
-    const tokenCheck = cookies.get("accessToken");
+    const tokenCheck = cookies.get("accessToken", { path: "/" });
     if (tokenCheck) {
       dispatch(login());
       return;

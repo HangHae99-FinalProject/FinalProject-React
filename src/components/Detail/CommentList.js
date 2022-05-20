@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 import { history } from "../../redux/configureStore";
+
 const CommentList = (props) => {
   const dispatch = useDispatch();
   const created = props.createdAt;

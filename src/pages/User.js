@@ -61,6 +61,8 @@ const User = (props) => {
   const [limit, setLimit] = useState(3); //페이지당 표시할 게시물 수
   const [page, setPage] = useState(1); //페이지 번호
   const offset = (page - 1) * limit; //페이징 처리
+  const [is_email, setIs_email] = useState("");
+
   const modalHandelBtn = () => {
     setModalState(!ModalState);
     console.log(ModalState);
@@ -102,9 +104,17 @@ const User = (props) => {
 
   const [value, setValue] = React.useState(0);
 
+  const emailHandleChange = (e) => {
+    setIs_email(e.target.value);
+  };
+  const emailCheckBtn = () => {
+    dispatch(userInfoActions.__getEmail(is_email));
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  console.log(userId);
 
   useEffect(() => {
     dispatch(userInfoActions.initUserInfo());
@@ -112,7 +122,6 @@ const User = (props) => {
     dispatch(userInfoActions.__getApplied(userId));
     dispatch(userInfoActions.__getRecruit(userId));
     dispatch(userInfoActions.__getRecruitOver(userId));
-    return;
   }, [userId]);
 
   return (
@@ -362,7 +371,14 @@ const User = (props) => {
           }}
         >
           <Grid>
-            <Grid container direction="row" justifyContent="space-between" alignItems="center">
+            <input onChange={emailHandleChange} />
+            <button onClick={emailCheckBtn}>인증</button>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <Grid>
                 <Typography sx={{ fontWeight: "bold" }}>
                   "{getUserInfo.nickname}" 님의 마이페이지
@@ -502,8 +518,18 @@ const User = (props) => {
             {/* 여기까지 페이지네이션 게시물 수 셀렉터 */}
           </Grid>
 
-          <Grid sx={{ padding: "0px 20px", borderBottom: 1, borderColor: "divider" }}>
-            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Grid
+            sx={{
+              padding: "0px 20px",
+              borderBottom: 1,
+              borderColor: "divider",
+            }}
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
               <Tab
                 sx={{ width: "430px" }}
                 label="신청중"
@@ -537,31 +563,29 @@ const User = (props) => {
               component="nav"
               aria-label="mailbox folders"
             >
-              {getAppliedList?.slice(offset, offset + limit)?.map((appliedList, idx) => {
-                return (
-                  <ListItem
-                    sx={{
-                      padding: "0px 16px",
-                    }}
-                    button
-                    key={idx}
-                    divider
-                  >
-                    <Grid
+              {getAppliedList
+                ?.slice(offset, offset + limit)
+                .map((appliedList, idx) => {
+                  return (
+                    <ListItem
                       sx={{
-                        margin: "5px 0px",
-                        height: "90px",
+                        padding: "0px 16px",
                       }}
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="center"
+                      button
+                      key={idx}
+                      divider
                     >
-                      <ListItemText
-                        onClick={() => {
-                          history.push(`/detail/${appliedList.postId}`);
+                      <Grid
+                        sx={{
+                          margin: "5px 0px",
+                          height: "90px",
                         }}
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
                       >
+<<<<<<< HEAD
                         {appliedList.title}
                         <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
                       </ListItemText>
@@ -569,6 +593,22 @@ const User = (props) => {
                   </ListItem>
                 );
               })}
+=======
+                        <ListItemText
+                          onClick={() => {
+                            history.push(`/detail/${appliedList.postId}`);
+                          }}
+                        >
+                          {appliedList.title}
+                          <ArrowForwardIosRoundedIcon
+                            style={{ verticalAlign: "middle" }}
+                          />
+                        </ListItemText>
+                      </Grid>
+                    </ListItem>
+                  );
+                })}
+>>>>>>> f948d8f (신청페이지)
               <footer>
                 <Pagination
                   total={getAppliedList?.length}
@@ -587,38 +627,48 @@ const User = (props) => {
               component="nav"
               aria-label="mailbox folders"
             >
-              {getRecruitList?.slice(offset, offset + limit).map((recruitList, idx) => {
-                return (
-                  <ListItem
-                    sx={{
-                      padding: "0px 16px",
-                    }}
-                    button
-                    key={idx}
-                    divider
-                  >
-                    <Grid
+              {getRecruitList
+                ?.slice(offset, offset + limit)
+                .map((recruitList, idx) => {
+                  return (
+                    <ListItem
                       sx={{
-                        margin: "5px 0px",
-                        height: "90px",
+                        padding: "0px 16px",
                       }}
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="center"
+                      button
+                      key={idx}
+                      divider
                     >
-                      <ListItemText
-                        onClick={() => {
-                          // dispatch(userInfoActions.__getApplier(postId));
-                          history.push(`/detail/${recruitList.postId}`);
+                      <Grid
+                        sx={{
+                          margin: "5px 0px",
+                          height: "90px",
                         }}
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
                       >
+<<<<<<< HEAD
                         {recruitList.title}
                         <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
                       </ListItemText>
+=======
+                        <ListItemText
+                          onClick={() => {
+                            // dispatch(userInfoActions.__getApplier(postId));
+                            history.push(`/detail/${recruitList.postId}`);
+                          }}
+                        >
+                          {recruitList.title}
+                          <ArrowForwardIosRoundedIcon
+                            style={{ verticalAlign: "middle" }}
+                          />
+                        </ListItemText>
+>>>>>>> f948d8f (신청페이지)
 
-                      <Grid>
                         <Grid>
+<<<<<<< HEAD
                           <Button
                             sx={{
                               color: "#FE5953",
@@ -646,12 +696,43 @@ const User = (props) => {
                           >
                             선장명단 보러가기
                           </Button>
+=======
+                          <Grid>
+                            <Button
+                              sx={{
+                                color: "#FE5953",
+                                border: "1px solid #FE5953",
+                                marginBotton: "5px",
+                                width: "190px",
+                                height: "40px",
+                              }}
+                              variant="outlined"
+                            >
+                              {recruitList.userApplyList.length}명의 선장이
+                              신청했어요!
+                            </Button>
+                          </Grid>
+                          <Grid>
+                            <Button
+                              sx={{
+                                marginTop: "5px",
+                                width: "190px",
+                                height: "40px",
+                              }}
+                              variant="contained"
+                              onClick={() => {
+                                history.push(`/applied/${recruitList.postId}`);
+                              }}
+                            >
+                              선장명단 보러가기
+                            </Button>
+                          </Grid>
+>>>>>>> f948d8f (신청페이지)
                         </Grid>
                       </Grid>
-                    </Grid>
-                  </ListItem>
-                );
-              })}
+                    </ListItem>
+                  );
+                })}
               <footer>
                 <Pagination
                   total={getRecruitList?.length}
@@ -670,38 +751,48 @@ const User = (props) => {
               component="nav"
               aria-label="mailbox folders"
             >
-              {getRecruitOverList?.slice(offset, offset + limit).map((recruitOverList, idx) => {
-                return (
-                  <ListItem
-                    sx={{
-                      padding: "0px 16px",
-                    }}
-                    button
-                    key={idx}
-                    divider
-                  >
-                    <Grid
+              {getRecruitOverList
+                ?.slice(offset, offset + limit)
+                .map((recruitOverList, idx) => {
+                  return (
+                    <ListItem
                       sx={{
-                        margin: "5px 0px",
-                        height: "90px",
+                        padding: "0px 16px",
                       }}
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="center"
+                      button
+                      key={idx}
+                      divider
                     >
-                      <ListItemText
-                        onClick={() => {
-                          // dispatch(userInfoActions.__getApplier(postId));
-                          history.push(`/detail/${recruitOverList.postId}`);
+                      <Grid
+                        sx={{
+                          margin: "5px 0px",
+                          height: "90px",
                         }}
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
                       >
+<<<<<<< HEAD
                         {recruitOverList.title}
                         <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
                       </ListItemText>
+=======
+                        <ListItemText
+                          onClick={() => {
+                            // dispatch(userInfoActions.__getApplier(postId));
+                            history.push(`/detail/${recruitOverList.postId}`);
+                          }}
+                        >
+                          {recruitOverList.title}
+                          <ArrowForwardIosRoundedIcon
+                            style={{ verticalAlign: "middle" }}
+                          />
+                        </ListItemText>
+>>>>>>> f948d8f (신청페이지)
 
-                      <Grid>
                         <Grid>
+<<<<<<< HEAD
                           <Button
                             sx={{
                               marginTop: "5px",
@@ -717,12 +808,34 @@ const User = (props) => {
                           >
                             선장리뷰
                           </Button>
+=======
+                          <Grid>
+                            <Button
+                              sx={{
+                                marginTop: "5px",
+                                width: "190px",
+                                height: "40px",
+                              }}
+                              variant="contained"
+                              onClick={() => {
+                                setPostId(recruitOverList.postId);
+                                modalHandelBtn();
+                                dispatch(
+                                  userInfoActions.__getAppliedOver(
+                                    recruitOverList.postId
+                                  )
+                                );
+                              }}
+                            >
+                              선장리뷰
+                            </Button>
+                          </Grid>
+>>>>>>> f948d8f (신청페이지)
                         </Grid>
                       </Grid>
-                    </Grid>
-                  </ListItem>
-                );
-              })}
+                    </ListItem>
+                  );
+                })}
               <footer>
                 <Pagination
                   total={getRecruitOverList?.length}

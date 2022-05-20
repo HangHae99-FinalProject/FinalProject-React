@@ -24,6 +24,7 @@ const Comment = (userId) => {
       return;
     }
     dispatch(commentActions.__addComment(param.postid, is_comment));
+
     setIs_comment("");
   };
 

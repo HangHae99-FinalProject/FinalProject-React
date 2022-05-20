@@ -4,12 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
-import { userApi } from "../api/userApi";
-import signupBackground from "../assets/signupBackground.png";
 import axios from "axios";
 
 //MUI import
-// import Grid from "../elements/Grid";
 import Grid from "@mui/material/Grid";
 import FormControl, { useFormControl } from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -18,47 +15,8 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
-import Popover from "@mui/material/Popover";
 import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-
-function PwFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    if (focused) {
-      return "영문 대소문자, 숫자 포함 6~20자 입니다.";
-    }
-
-    return "비밀번호를 입력해 주세요.";
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
-function PwCfnFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    if (focused) {
-      return "영문 대소문자, 숫자 포함 6~20자 입니다.";
-    }
-
-    return "비밀번호를 다시 입력해 주세요.";
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
-function MajorFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    return "전공을 선택해 주세요.";
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
 
 //추가 정보 기입 모달
 const style = {
@@ -75,9 +33,6 @@ const style = {
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const checkEmailDup = useSelector((state) => state.user.checkEmailDup.data?.errorCode);
-  console.log(checkEmailDup);
-  // const initInput = useSelector((state) => state.user.initInput);
 
   //입력 정보 상태 관리
   const [memberId, setMemberId] = React.useState("");
@@ -85,15 +40,12 @@ const Signup = () => {
   const [pwCheck, setPwCheck] = React.useState("");
   const [nickname, setNickname] = React.useState("");
   const [major, setMajor] = React.useState("");
-  const [activationBtn, setActivationBtn] = React.useState(false);
+  const [activationSignBtn, setActivationSignBtn] = React.useState(false);
   const [checkMemberIdError, setCheckMemberIdError] = React.useState(null);
   const [checkNicknameError, setCheckNicknameError] = React.useState(null);
   console.log(checkMemberIdError);
 
-  //중복검사 상태관리
-  const [emailCheck, setEmailCheck] = React.useState(false);
-  const [nicknameCheck, setNicknameCheck] = React.useState(false);
-
+  // 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
   function IdFormHelperText() {
     const { focused } = useFormControl() || {};
 
@@ -105,7 +57,33 @@ const Signup = () => {
       } else if (checkMemberIdError === true) {
         return "사용 가능한 아이디입니다.";
       }
-      return "아이디를 입력해 주세요.";
+      return " ";
+    }, [focused]);
+
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
+  function PwFormHelperText() {
+    const { focused } = useFormControl() || {};
+
+    const helperText = React.useMemo(() => {
+      if (focused) {
+        return "영문 대소문자, 숫자 포함 6~20자 입니다.";
+      }
+
+      return " ";
+    }, [focused]);
+
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
+  function PwCfnFormHelperText() {
+    const { focused } = useFormControl() || {};
+
+    const helperText = React.useMemo(() => {
+      if (focused) {
+        return "영문 대소문자, 숫자 포함 6~20자 입니다.";
+      }
+
+      return " ";
     }, [focused]);
 
     return <FormHelperText>{helperText}</FormHelperText>;
@@ -122,11 +100,22 @@ const Signup = () => {
         return "사용 가능한 닉네임입니다.";
       }
 
-      return "닉네임을 입력해 주세요.";
+      return " ";
     }, [focused]);
 
     return <FormHelperText>{helperText}</FormHelperText>;
   }
+  function MajorFormHelperText() {
+    const { focused } = useFormControl() || {};
+
+    const helperText = React.useMemo(() => {
+      return " ";
+    }, [focused]);
+
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
+  // 여기까지 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
+
   const onMemberIdHandler = (e) => {
     e.preventDefault();
     setMemberId(e.target.value);
@@ -147,6 +136,8 @@ const Signup = () => {
     setMajor(e.target.value);
   };
   // console.log(major);
+
+  //중복확인 버튼
   const memberIdCheckBtn = async () => {
     try {
       const checkMemberId = await axios.post("https://everymohum.shop/user/memberIdCheck", {
@@ -177,22 +168,24 @@ const Signup = () => {
       // window.alert("중복된 아이디입니다.");
     }
   };
+  //여기까지 중복확인 버튼
 
   const goHome = () => {
     history.push("/");
   };
 
-  //추가 정보 기입 모달
+  //추가정보기입 모달
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  //여기까지 추가정보기입 모달
 
+  //goSignup()시 추가정보기입 모달 오픈
   const goSignup = () => {
     if (!memberIdCheckRE(memberId)) {
       window.alert("이메일 형식을 확인해주세요.");
       return;
     }
-
     if (!pwCheckRE(password)) {
       window.alert("패스워드 형식을 확인해주세요.");
       return;
@@ -203,31 +196,29 @@ const Signup = () => {
     }
     dispatch(userActions.__signup(memberId, password, pwCheck));
     // console.log(memberId, password, pwCheck)
+    handleOpen();
   };
+
+  //추가정보기입후 회원가입 완료
   const goAdditionalInfo = () => {
     if (!nicknameCheckRE(nickname)) {
       window.alert("닉네임 형식을 확인해주세요.");
       return;
     }
-    
     const _userId = localStorage.getItem("userId");
     dispatch(userActions.__additionalInfo(_userId, nickname, major));
     console.log(nickname, major);
   };
 
-  React.useEffect(() => {
-    if (checkEmailDup === "200") {
-      setActivationBtn(true);
-    }
-  });
+  React.useEffect(() => {});
 
   return (
     <React.Fragment>
       {/* 추가정보 기입 모달 */}
       <Grid>
         <Modal
-          open={open}
-          // onClose={handleClosse}
+          open={open} //모달 열기
+          onClose={handleClose} //모달 닫기
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -332,14 +323,14 @@ const Signup = () => {
       >
         <div>
           <h3>
-            Sign Up <button onClick={handleOpen}>임시 추가정보 기입</button>
+            Sign Up
+            {/* <button onClick={handleOpen}>임시 추가정보 기입</button> */}
           </h3>
         </div>
         <form
           onSubmit={(event) => {
             event.preventDefault();
             goSignup();
-            handleOpen();
           }}
         >
           <Grid container direction="row" justifyContent="space-between" alignItems="flex-start">

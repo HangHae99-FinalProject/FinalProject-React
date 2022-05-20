@@ -44,11 +44,11 @@ const Main = () => {
     { id: 2, locationName: "서울/경기" },
     { id: 3, locationName: "강원" },
     { id: 4, locationName: "전북" },
-    { id: 5, locationName: "전라" },
+    { id: 5, locationName: "전남" },
     { id: 6, locationName: "충북" },
     { id: 7, locationName: "충남" },
-    { id: 8, locationName: "경남" },
-    { id: 9, locationName: "경북" },
+    { id: 8, locationName: "경북" },
+    { id: 9, locationName: "경남" },
     { id: 10, locationName: "제주" },
   ];
 

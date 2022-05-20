@@ -22,33 +22,6 @@ import MenuItem from "@mui/material/MenuItem";
 import { Redirect } from "react-router-dom";
 import Cookies from "universal-cookie";
 
-function IdFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    if (focused) {
-      return "예. 영문 대소문자, 한글, 숫자 포함 4~12자 입니다.";
-    }
-
-    return "아이디를 입력해 주세요.";
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
-function PwFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    if (focused) {
-      return "비밀번호는 영문 대소문자, 숫자 포함 6~20자 입니다.";
-    }
-
-    return "비밀번호를 입력해 주세요.";
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
-
 const cookies = new Cookies();
 
 const Login = ({ location }) => {
@@ -63,6 +36,35 @@ const Login = ({ location }) => {
   if (location?.state) {
     localStorage.setItem("from", location?.state?.from);
   }
+
+  // 헬퍼텍스트 -아이디, 패스워드
+  function IdFormHelperText() {
+    const { focused } = useFormControl() || {};
+  
+    const helperText = React.useMemo(() => {
+      if (focused) {
+        return "예. 영문 대소문자, 한글, 숫자 포함 4~12자 입니다.";
+      }
+  
+      return " ";
+    }, [focused]);
+  
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
+  function PwFormHelperText() {
+    const { focused } = useFormControl() || {};
+  
+    const helperText = React.useMemo(() => {
+      if (focused) {
+        return "비밀번호는 영문 대소문자, 숫자 포함 6~20자 입니다.";
+      }
+  
+      return " ";
+    }, [focused]);
+  
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
+  // 여기까지 헬퍼텍스트 -아이디, 패스워드
 
   const onLoginHandler = () => {
     window.location.href = kakaoUrl;

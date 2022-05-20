@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Redirect, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { chatApi } from "../api/chatApi";
 import ChattingItem from "../components/Chat/ChattingItem";
@@ -10,6 +11,10 @@ import { actionCreators as chatActios } from "../redux/modules/chat";
 const Chatting = () => {
   const dispatch = useDispatch();
   const client = useSelector((state) => state.chat.client);
+
+  const { pathname } = useLocation();
+  const from = localStorage.getItem("from");
+  const user = localStorage.getItem("userId");
 
   const [rooms, setRooms] = useState([]);
   const [stomp, setStomp] = useState();
@@ -50,6 +55,15 @@ const Chatting = () => {
     //   });
     // });
   }, []);
+  if (!user) {
+    alert("로그인을 먼저 해주세요!");
+    return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />;
+  }
+
+  if (from) {
+    localStorage.removeItem("from");
+  }
+
   return (
     <>
       <BackImage>

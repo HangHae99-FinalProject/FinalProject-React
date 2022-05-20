@@ -12,8 +12,7 @@ import { actionCreates as recruitActions } from "../redux/modules/recruit";
 import { useDispatch, useSelector } from "react-redux";
 import MainSearch from "../components/Main/MainSearch";
 import { history } from "../redux/configureStore";
-import Footer from "../elements/Footer";
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 
 const Main = () => {
   const [is_location, setLocation] = useState("위치 설정");
@@ -21,6 +20,8 @@ const Main = () => {
   const [selected, setSelected] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
   const [is_scroll, setIs_scroll] = useState(window.scrollY);
+
+  const pathName = useLocation();
 
   const is_login = useSelector((state) => state.user.isLogin);
 
@@ -52,12 +53,12 @@ const Main = () => {
   ];
 
   useEffect(() => {
-    setIs_scroll();
+    window.scrollTo(0, 0);
     return () => {
       dispatch(recruitActions.initRecruit());
       dispatch(postActions.clearPost());
     };
-  }, [dispatch, is_scroll]);
+  }, [dispatch, pathName]);
 
   if (from) {
     return <Redirect to={{ pathname: from }} />;
@@ -68,6 +69,7 @@ const Main = () => {
       <Container>
         <MainImage>
           <img
+            className="scale-up-hor-center"
             src={mainImage}
             alt="MainImage"
             onClick={() => {
@@ -195,6 +197,7 @@ const Main = () => {
         </Category>
 
         {/* 위치설정 */}
+
         <div
           style={{
             width: "100%",
@@ -289,6 +292,30 @@ const MainImage = styled.div`
 const Container = styled.div`
   width: 1370px;
   margin: 3% auto;
+  .scale-up-hor-center {
+    -webkit-animation: scale-up-hor-center 0.6s cubic-bezier(1, 0, 0, 1) both;
+    animation: scale-up-hor-center 0.6s cubic-bezier(1, 0, 0, 1) both;
+  }
+  @-webkit-keyframes scale-up-hor-center {
+    0% {
+      -webkit-transform: scaleX(0.4);
+      transform: scaleX(0.4);
+    }
+    100% {
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+    }
+  }
+  @keyframes scale-up-hor-center {
+    0% {
+      -webkit-transform: scaleX(0.4);
+      transform: scaleX(0.4);
+    }
+    100% {
+      -webkit-transform: scaleX(1);
+      transform: scaleX(1);
+    }
+  }
 `;
 
 const BtnTest = styled.button`

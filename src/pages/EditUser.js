@@ -41,8 +41,9 @@ const EditUser = () => {
   const param = useParams();
   const dispatch = useDispatch();
   const getUserInfo = useSelector((state) => state.myPage?.userInfo);
+  // const post_list = useSelector((state) => state.post.detailList);
   // const setUserInfo = useSelector((state) => state.myPage.requestDto);
-  // console.log(getUserInfo);
+  console.log(getUserInfo.userPortfolioImgList);
 
   const [selected, setSelected] = useState(false);
   // const [profileImgUrl, setProfileImgUrl] = useState("");
@@ -508,7 +509,7 @@ const EditUser = () => {
               alignItems="flex-start"
             >
               <Grid_2>
-                <EditImage />
+                <EditImage image={getUserInfo.userPortfolioImgList} />
               </Grid_2>
             </Grid_2>
           </Grid_2>

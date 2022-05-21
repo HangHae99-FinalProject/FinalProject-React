@@ -12,6 +12,8 @@ import DetailImage from "../components/Detail/DetailImage";
 import { actionCreators as userInfoActions } from "../redux/modules/myPage";
 import Pagination from "../components/MyPage/Pagination";
 import ImageNotFound from "../assets/imageNotFound.png";
+import ModalWindow from "../elements/ModalWindow";
+import Footer from "../elements/Footer";
 
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -61,18 +63,20 @@ const User = (props) => {
   const getRecruitList = useSelector((state) => state.myPage.recruitList?.data); //모집중 리스트
   const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data); //모집완료 리스트
   const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
-  console.log("자기소개", getUserInfo.intro);
-  console.log("포트폴리오링크", getUserInfo.portfolioLink);
-  console.log("포트폴리오사진", getUserInfo.userPortfolioImgList?.length);
-  console.log("신청중리스트", getAppliedList);
-  console.log("모집중리스트", getRecruitList);
-  console.log("모집완료리스트", getRecruitOverList);
+  // console.log("자기소개", getUserInfo.intro);
+  // console.log("포트폴리오링크", getUserInfo.portfolioLink);
+  // console.log("포트폴리오사진", getUserInfo.userPortfolioImgList?.length);
+  // console.log("신청중리스트", getAppliedList);
+  // console.log("모집중리스트", getRecruitList);
+  // console.log("모집완료리스트", getRecruitOverList);
   const getAppliedOverList_postUser = useSelector(
     (state) => state.myPage.appliedOverList.data?.postUser
   );
   const getAppliedOverList_reqruit = useSelector(
     (state) => state.myPage.appliedOverList.data?.recruitUserList
   );
+  const isSendedEmail = useSelector((state) => state.myPage.isSendedEmail);
+  console.log(isSendedEmail);
 
   const pathName = useLocation();
   console.log(pathName);
@@ -115,8 +119,90 @@ const User = (props) => {
     dispatch(userInfoActions.__getRecruitOver(userId));
   }, [userId]);
 
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-    <Grid sx={{ width: "1920px" }}>
+    <Grid sx={{ margin: "auto", width: "1370px" }}>
+      {/* 알림받기 모달창 */}
+      <ModalWindow
+        handleOpen={handleOpen}
+        open={open}
+        handleClose={handleClose}
+        width="1200px"
+        height="600px"
+        borderRadius="20px"
+      >
+        {isSendedEmail === true ? (
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ marginTop: "226px" }}
+          >
+            <Typography
+              sx={{ margin: "auto", color: "#2967AC", fontSize: "32px", fontWeight: "bold" }}
+            >
+              이메일을 보냈습니다!
+            </Typography>
+          </Grid>
+        ) : (
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ marginTop: "114px" }}
+          >
+            <Typography
+              sx={{ margin: "auto", color: "#2967AC", fontSize: "32px", fontWeight: "bold" }}
+            >
+              이메일 인증하기
+            </Typography>
+            <Typography sx={{ margin: "20px auto auto auto", color: "#707070", fontSize: "24px" }}>
+              이메일 인증을 하고 알림을 받아보세요!
+            </Typography>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                emailCheckBtn();
+              }}
+            >
+              <Grid container direction="column" justifyContent="center" alignItems="center">
+                <input
+                  type="text"
+                  placeholder="이메일을 입력해주세요"
+                  onChange={emailHandleChange}
+                  style={{
+                    margin: "20px auto auto auto",
+                    fontSize: "16px",
+                    width: "610px",
+                    height: "40px",
+                    borderRadius: "0",
+                  }}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    margin: "20px auto auto auto",
+                    width: "610px",
+                    height: "50px",
+                    background: "#555555",
+                    borderRadius: "10px",
+                  }}
+                >
+                  신청하기
+                </Button>
+              </Grid>
+            </form>
+          </Grid>
+        )}
+        <Footer />
+      </ModalWindow>
+      {/* 여기까지 알림받기 모달창 */}
       {/* 평점 모달창 */}
       <ReactModal
         state={ModalState}
@@ -362,8 +448,6 @@ const User = (props) => {
           }}
         >
           <Grid>
-            <input onChange={emailHandleChange} />
-            <button onClick={emailCheckBtn}>인증</button>
             <Grid container direction="row" justifyContent="space-between" alignItems="center">
               <Grid>
                 <Typography sx={{ fontWeight: "bold" }}>
@@ -372,21 +456,42 @@ const User = (props) => {
               </Grid>
               <Grid>
                 {userId === id ? (
-                  <Button
-                    variant="contained"
-                    sx={{
-                      marginBottom: "14px",
-                      width: "100px",
-                      height: "40px",
-                      padding: "0",
-                    }}
-                    onClick={() => {
-                      history.push(`/edituser/${id}`);
-                    }}
-                  >
-                    프로필 수정
-                  </Button>
-                ) : null}
+                  <>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        marginRight: "14px",
+                        marginBottom: "14px",
+                        width: "100px",
+                        height: "40px",
+                        padding: "0",
+                        background: "#FE5953",
+                        borderRadius: "14px",
+                      }}
+                      onClick={handleOpen}
+                    >
+                      알림받기
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        marginBottom: "14px",
+                        width: "100px",
+                        height: "40px",
+                        padding: "0",
+                        background: "#FFD082",
+                        borderRadius: "14px",
+                      }}
+                      onClick={() => {
+                        history.push(`/edituser/${id}`);
+                      }}
+                    >
+                      프로필 수정
+                    </Button>
+                  </>
+                ) : (
+                  <Grid></Grid>
+                )}
               </Grid>
             </Grid>
             <Grid
@@ -438,7 +543,13 @@ const User = (props) => {
                   <Button
                     value="major"
                     variant="contained"
-                    sx={{ borderRadius: "20px", marginLeft: "24px" }}
+                    sx={{
+                      fontSize: "20px",
+                      height: "50px",
+                      width: "140px",
+                      borderRadius: "14px",
+                      marginLeft: "24px",
+                    }}
                   >
                     {getUserInfo.major}
                   </Button>
@@ -482,11 +593,7 @@ const User = (props) => {
         </Grid>
         <Grid sx={{ marginTop: "24px", width: "1270px", height: "450" }}>
           <ImageBox>
-            <DetailImage
-              image={
-                getUserInfo.userPortfolioImgList
-              }
-            />
+            <DetailImage image={getUserInfo.userPortfolioImgList} />
           </ImageBox>
         </Grid>
         <Grid
@@ -524,7 +631,7 @@ const User = (props) => {
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab
                 sx={{ width: "430px" }}
-                label="신청중"
+                label={userId === id ? "신청중" : "진행중"}
                 {...a11yProps(0)}
                 // onClick={() => {
                 //   dispatch(userInfoActions.__getApplied(userId));
@@ -557,7 +664,7 @@ const User = (props) => {
               aria-label="mailbox folders"
             >
               {getAppliedList?.length === 0 ? (
-                <Typography>조회할 신청중 리스트가 없습니다.</Typography>
+                <Typography>조회할 리스트가 없습니다.</Typography>
               ) : (
                 getAppliedList?.slice(offset, offset + limit).map((appliedList, idx) => {
                   return (
@@ -611,7 +718,7 @@ const User = (props) => {
               aria-label="mailbox folders"
             >
               {getRecruitList?.length === 0 ? (
-                <Typography>조회할 모집중 리스트가 없습니다.</Typography>
+                <Typography>조회할 리스트가 없습니다.</Typography>
               ) : (
                 getRecruitList?.slice(offset, offset + limit).map((recruitList, idx) => {
                   return (
@@ -641,8 +748,10 @@ const User = (props) => {
                           {recruitList.title}
                           <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
                         </ListItemText>
-
-                        <Grid>
+                        {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
+                        {userId !== id ? (
+                          <Grid></Grid>
+                        ) : (
                           <Grid>
                             <Button
                               sx={{
@@ -651,28 +760,31 @@ const User = (props) => {
                                 marginBotton: "5px",
                                 width: "190px",
                                 height: "40px",
+                                borderRadius: "14px",
                               }}
                               variant="outlined"
                             >
                               {recruitList.userApplyList.length}명의 선장이 신청했어요!
                             </Button>
+                            <Grid>
+                              <Button
+                                sx={{
+                                  marginTop: "5px",
+                                  width: "190px",
+                                  height: "40px",
+                                  borderRadius: "14px",
+                                  background: "#4299E9",
+                                }}
+                                variant="contained"
+                                onClick={() => {
+                                  history.push(`/applied/${recruitList.postId}`);
+                                }}
+                              >
+                                선장명단 보러가기
+                              </Button>
+                            </Grid>
                           </Grid>
-                          <Grid>
-                            <Button
-                              sx={{
-                                marginTop: "5px",
-                                width: "190px",
-                                height: "40px",
-                              }}
-                              variant="contained"
-                              onClick={() => {
-                                history.push(`/applied/${recruitList.postId}`);
-                              }}
-                            >
-                              선장명단 보러가기
-                            </Button>
-                          </Grid>
-                        </Grid>
+                        )}
                       </Grid>
                     </ListItem>
                   );
@@ -697,7 +809,7 @@ const User = (props) => {
               aria-label="mailbox folders"
             >
               {getRecruitOverList?.length === 0 ? (
-                <Typography>조회할 모집/진행완료 리스트가 없습니다.</Typography>
+                <Typography>조회할 리스트가 없습니다.</Typography>
               ) : (
                 getRecruitOverList?.slice(offset, offset + limit).map((recruitOverList, idx) => {
                   return (
@@ -727,14 +839,18 @@ const User = (props) => {
                           {recruitOverList.title}
                           <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
                         </ListItemText>
-
-                        <Grid>
+                        {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
+                        {userId !== id ? (
+                          <Grid></Grid>
+                        ) : (
                           <Grid>
                             <Button
                               sx={{
                                 marginTop: "5px",
                                 width: "190px",
                                 height: "40px",
+                                borderRadius: "14px",
+                                background: "#4299E9",
                               }}
                               variant="contained"
                               onClick={() => {
@@ -746,7 +862,7 @@ const User = (props) => {
                               선장리뷰
                             </Button>
                           </Grid>
-                        </Grid>
+                        )}
                       </Grid>
                     </ListItem>
                   );

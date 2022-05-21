@@ -61,13 +61,12 @@ const Alert = () => {
         },
         false
       );
+
       source.addEventListener("error", function (e) {
         console.log(e);
-        if (e.error.message) {
-          source.addEventListener("open", function (e) {
-            console.log(e);
-          });
-        }
+        source.addEventListener("open", function (e) {
+          console.log(e);
+        });
       });
     }
   }, [isLogin]);
@@ -92,7 +91,7 @@ const Alert = () => {
 
   return (
     <Container>
-      {/* <AiTwotoneBell className="icon" /> */}
+      <AiTwotoneBell className="icon" />
 
       <Snackbar
         open={alertOpen}
@@ -109,16 +108,16 @@ const Alert = () => {
 };
 
 const Container = styled.div`
-  /* position: fixed;
+  position: fixed;
   background-color: azure;
   border: 1px solid gray;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   padding: 10px;
   top: 25%;
   left: 80%;
   .icon {
     font-size: 50px;
-  } */
+  }
 `;
 const CategoryMiddleWrapper = styled.div``;
 

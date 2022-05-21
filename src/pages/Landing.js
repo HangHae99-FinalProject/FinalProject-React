@@ -6,13 +6,22 @@ import { actionCreates as postActions } from "../redux/modules/post";
 import { FiChevronRight } from "react-icons/fi";
 import { history } from "../redux/configureStore";
 import { useLocation } from "react-router-dom";
+import Cookies from "universal-cookie";
 
+const cookies = new Cookies();
 const Landing = () => {
   const dispatch = useDispatch();
   const landingList = useSelector((state) => state.post.landingList);
+
   const pathName = useLocation();
 
+  const isLogin = useSelector((state) => state.user.isLogin);
+  console.log(isLogin);
   useEffect(() => {
+    if (isLogin) {
+      history.replace("/main");
+      return;
+    }
     window.scrollTo(0, 0);
     dispatch(postActions.__getLanding());
   }, [dispatch, pathName]);
@@ -35,11 +44,10 @@ const Landing = () => {
             <img
               src="https://velog.velcdn.com/images/tty5799/post/44b3ddb0-6532-431f-a249-933b59d8b327/image.png"
               alt="backImg"
-              className="tilt-in-tl"
             />
           </BackImage>
         </div>
-        <div className="tilt-in-fwd-tr">
+        <div>
           <TitleImg>
             <img
               src="https://velog.velcdn.com/images/tty5799/post/ca07d3ee-2bdb-4825-b3f3-cb1f3582e818/image.png"

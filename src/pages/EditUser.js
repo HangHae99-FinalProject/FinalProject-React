@@ -333,18 +333,16 @@ const EditUser = () => {
                   <Category>
                     <CateBtn
                       onClick={() => {
-                        major === "미술/디자인"
-                          ? setMajor("")
-                          : setMajor("미술/디자인");
+                        major === "디자인" ? setMajor("") : setMajor("디자인");
                         setSelected(true);
                       }}
                     >
                       <Grid
                         _className={
-                          major === "미술/디자인" ? "default active" : "default"
+                          major === "디자인" ? "default active" : "default"
                         }
                       >
-                        <p>미술/디자인</p>
+                        <p>디자인</p>
                       </Grid>
                     </CateBtn>
                     <CateBtn

@@ -80,7 +80,7 @@ const AppliedCard = (item) => {
         <Grid
           _className="majorName"
           bg={
-            item.applyMajor === "미술/디자인"
+            item.applyMajor === "디자인"
               ? "#2967AC"
               : item.applyMajor === "음향"
               ? "#FFB673"

@@ -7,6 +7,7 @@ const GET_ACCEPT = "GET_ACCEPT";
 const ADD_REQUEST = "ADD_REQUEST";
 const DELETE_APPLY = "DELETE_APPLY";
 const REFUSE_APPLY = "REFUSE_APPLY";
+const CLEAR_APPLY = "CLEAR_APPLY";
 
 const refuseApply = createAction(REFUSE_APPLY, (userId) => ({ userId }));
 const setSubscriber = createAction(GET_SUBSCRIBER, (subscriberList) => ({
@@ -17,11 +18,13 @@ const setAccept = createAction(GET_ACCEPT, (acceptListList) => ({
 }));
 const addRequest = createAction(ADD_REQUEST, (userId) => ({ userId }));
 const deleteApply = createAction(DELETE_APPLY, (userId) => ({ userId }));
+const clearApply = createAction(CLEAR_APPLY, () => ({}));
 
 const initialState = {
   subscriberList: [],
   acceptListList: [],
   is_loading: false,
+  majorList: [],
 };
 
 const __deadlinePatch =
@@ -58,10 +61,6 @@ const __postRefuse =
       console.log(err);
     }
   };
-
-// const __postRefuse = (refuseDto) => {
-
-// }
 
 const __postRequest =
   (acceptedDto) =>
@@ -104,6 +103,17 @@ export default handleActions(
     [GET_SUBSCRIBER]: (state, action) =>
       produce(state, (draft) => {
         draft.subscriberList = action.payload.subscriberList;
+
+        const major = action.payload.subscriberList.majorList.map(
+          (a) => a.majorName
+        );
+        const numOfPeopleSet = action.payload.subscriberList.majorList.map(
+          (a) => a.numOfPeopleSet
+        );
+        const numOfPeopleApply = action.payload.subscriberList.majorList.map(
+          (a) => a.numOfPeopleApply
+        );
+        draft.majorList = [major[0], numOfPeopleApply[0], numOfPeopleSet[0]];
       }),
     [GET_ACCEPT]: (state, action) =>
       produce(state, (draft) => {
@@ -130,6 +140,10 @@ export default handleActions(
             (a, idx) => a.userId !== action.payload.userId
           );
       }),
+    [CLEAR_APPLY]: (state, action) =>
+      produce(state, (draft) => {
+        return initialState;
+      }),
   },
   initialState
 );
@@ -146,6 +160,7 @@ const actionCreates = {
   __deadlinePatch,
   refuseApply,
   __postRefuse,
+  clearApply,
 };
 
 export { actionCreates };

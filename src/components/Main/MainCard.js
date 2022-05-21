@@ -36,7 +36,7 @@ const MainCard = (item) => {
           <Grid
             _className={"majorName"}
             bg={
-              major[0] === "미술/디자인"
+              major[0] === "디자인"
                 ? "#2967AC"
                 : major[0] === "음향"
                 ? "#FFB673"
@@ -64,7 +64,7 @@ const MainCard = (item) => {
             </Grid>
           ) : (
             <Grid _className={"PeopleCnt"}>
-              <p style={{ fontSize: "14px" }}>+{majorCnt}</p>
+              <p style={{ fontSize: "14px" }}>+{majorCnt - 1}</p>
             </Grid>
           )}
           {item.item.currentStatus === "RECRUITING_COMPLETE" ? (

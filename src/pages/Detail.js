@@ -194,7 +194,7 @@ const Detail = () => {
                         <Grid
                           _className="majorName"
                           bg={
-                            a.majorName === "미술/디자인"
+                            a.majorName === "디자인"
                               ? "#2967AC"
                               : a.majorName === "음향"
                               ? "#FFB673"
@@ -285,8 +285,8 @@ const Detail = () => {
                         <CateBtn
                           key={idx}
                           onClick={() => {
-                            if (a.majorName === "미술/디자인") {
-                              setIs_Cate("미술/디자인");
+                            if (a.majorName === "디자인") {
+                              setIs_Cate("디자인");
                             } else if (a.majorName === "영상") {
                               setIs_Cate("영상");
                             } else if (a.majorName === "배우") {
@@ -312,7 +312,7 @@ const Detail = () => {
                               is_cate === a.majorName ? "active" : "default"
                             }
                             bg={
-                              a.majorName === "미술/디자인"
+                              a.majorName === "디자인"
                                 ? "#2967AC"
                                 : a.majorName === "음향"
                                 ? "#FFB673"

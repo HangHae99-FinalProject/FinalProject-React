@@ -9,6 +9,7 @@ import { history } from "../configureStore";
 
 import axios from "axios";
 import { ConstructionOutlined } from "@mui/icons-material";
+import { create } from "@mui/material/styles/createTransitions";
 
 const cookies = new Cookies();
 const id = localStorage.getItem("userId");
@@ -24,6 +25,7 @@ const POST_EVALUATION = "myPage/POST_EVALUATION";
 const PUT_USER_INFO_MOD = "myPage/PUT_USER_INFO_MOD";
 const SET_USER_INFO = "myPage/SET_USER_INFO";
 const GET_EMAIL = "GET_EMAIL";
+const IS_SENDED_EMAIL = "mypage/IS_SENDED_EMAIL";
 //클린업
 const INIT_USER_INFO = "myPage/INIT_USER_INFO";
 
@@ -63,6 +65,7 @@ const postEvaluation = createAction(POST_EVALUATION, (evaluationData) => ({
 const putUserInfoMod = createAction(PUT_USER_INFO_MOD, (userInfoModData) => ({
   userInfoModData,
 }));
+const isSendedEmail = createAction(IS_SENDED_EMAIL, (data) => ({ data }));
 //클린업
 const initUserInfo = createAction(INIT_USER_INFO, () => ({}));
 
@@ -84,6 +87,7 @@ const initialState = {
     receiverId: "",
     point: 0,
   },
+  isSendedEmail: false,
   // requestDto: []
 };
 
@@ -94,6 +98,9 @@ const __getEmail = (email) => {
     try {
       const { data } = await userInfoApi.emailCheck(email);
       console.log(data);
+      if (data.msg !== false) {
+        dispatch(isSendedEmail());
+      }
     } catch (err) {
       console.log(err);
     }
@@ -256,6 +263,12 @@ export default handleActions(
         },
         console.log(action)
       ),
+    [IS_SENDED_EMAIL]: (state, action) =>
+      produce(state, (draft) => {
+        cookies.set("123", { path: "/" });
+        draft.isSendedEmail = true;
+        console.log(state);
+      }),
     [INIT_USER_INFO]: (state, { payload }) =>
       produce(state, (draft) => {
         draft.userInfo = [];
@@ -263,6 +276,7 @@ export default handleActions(
   },
   initialState
 );
+console.log(initialState.isSendedEmail);
 
 //action creator export
 const actionCreators = {

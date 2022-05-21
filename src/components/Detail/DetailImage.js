@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import "./ImageStyle.css";
+import ImageNotFound from "../../assets/imageNotFound.png";
 
 // import required modules
 import { Pagination, Navigation } from "swiper";
@@ -24,13 +25,19 @@ const DetailImage = (imgList) => {
         modules={[Pagination, Navigation]}
         className="mySwiper"
       >
-        {imgList.image?.map((image, idx) => {
-          return (
-            <SwiperSlide key={idx}>
-              <Image src={image} alt="detailImage" />
-            </SwiperSlide>
-          );
-        })}
+        {imgList.image?.length === 0 ? ( //마이페이지에서 포트폴리오 사진이 없는 경우에 보여줄 이미지입니다.
+          <SwiperSlide>
+            <Image src={ImageNotFound} alt="ImageNotFound" />
+          </SwiperSlide>
+        ) : (
+          imgList.image?.map((image, idx) => {
+            return (
+              <SwiperSlide key={idx}>
+                <Image src={image} alt="detailImage" />
+              </SwiperSlide>
+            );
+          })
+        )}
       </Swiper>
     </>
   );

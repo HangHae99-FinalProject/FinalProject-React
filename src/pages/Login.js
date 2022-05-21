@@ -33,6 +33,7 @@ const Login = ({ location }) => {
   const redirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUri}&response_type=code`;
 
+  // const token = cookies.get("accessToken");
   const isLogin = useSelector((state) => state.user.isLogin);
 
   // 헬퍼텍스트 -아이디, 패스워드
@@ -102,7 +103,7 @@ const Login = ({ location }) => {
       alert("이미 로그인을 하셨습니다!");
       history.replace("/main");
     }
-  }, [location]);
+  }, [isLogin]);
 
   return (
     <React.Fragment>

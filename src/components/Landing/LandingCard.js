@@ -34,7 +34,7 @@ const LandingCard = (item) => {
           <Grid
             _className={"majorName"}
             bg={
-              major[0] === "미술/디자인"
+              major[0] === "디자인"
                 ? "#2967AC"
                 : major[0] === "음향"
                 ? "#FFB673"

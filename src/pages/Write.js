@@ -62,7 +62,7 @@ const Write = () => {
   };
 
   const PeopleBtn = () => {
-    const CheckMojor = majorList.map((a) => a.majorName);
+    const CheckMajor = majorList.map((a) => a.majorName);
 
     if (is_cate === "" && is_people === "") {
       alert("모집분야와 인원을 선택해 주세요!");
@@ -76,8 +76,8 @@ const Write = () => {
       alert("모집인원을 선택해 주세요!");
       return;
     }
-    for (let i = 0; i < CheckMojor.length; i++) {
-      if (is_cate === CheckMojor[i]) {
+    for (let i = 0; i < CheckMajor.length; i++) {
+      if (is_cate === CheckMajor[i]) {
         alert("이미 같은 직군이 있습니다!");
         return;
       }
@@ -91,6 +91,8 @@ const Write = () => {
   };
 
   const PostDetailBtn = () => {
+    console.log(data.majorList);
+    console.log(majorList);
     if (data.title === "") {
       alert("제목을 입력해주세요!");
       return;
@@ -103,8 +105,8 @@ const Write = () => {
       alert("지역을 선택해주세요!");
       return;
     }
-    if (is_cate === "" && is_people === "") {
-      alert("모집분야와 인원을 선택해 주세요!");
+    if (data.majorList.length === 0) {
+      alert("모집인원을 추가해 주세요!");
       return;
     }
     if (data.content === "") {
@@ -221,17 +223,15 @@ const Write = () => {
         <Category>
           <CateBtn
             onClick={() => {
-              is_cate === "미술/디자인"
-                ? setIs_Cate("")
-                : setIs_Cate("미술/디자인");
+              is_cate === "디자인" ? setIs_Cate("") : setIs_Cate("디자인");
               setSelected(true);
             }}
           >
             <Grid
-              _className={is_cate === "미술/디자인" ? "active" : "default"}
-              bg={is_cate === "미술/디자인" ? "#2967AC" : "#fff"}
+              _className={is_cate === "디자인" ? "active" : "default"}
+              bg={is_cate === "디자인" ? "#2967AC" : "#fff"}
             >
-              <p>미술/디자인</p>
+              <p>디자인</p>
             </Grid>
           </CateBtn>
 

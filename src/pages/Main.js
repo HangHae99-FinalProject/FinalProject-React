@@ -69,7 +69,6 @@ const Main = () => {
       <Container>
         <MainImage>
           <img
-            className="scale-up-hor-center"
             src={mainImage}
             alt="MainImage"
             onClick={() => {
@@ -81,17 +80,15 @@ const Main = () => {
         <Category>
           <CateBtn
             onClick={() => {
-              is_cate === "미술/디자인"
-                ? setIs_Cate("")
-                : setIs_Cate("미술/디자인");
+              is_cate === "디자인" ? setIs_Cate("") : setIs_Cate("디자인");
               setSelected(true);
             }}
           >
             <Grid
-              _className={is_cate === "미술/디자인" ? "active" : "default"}
-              bg={is_cate === "미술/디자인" ? "#2967AC" : "#f5fcff"}
+              _className={is_cate === "디자인" ? "active" : "default"}
+              bg={is_cate === "디자인" ? "#2967AC" : "#f5fcff"}
             >
-              <p>미술/디자인</p>
+              <p>디자인</p>
             </Grid>
           </CateBtn>
 

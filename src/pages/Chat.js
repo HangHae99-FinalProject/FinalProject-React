@@ -47,9 +47,6 @@ const Chat = (data) => {
     userId: myUserId,
   };
   useEffect(() => {
-    client.connect({}, () => {
-      dispatch(chatActions.setStomp(client));
-    });
     chatApi
       .roadMessage(roadMessageBox)
       .then((res) => {

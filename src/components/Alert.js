@@ -64,9 +64,10 @@ const Alert = () => {
 
       source.addEventListener("error", function (e) {
         console.log(e);
-        source.addEventListener("open", function (e) {
-          console.log(e);
-        });
+        source.close();
+        // source.addEventListener("open", function (e) {
+        //   console.log(e);
+        // });
       });
     }
   }, [isLogin]);

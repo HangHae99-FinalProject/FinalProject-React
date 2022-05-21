@@ -33,35 +33,33 @@ const Login = ({ location }) => {
   const redirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUri}&response_type=code`;
 
-  if (location?.state) {
-    localStorage.setItem("from", location?.state?.from);
-  }
+  const user = localStorage.getItem("userId");
 
   // 헬퍼텍스트 -아이디, 패스워드
   function IdFormHelperText() {
     const { focused } = useFormControl() || {};
-  
+
     const helperText = React.useMemo(() => {
       if (focused) {
         return "예. 영문 대소문자, 한글, 숫자 포함 4~12자 입니다.";
       }
-  
+
       return " ";
     }, [focused]);
-  
+
     return <FormHelperText>{helperText}</FormHelperText>;
   }
   function PwFormHelperText() {
     const { focused } = useFormControl() || {};
-  
+
     const helperText = React.useMemo(() => {
       if (focused) {
         return "비밀번호는 영문 대소문자, 숫자 포함 6~20자 입니다.";
       }
-  
+
       return " ";
     }, [focused]);
-  
+
     return <FormHelperText>{helperText}</FormHelperText>;
   }
   // 여기까지 헬퍼텍스트 -아이디, 패스워드
@@ -94,6 +92,17 @@ const Login = ({ location }) => {
 
     dispatch(userActions.__login(memberId, password));
   };
+
+  if (location?.state) {
+    localStorage.setItem("from", location?.state?.from);
+  }
+
+  React.useEffect(() => {
+    if (user) {
+      alert("이미 로그인을 하셨습니다!");
+      history.replace("/main");
+    }
+  }, []);
 
   return (
     <React.Fragment>

@@ -7,6 +7,7 @@ import { FiChevronRight } from "react-icons/fi";
 import { history } from "../redux/configureStore";
 import { useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
+import Spinner from "../components/Spinner";
 
 const cookies = new Cookies();
 const Landing = () => {
@@ -17,14 +18,6 @@ const Landing = () => {
 
   const isLogin = useSelector((state) => state.user.isLogin);
   console.log(isLogin);
-  useEffect(() => {
-    if (isLogin) {
-      history.replace("/main");
-      return;
-    }
-    window.scrollTo(0, 0);
-    dispatch(postActions.__getLanding());
-  }, [dispatch, pathName]);
 
   const loginHandelBtn = () => {
     history.push("/login");
@@ -35,6 +28,16 @@ const Landing = () => {
   const mainHandelBtn = () => {
     history.push("/main");
   };
+
+  useEffect(() => {
+    if (isLogin) {
+      alert("잘못된 접근입니다!");
+      history.replace("/main");
+      return;
+    }
+    window.scrollTo(0, 0);
+    dispatch(postActions.__getLanding());
+  }, [isLogin, pathName]);
 
   return (
     <Container>

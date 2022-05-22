@@ -54,6 +54,7 @@ const Applied = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (is_open === false) {
       dispatch(applyActions.__getSubscriber(id));
       return;
@@ -61,7 +62,7 @@ const Applied = () => {
     // return () => {
     //   dispatch(applyActions.clearApply());
     // };
-  }, []);
+  }, [pathname]);
 
   if (!user) {
     alert("로그인을 먼저 해주세요!");
@@ -199,13 +200,13 @@ const Applied = () => {
             },
             content: {
               borderRadius: "20px",
-              top: "50%",
+              top: "456px",
               height: "343px",
               display: "flex",
               width: "200px",
               right: "auto",
               bottom: "auto",
-              left: "26.8%",
+              left: "448px",
               transform: "translate(-50%, -50%)",
               padding: 0,
             },
@@ -291,9 +292,9 @@ const ModalGrid = styled.div`
     font-size: 14px;
     color: #2967ac;
     font-weight: 700;
-    left: 80%;
+    left: 150px;
     position: fixed;
-    top: 88%;
+    top: 300px;
     right: auto;
     bottom: auto;
   }

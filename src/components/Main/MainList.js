@@ -40,6 +40,7 @@ const MainList = ({ location, category, selected }) => {
     if (pages === 0) {
       is_select = false;
     }
+
     dispatch(
       postActions.__getPost(
         pages,
@@ -93,8 +94,13 @@ const MainList = ({ location, category, selected }) => {
 };
 
 const MainCardBox = styled.div`
-  width: auto;
-  height: 800px;
+  @media screen and (min-width: 1920px) {
+    width: 1370px;
+    height: 800px;
+  }
+  @media screen and (min-width: 2560px) {
+    width: 1970px;
+  }
 
   @media screen and (max-height: 1000px) {
     height: 500px;

@@ -103,7 +103,7 @@ const Login = ({ location }) => {
       alert("이미 로그인을 하셨습니다!");
       history.replace("/main");
     }
-  }, [isLogin]);
+  }, []);
 
   return (
     <React.Fragment>

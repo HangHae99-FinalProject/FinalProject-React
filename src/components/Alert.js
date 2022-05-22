@@ -92,7 +92,7 @@ const Alert = () => {
 
   return (
     <Container>
-      <AiTwotoneBell className="icon" />
+      {/* <AiTwotoneBell className="icon" /> */}
 
       <Snackbar
         open={alertOpen}
@@ -109,16 +109,16 @@ const Alert = () => {
 };
 
 const Container = styled.div`
-  position: fixed;
+  /* position: fixed;
   background-color: azure;
   border: 1px solid gray;
   /* border-radius: 50%; */
-  padding: 10px;
+  /* padding: 10px;
   top: 25%;
   left: 80%;
   .icon {
     font-size: 50px;
-  }
+  } */
 `;
 const CategoryMiddleWrapper = styled.div``;
 

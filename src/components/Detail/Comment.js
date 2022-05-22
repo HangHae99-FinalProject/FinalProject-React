@@ -11,7 +11,7 @@ import { history } from "../../redux/configureStore";
 const Comment = (userId) => {
   const dispatch = useDispatch();
   const commentList = useSelector((state) => state.comment);
-
+  const isLogin = useSelector((state) => state.user.isLogin);
   const param = useParams();
 
   const commentCnt = commentList.commentList?.length;
@@ -19,6 +19,11 @@ const Comment = (userId) => {
   const [is_comment, setIs_comment] = useState("");
 
   const addComment = () => {
+    if (!isLogin) {
+      alert("로그인을 먼저 해주세요!");
+      history.push("/login");
+      return;
+    }
     if (is_comment === "") {
       alert("공란 입니다!");
       return;

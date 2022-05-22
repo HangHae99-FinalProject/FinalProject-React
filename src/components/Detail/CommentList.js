@@ -14,6 +14,7 @@ const CommentList = (props) => {
   const [is_open, setIs_open] = useState(false);
 
   const userNickName = localNickName === props.nickname ? true : false;
+  const isLogin = useSelector((state) => state.user.isLogin);
 
   const handleUserPage = () => {
     if (!localNickName) {
@@ -49,7 +50,6 @@ const CommentList = (props) => {
     if (e.nativeEvent.isComposing) {
       return;
     }
-
     if (e.key !== "Enter") {
       return;
     }

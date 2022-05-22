@@ -10,7 +10,6 @@ const MainSearch = ({ location, category, selected }) => {
   const dispatch = useDispatch();
   const [is_search, setIs_Search] = useState("");
   const [is_searchValue, setIs_SearchValue] = useState("");
-  // const [area, setarea] = useState(location);
   const [pages, setpages] = useState(0);
   const [area, setarea] = useState(location);
 

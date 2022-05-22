@@ -15,8 +15,8 @@ const NoPost = () => {
 const Container = styled.div`
   img {
     display: flex;
-    margin: 0 auto;
-    width: 70%;
+    margin: 9% auto;
+    width: 90%;
   }
 `;
 

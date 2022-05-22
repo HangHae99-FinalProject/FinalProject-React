@@ -19,7 +19,6 @@ const Main = () => {
   const [is_open, setIs_open] = useState(false);
   const [selected, setSelected] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
-  const [is_scroll, setIs_scroll] = useState(window.scrollY);
 
   const pathName = useLocation();
 
@@ -273,7 +272,9 @@ const BackImage = styled.div`
   z-index: 9999;
   bottom: 0px;
   left: 0;
-  width: 100%;
+  img {
+    width: 100%;
+  }
 `;
 
 const MainImage = styled.div`
@@ -281,38 +282,22 @@ const MainImage = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   img {
+    width: 230px;
     cursor: pointer;
+    @media screen and (min-width: 1920px) {
+      width: 320px;
+    }
+    @media screen and (min-width: 2560px) {
+      width: 700px;
+    }
   }
 `;
 
 const Container = styled.div`
   width: 1370px;
   margin: 3% auto;
-  .scale-up-hor-center {
-    -webkit-animation: scale-up-hor-center 0.6s cubic-bezier(1, 0, 0, 1) both;
-    animation: scale-up-hor-center 0.6s cubic-bezier(1, 0, 0, 1) both;
-  }
-  @-webkit-keyframes scale-up-hor-center {
-    0% {
-      -webkit-transform: scaleX(0.4);
-      transform: scaleX(0.4);
-    }
-    100% {
-      -webkit-transform: scaleX(1);
-      transform: scaleX(1);
-    }
-  }
-  @keyframes scale-up-hor-center {
-    0% {
-      -webkit-transform: scaleX(0.4);
-      transform: scaleX(0.4);
-    }
-    100% {
-      -webkit-transform: scaleX(1);
-      transform: scaleX(1);
-    }
-  }
 `;
 
 const BtnTest = styled.button`
@@ -332,10 +317,8 @@ const BtnTest = styled.button`
 
 const LocationBox = styled.div`
   justify-content: center;
-
   flex-direction: column;
   display: flex;
-
   width: 198px;
   height: 63px;
   margin-right: 1rem;

@@ -70,12 +70,13 @@ const __kakaoLogin = (code) => {
         dispatch(kakaoLogin(data.data.profileSet, data.data.userId));
       } else {
         const accessToken = data.data.accessToken;
-        console.log(accessToken);
+
         cookies.set("accessToken", accessToken, {
           path: "/",
           // maxAge: 3600, // 60분
         });
-        const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
+        const { sub, memberId, nickname, major, profileImg } =
+          jwt_decode(accessToken);
         localStorage.setItem("userId", sub);
         localStorage.setItem("memberId", memberId);
         localStorage.setItem("nickname", nickname);
@@ -85,9 +86,9 @@ const __kakaoLogin = (code) => {
         dispatch(login());
         history.replace("/main");
       }
-      console.log(data);
+
       const { accessToken, refreshToken } = data.data;
-      console.log(accessToken);
+
       const { sub, memberId, nickname, major, profileImg } =
         jwt_decode(accessToken);
       cookies.set("accessToken", accessToken, {
@@ -121,13 +122,24 @@ const __login = (_memberId, password) => {
         memberId: _memberId,
         password,
       });
-      const { accessToken, refreshToken, accessTokenExpiresIn } = loginData.data.data.token;
+      const { accessToken, refreshToken, accessTokenExpiresIn } =
+        loginData.data.data.token;
       // console.log(accessToken)
       // console.log(refreshToken)
       // console.log(accessTokenExpiresIn)
 
-      const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
-      console.log("userid:", sub, "memberId:", memberId, "닉네임:", nickname, "전공:", major);
+      const { sub, memberId, nickname, major, profileImg } =
+        jwt_decode(accessToken);
+      console.log(
+        "userid:",
+        sub,
+        "memberId:",
+        memberId,
+        "닉네임:",
+        nickname,
+        "전공:",
+        major
+      );
       cookies.set("accessToken", accessToken, {
         path: "/",
         maxAge: 86400, // 60분
@@ -160,6 +172,7 @@ const __signup = (memberId, password, pwCheck) => {
         password,
         pwCheck,
       });
+
       console.log(signup);
       localStorage.setItem("userId", signup.data.data.userId);
       // if (signup.data) {
@@ -180,17 +193,35 @@ const __signup = (memberId, password, pwCheck) => {
 const __additionalInfo = (_userId, nickname, major) => {
   return async (dispatch, getState, { history }) => {
     try {
-      const additionalInfo = await axios.post("https://everymohum.shop/user/signup/addInfo", {
-        userId: _userId,
-        nickname: nickname,
-        major: major,
+      const additionalInfo = await axios.post(
+        "https://everymohum.shop/user/signup/addInfo",
+        {
+          userId: _userId,
+          nickname: nickname,
+          major: major,
+        }
+      );
+      const { accessToken, refreshToken } = additionalInfo.data.data;
+      cookies.set("accessToken", accessToken, {
+        path: "/",
+        maxAge: 86400, // 60분
+        // maxAge: 10, // 10초
       });
-      console.log(additionalInfo);
-      // localStorage.setItem("userId", signup.data.data.userId);
-      if (additionalInfo.data) {
-        window.alert("로그인 페이지로 이동합니다.");
-        history.replace("/login");
-      }
+      cookies.set("refreshToken", refreshToken, {
+        path: "/",
+        // maxAge: 604800, // 7일
+      });
+
+      const { sub, memberId, nickName, majors, profileImg } =
+        jwt_decode(accessToken);
+      localStorage.setItem("userId", sub);
+      localStorage.setItem("memberId", memberId);
+      localStorage.setItem("nickname", nickName);
+      localStorage.setItem("major", majors);
+      localStorage.setItem("profileImg", profileImg);
+      dispatch(login());
+
+      history.replace("/main");
     } catch (err) {
       console.log(err);
       if (err.errorCode === 400) {
@@ -205,9 +236,12 @@ const __emailCheck =
   (email) =>
   async (dispatch, getState, { hisory }) => {
     try {
-      const checkEmailAlert = await axios.post("https://everymohum.shop/user/emailCheck", {
-        email,
-      });
+      const checkEmailAlert = await axios.post(
+        "https://everymohum.shop/user/emailCheck",
+        {
+          email,
+        }
+      );
       console.log(checkEmailAlert);
       // dispatch(checkEmailDup(checkEmailAlert));
       if (checkEmailAlert.data.errorCode === "200") {
@@ -309,7 +343,7 @@ export default handleActions(
     [LOGIN_ERROR_CODE]: (state, action) =>
       produce(state, (draft) => {
         draft.loginErrorCode = action.payload.data;
-        console.log(state)
+        console.log(state);
       }),
   },
   initialState

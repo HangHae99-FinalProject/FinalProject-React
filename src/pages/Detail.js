@@ -137,7 +137,9 @@ const Detail = () => {
                 {detailList.currentStatus === "RECRUITING_COMPLETE" ? (
                   <>
                     {detailList.userStatus === "starter" ? (
-                      <div onClick={applyHandelButton}>선장목록</div>
+                      <div className="starterBtn" onClick={applyHandelButton}>
+                        선장목록
+                      </div>
                     ) : (
                       <Btn3>모집완료</Btn3>
                     )}

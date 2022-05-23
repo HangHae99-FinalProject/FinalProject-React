@@ -17,9 +17,14 @@ const MainSearch = ({ location, category, selected }) => {
   const [is_nameSearch, setIS_NameSearch] = useState([]);
   const searchList = useSelector((state) => state.post.searchList);
 
+  // const searchOption = [
+  //   { value: "title", name: "제목" },
+  //   { value: "nickname", name: "유저이름" },
+  //   { value: "content", name: "내용" },
+  // ];
+
   const titleList = searchList.map((a) => a.titleList);
   const nicknameList = searchList.map((a) => a.nicknameList);
-  const contentList = searchList.map((a) => a.contentList);
 
   const setNameList = [];
   const setTitleList = [];
@@ -34,6 +39,7 @@ const MainSearch = ({ location, category, selected }) => {
 
   const searchHandleChange = (event) => {
     setIs_Search(event.target.value);
+    console.log(event.target.value);
   };
 
   const searchValueHandle = (e) => {
@@ -44,7 +50,7 @@ const MainSearch = ({ location, category, selected }) => {
     }
 
     let data = e.target.value;
-    // console.log(is_search);
+
     if (is_search === "title") {
       let filterData = setTitleList.filter((a) =>
         a.toLowerCase().includes(data.toLowerCase())
@@ -98,7 +104,7 @@ const MainSearch = ({ location, category, selected }) => {
   };
 
   const curLocation = () => {
-    if (location === "위치 설정" || location === "전체") {
+    if (location === "위치설정" || location === "전체") {
       return setarea("");
     } else {
       return setarea(location);
@@ -130,8 +136,11 @@ const MainSearch = ({ location, category, selected }) => {
           className="selectBox"
           style={{ width: "240px", marginRight: "1rem", height: "63px" }}
         >
-          <MenuItem value="" style={{ fontSize: "20px" }}>
-            <em>검색어 설정</em>
+          <MenuItem
+            value=""
+            style={{ fontSize: "20px", backgroundColor: "#fff" }}
+          >
+            <span>검색어 설정</span>
           </MenuItem>
           <MenuItem style={{ fontSize: "20px" }} value={"title"}>
             제목
@@ -281,8 +290,11 @@ const SearchBox = styled.div`
     border: 1px solid #b9daf6;
     box-shadow: inset 0px 4px 9px rgba(0, 0, 0, 0.13);
     border-radius: 14px;
+
     :focus {
-      outline: none;
+      outline: transparent;
+      border: none;
+      background-color: none;
     }
     :hover {
       color: none;

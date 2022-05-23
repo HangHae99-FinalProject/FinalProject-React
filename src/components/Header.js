@@ -78,14 +78,28 @@ function Header(props) {
   if (pathName.pathname === "/user/kakao/login") {
     return null;
   }
-
   if (pathName.pathname === "/") {
+    return null;
+  }
+  if (pathName.pathname === "/signup") {
+    return null;
+  }
+  if (pathName.pathname === "/login") {
     return null;
   }
 
   return (
     <Grid sx={{ maxWidth: "1920px" }}>
-      <AppBar position="static" sx={{ margin:"auto", width:"1370px", background: "white", boxShadow: "none", borderBottom: "1px solid #2967AC"}}>
+      <AppBar
+        position="static"
+        sx={{
+          margin: "auto",
+          width: "1370px",
+          background: "white",
+          boxShadow: "none",
+          borderBottom: "1px solid #2967AC",
+        }}
+      >
         <Toolbar>
           <Grid
             sx={{ color: "#C2C0C1" }}
@@ -94,7 +108,9 @@ function Header(props) {
             justifyContent="space-between"
             alignItems="center"
           >
-            {pathName.pathname === "/main" ? <Grid></Grid> : (
+            {pathName.pathname === "/main" ? (
+              <Grid></Grid>
+            ) : (
               <>
                 <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
                   <img src={logo} alt="logo" style={{ height: "40px" }} />
@@ -103,43 +119,40 @@ function Header(props) {
             )}
 
             <Grid sx={{ width: "30%" }}>
-              <Grid
-                container
-                direction="row"
-                justifyContent="flex-end"
-                alignItems="center"
-              >
+              <Grid container direction="row" justifyContent="flex-end" alignItems="center">
                 {isLogin && isCookies === true ? (
                   <Grid
-                    sx={{ marginRight:"20px", display: { cursor: "pointer" } }}
+                    sx={{ marginRight: "20px", display: { cursor: "pointer" } }}
                     onClick={goChat}
                   >
-                    <Badge badgeContent={4} color="error">
-                      <Typography sx={{color:"#2967AC", fontSize:"20px"}}>ChatOn</Typography>
-                    </Badge>
+                    <Typography sx={{ color: "#2967AC", fontSize: "20px" }}>ChatOn</Typography>
                   </Grid>
                 ) : null}
                 {isLogin && isCookies === true ? (
-                  <Grid sx={{ marginRight:"20px", display: { cursor: "pointer" } }}>
-                    <Typography sx={{color:"#2967AC", fontSize:"20px"}}>등대</Typography>
+                  <Grid sx={{ marginRight: "20px", display: { cursor: "pointer" } }}>
+                    <Typography sx={{ color: "#2967AC", fontSize: "20px" }}>등대</Typography>
                   </Grid>
                 ) : null}
-                <Grid sx={{ marginRight:"20px", display: { cursor: "pointer" } }}>
+                <Grid sx={{ marginRight: "20px", display: { cursor: "pointer" } }}>
                   {isLogin && isCookies === true ? (
                     <Grid onClick={goLogout}>
-                      <Typography sx={{color:"#2967AC", fontSize:"20px"}}>Logout</Typography>
+                      <Typography sx={{ color: "#2967AC", fontSize: "20px" }}>Logout</Typography>
                     </Grid>
                   ) : (
                     <Grid onClick={goLogin}>
-                      <Typography sx={{color:"#2967AC", fontSize:"20px"}}>Login</Typography>
+                      <Typography sx={{ color: "#2967AC", fontSize: "20px" }}>Login</Typography>
                     </Grid>
                   )}
                 </Grid>
                 <Grid sx={{ display: { cursor: "pointer" } }}>
                   {isLogin && isCookies === true ? (
-                    <Typography sx={{color:"#2967AC", fontSize:"20px"}} onClick={goUserPage}>MyPage</Typography>
+                    <Typography sx={{ color: "#2967AC", fontSize: "20px" }} onClick={goUserPage}>
+                      MyPage
+                    </Typography>
                   ) : (
-                    <Typography sx={{color:"#2967AC", fontSize:"20px"}} onClick={goSignup}>SignUp</Typography>
+                    <Typography sx={{ color: "#2967AC", fontSize: "20px" }} onClick={goSignup}>
+                      SignUp
+                    </Typography>
                   )}
                 </Grid>
               </Grid>

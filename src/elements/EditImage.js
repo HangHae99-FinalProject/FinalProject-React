@@ -9,7 +9,8 @@ import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
 
-const EditImage = (image) => {
+const EditImage = (image, props) => {
+  const { margintop, marginleft } = props;
   const eddit = image.image;
   const dispatch = useDispatch();
   const [imgPreview, setImgPreview] = useState([]);
@@ -82,6 +83,8 @@ const EditImage = (image) => {
     dispatch(imgActions.setURL(is_Url));
   };
 
+  const styles = { margintop: margintop, marginleft: marginleft };
+
   return (
     <>
       <UploadBox>
@@ -91,6 +94,7 @@ const EditImage = (image) => {
         </Labels>
 
         <Labels
+          // style={{display:props.display}}
           onClick={() => {
             setIs_open(!is_open);
           }}
@@ -99,11 +103,7 @@ const EditImage = (image) => {
         </Labels>
         {is_open ? (
           <>
-            <UrlBox
-              value={is_Url}
-              placeholder="URL을 입력해주세요!"
-              onChange={handleUrl}
-            />
+            <UrlBox value={is_Url} placeholder="URL을 입력해주세요!" onChange={handleUrl} />
             <UrlBtn title="submit" onClick={UrlButton}>
               확인
             </UrlBtn>
@@ -150,11 +150,14 @@ const EditImage = (image) => {
   );
 };
 
-export default EditImage;
+EditImage.defaultProps = {
+  margintop: "2rem",
+  marginleft: "1rem",
+};
 
 const UploadBox = styled.div`
-  margin-top: 2rem;
-  margin-left: 1rem;
+  margin-top: ${(props) => props.margintop};
+  margin-left: ${(props) => props.marginleft};
   display: flex;
   background-color: white;
   width: 80%;
@@ -218,3 +221,4 @@ const ImageList = styled.div`
   background-size: contain;
   background-position: center;
 `;
+export default EditImage;

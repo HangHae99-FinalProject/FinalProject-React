@@ -190,15 +190,15 @@ const __signup = (memberId, password, pwCheck) => {
     }
   };
 };
-const __additionalInfo = (_userId, nickname, major) => {
+const __additionalInfo = (_userId, nickName, majors) => {
   return async (dispatch, getState, { history }) => {
     try {
       const additionalInfo = await axios.post(
         "https://everymohum.shop/user/signup/addInfo",
         {
           userId: _userId,
-          nickname: nickname,
-          major: major,
+          nickname: nickName,
+          major: majors,
         }
       );
       const { accessToken, refreshToken } = additionalInfo.data.data;
@@ -212,12 +212,12 @@ const __additionalInfo = (_userId, nickname, major) => {
         // maxAge: 604800, // 7일
       });
 
-      const { sub, memberId, nickName, majors, profileImg } =
+      const { sub, memberId, nickname, major, profileImg } =
         jwt_decode(accessToken);
       localStorage.setItem("userId", sub);
       localStorage.setItem("memberId", memberId);
-      localStorage.setItem("nickname", nickName);
-      localStorage.setItem("major", majors);
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("major", major);
       localStorage.setItem("profileImg", profileImg);
       dispatch(login());
 

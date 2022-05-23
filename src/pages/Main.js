@@ -15,7 +15,7 @@ import { history } from "../redux/configureStore";
 import { Redirect, useLocation } from "react-router-dom";
 
 const Main = () => {
-  const [is_location, setLocation] = useState("위치 설정");
+  const [is_location, setLocation] = useState("위치설정");
   const [is_open, setIs_open] = useState(false);
   const [selected, setSelected] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
@@ -217,7 +217,11 @@ const Main = () => {
                   justifyContent: "center",
                 }}
               >
-                <PlaceIcon className="icon" fontSize="large" />
+                <img
+                  src="https://velog.velcdn.com/images/tty5799/post/0f54f707-bc7a-4710-9f7a-7a82b5d3dce3/image.png"
+                  alt="locationImg"
+                  style={{ marginRight: "20px" }}
+                />
                 <p>{is_location}</p>
               </div>
             </Grid>
@@ -304,11 +308,10 @@ const BtnTest = styled.button`
   cursor: pointer;
   width: 150px;
   height: 63px;
-  margin-left: 30px;
+  margin-left: 25px;
   background: #ffd082;
   border: none;
-  box-sizing: border-box;
-  box-shadow: inset 0px 4px 13px #d7f1fd;
+  box-shadow: inset 0px 2px 8px #ffffff;
   border-radius: 14px;
   font-size: 25px;
   font-weight: 700;
@@ -321,7 +324,7 @@ const LocationBox = styled.div`
   display: flex;
   width: 198px;
   height: 63px;
-  margin-right: 1rem;
+  margin-right: 25px;
 
   position: relative;
   background-color: #2967ac;

@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Footer from "./Footer";
+import footer from "../assets/Footer2.svg";
 
 const ModalWindow = (props) => {
   //   const [open, setOpen] = React.useState(false);
@@ -53,7 +54,6 @@ const ModalWindow = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>{children}</Box>
-        
       </Modal>
     </div>
   );
@@ -71,7 +71,7 @@ ModalWindow.defaultProps = {
   // border: "2px solid #000",
   borderRadius: null,
   // boxShadow: 24,
-  p: 4,
+  p: 0,
   padding: 0,
 };
 

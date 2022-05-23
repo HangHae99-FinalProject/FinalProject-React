@@ -1,24 +1,34 @@
+import { minHeight } from "@mui/system";
 import React from "react";
 import styled from "styled-components";
 import footerImage from "../assets/Footer.svg";
 import footer from "../assets/Footer2.svg";
 
-const Footer = () => {
-  return (
-    <Footers>
-      <Image src={footer} alt="footer" />
-    </Footers>
-  );
+const Footer = (props) => {
+  const { position, width, bottom } = props;
+  const styles = { position: position, width: width, bottom: bottom };
+  // const _styles = { width: width };
+  return <Image {...styles} src={footer} alt="footer" />;
 };
+Footer.defaultProps = {
+  position: null,
+  width: "100vw",
+};
+
 const Image = styled.img`
-  width: 100%;
+  width: ${(props) => props.width};
+  z-index: -10;
+  position: ${(props) => props.position};
+  bottom: 0;
+  left: 0;
 `;
 
-const Footers = styled.footer`
-  z-index: 9999;
-  bottom: 0px;
-  left: 0;
-  width: 100%;
-`;
+// const Footers = styled.footer`
+//   z-index: 9999;
+//   position: ${(props) => props.position};
+//   bottom: 0px;
+//   left: 0;
+//   width: 1920px;
+// `;
 
 export default Footer;

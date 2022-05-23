@@ -5,6 +5,8 @@ import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
 import axios from "axios";
+import styled from "styled-components";
+import BgImg from "../assets/signupBackground.png";
 
 //MUI import
 import Grid from "@mui/material/Grid";
@@ -21,14 +23,16 @@ import Modal from "@mui/material/Modal";
 //추가 정보 기입 모달
 const style = {
   position: "absolute",
-  top: "50%",
+  top: "340px",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "480px",
+  width: "629px",
+  height: "472px",
   bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
+  // border: "2px solid #000",
+  boxShadow: 0,
   p: 4,
+  borderRadius: "14px",
 };
 
 const Signup = () => {
@@ -47,61 +51,77 @@ const Signup = () => {
 
   // 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
   function IdFormHelperText() {
-    const { focused } = useFormControl() || {};
+    const { focused, filled } = useFormControl() || {};
 
     const helperText = React.useMemo(() => {
       if (focused) {
-        return "예. 영문 대소문자, 한글, 숫자 포함 4~12자 입니다.";
+        return "예. 영문 대소문자, 숫자 포함 4~12자 입니다.";
+      } else if (filled !== true) {
+        return " ";
+      } else if (!memberIdCheckRE(memberId)) {
+        return "아이디 형식을 확인해주세요.";
       } else if (checkMemberIdError === false) {
         return "중복된 아이디입니다.";
       } else if (checkMemberIdError === true) {
         return "사용 가능한 아이디입니다.";
       }
       return " ";
-    }, [focused]);
+    }, [focused, filled]);
 
     return <FormHelperText>{helperText}</FormHelperText>;
   }
   function PwFormHelperText() {
-    const { focused } = useFormControl() || {};
+    const { focused, filled } = useFormControl() || {};
 
     const helperText = React.useMemo(() => {
       if (focused) {
         return "영문 대소문자, 숫자 포함 6~20자 입니다.";
+      } else if (filled !== true) {
+        return " ";
+      } else if (!pwCheckRE(password)) {
+        return "패스워드 형식을 확인해주세요.";
+      } else if (password !== pwCheck) {
+        return "패스워드와 패스워드 확인이 일치하지 않습니다.";
       }
-
       return " ";
-    }, [focused]);
+    }, [focused, filled]);
 
     return <FormHelperText>{helperText}</FormHelperText>;
   }
   function PwCfnFormHelperText() {
-    const { focused } = useFormControl() || {};
+    const { focused, filled } = useFormControl() || {};
 
     const helperText = React.useMemo(() => {
       if (focused) {
         return "영문 대소문자, 숫자 포함 6~20자 입니다.";
+      } else if (filled !== true) {
+        return " ";
+      } else if (password !== pwCheck) {
+        return "패스워드와 패스워드 확인이 일치하지 않습니다.";
       }
 
       return " ";
-    }, [focused]);
+    }, [focused, filled]);
 
     return <FormHelperText>{helperText}</FormHelperText>;
   }
   function NicknameFormHelperText() {
-    const { focused } = useFormControl() || {};
+    const { focused, filled } = useFormControl() || {};
 
     const helperText = React.useMemo(() => {
       if (focused) {
         return "예. 영문 대소문자, 한글, 숫자 포함 4~10자 입니다.";
+      } else if (filled !== true) {
+        return " ";
+      } else if (!nicknameCheckRE(nickname)) {
+        return "닉네임 형식을 확인해주세요.";
       } else if (checkNicknameError === false) {
         return "중복된 닉네임입니다.";
       } else if (checkNicknameError === true) {
         return "사용 가능한 닉네임입니다.";
       }
-
       return " ";
-    }, [focused]);
+    }, [focused, filled]);
 
     return <FormHelperText>{helperText}</FormHelperText>;
   }
@@ -182,16 +202,16 @@ const Signup = () => {
 
   //goSignup()시 추가정보기입 모달 오픈
   const goSignup = () => {
-    if (!memberIdCheckRE(memberId)) {
-      window.alert("이메일 형식을 확인해주세요.");
-      return;
-    }
+    // if (!memberIdCheckRE(memberId)) {
+    //   window.alert("아이디 형식을 확인해주세요.");
+    //   return;
+    // }
     if (!pwCheckRE(password)) {
-      window.alert("패스워드 형식을 확인해주세요.");
+      // window.alert("패스워드 형식을 확인해주세요.");
       return;
     }
     if (password !== pwCheck) {
-      window.alert("패스워드와 패스워드 확인이 일치하지 않습니다.");
+      // window.alert("패스워드와 패스워드 확인이 일치하지 않습니다.");
       return;
     }
     dispatch(userActions.__signup(memberId, password, pwCheck));
@@ -231,12 +251,13 @@ const Signup = () => {
             <Box sx={style}>
               <Grid container direction="column" justifyContent="center" alignItems="center">
                 <img src={require(`../assets/signupLogo.png`)} alt="signupLogo" />
-                <FormControl sx={{ width: "100%" }}>
+                <FormControl>
                   <Grid
                     container
                     direction="row"
                     justifyContent="space-between"
                     alignItems="center"
+                    sx={{ marginTop: "79px" }}
                   >
                     <OutlinedInput
                       required
@@ -246,13 +267,25 @@ const Signup = () => {
                       placeholder="닉네임을 입력해 주세요"
                       variant="standard"
                       onChange={onNicknameHandler}
-                      sx={{ width: "65%" }}
+                      sx={{
+                        marginRight: "21px",
+                        width: "326px",
+                        height: "62px",
+                        borderRadius: "14px",
+                        fontSize: "20px",
+                      }}
                     />
                     <Grid>
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         onClick={nicknameCheckBtn}
-                        sx={{ width: "110px", height: "55px", padding: "0" }}
+                        sx={{
+                          width: "120px",
+                          height: "62px",
+                          padding: "0",
+                          borderRadius: "14px",
+                          fontSize: "20px",
+                        }}
                       >
                         중복확인
                       </Button>
@@ -261,7 +294,7 @@ const Signup = () => {
                   <NicknameFormHelperText />
                 </FormControl>
                 <Grid sx={{ marginTop: "20px" }}>
-                  <Box sx={{ width: "480px" }}>
+                  <Box>
                     <FormControl fullWidth>
                       <Select
                         required
@@ -271,6 +304,12 @@ const Signup = () => {
                         displayEmpty
                         onChange={onMajorHandler}
                         inputProps={{ "aria-label": "select major" }}
+                        sx={{
+                          width: "477px",
+                          height: "62px",
+                          borderRadius: "14px",
+                          fontSize: "20px",
+                        }}
                       >
                         <MenuItem disabled value="">
                           <em style={{ color: "#888888", fontStyle: "normal" }}>
@@ -292,15 +331,56 @@ const Signup = () => {
                 </Grid>
                 <Box>
                   {checkNicknameError === false ? (
-                    <Button disabled type="submit" variant="contained">
+                    <Button
+                      disabled
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        width: "477px",
+                        height: "42px",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        color: "white",
+                        borderRadius: "14px",
+                        backgroundColor: "#2967AC",
+                        "&:hover": { backgroundColor: "#2967AC" },
+                      }}
+                    >
                       등록완료
                     </Button>
                   ) : checkNicknameError === null ? (
-                    <Button disabled type="submit" variant="contained">
+                    <Button
+                      disabled
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        width: "477px",
+                        height: "42px",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        color: "white",
+                        borderRadius: "14px",
+                        backgroundColor: "#2967AC",
+                        "&:hover": { backgroundColor: "#2967AC" },
+                      }}
+                    >
                       등록완료
                     </Button>
                   ) : (
-                    <Button type="submit" variant="contained">
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        width: "477px",
+                        height: "42px",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        color: "white",
+                        borderRadius: "14px",
+                        backgroundColor: "#2967AC",
+                        "&:hover": { backgroundColor: "#2967AC" },
+                      }}
+                    >
                       등록완료
                     </Button>
                   )}
@@ -311,125 +391,195 @@ const Signup = () => {
         </Modal>
       </Grid>
       {/* 여기까지가 추가정보 기입 모달 */}
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-        margin="80px auto"
-        padding="2px"
-        src={require(`../assets/signupBackground.png`)}
-      >
-        <div>
-          <h3>
-            Sign Up
-            {/* <button onClick={handleOpen}>임시 추가정보 기입</button> */}
-          </h3>
-        </div>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            goSignup();
-          }}
+      <BgDiv>
+        <Grid
+          container
+          direction="column"
+          justifyContent="flex-start"
+          alignItems="center"
+          margin="80px auto auto auto"
         >
-          <Grid container direction="row" justifyContent="space-between" alignItems="flex-start">
-            <Grid>
-              <FormControl sx={{ width: "115%" }}>
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="flex-start"
-                >
-                  <OutlinedInput
-                    required
-                    name="email"
-                    type="text"
-                    id="_email"
-                    placeholder="아이디를 입력해 주세요"
-                    variant="standard"
-                    onChange={onMemberIdHandler}
-                    sx={{ width: "65%" }}
-                  />
-                  <Grid>
-                    <Button
-                      variant="outlined"
-                      onClick={memberIdCheckBtn}
-                      sx={{ width: "110px", height: "55px", padding: "0" }}
-                    >
-                      중복확인
-                    </Button>
+          <div style={{ marginBottom: "50px" }}>
+            <img src={require(`../assets/signupLogo.png`)} alt="signupLogo" />
+          </div>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              goSignup();
+            }}
+          >
+            <Grid container direction="row" justifyContent="space-between" alignItems="flex-start">
+              <Grid>
+                <FormControl sx={{ width: "326px", height: "62px" }}>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                  >
+                    <OutlinedInput
+                      required
+                      name="email"
+                      type="text"
+                      id="_email"
+                      placeholder="아이디를 입력해 주세요"
+                      variant="standard"
+                      onChange={onMemberIdHandler}
+                      sx={{ width: "65%", borderRadius: "14px" }}
+                    />
+                    <Grid>
+                      <Button
+                        variant="outlined"
+                        onClick={memberIdCheckBtn}
+                        sx={{
+                          color: "black",
+                          width: "110px",
+                          height: "55px",
+                          padding: "0",
+                          borderRadius: "14px",
+                          fontSize: "20px",
+                          backgroundColor: "#D7F1FD",
+                          "&:hover": { backgroundColor: "#D7F1FD" },
+                        }}
+                      >
+                        중복확인
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
 
-                <IdFormHelperText />
+                  <IdFormHelperText />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Grid sx={{ marginTop: "20px" }}>
+              <FormControl sx={{ width: "326px", height: "62px" }}>
+                <OutlinedInput
+                  required
+                  name="password"
+                  type="password"
+                  id="_password"
+                  placeholder="비밀번호를 입력해 주세요"
+                  variant="standard"
+                  onChange={onPasswordHandler}
+                  sx={{ borderRadius: "14px" }}
+                />
+                <PwFormHelperText />
               </FormControl>
             </Grid>
-          </Grid>
+            <Grid sx={{ marginTop: "20px" }}>
+              <FormControl sx={{ width: "326px", height: "62px" }}>
+                <OutlinedInput
+                  required
+                  name="pwCheck"
+                  type="password"
+                  id="_pwCheck"
+                  placeholder="비밀번호를 다시 입력해 주세요"
+                  variant="standard"
+                  onChange={onPwCheckHandler}
+                  sx={{ borderRadius: "14px" }}
+                />
+                <PwCfnFormHelperText />
+              </FormControl>
+            </Grid>
 
-          <Grid sx={{ marginTop: "20px" }}>
-            <FormControl sx={{ width: "35ch" }}>
-              <OutlinedInput
-                required
-                name="password"
-                type="password"
-                id="_password"
-                placeholder="비밀번호를 입력해 주세요"
-                variant="standard"
-                onChange={onPasswordHandler}
-              />
-              <PwFormHelperText />
-            </FormControl>
-          </Grid>
-          <Grid sx={{ marginTop: "20px" }}>
-            <FormControl sx={{ width: "35ch" }}>
-              <OutlinedInput
-                required
-                name="pwCheck"
-                type="password"
-                id="_pwCheck"
-                placeholder="비밀번호를 다시 입력해 주세요"
-                variant="standard"
-                onChange={onPwCheckHandler}
-              />
-              <PwCfnFormHelperText />
-            </FormControl>
-          </Grid>
-
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            margin="30px auto"
-          >
-            <Stack spacing={4} direction="row">
-              {checkMemberIdError === false ? (
-                <Button disabled type="submit" variant="contained">
-                  Sign Up
-                </Button>
-              ) : checkMemberIdError === null ? (
-                <Button disabled type="submit" variant="contained">
-                  Sign Up
-                </Button>
-              ) : (
-                <Button type="submit" variant="contained">
-                  Sign Up
-                </Button>
-              )}
-              {/* <Button type="submit" variant="contained">
+            <Grid
+              sx={{ marginTop: "20px" }}
+              // container
+              // direction="column"
+              // justifyContent="center"
+              // alignItems="center"
+              // margin="30px auto"
+            >
+              <Stack direction="column">
+                {checkMemberIdError === false ? (
+                  <Button
+                    disabled
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      width: "326px",
+                      height: "42px",
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                      color: "white",
+                      borderRadius: "14px",
+                      backgroundColor: "#2967AC",
+                    }}
+                  >
+                    회원가입
+                  </Button>
+                ) : checkMemberIdError === null ? (
+                  <Button
+                    disabled
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      width: "326px",
+                      height: "42px",
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                      color: "white",
+                      borderRadius: "14px",
+                      backgroundColor: "#2967AC",
+                    }}
+                  >
+                    회원가입
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      width: "326px",
+                      height: "42px",
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                      color: "white",
+                      borderRadius: "14px",
+                      backgroundColor: "#2967AC",
+                      "&:hover": { backgroundColor: "#2967AC" },
+                    }}
+                  >
+                    회원가입
+                  </Button>
+                )}
+                {/* <Button type="submit" variant="contained">
                 Sign Up
               </Button> */}
-              <Button variant="outlined" onClick={goHome}>
-                cancel
-              </Button>
-            </Stack>
-          </Grid>
-        </form>
-      </Grid>
+                <Button
+                  variant="outlined"
+                  onClick={goHome}
+                  sx={{
+                    width: "326px",
+                    height: "42px",
+                    marginTop: "13px",
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "white",
+                    borderRadius: "14px",
+                    backgroundColor: "#FE5953",
+                    "&:hover": { backgroundColor: "#FE5953" },
+                  }}
+                >
+                  취소
+                </Button>
+              </Stack>
+            </Grid>
+          </form>
+        </Grid>
+      </BgDiv>
     </React.Fragment>
   );
 };
+
+const BgDiv = styled.div`
+  z-index: 0;
+  height: 100%;
+  background-image: url("https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png");
+  background-repeat: no-repeat;
+  height: 765px;
+  background-size: corver;
+  background-position-y: bottom;
+`;
 
 export default Signup;

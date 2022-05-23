@@ -178,7 +178,7 @@ const __getAppliedOver = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const appliedOverData = await userInfoApi.getAppliedOverList(postId);
-      console.log(appliedOverData);
+      // console.log(appliedOverData);
       dispatch(getAppliedOver(appliedOverData));
     } catch (err) {
       console.log(err);

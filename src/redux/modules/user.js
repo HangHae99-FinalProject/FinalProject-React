@@ -17,6 +17,7 @@ const LOG_OUT = "user/LOG_OUT";
 const CHECK_EMAIL_DUP = "user/CHECK_EMAIL_DUP";
 const INIT_CHECK_EMAIL_DUP = "user/INIT_CHECK_EMAIL_DUP";
 const KAKAO_LOGIN = "KAKAO_LOGIN";
+const LOGIN_ERROR_CODE = "user/LOGIN_ERROR_CODE";
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
 // const logIn = (user) => {
@@ -38,6 +39,8 @@ const checkEmailDup = createAction(CHECK_EMAIL_DUP, (checkEmailAlert) => ({
 }));
 const initCheckEmailDup = createAction(INIT_CHECK_EMAIL_DUP, () => ({}));
 const kakaoLogin = createAction(KAKAO_LOGIN, (user, id) => ({ user, id }));
+const loginErrorCode = createAction(LOGIN_ERROR_CODE, (data) => ({ data }));
+
 //initialState
 const initialState = {
   isLogin: false,
@@ -51,6 +54,7 @@ const initialState = {
   initInput: "",
   profileSet: true,
   kakaoId: "",
+  loginErrorCode: 0,
 };
 
 const userInitial = {
@@ -71,8 +75,7 @@ const __kakaoLogin = (code) => {
           path: "/",
           // maxAge: 3600, // 60분
         });
-        const { sub, memberId, nickname, major, profileImg } =
-          jwt_decode(accessToken);
+        const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
         localStorage.setItem("userId", sub);
         localStorage.setItem("memberId", memberId);
         localStorage.setItem("nickname", nickname);
@@ -96,24 +99,13 @@ const __login = (_memberId, password) => {
         memberId: _memberId,
         password,
       });
-      const { accessToken, refreshToken, accessTokenExpiresIn } =
-        loginData.data.data.token;
+      const { accessToken, refreshToken, accessTokenExpiresIn } = loginData.data.data.token;
       // console.log(accessToken)
       // console.log(refreshToken)
       // console.log(accessTokenExpiresIn)
 
-      const { sub, memberId, nickname, major, profileImg } =
-        jwt_decode(accessToken);
-      console.log(
-        "userid:",
-        sub,
-        "memberId:",
-        memberId,
-        "닉네임:",
-        nickname,
-        "전공:",
-        major
-      );
+      const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
+      console.log("userid:", sub, "memberId:", memberId, "닉네임:", nickname, "전공:", major);
       cookies.set("accessToken", accessToken, {
         path: "/",
         maxAge: 86400, // 60분
@@ -132,7 +124,8 @@ const __login = (_memberId, password) => {
       window.alert(`${nickname}님 반갑습니다~`);
       history.replace("/main");
     } catch (err) {
-      console.log(err);
+      dispatch(loginErrorCode(err.response.data.errorCode));
+      // console.log(err.response.data.errorCode);
     }
   };
 };
@@ -165,14 +158,11 @@ const __signup = (memberId, password, pwCheck) => {
 const __additionalInfo = (_userId, nickname, major) => {
   return async (dispatch, getState, { history }) => {
     try {
-      const additionalInfo = await axios.post(
-        "https://everymohum.shop/user/signup/addInfo",
-        {
-          userId: _userId,
-          nickname: nickname,
-          major: major,
-        }
-      );
+      const additionalInfo = await axios.post("https://everymohum.shop/user/signup/addInfo", {
+        userId: _userId,
+        nickname: nickname,
+        major: major,
+      });
       console.log(additionalInfo);
       // localStorage.setItem("userId", signup.data.data.userId);
       if (additionalInfo.data) {
@@ -193,12 +183,9 @@ const __emailCheck =
   (email) =>
   async (dispatch, getState, { hisory }) => {
     try {
-      const checkEmailAlert = await axios.post(
-        "https://everymohum.shop/user/emailCheck",
-        {
-          email,
-        }
-      );
+      const checkEmailAlert = await axios.post("https://everymohum.shop/user/emailCheck", {
+        email,
+      });
       console.log(checkEmailAlert);
       // dispatch(checkEmailDup(checkEmailAlert));
       if (checkEmailAlert.data.errorCode === "200") {
@@ -299,6 +286,11 @@ export default handleActions(
         console.log(action.payload.id);
         draft.profileSet = action.payload.user;
         draft.kakaoId = action.payload.id;
+      }),
+    [LOGIN_ERROR_CODE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.loginErrorCode = action.payload.data;
+        console.log(state)
       }),
   },
   initialState

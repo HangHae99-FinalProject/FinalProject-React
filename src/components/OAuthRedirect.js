@@ -33,7 +33,6 @@ const OAuthRedirect = () => {
   const [checkNicknameError, setCheckNicknameError] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const profileSet = useSelector((state) => state.user.profileSet);
   const kakaoId = useSelector((state) => state.user.kakaoId);
@@ -101,15 +100,10 @@ const OAuthRedirect = () => {
       window.alert("닉네임 형식을 확인해주세요.");
       return;
     }
-
-    // const _userId = localStorage.getItem("userId");
-    console.log(kakaoId);
     dispatch(userActions.__additionalInfo(kakaoId, nickname, major));
-    console.log(nickname, major);
   };
   useEffect(() => {
     if (profileSet === false) {
-      console.log("??");
       handleOpen();
     } else {
       return;
@@ -192,7 +186,7 @@ const OAuthRedirect = () => {
                             전공을 선택해 주세요
                           </em>
                         </MenuItem>
-                        <MenuItem value={"미술/디자인"}>미술/디자인</MenuItem>
+                        <MenuItem value={"디자인"}>디자인</MenuItem>
                         <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
                         <MenuItem value={"영상"}>영상</MenuItem>
                         <MenuItem value={"사진"}>사진</MenuItem>

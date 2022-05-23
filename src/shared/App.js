@@ -30,6 +30,7 @@ import { actionCreators as chatActions } from "../redux/modules/chat";
 import styled from "styled-components";
 import Landing from "../pages/Landing";
 import OAuthRedirect from "../components/OAuthRedirect";
+import Alert from "../components/Alert";
 
 const cookies = new Cookies();
 function App() {
@@ -39,26 +40,6 @@ function App() {
   useEffect(() => {
     dispatch(userActions.__loginCheck());
   }, []);
-
-  // useEffect(() => {
-  //   let subscribeUrl = "https://everymohum.shop/sub";
-  //   if (!isCookies) {
-  //     return;
-  //   }
-  //   const eventSource = new EventSource(subscribeUrl + "?token=" + isCookies);
-  //   // eventSource.onmessage("addComment", function(event)) {
-  //   //   // const data = JSON.parse(event.data);
-  //   //   console.log(data);
-  //   // };
-  //   eventSource.addEventListener("addComment", function (event) {
-  //     let message = event.data;
-  //     console.log(message);
-  //   });
-  //   eventSource.addEventListener("error", function (event) {
-  //     let message = event.data;
-  //     console.log(message);
-  //   });
-  // }, []);
 
   const client = useSelector((state) => state.chat.client);
 
@@ -92,7 +73,9 @@ function App() {
           <Route path="/chat" exact component={Chat} />
           <Route path="/applied/:postid" exact component={Applied} />
         </Container>
+        <Alert />
       </ConnectedRouter>
+
       {/* <Footer></Footer> */}
     </>
   );

@@ -85,6 +85,28 @@ const __kakaoLogin = (code) => {
         dispatch(login());
         history.replace("/main");
       }
+      console.log(data);
+      const { accessToken, refreshToken } = data.data;
+      console.log(accessToken);
+      const { sub, memberId, nickname, major, profileImg } =
+        jwt_decode(accessToken);
+      cookies.set("accessToken", accessToken, {
+        path: "/",
+        maxAge: 86400, // 60분
+        // maxAge: 10, // 10초
+      });
+      cookies.set("refreshToken", refreshToken, {
+        path: "/",
+        // maxAge: 604800, // 7일
+      });
+      localStorage.setItem("userId", sub);
+      localStorage.setItem("memberId", memberId);
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("major", major);
+      localStorage.setItem("profileImg", profileImg);
+
+      dispatch(login());
+      history.replace("/main");
     } catch (err) {
       console.log(err);
     }
@@ -224,7 +246,7 @@ const __logout = () => {
       // localStorage.removeItem("userId");
       cookies.remove("isLogin", { path: "/" });
       cookies.remove("accessToken", { path: "/" });
-      // cookies.remove("refreshToken", { path: "/" });
+      cookies.remove("refreshToken", { path: "/" });
 
       await dispatch(logout());
       window.alert("로그아웃되었습니다.");
@@ -242,10 +264,8 @@ const __loginCheck = () => {
       dispatch(login());
       return;
     }
-    // else {
+    //  else {
     //   dispatch(logout());
-    //   console.log("로그인을 다시 해주세요");
-    //   history.replace("/");
     // }
   };
 };
@@ -266,10 +286,10 @@ export default handleActions(
         localStorage.removeItem("email");
         localStorage.removeItem("nickname");
         localStorage.removeItem("profileImgUrl");
-        // localStorage.removeItem("userId");
-        cookies.remove("isLogin", { path: "/" });
+        localStorage.removeItem("userId");
+        cookies.remove("isLogin");
         cookies.remove("accessToken", { path: "/" });
-        // cookies.remove("refreshToken", { path: "/" });
+        cookies.remove("refreshToken", { path: "/" });
         draft.user = null;
         draft.isLogin = false;
       }),
@@ -283,7 +303,6 @@ export default handleActions(
       }),
     [KAKAO_LOGIN]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.id);
         draft.profileSet = action.payload.user;
         draft.kakaoId = action.payload.id;
       }),

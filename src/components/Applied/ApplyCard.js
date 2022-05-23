@@ -83,7 +83,7 @@ const ApplyCard = (props) => {
           <Grid
             _className="majorName"
             bg={
-              props.applyMajor === "미술/디자인"
+              props.applyMajor === "디자인"
                 ? "#2967AC"
                 : props.applyMajor === "음향"
                 ? "#FFB673"

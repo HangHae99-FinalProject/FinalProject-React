@@ -62,7 +62,7 @@ const EditImage = (image, props) => {
 
   const handleDeleteImage = (x, id) => {
     // 서버에서 준 URL 버킷 이름을 기준으로 찾아
-    if (x.indexOf("hyemco-butket") !== -1) {
+    if (x.indexOf("mohum") !== -1) {
       dispatch(imgActions.editUrl(x));
       // URL을 따로 저장
       dispatch(imgActions.deletePre(id));

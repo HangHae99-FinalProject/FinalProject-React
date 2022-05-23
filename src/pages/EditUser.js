@@ -366,10 +366,11 @@ const EditUser = () => {
                       }}
                     >
                       <Grid
+
                         _className={major === "미술/디자인" ? "active" : "default"}
                         bg={major === "미술/디자인" ? "#2967AC" : "#fff"}
                       >
-                        <p>미술/디자인</p>
+                        <p>디자인</p>
                       </Grid>
                     </CateBtn>
                     <CateBtn

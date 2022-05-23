@@ -20,9 +20,7 @@ const Applied = () => {
   const subscriber = useSelector((state) => state.apply.subscriberList);
   const subscriberList = subscriber.applyUserLists;
 
-  const majorList = subscriber.majorList?.map((a) => a.majorName);
-  const numOfPeopleSet = subscriber.majorList?.map((a) => a.numOfPeopleSet);
-  const numOfPeopleApply = subscriber.majorList?.map((a) => a.numOfPeopleApply);
+  const majorList = useSelector((state) => state.apply.majorList);
 
   const acceptListList = useSelector(
     (state) => state.apply.acceptListList.applyUserLists
@@ -30,6 +28,9 @@ const Applied = () => {
 
   const subscriberCnt = subscriberList?.length;
   const acceptListCnt = acceptListList?.length;
+  console.log(majorList);
+  console.log(subscriberList);
+  console.log(acceptListList);
 
   const user = localStorage.getItem("userId");
 
@@ -38,7 +39,6 @@ const Applied = () => {
 
   const modalHandelBtn = () => {
     setModalState(!ModalState);
-    console.log(ModalState);
   };
   const openHandelBtn = () => {
     dispatch(applyActions.__getSubscriber(id));
@@ -54,11 +54,15 @@ const Applied = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (is_open === false) {
       dispatch(applyActions.__getSubscriber(id));
       return;
     }
-  }, []);
+    // return () => {
+    //   dispatch(applyActions.clearApply());
+    // };
+  }, [pathname]);
 
   if (!user) {
     alert("로그인을 먼저 해주세요!");
@@ -91,12 +95,12 @@ const Applied = () => {
           <span className="Recruitment">모집현황</span>
 
           <ButtonBox>
-            {majorList && numOfPeopleApply && numOfPeopleSet ? (
+            {majorList && subscriber.majorList ? (
               <>
                 <Grid
                   _className={"majorName"}
                   bg={
-                    majorList[0] === "미술/디자인"
+                    majorList[0] === "디자인"
                       ? "#2967AC"
                       : majorList[0] === "음향"
                       ? "#FFB673"
@@ -115,18 +119,23 @@ const Applied = () => {
                       : "#f5fcff"
                   }
                 >
-                  {majorList[0]}
-                  {numOfPeopleApply[0]}/{numOfPeopleSet[0]}
+                  {majorList[0]} &nbsp;
+                  {majorList[1]}/{majorList[2]}
                 </Grid>
-                {majorList.length === 1 ? null : majorList.length === 2 ? (
-                  <Grid _className={"PeopleCnt"}>+{majorList.length - 1}</Grid>
+                {subscriber.majorList.length === 1 ? null : subscriber.majorList
+                    .length === 2 ? (
+                  <Grid _className={"PeopleCnt"} _onClick={modalHandelBtn}>
+                    +{subscriber.majorList.length - 1}
+                  </Grid>
                 ) : (
                   <Grid _className={"PeopleCnt"} _onClick={modalHandelBtn}>
-                    +{majorList.length}
+                    +{subscriber.majorList.length - 1}
                   </Grid>
                 )}
               </>
-            ) : null}
+            ) : (
+              <Grid _className="majorName"></Grid>
+            )}
           </ButtonBox>
 
           <div className="Line" />
@@ -191,14 +200,15 @@ const Applied = () => {
             },
             content: {
               borderRadius: "20px",
-              top: "calc(100% - 620px)",
-              maxHeight: "343px",
-              height: "auto",
+              top: "456px",
+              height: "343px",
               display: "flex",
               width: "200px",
-              left: "calc(100% - 1500px)",
+              right: "auto",
+              bottom: "auto",
+              left: "448px",
+              transform: "translate(-50%, -50%)",
               padding: 0,
-              transition: "0.3s",
             },
           }}
         >
@@ -210,7 +220,7 @@ const Applied = () => {
                     key={idx}
                     _className="majorName"
                     bg={
-                      a.majorName === "미술/디자인"
+                      a.majorName === "디자인"
                         ? "#2967AC"
                         : a.majorName === "음향"
                         ? "#FFB673"
@@ -282,9 +292,11 @@ const ModalGrid = styled.div`
     font-size: 14px;
     color: #2967ac;
     font-weight: 700;
-    right: 69%;
+    left: 150px;
     position: fixed;
-    top: 65%;
+    top: 300px;
+    right: auto;
+    bottom: auto;
   }
 `;
 
@@ -389,7 +401,21 @@ const ButtonBox = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
+  .majorData {
+    margin-right: 10px;
+    min-width: 110px;
+    padding: 16px;
+    background-color: gray;
+    width: auto;
+    height: 47px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 700;
+  }
   .majorName {
     margin-right: 10px;
     min-width: 110px;

@@ -106,6 +106,17 @@ const Login = ({ location }) => {
     dispatch(userActions.__login(memberId, password));
   };
 
+  if (location?.state) {
+    localStorage.setItem("from", location?.state?.from);
+  }
+
+  React.useEffect(() => {
+    if (isLogin) {
+      alert("이미 로그인을 하셨습니다!");
+      history.replace("/main");
+    }
+  }, []);
+
   return (
     <React.Fragment>
       <BgDiv>

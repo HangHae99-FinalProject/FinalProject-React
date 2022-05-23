@@ -6,16 +6,18 @@ import { actionCreates as postActions } from "../redux/modules/post";
 import { FiChevronRight } from "react-icons/fi";
 import { history } from "../redux/configureStore";
 import { useLocation } from "react-router-dom";
+import Cookies from "universal-cookie";
+import Spinner from "../components/Spinner";
 
+const cookies = new Cookies();
 const Landing = () => {
   const dispatch = useDispatch();
   const landingList = useSelector((state) => state.post.landingList);
+
   const pathName = useLocation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(postActions.__getLanding());
-  }, [dispatch, pathName]);
+  const isLogin = useSelector((state) => state.user.isLogin);
+  console.log(isLogin);
 
   const loginHandelBtn = () => {
     history.push("/login");
@@ -27,6 +29,16 @@ const Landing = () => {
     history.push("/main");
   };
 
+  useEffect(() => {
+    if (isLogin) {
+      alert("잘못된 접근입니다!");
+      history.replace("/main");
+      return;
+    }
+    window.scrollTo(0, 0);
+    dispatch(postActions.__getLanding());
+  }, [isLogin, pathName]);
+
   return (
     <Container>
       <HeadImage>
@@ -35,11 +47,10 @@ const Landing = () => {
             <img
               src="https://velog.velcdn.com/images/tty5799/post/44b3ddb0-6532-431f-a249-933b59d8b327/image.png"
               alt="backImg"
-              className="tilt-in-tl"
             />
           </BackImage>
         </div>
-        <div className="tilt-in-fwd-tr">
+        <div>
           <TitleImg>
             <img
               src="https://velog.velcdn.com/images/tty5799/post/ca07d3ee-2bdb-4825-b3f3-cb1f3582e818/image.png"

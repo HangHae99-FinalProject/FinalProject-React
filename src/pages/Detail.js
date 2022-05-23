@@ -137,7 +137,9 @@ const Detail = () => {
                 {detailList.currentStatus === "RECRUITING_COMPLETE" ? (
                   <>
                     {detailList.userStatus === "starter" ? (
-                      <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
+                      <div className="starterBtn" onClick={applyHandelButton}>
+                        선장목록
+                      </div>
                     ) : (
                       <Btn3>모집완료</Btn3>
                     )}
@@ -146,7 +148,13 @@ const Detail = () => {
                 {detailList.currentStatus === "RECRUITING_CLOSE" ? (
                   <>
                     {detailList.userStatus === "starter" ? (
-                      <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
+                      <div
+                        div
+                        className="starterBtn"
+                        onClick={applyHandelButton}
+                      >
+                        선장목록
+                      </div>
                     ) : (
                       <Btn3>정원마감</Btn3>
                     )}
@@ -155,20 +163,32 @@ const Detail = () => {
                 {detailList.currentStatus === "ONGOING" ? (
                   <>
                     {detailList.userStatus === "applicant" ? (
-                      <Btn1 onClick={applyHandelButton}>취소하기</Btn1>
+                      <div className="anonymousBtn" onClick={applyHandelButton}>
+                        취소하기
+                      </div>
                     ) : null}
                     {detailList.userStatus === "anonymous" ? (
-                      <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
+                      <div className="anonymousBtn" onClick={applyHandelButton}>
+                        신청하기
+                      </div>
                     ) : null}
                     {detailList.userStatus === "user" ? (
-                      <Btn1 onClick={applyHandelButton}>신청하기</Btn1>
+                      <div className="anonymousBtn" onClick={applyHandelButton}>
+                        신청하기
+                      </div>
                     ) : null}
                     {detailList.userStatus === "member" ? (
                       <Btn3>합류완료</Btn3>
                     ) : null}
 
                     {detailList.userStatus === "starter" ? (
-                      <Btn1 onClick={applyHandelButton}>선장목록</Btn1>
+                      <div
+                        div
+                        className="starterBtn"
+                        onClick={applyHandelButton}
+                      >
+                        선장목록
+                      </div>
                     ) : null}
                   </>
                 ) : null}
@@ -178,9 +198,7 @@ const Detail = () => {
                     <Btn2 onClick={handleWrite}>수정하기</Btn2>
                     <Btn4 onClick={postDelete}>삭제하기</Btn4>
                   </>
-                ) : (
-                  <Btn2>스크랩</Btn2>
-                )}
+                ) : null}
               </HeadBtnBox>
             </HeadBox>
 
@@ -194,7 +212,7 @@ const Detail = () => {
                         <Grid
                           _className="majorName"
                           bg={
-                            a.majorName === "미술/디자인"
+                            a.majorName === "디자인"
                               ? "#2967AC"
                               : a.majorName === "음향"
                               ? "#FFB673"
@@ -285,8 +303,8 @@ const Detail = () => {
                         <CateBtn
                           key={idx}
                           onClick={() => {
-                            if (a.majorName === "미술/디자인") {
-                              setIs_Cate("미술/디자인");
+                            if (a.majorName === "디자인") {
+                              setIs_Cate("디자인");
                             } else if (a.majorName === "영상") {
                               setIs_Cate("영상");
                             } else if (a.majorName === "배우") {
@@ -312,7 +330,7 @@ const Detail = () => {
                               is_cate === a.majorName ? "active" : "default"
                             }
                             bg={
-                              a.majorName === "미술/디자인"
+                              a.majorName === "디자인"
                                 ? "#2967AC"
                                 : a.majorName === "음향"
                                 ? "#FFB673"
@@ -600,6 +618,48 @@ const MidBox = styled.div`
 
 const HeadBtnBox = styled.div`
   display: flex;
+  .starterBtn {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    width: 120px;
+    height: 40px;
+    margin-left: -90px;
+    background: #4299e9;
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    :hover {
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        #66b8ff;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      color: #fff;
+    }
+  }
+  .anonymousBtn {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    width: 120px;
+    height: 40px;
+    margin-left: 170px;
+    background: #4299e9;
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    :hover {
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        #66b8ff;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      color: #fff;
+    }
+  }
 `;
 
 const HeadBox = styled.div`
@@ -613,25 +673,6 @@ const HeadBox = styled.div`
 const Container = styled.div`
   width: 1370px;
   margin: 3% auto;
-`;
-
-const Btn1 = styled.button`
-  cursor: pointer;
-  width: 120px;
-  height: 40px;
-  margin-left: 10px;
-  background: #4299e9;
-  border: none;
-  border-radius: 14px;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  :hover {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-      #66b8ff;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    color: #fff;
-  }
 `;
 
 const Btn2 = styled.button`
@@ -657,10 +698,9 @@ const Btn3 = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
   width: 120px;
   height: 40px;
-  margin-left: 10px;
+  margin-left: 170px;
   background: gray;
   border: none;
   border-radius: 14px;

@@ -160,9 +160,12 @@ const Signup = () => {
   //중복확인 버튼
   const memberIdCheckBtn = async () => {
     try {
-      const checkMemberId = await axios.post("https://everymohum.shop/user/memberIdCheck", {
-        memberId,
-      });
+      const checkMemberId = await axios.post(
+        "https://everymohum.shop/user/memberIdCheck",
+        {
+          memberId,
+        }
+      );
       console.log(checkMemberId.status);
       checkMemberId.status == 200 && setCheckMemberIdError(true);
       // window.alert("사용이 가능한 아이디입니다.");
@@ -175,10 +178,13 @@ const Signup = () => {
 
   const nicknameCheckBtn = async () => {
     try {
-      const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
-        nickname,
-        major,
-      });
+      const checkNickname = await axios.post(
+        "https://everymohum.shop/user/nicknameCheck",
+        {
+          nickname,
+          major,
+        }
+      );
       console.log(checkNickname.status);
       checkNickname.status == 200 && setCheckNicknameError(true);
       // window.alert("사용이 가능한 아이디입니다.");
@@ -316,7 +322,7 @@ const Signup = () => {
                             전공을 선택해 주세요
                           </em>
                         </MenuItem>
-                        <MenuItem value={"미술/디자인"}>미술/디자인</MenuItem>
+                        <MenuItem value={"디자인"}>디자인</MenuItem>
                         <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
                         <MenuItem value={"영상"}>영상</MenuItem>
                         <MenuItem value={"사진"}>사진</MenuItem>

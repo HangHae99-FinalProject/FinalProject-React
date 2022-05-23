@@ -249,7 +249,7 @@ const InputBox = styled.div`
   display: flex;
   .buttonBox {
     display: flex;
-    /* position: absolute; */
+
     text-align: center;
     align-items: center;
     margin-left: -6rem;

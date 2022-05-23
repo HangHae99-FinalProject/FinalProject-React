@@ -137,9 +137,7 @@ const Detail = () => {
                 {detailList.currentStatus === "RECRUITING_COMPLETE" ? (
                   <>
                     {detailList.userStatus === "starter" ? (
-                      <div className="starterBtn" onClick={applyHandelButton}>
-                        선장목록
-                      </div>
+                      <div onClick={applyHandelButton}>선장목록</div>
                     ) : (
                       <Btn3>모집완료</Btn3>
                     )}
@@ -148,11 +146,7 @@ const Detail = () => {
                 {detailList.currentStatus === "RECRUITING_CLOSE" ? (
                   <>
                     {detailList.userStatus === "starter" ? (
-                      <div
-                        div
-                        className="starterBtn"
-                        onClick={applyHandelButton}
-                      >
+                      <div className="starterBtn" onClick={applyHandelButton}>
                         선장목록
                       </div>
                     ) : (
@@ -182,11 +176,7 @@ const Detail = () => {
                     ) : null}
 
                     {detailList.userStatus === "starter" ? (
-                      <div
-                        div
-                        className="starterBtn"
-                        onClick={applyHandelButton}
-                      >
+                      <div className="starterBtn" onClick={applyHandelButton}>
                         선장목록
                       </div>
                     ) : null}
@@ -470,10 +460,7 @@ const CateBtn = styled.div`
     cursor: pointer;
 
     animation: 0.6s ease-in-out loadEffect3;
-    .icon {
-      color: #fff;
-      font-size: 32px;
-    }
+
     p {
       font-size: 20px;
       font-weight: 700;
@@ -497,18 +484,6 @@ const CateBtn = styled.div`
     100% {
       opacity: 1;
       transform: scale(1);
-    }
-  }
-
-  .inactive {
-    .icon {
-      color: var(--help-color);
-      font-size: 32px;
-    }
-    p {
-      font-size: 12px;
-
-      color: white;
     }
   }
 `;
@@ -639,6 +614,7 @@ const HeadBtnBox = styled.div`
       color: #fff;
     }
   }
+
   .anonymousBtn {
     justify-content: center;
     align-items: center;

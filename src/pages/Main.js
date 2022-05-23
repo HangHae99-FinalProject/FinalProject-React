@@ -287,7 +287,7 @@ const MainImage = styled.div`
     width: 230px;
     cursor: pointer;
     @media screen and (min-width: 1920px) {
-      width: 320px;
+      width: 415px;
     }
     @media screen and (min-width: 2560px) {
       width: 700px;

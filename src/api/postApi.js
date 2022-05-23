@@ -16,4 +16,5 @@ export const postApi = {
   deletePost: (postId) => instance.delete(`api/post/${postId}`),
   postApply: (postId, data) => instance.post(`api/apply/${postId}`, data),
   deleteApply: (postId) => instance.delete(`api/apply/${postId}`),
+  searchData: () => notLogin.get(`/api/posts`),
 };

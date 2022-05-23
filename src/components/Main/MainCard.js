@@ -6,12 +6,43 @@ import { history } from "../../redux/configureStore";
 
 const MainCard = (item) => {
   const postId = item.item.postId;
+  const [is_createdAt, setIS_createdAt] = React.useState("");
 
   const majorName = item.item.majorList;
   const major = majorName.map((a) => a.majorName);
   const majorCnt = major.length;
 
-  const created = item.item.createdAt;
+  React.useEffect(() => {
+    const created = item.item.createdAt;
+
+    const createdTime = new Date(created);
+    const today = new Date();
+
+    const createdYear = createdTime.getFullYear();
+    const createdMonth = createdTime.getMonth() + 1;
+    const createdDate = createdTime.getDate();
+
+    const createdDay = createdYear + "-" + createdMonth + "-" + createdDate;
+
+    const createdAtTime = Math.floor(
+      (today.getTime() - createdTime.getTime()) / 1000 / 60
+    );
+
+    if (createdAtTime < 1) return setIS_createdAt("방금전");
+
+    if (createdAtTime < 60) {
+      return setIS_createdAt(`${createdAtTime}분전`);
+    }
+    const createdAtTimeHour = Math.floor(createdAtTime / 60);
+
+    if (createdAtTimeHour < 24) {
+      return setIS_createdAt(`${createdAtTimeHour}시간전`);
+    }
+    const createdAtTimeDay = Math.floor(createdAtTime / 60 / 24);
+    if (createdAtTimeDay < 365) {
+      return setIS_createdAt(createdDay);
+    }
+  }, []);
 
   return (
     <Container
@@ -88,7 +119,7 @@ const MainCard = (item) => {
         </MidBox>
         <CreateAtBox>
           <span>
-            {created} ㅣ {item.item.nickname}
+            {is_createdAt} ㅣ {item.item.nickname}
           </span>
         </CreateAtBox>
       </div>
@@ -190,11 +221,9 @@ const TitleBox = styled.div`
 const Container = styled.div`
   height: 380px;
   width: 292px;
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  margin: 35px 30px 10px 20px;
-
+  background: rgba(253, 253, 253, 0.4);
+  box-shadow: 0px 4px 15px 1px rgba(0, 0, 0, 0.25);
+  margin: 40px 30px 10px 20px;
   float: left;
   overflow: scroll;
   overflow-x: hidden;

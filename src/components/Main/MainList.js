@@ -111,6 +111,7 @@ const MainCardBox = styled.div`
 `;
 
 const MainContainer = styled.div`
+  margin-top: 40px;
   .spinner {
     top: 90%;
     left: 90%;

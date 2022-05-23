@@ -41,6 +41,8 @@ const Login = ({ location }) => {
     localStorage.setItem("from", location?.state?.from);
   }
 
+  const isLogin = useSelector((state) => state.user.isLogin);
+
   // 헬퍼텍스트 -아이디, 패스워드
   function IdFormHelperText() {
     const { focused, filled } = useFormControl() || {};

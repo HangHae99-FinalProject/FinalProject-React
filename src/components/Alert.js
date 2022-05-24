@@ -36,15 +36,20 @@ const Alert = () => {
 
   useEffect(() => {
     if (isLogin) {
-      const source = new EventSource("https://everymohum.shop/subscribe", {
-        headers: {
-          Authorization: accessToken,
-        },
-      });
+      const source = new EventSource(
+        "https://everymohum.shop/subscribe",
+
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      );
       // source.addEventListener("addComment", function (event) {
       //   console.log(event);
       //   console.log(event.data);
       // });
+
       source.onmessage = (e) => {
         console.log(e.data);
         if (e.type === "message" && e.data.startsWith("{")) {

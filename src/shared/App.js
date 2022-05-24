@@ -33,11 +33,11 @@ import OAuthRedirect from "../components/OAuthRedirect";
 import Alert from "../components/Alert";
 import Link from "../components/Link";
 import OnTopBtn from "../components/OnTopBtn";
+import RouteChangeTracker from "../components/RouteChangeTracker";
 
 const cookies = new Cookies();
 function App() {
   const dispatch = useDispatch();
-  const isCookies = cookies.get("accessToken", { path: "/" });
 
   useEffect(() => {
     dispatch(userActions.__loginCheck());
@@ -53,6 +53,7 @@ function App() {
   console.log(
     "                               __ \n                              /\\ \\\n  ___ ___      ___            \\ \\ \\___     __  __    ___ ___ \n/' __` __`\\   / __`\\  _______  \\ \\  _ `\\  /\\ \\/\\ \\ /' __` __`\\ \n/\\ \\/\\ \\/\\ \\ /\\ \\L\\ \\/\\______\\  \\ \\ \\ \\ \\ \\ \\ \\_\\ \\/\\ \\/\\ \\/\\ \\ \n\\ \\_\\ \\_\\ \\_\\\\ \\____/\\/______/   \\ \\_\\ \\_\\ \\ \\____/\\ \\_\\ \\_\\ \\_\\ \n \\/_/\\/_/\\/_/ \\/___/              \\/_/\\/_/  \\/___/  \\/_/\\/_/\\/_/ "
   );
+  RouteChangeTracker();
 
   return (
     <>

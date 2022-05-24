@@ -32,6 +32,7 @@ import Landing from "../pages/Landing";
 import OAuthRedirect from "../components/OAuthRedirect";
 import Alert from "../components/Alert";
 import Link from "../components/Link";
+import OnTopBtn from "../components/OnTopBtn";
 
 const cookies = new Cookies();
 function App() {
@@ -76,6 +77,7 @@ function App() {
         </Container>
         <Link />
         <Alert />
+        <OnTopBtn />
       </ConnectedRouter>
 
       {/* <Footer></Footer> */}

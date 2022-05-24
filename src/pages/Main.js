@@ -4,7 +4,6 @@ import { Grid } from "../elements/Index";
 
 import MainList from "../components/Main/MainList";
 import mainImage from "../assets/Group 36.png";
-import PlaceIcon from "@mui/icons-material/Place";
 
 import { actionCreates as postActions } from "../redux/modules/post";
 import { actionCreates as recruitActions } from "../redux/modules/recruit";
@@ -72,7 +71,6 @@ const Main = () => {
             alt="MainImage"
             onClick={() => {
               window.location.reload();
-              // history.push("/main")
             }}
           />
         </MainImage>
@@ -206,7 +204,7 @@ const Main = () => {
           <LocationBox>
             <Grid
               _onClick={() => setIs_open(!is_open)}
-              _className={is_location === "위치 설정" ? "default" : "active"}
+              _className={is_location === "위치설정" ? "default" : "active"}
             >
               <div
                 style={{

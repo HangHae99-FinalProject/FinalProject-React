@@ -70,9 +70,11 @@ const Comment = (userId) => {
             value={is_comment || ""}
             onChange={handleComment}
             onKeyDown={handleEvent}
+            maxLength={80}
           />
-
-          <span onClick={addComment}>입력</span>
+          <div className="commentAddBtn" onClick={addComment}>
+            <span>등록</span>
+          </div>
         </div>
       </CommentBox>
     </>
@@ -80,7 +82,7 @@ const Comment = (userId) => {
 };
 
 const CommentScroll = styled.div`
-  height: 300px;
+  height: 330px;
   overflow: auto;
 
   .icon {
@@ -118,36 +120,55 @@ const CommentBox = styled.div`
   }
   .comment {
     margin-left: 1rem;
-    font-size: 18px;
-    font-weight: 400;
-    height: 60px;
-    margin-top: 2rem;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid gray;
   }
   .comments {
-    margin-top: -0.5rem;
-    margin-left: 4rem;
-    font-size: 22px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    margin-left: 3rem;
+    font-size: 16px;
     font-weight: 400;
 
     justify-content: center;
   }
+
   .commentInput {
-    span {
+    display: flex;
+    .commentAddBtn {
+      margin-left: 10px;
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      margin-left: -5rem;
-      font-size: 22px;
-      color: rgba(155, 151, 152, 1);
+      width: 80px;
+      height: 72px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      background-color: #2967ac;
+      span {
+        font-size: 16px;
+        color: #fff;
+      }
     }
     input {
-      width: 98%;
-      height: 4rem;
+      display: flex;
+      width: 1270px;
+      height: 72px;
       border: 1px solid #9b9798;
       border-radius: 10px;
-      padding: 5px 15px 5px 15px;
-      font-size: 22px;
+      padding: 0px 0px 0px 15px;
+      font-size: 16px;
       margin-bottom: 4rem;
+      background: #f5fcff;
       :focus {
         outline-color: gray;
+      }
+      ::placeholder {
+        color: #c2c0c1;
+        font-size: 16px;
       }
     }
   }

@@ -20,10 +20,8 @@ const EditPost = () => {
   const dispatch = useDispatch();
   const param = useParams();
 
-  const [is_location, setLocation] = useState(
-    post_list ? post_list.region : ""
-  );
-  const [is_Week, setWeek] = useState(post_list ? post_list.deadline : "");
+  const [is_location, setLocation] = useState("");
+  const [is_Week, setWeek] = useState("");
   const [is_title, setIs_Title] = useState(post_list.title);
   const [is_content, setIs_Content] = useState(post_list.content);
 
@@ -75,6 +73,26 @@ const EditPost = () => {
       dispatch(imgActions.initPre());
     }
   }, []);
+  // console.log(Event.keyCode);
+  useEffect(() => {
+    setIs_Title(post_list.title);
+    setIs_Content(post_list.content);
+    setLocation(post_list.region);
+    setWeek(post_list.deadline);
+  }, [post_list]);
+
+  useEffect(() => {}, []);
+  // function doNotReload(e) {
+  //   console.log(e);
+  //   e.preventDefault();
+  //   return "잘못된 접근이라우";
+  // }
+
+  // window.onbeforeunload = function (e) {
+  //   var dialogText = "안된다";
+  //   e.returnValue = dialogText;
+  //   return dialogText;
+  // };
 
   const editDetailBtn = () => {
     if (data.title === "") {

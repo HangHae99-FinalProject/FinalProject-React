@@ -43,8 +43,8 @@ const LinkImage = styled.div`
     padding: 20px;
     width: 200px;
     position: absolute;
-    left: -30%;
-    top: -90%;
+    left: -45%;
+    top: -110%;
     color: #fff;
     font-size: 16px;
     font-weight: bold;

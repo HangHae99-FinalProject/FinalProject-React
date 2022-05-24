@@ -263,8 +263,15 @@ const AutoSearchData = styled.div`
   font-size: 16px;
   font-weight: bold;
   z-index: 12px;
-  letter-spacing: 2px;
+  height: auto;
+  max-height: 300px;
 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
   :hover {
     background-color: #f5fcff;
     cursor: pointer;
@@ -278,6 +285,7 @@ const SearchPreview = styled.div`
   z-index: 3px;
   width: 560px;
   height: auto;
+  max-height: 500px;
   background-color: #feffff;
 
   border: 2px solid #d8d8d8;

@@ -40,6 +40,7 @@ const MainList = ({ location, category, selected }) => {
     if (pages === 0) {
       is_select = false;
     }
+    console.log(area);
 
     dispatch(
       postActions.__getPost(
@@ -48,7 +49,6 @@ const MainList = ({ location, category, selected }) => {
         category,
         searchList.is_search,
         searchList.is_searchValue,
-
         is_select
       )
     );

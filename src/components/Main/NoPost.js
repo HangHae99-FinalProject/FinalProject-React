@@ -5,7 +5,7 @@ const NoPost = () => {
   return (
     <Container>
       <img
-        src="https://velog.velcdn.com/images/tty5799/post/e404ff68-760c-43bd-a75d-d31d14417621/image.png"
+        src="https://velog.velcdn.com/images/tty5799/post/4a28ba5d-ffce-40d9-a3e4-2395b9e20448/image.png"
         alt="logo"
       />
     </Container>
@@ -15,7 +15,7 @@ const NoPost = () => {
 const Container = styled.div`
   img {
     display: flex;
-    margin: 9% auto;
+    margin: 2% auto;
     width: 90%;
   }
 `;

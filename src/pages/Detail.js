@@ -30,14 +30,19 @@ const Detail = () => {
   const is_loading = useSelector((state) => state.post.is_loading);
   const is_login = useSelector((state) => state.user.isLogin);
   const detailList = useSelector((state) => state.post.detailList);
-  console.log(detailList.userId);
 
   const majorList = detailList.majorList;
 
   const userId = Number(localUserId) === detailList.userId ? true : false;
 
   const created = detailList.createdAt;
-  const createdAt = created?.split(" ")[0];
+
+  const createdTime = new Date(created);
+  const createdYear = createdTime.getFullYear();
+  const createdMonth = createdTime.getMonth() + 1;
+  const createdDate = createdTime.getDate();
+
+  const createdDay = createdYear + "-" + createdMonth + "-" + createdDate;
 
   const data = {
     applyMajor: is_cate,
@@ -130,7 +135,7 @@ const Detail = () => {
                   style={{ cursor: "pointer" }}
                 />
                 <p>
-                  {detailList.nickname} ㅣ {createdAt}
+                  {detailList.nickname} ㅣ {createdDay}
                 </p>
               </Profile>
               <HeadBtnBox>

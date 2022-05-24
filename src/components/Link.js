@@ -8,7 +8,7 @@ const Link = () => {
         <p>설문조사에 참여해 주세요! </p>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSfwLz8IG1fdkeqcVlABNK806-R1FbkWO1PyD-Qr3OWti_K_9A/viewform?usp=sf_link">
           <img
-            src="https://velog.velcdn.com/images/tty5799/post/dfcfe429-a7eb-4e3e-b1f0-2dc26136e9b2/image.png"
+            src="https://velog.velcdn.com/images/tty5799/post/669db19d-5a4c-49f7-ab32-aab0304cf14e/image.svg"
             alt="linkImage"
             className="shake-right"
           />
@@ -20,7 +20,8 @@ const Link = () => {
 
 const LinkImage = styled.div`
   position: fixed;
-  top: 80%;
+  /* top: 80%; */
+  top: 20%;
   left: 4%;
   .help-tip {
   }
@@ -156,8 +157,8 @@ const LinkImage = styled.div`
   }
 
   img {
-    width: 130px;
     cursor: pointer;
+    width: 100px;
   }
 `;
 

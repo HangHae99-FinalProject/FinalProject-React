@@ -29,6 +29,7 @@ const Detail = () => {
 
   const is_loading = useSelector((state) => state.post.is_loading);
   const is_login = useSelector((state) => state.user.isLogin);
+
   const detailList = useSelector((state) => state.post.detailList);
   console.log(detailList);
 
@@ -118,7 +119,7 @@ const Detail = () => {
       dispatch(imgActions.initPre());
       dispatch(postActions.clearPost());
     };
-  }, [dispatch, pathName]);
+  }, [dispatch, pathName, is_login]);
 
   return (
     <>

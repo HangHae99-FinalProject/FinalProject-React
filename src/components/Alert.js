@@ -52,10 +52,7 @@ const Alert = () => {
 
       source.onmessage = (e) => {
         if (e.type === "message" && e.data.startsWith("{")) {
-          // setNotification((prev) => [...prev, JSON.parse(e.data)]);
           setAlertOpen(true);
-          console.log(notification);
-          // unreadMessage();
         }
       };
 
@@ -66,17 +63,9 @@ const Alert = () => {
   }, [isLogin]);
 
   const handelOpenMessage = (id, url, status) => {
-    console.log(id, url, status);
-    // if (url) {
-    //   return <Redirect to={{ pathname: url }} />;
-    // }
+    window.location.href = url;
 
-    // window.location.href = url;
-    // location.pathname({ url });
     setIs_open(false);
-    history.push({
-      pathname: url,
-    });
 
     if (status === false) {
       chatApi
@@ -90,7 +79,6 @@ const Alert = () => {
 
   const handelOpenBtn = () => {
     setIs_open(!is_open);
-    // setNotification([]);
   };
 
   const handleAlertClose = (event, reason) => {
@@ -100,10 +88,6 @@ const Alert = () => {
 
     setAlertOpen(false);
   };
-
-  // useEffect(() => {
-
-  // }, [alertOpen]);
 
   useEffect(() => {
     chatApi
@@ -174,16 +158,6 @@ const Alert = () => {
     </Container>
   );
 };
-
-const ListBox = styled.div`
-  /* background-color: beige;
-  z-index: 99999px;
-  position: fixed;
-  top: 70%;
-  right: 10%;
-  height: 200px;
-  width: 300px; */
-`;
 
 const NotificationsList = styled.div`
   margin-top: 15px;
@@ -267,6 +241,5 @@ const Container = styled.div`
     cursor: pointer;
   }
 `;
-const CategoryMiddleWrapper = styled.div``;
 
 export default Alert;

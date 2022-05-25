@@ -16,6 +16,7 @@ import Grid from "../elements/Grid";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
 import Spinner from "./Spinner";
+import styled from "styled-components";
 
 function MajorFormHelperText() {
   const { focused } = useFormControl() || {};
@@ -115,7 +116,8 @@ const OAuthRedirect = () => {
   }, []);
 
   return (
-    <>
+    <React.Fragment>
+      <BgDiv />
       <Spinner />
       {/* 추가정보 기입 모달 */}
       <Grid>
@@ -359,8 +361,19 @@ const OAuthRedirect = () => {
         </Modal>
       </Grid>
       {/* 여기까지가 추가정보 기입 모달 */}
-    </>
+    </React.Fragment>
   );
 };
+
+const BgDiv = styled.div`
+  margin-top: 256px;
+  z-index: 0;
+  height: 100%;
+  background-image: url("https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png");
+  background-repeat: no-repeat;
+  height: 765px;
+  background-size: corver;
+  background-position-y: bottom;
+`;
 
 export default OAuthRedirect;

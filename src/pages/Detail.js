@@ -24,12 +24,13 @@ const Detail = () => {
   const pathName = useLocation();
 
   const id = param.postid;
-
+  console.log(id);
   const localUserId = localStorage.getItem("userId");
 
   const is_loading = useSelector((state) => state.post.is_loading);
   const is_login = useSelector((state) => state.user.isLogin);
   const detailList = useSelector((state) => state.post.detailList);
+  console.log(detailList);
 
   const majorList = detailList.majorList;
 

@@ -57,9 +57,12 @@ const Button = styled.button`
 
   &[disabled] {
     /* display: none; */
-    background: lightgray;
+    /* background: lightgray; */
     cursor: revert;
     transform: revert;
+    &:hover{
+      background: none;
+    }
   }
 
   &[aria-current] {

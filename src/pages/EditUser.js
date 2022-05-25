@@ -7,6 +7,7 @@ import { actionCreators as userInfoActions } from "../redux/modules/myPage";
 import EditImage from "../elements/EditImage";
 import Footer from "../elements/Footer";
 import axios from "axios";
+import { history } from "../redux/configureStore";
 
 import Grid_2 from "@mui/material/Grid";
 import Badge from "@mui/material/Badge";
@@ -19,22 +20,28 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import ImageListItem from "@mui/material/ImageListItem";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import FormControl, { useFormControl } from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 
 const EditUser = () => {
-  console.log(
-    "https://velog.velcdn.com/images/tty5799/post/4c81b900-5ebd-491e-8f9c-4dbb464c277f/image.png"
-  );
+  // console.log(
+  //   "https://velog.velcdn.com/images/tty5799/post/4c81b900-5ebd-491e-8f9c-4dbb464c277f/image.png"
+  // );
   const param = useParams();
   const dispatch = useDispatch();
   const [checkNicknameError, setCheckNicknameError] = React.useState(null);
+  const _id = localStorage.getItem("userId");
+
+  const pathName = useLocation();
+  console.log(pathName);
+  const pathUserId = pathName.pathname.split("/")[2];
+  console.log(pathUserId);
 
   const getUserInfo = useSelector((state) => state.myPage?.userInfo);
   // const post_list = useSelector((state) => state.post.detailList);
   // const setUserInfo = useSelector((state) => state.myPage.requestDto);
-  console.log(getUserInfo.userPortfolioImgList);
+  // console.log(getUserInfo);
 
   const [selected, setSelected] = useState(false);
   // const [profileImgUrl, setProfileImgUrl] = useState("");
@@ -44,7 +51,6 @@ const EditUser = () => {
   const [portfolioLink, setPortfolioLink] = useState(getUserInfo?.portfolioLink);
   const [currentImgUrl, setCurrentImgUrl] = useState(getUserInfo?.userPortfolioImgList);
   const [profileImgUrl, setProfileImgUrl] = useState(getUserInfo?.profileImg);
-  // console.log(nickname);
 
   // const onProfileImgUrlHandler = (e) => {
   //   setProfileImgUrl(e.target.value);
@@ -99,6 +105,8 @@ const EditUser = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
+  // console.log(id)
+  console.log(userId);
   // 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
   function NicknameFormHelperText() {
     const { focused } = useFormControl() || {};
@@ -106,6 +114,8 @@ const EditUser = () => {
     const helperText = React.useMemo(() => {
       if (focused) {
         return "예. 영문 대소문자, 한글, 숫자 포함 4~10자 입니다.";
+      } else if (getUserInfo.nickname === nickname) {
+        return " ";
       } else if (checkNicknameError === false) {
         return "중복된 닉네임입니다.";
       } else if (checkNicknameError === true) {
@@ -115,10 +125,15 @@ const EditUser = () => {
       return " ";
     }, [focused]);
 
-    return <FormHelperText>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px", width: "935px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   // 여기까지 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
 
+  //닉네임 중복확인 버튼
   const nicknameCheckBtn = async () => {
     try {
       const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
@@ -134,6 +149,7 @@ const EditUser = () => {
       // window.alert("중복된 아이디입니다.");
     }
   };
+  //여기까지 닉네임 중복확인 버튼
 
   // 다중이미지 첨부 기능 작업할 것!!!!!
   const goEdit = () => {
@@ -158,7 +174,8 @@ const EditUser = () => {
       return;
     }
     dispatch(userInfoActions.__putUserInfoMod(userId, requestDto, newFiles));
-    // history.replace(`/user/${id}`)
+    history.push(`/user/${_id}`);
+    location.reload();
     // console.log(
     //   "프로필:",
     //   profileImgUrl,
@@ -178,7 +195,7 @@ const EditUser = () => {
   };
 
   useEffect(() => {
-    dispatch(userInfoActions.__getUserInfo(userId));
+    dispatch(userInfoActions.__getUserInfo());
     // dispatch(userInfoActions.setUserInfo(requestDto));
     return;
   }, []);
@@ -286,31 +303,97 @@ const EditUser = () => {
             </Grid_2>
             {/* 여기까지 프로필사진 변경 */}
             <Grid_2>
-              <Grid_2 container direction="row" justifyContent="flex-start" alignItems="center">
-                <Grid_2 sx={{ width: "1045px" }}></Grid_2>
-                <Grid_2>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{
-                      marginLeft: "4px",
-                      width: "120px",
-                      height: "40px",
-                      padding: "0",
-                      borderRadius: "14px",
-                      backgroundColor: "#FFD082",
-                      "&:hover": { backgroundColor: "#FFD082" },
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    수정완료
-                  </Button>
-                </Grid_2>
-              </Grid_2>
               <FormControl>
                 <Grid_2
-                  sx={{ marginTop: "16px" }}
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  sx={{ width: "1181px" }}
+                >
+                  <Grid_2 sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}>
+                    <Typography></Typography>
+                  </Grid_2>
+                  <Grid_2
+                    sx={{
+                      fontSize: "16px",
+                      margin: "0",
+                      padding: "0 0 0 10px",
+                      width: "935px",
+                      height: "40px",
+                      boxSizing: "border-box",
+                    }}
+                  ></Grid_2>
+                  <Grid_2>
+                    {getUserInfo.nickname === nickname ? (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                          marginLeft: "10px",
+                          width: "120px",
+                          height: "40px",
+                          padding: "0",
+                          borderRadius: "14px",
+                          backgroundColor: "#FFD082",
+                          "&:hover": {
+                            backgroundColor: "#FFD082",
+                            boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                          },
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        수정완료
+                      </Button>
+                    ) : checkNicknameError === true ? (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                          marginLeft: "10px",
+                          width: "120px",
+                          height: "40px",
+                          padding: "0",
+                          borderRadius: "14px",
+                          backgroundColor: "#FFD082",
+                          "&:hover": {
+                            backgroundColor: "#FFD082",
+                            boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                          },
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        수정완료
+                      </Button>
+                    ) : (
+                      <Button
+                        disabled
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                          marginLeft: "10px",
+                          width: "120px",
+                          height: "40px",
+                          padding: "0",
+                          borderRadius: "14px",
+                          backgroundColor: "#FFD082",
+                          "&:hover": { backgroundColor: "#FFD082" },
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          boxShadow: "0px 4px 13px inset #EFEFEF",
+                        }}
+                      >
+                        수정완료
+                      </Button>
+                    )}
+                  </Grid_2>
+                </Grid_2>
+                <Grid_2
+                  sx={{ marginTop: "15px" }}
                   container
                   direction="row"
                   justifyContent="flex-start"
@@ -320,7 +403,14 @@ const EditUser = () => {
                     닉네임
                   </Typography>
                   <input
-                    style={{ fontSize: "16px", padding: "0", width: "935px", height: "40px" }}
+                    style={{
+                      fontSize: "16px",
+                      margin: "0",
+                      padding: "0 0 0 10px",
+                      width: "935px",
+                      height: "40px",
+                      boxSizing: "border-box",
+                    }}
                     id="myNickname"
                     defaultValue={nickname}
                     placeholder="닉네임을 작성해 주세요."
@@ -329,21 +419,38 @@ const EditUser = () => {
                   <Button
                     variant="contained"
                     sx={{
-                      marginLeft: "4px",
+                      marginLeft: "10px",
                       width: "120px",
                       height: "40px",
                       padding: "0",
                       borderRadius: "14px",
                       backgroundColor: "#707070",
-                      "&:hover": { backgroundColor: "#707070" },
+                      "&:hover": {
+                        backgroundColor: "#707070",
+                        boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                      },
                       fontSize: "16px",
                       fontWeight: "bold",
+                      boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                     }}
                     onClick={nicknameCheckBtn}
                   >
                     중복확인
                   </Button>
-                  {/* <NicknameFormHelperText /> */}
+                </Grid_2>
+                <Grid_2
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  sx={{ width: "1181px" }}
+                >
+                  <Grid_2 sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}>
+                    <Typography></Typography>
+                  </Grid_2>
+                  <Grid_2>
+                    <NicknameFormHelperText />
+                  </Grid_2>
                 </Grid_2>
               </FormControl>
               <Grid_2
@@ -353,22 +460,21 @@ const EditUser = () => {
                 alignItems="flex-start"
               >
                 <Grid_2>
-                  <Typography sx={{ marginTop: "40px", fontSize: "14px" }}>
+                  <Typography sx={{ marginTop: "20px", fontSize: "14px" }}>
                     최소 하나의 분야를 선택해주세요.
                   </Typography>
                 </Grid_2>
-                <Grid_2>
+                <Grid_2 sx={{ width: "1181px" }}>
                   <Category>
                     <CateBtn
                       onClick={() => {
-                        major === "미술/디자인" ? setMajor("") : setMajor("미술/디자인");
+                        major === "디자인" ? setMajor("") : setMajor("디자인");
                         setSelected(true);
                       }}
                     >
                       <Grid
-
-                        _className={major === "미술/디자인" ? "active" : "default"}
-                        bg={major === "미술/디자인" ? "#2967AC" : "#fff"}
+                        _className={major === "디자인" ? "active" : "default"}
+                        bg={major === "디자인" ? "#2967AC" : "#f5fcff"}
                       >
                         <p>디자인</p>
                       </Grid>
@@ -381,7 +487,7 @@ const EditUser = () => {
                     >
                       <Grid
                         _className={major === "영상" ? "active" : "default"}
-                        bg={major === "영상" ? "#6AD8F5" : "#fff"}
+                        bg={major === "영상" ? "#6AD8F5" : "#f5fcff"}
                       >
                         <p>영상</p>
                       </Grid>
@@ -394,7 +500,7 @@ const EditUser = () => {
                     >
                       <Grid
                         _className={major === "배우" ? "active" : "default"}
-                        bg={major === "배우" ? "#F58467" : "#fff"}
+                        bg={major === "배우" ? "#F58467" : "#f5fcff"}
                       >
                         <p>배우</p>
                       </Grid>
@@ -407,7 +513,7 @@ const EditUser = () => {
                     >
                       <Grid
                         _className={major === "사진" ? "active" : "default"}
-                        bg={major === "사진" ? "#4299E9" : "#fff"}
+                        bg={major === "사진" ? "#4299E9" : "#f5fcff"}
                       >
                         <p>사진</p>
                       </Grid>
@@ -420,7 +526,7 @@ const EditUser = () => {
                     >
                       <Grid
                         _className={major === "프로그래밍" ? "active" : "default"}
-                        bg={major === "프로그래밍" ? "#5BC8D2" : "#fff"}
+                        bg={major === "프로그래밍" ? "#5BC8D2" : "#f5fcff"}
                       >
                         <p>프로그래밍</p>
                       </Grid>
@@ -433,7 +539,7 @@ const EditUser = () => {
                     >
                       <Grid
                         _className={major === "모델" ? "active" : "default"}
-                        bg={major === "모델" ? "#FE674C" : "#fff"}
+                        bg={major === "모델" ? "#FE674C" : "#f5fcff"}
                       >
                         <p>모델</p>
                       </Grid>
@@ -446,7 +552,7 @@ const EditUser = () => {
                     >
                       <Grid
                         _className={major === "성우" ? "active" : "default"}
-                        bg={major === "성우" ? "#FFD082" : "#fff"}
+                        bg={major === "성우" ? "#FFD082" : "#f5fcff"}
                       >
                         <p>성우</p>
                       </Grid>
@@ -459,7 +565,7 @@ const EditUser = () => {
                     >
                       <Grid
                         _className={major === "음향" ? "active" : "default"}
-                        bg={major === "음향" ? "#FFEF62" : "#fff"}
+                        bg={major === "음향" ? "#FFEF62" : "#f5fcff"}
                       >
                         <p>음향</p>
                       </Grid>
@@ -483,7 +589,7 @@ const EditUser = () => {
                   direction="row"
                   justifyContent="flex-start"
                   alignItems="center"
-                  sx={{ marginTop: "40px" }}
+                  sx={{ marginTop: "40px", width: "1181px" }}
                 >
                   <Grid_2>
                     <Typography sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}>
@@ -495,6 +601,9 @@ const EditUser = () => {
                       style={{
                         width: "1061px",
                         fontSize: "16px",
+                        padding: "10px",
+                        margin: "0",
+                        boxSizing: "border-box",
                       }}
                       id="myIntro"
                       rows="5"
@@ -505,7 +614,7 @@ const EditUser = () => {
                   </Grid_2>
                 </Grid_2>
                 <Grid_2
-                  sx={{ marginTop: "40px" }}
+                  sx={{ marginTop: "40px", width: "1181px" }}
                   container
                   direction="row"
                   justifyContent="flex-start"
@@ -525,13 +634,16 @@ const EditUser = () => {
                         width: "1061px",
                         height: "40px",
                         fontSize: "16px",
+                        padding: "0 0 0 10px",
+                        margin: "0",
+                        boxSizing: "border-box",
                       }}
                       onChange={onPortfolioHandler}
                     />
                   </Grid_2>
                 </Grid_2>
                 <Grid_2
-                  sx={{ marginTop: "0" }}
+                  sx={{ marginTop: "0", width: "1181px" }}
                   container
                   direction="row"
                   justifyContent="flex-start"
@@ -542,11 +654,22 @@ const EditUser = () => {
                       sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}
                     ></Typography>
                   </Grid_2>
-                  <Grid_2>
+                  <Grid_2 sx={{ margin: "20px auto auto 10px" }}>
                     <EditImage
+                      ilIs_inline
+                      ilBgRepeat="no-repeat"
+                      imgBoxMargin="0 5px 0 5px"
+                      ilBorder="0"
+                      imgDivMargin="0"
+                      imgDivWidth="1058px"
+                      ilWidth="200px"
+                      ilHeight="140px"
+                      fontSize="medium"
+                      padding="0"
+                      marginRight="0"
                       display="none"
-                      margintop="0"
-                      marginleft="0"
+                      marginTop="0"
+                      marginLeft="0"
                       image={getUserInfo.userPortfolioImgList}
                     />
                   </Grid_2>
@@ -635,23 +758,23 @@ const CateBtn = _styled.div`
     width: 140px;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid black;
-    background-color: #fff;
+    background-color: #f5fcff;
+    box-shadow: inset 0px 4px 13px #d7f1fd;
     /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    .icon {
+    /* .icon {
       font-size: 32px;
       color: var(--inactive-text-color);
-    }
+    } */
     p {
       text-align: center;
       font-size: 20px;
       font-weight: 700;
-      color: black;
+      color: rgba(41, 103, 172, 1);
     }
   }
   .active {
@@ -663,12 +786,15 @@ const CateBtn = _styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0px 4px 13px #d7f1fd;
     cursor: pointer;
 
     /* background-color: gray; */
     animation: 0.6s ease-in-out loadEffect3;
-
+    .icon {
+      color: #fff;
+      font-size: 32px;
+    }
     p {
       font-size: 20px;
       font-weight: 700;

@@ -40,9 +40,9 @@ function Header(props) {
   const isCookies = cookies.get("accessToken", { path: "/" }) ? true : false;
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
-  console.log(isLogin);
+  // console.log(isLogin);
   const pathName = useLocation();
-  console.log(pathName);
+  // console.log(pathName);
   // console.log(id);
 
   // React.useEffect(() => {
@@ -66,6 +66,7 @@ function Header(props) {
   };
   const goUserPage = () => {
     history.push(`/user/${id}`);
+    window.location.reload()
   };
   const goSignup = () => {
     history.push("/signup");

@@ -27,8 +27,8 @@ const Alert = () => {
   const [notificationColor, setNotificationColor] = useState("red");
   const notificationOpen = Boolean(anchorEl);
   const isLogin = useSelector((state) => state.user.isLogin);
-  console.log(isLogin);
-  console.log(notification);
+  // console.log(isLogin);
+  // console.log(notification);
   const accessToken = cookies.get("accessToken");
   const user = localStorage.getItem("userID");
 

@@ -6,6 +6,7 @@ import { history } from "../redux/configureStore";
 import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
 import kakaoBtn from "../assets/kakao_login.png";
 import styled from "styled-components";
+import kakao from "../assets/kakao.png";
 
 //MUI import
 import FormControl, { useFormControl } from "@mui/material/FormControl";
@@ -58,7 +59,7 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText>{helperText}</FormHelperText>;
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
   function PwFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -76,7 +77,7 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText>{helperText}</FormHelperText>;
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
   // 여기까지 헬퍼텍스트 -아이디, 패스워드
 
@@ -122,9 +123,9 @@ const Login = ({ location }) => {
   return (
     <React.Fragment>
       <BgDiv>
-        <Grid is_center margin="80px auto">
-          <div style={{ marginBottom: "50px" }}>
-            <img src={require(`../assets/signupLogo.png`)} alt="signupLogo" />
+        <Grid is_center margin="auto auto">
+          <div style={{ marginBottom: "45px" }}>
+            <img src={require(`../assets/fixedSignupLogo.png`)} alt="signupLogo" />
           </div>
           <form
             onSubmit={(event) => {
@@ -133,20 +134,27 @@ const Login = ({ location }) => {
             }}
           >
             <div>
-              <FormControl sx={{ width: "326px", height: "62px" }}>
+              <FormControl sx={{}}>
                 <OutlinedInput
                   required
                   id="_memberId"
                   placeholder="아이디를 입력해 주세요"
                   variant="standard"
                   onChange={onMemberIdHandler}
-                  sx={{ borderRadius: "14px" }}
+                  sx={{
+                    width: "430px",
+                    height: "62px",
+                    borderRadius: "14px",
+                    backgroundColor: "white",
+                    fontSize: "20px",
+                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                  }}
                 />
                 <IdFormHelperText />
               </FormControl>
             </div>
             <div>
-              <FormControl sx={{ width: "326px", height: "62px", marginTop: "20px" }}>
+              <FormControl sx={{ marginTop: "10px" }}>
                 <OutlinedInput
                   required
                   type="password"
@@ -154,54 +162,85 @@ const Login = ({ location }) => {
                   placeholder="비밀번호를 입력해 주세요"
                   variant="standard"
                   onChange={onPasswordHandler}
-                  sx={{ borderRadius: "14px" }}
+                  sx={{
+                    width: "430px",
+                    height: "62px",
+                    borderRadius: "14px",
+                    backgroundColor: "white",
+                    fontSize: "20px",
+                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                  }}
                 />
                 <PwFormHelperText />
               </FormControl>
             </div>
-            <Grid margin="20px 0 0 0">
+            <Grid margin="10px 0 0 0">
               <Stack direction="column">
                 <Button
                   type="submit"
                   variant="contained"
                   sx={{
-                    width: "326px",
-                    height: "42px",
+                    width: "430px",
+                    height: "52px",
                     fontSize: "20px",
                     fontWeight: "bold",
                     color: "white",
+                    border: "0",
                     borderRadius: "14px",
                     backgroundColor: "#2967AC",
-                    "&:hover": { backgroundColor: "#2967AC" },
+                    "&:hover": {
+                      backgroundColor: "#2967AC",
+                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                    },
+                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                   }}
                 >
                   모험 시작하기
                 </Button>
-                <img
-                  src={kakaoBtn}
-                  alt="kakaoLogin"
-                  onClick={onLoginHandler}
-                  style={{
-                    marginTop: "13px",
-                    width: "326px",
-                    height: "42px",
-                    borderRadius: "14px",
-                    cursor: "pointer",
-                  }}
-                />
                 <Button
-                  variant="outlined"
-                  onClick={goSignUp}
+                  variant="contained"
+                  // src={kakaoBtn}
+                  // alt="kakaoLogin"
+                  onClick={onLoginHandler}
                   sx={{
-                    marginTop: "13px",
-                    width: "326px",
-                    height: "42px",
+                    marginTop: "20px",
+                    width: "430px",
+                    height: "52px",
                     fontSize: "20px",
                     fontWeight: "bold",
                     color: "white",
+                    border: "0",
                     borderRadius: "14px",
-                    backgroundColor: "#5BC8D2",
-                    "&:hover": { backgroundColor: "#5BC8D2" },
+                    cursor: "pointer",
+                    backgroundColor: "#FFD082",
+                    "&:hover": {
+                      backgroundColor: "#FFD082",
+                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                    },
+                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                  }}
+                >
+                  카카오 로그인
+                  <img src={kakao} alt="kakao" style={{ marginLeft: "10px" }} />
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={goSignUp}
+                  sx={{
+                    marginTop: "20px",
+                    width: "430px",
+                    height: "52px",
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "white",
+                    border: "0",
+                    borderRadius: "14px",
+                    backgroundColor: "#FE674C",
+                    "&:hover": {
+                      backgroundColor: "#FE674C",
+                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                    },
+                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                   }}
                 >
                   회원가입
@@ -216,6 +255,7 @@ const Login = ({ location }) => {
 };
 
 const BgDiv = styled.div`
+  margin-top: 256px;
   z-index: 9999;
   height: 100%;
   background-image: url("https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png");

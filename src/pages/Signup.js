@@ -19,19 +19,22 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import SelectUnstyled from "@mui/base/SelectUnstyled";
+import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
 //추가 정보 기입 모달
 const style = {
   position: "absolute",
-  top: "340px",
+  // top: "340px",
+  top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "629px",
-  height: "472px",
+  width: "595px",
+  height: "555px",
   bgcolor: "background.paper",
   // border: "2px solid #000",
   boxShadow: 0,
-  p: 4,
+
   borderRadius: "14px",
 };
 
@@ -68,7 +71,7 @@ const Signup = () => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText>{helperText}</FormHelperText>;
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
   function PwFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -86,7 +89,7 @@ const Signup = () => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText>{helperText}</FormHelperText>;
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
   function PwCfnFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -103,7 +106,7 @@ const Signup = () => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText>{helperText}</FormHelperText>;
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
   function NicknameFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -123,7 +126,7 @@ const Signup = () => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText>{helperText}</FormHelperText>;
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
   function MajorFormHelperText() {
     const { focused } = useFormControl() || {};
@@ -132,7 +135,7 @@ const Signup = () => {
       return " ";
     }, [focused]);
 
-    return <FormHelperText>{helperText}</FormHelperText>;
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
   // 여기까지 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
 
@@ -160,12 +163,9 @@ const Signup = () => {
   //중복확인 버튼
   const memberIdCheckBtn = async () => {
     try {
-      const checkMemberId = await axios.post(
-        "https://everymohum.shop/user/memberIdCheck",
-        {
-          memberId,
-        }
-      );
+      const checkMemberId = await axios.post("https://everymohum.shop/user/memberIdCheck", {
+        memberId,
+      });
       console.log(checkMemberId.status);
       checkMemberId.status == 200 && setCheckMemberIdError(true);
       // window.alert("사용이 가능한 아이디입니다.");
@@ -178,13 +178,10 @@ const Signup = () => {
 
   const nicknameCheckBtn = async () => {
     try {
-      const checkNickname = await axios.post(
-        "https://everymohum.shop/user/nicknameCheck",
-        {
-          nickname,
-          major,
-        }
-      );
+      const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
+        nickname,
+        major,
+      });
       console.log(checkNickname.status);
       checkNickname.status == 200 && setCheckNicknameError(true);
       // window.alert("사용이 가능한 아이디입니다.");
@@ -256,14 +253,18 @@ const Signup = () => {
           >
             <Box sx={style}>
               <Grid container direction="column" justifyContent="center" alignItems="center">
-                <img src={require(`../assets/signupLogo.png`)} alt="signupLogo" />
+                <img
+                  src={require(`../assets/fixedSignupLogo.png`)}
+                  alt="signupLogo"
+                  style={{ padding: "80px 0 0 0 " }}
+                />
                 <FormControl>
                   <Grid
                     container
                     direction="row"
                     justifyContent="space-between"
                     alignItems="center"
-                    sx={{ marginTop: "79px" }}
+                    sx={{ marginTop: "69px", width: "430px" }}
                   >
                     <OutlinedInput
                       required
@@ -275,10 +276,11 @@ const Signup = () => {
                       onChange={onNicknameHandler}
                       sx={{
                         marginRight: "21px",
-                        width: "326px",
+                        width: "276px",
                         height: "62px",
                         borderRadius: "14px",
                         fontSize: "20px",
+                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                       }}
                     />
                     <Grid>
@@ -286,11 +288,19 @@ const Signup = () => {
                         variant="contained"
                         onClick={nicknameCheckBtn}
                         sx={{
-                          width: "120px",
+                          width: "132px",
                           height: "62px",
                           padding: "0",
+                          border: "0",
                           borderRadius: "14px",
                           fontSize: "20px",
+                          color: "#2967AC",
+                          backgroundColor: "#D7F1FD",
+                          "&:hover": {
+                            backgroundColor: "#D7F1FD",
+                            boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                          },
+                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                         }}
                       >
                         중복확인
@@ -299,57 +309,118 @@ const Signup = () => {
                   </Grid>
                   <NicknameFormHelperText />
                 </FormControl>
-                <Grid sx={{ marginTop: "20px" }}>
+                <Grid sx={{ marginTop: "10px" }}>
                   <Box>
                     <FormControl fullWidth>
                       <Select
+                        // IconComponent={() => (
+                        //   <KeyboardArrowDownRoundedIcon
+                        //     fontSize="large"
+                        //     sx={{ color: "#2967AC", pointerEvents: "none" }}
+                        //   />
+                        // )}
                         required
+                        // autoWidth
                         labelId="major"
                         id="demo-simple-select"
                         value={major}
                         displayEmpty
                         onChange={onMajorHandler}
                         inputProps={{ "aria-label": "select major" }}
+                        MenuProps={{
+                          PaperProps: {
+                            sx: { maxHeight: 250 },
+                          },
+                        }}
                         sx={{
-                          width: "477px",
+                          width: "430px",
                           height: "62px",
                           borderRadius: "14px",
                           fontSize: "20px",
+                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                         }}
                       >
                         <MenuItem disabled value="">
-                          <em style={{ color: "#888888", fontStyle: "normal" }}>
+                          <em
+                            style={{
+                              color: "#888888",
+                              fontStyle: "normal",
+                              margin: "auto",
+                              fontSize: "20px",
+                            }}
+                          >
                             전공을 선택해 주세요
                           </em>
                         </MenuItem>
-                        <MenuItem value={"디자인"}>디자인</MenuItem>
-                        <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
-                        <MenuItem value={"영상"}>영상</MenuItem>
-                        <MenuItem value={"사진"}>사진</MenuItem>
-                        <MenuItem value={"모델"}>모델</MenuItem>
-                        <MenuItem value={"배우"}>배우</MenuItem>
-                        <MenuItem value={"성우"}>성우</MenuItem>
-                        <MenuItem value={"음향"}>음향</MenuItem>
+                        <MenuItem
+                          value={"디자인"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          디자인
+                        </MenuItem>
+                        <MenuItem
+                          value={"프로그래밍"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          프로그래밍
+                        </MenuItem>
+                        <MenuItem
+                          value={"영상"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          영상
+                        </MenuItem>
+                        <MenuItem
+                          value={"사진"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          사진
+                        </MenuItem>
+                        <MenuItem
+                          value={"모델"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          모델
+                        </MenuItem>
+                        <MenuItem
+                          value={"배우"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          배우
+                        </MenuItem>
+                        <MenuItem
+                          value={"성우"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          성우
+                        </MenuItem>
+                        <MenuItem
+                          value={"음향"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          음향
+                        </MenuItem>
                       </Select>
                       <MajorFormHelperText />
                     </FormControl>
                   </Box>
                 </Grid>
-                <Box>
+                <Box sx={{ marginTop: "10px" }}>
                   {checkNicknameError === false ? (
                     <Button
                       disabled
                       type="submit"
                       variant="contained"
                       sx={{
-                        width: "477px",
-                        height: "42px",
+                        width: "430px",
+                        height: "62px",
                         fontSize: "20px",
                         fontWeight: "bold",
                         color: "white",
+                        border: "0",
                         borderRadius: "14px",
                         backgroundColor: "#2967AC",
-                        "&:hover": { backgroundColor: "#2967AC" },
+                        "&:disabled": { backgroundColor: "gray" },
                       }}
                     >
                       등록완료
@@ -360,14 +431,15 @@ const Signup = () => {
                       type="submit"
                       variant="contained"
                       sx={{
-                        width: "477px",
-                        height: "42px",
+                        width: "430px",
+                        height: "62px",
                         fontSize: "20px",
                         fontWeight: "bold",
                         color: "white",
+                        border: "0",
                         borderRadius: "14px",
                         backgroundColor: "#2967AC",
-                        "&:hover": { backgroundColor: "#2967AC" },
+                        "&:disabled": { backgroundColor: "gray" },
                       }}
                     >
                       등록완료
@@ -377,14 +449,19 @@ const Signup = () => {
                       type="submit"
                       variant="contained"
                       sx={{
-                        width: "477px",
-                        height: "42px",
+                        width: "430px",
+                        height: "62px",
                         fontSize: "20px",
                         fontWeight: "bold",
                         color: "white",
+                        border: "0",
                         borderRadius: "14px",
-                        backgroundColor: "#2967AC",
-                        "&:hover": { backgroundColor: "#2967AC" },
+                        backgroundColor: "#FE674C",
+                        "&:hover": {
+                          backgroundColor: "#FE674C",
+                          boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                        },
+                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                       }}
                     >
                       등록완료
@@ -401,12 +478,14 @@ const Signup = () => {
         <Grid
           container
           direction="column"
-          justifyContent="flex-start"
+          justifyContent="center"
           alignItems="center"
-          margin="80px auto auto auto"
+          // margin="auto auto auto auto"
         >
-          <div style={{ marginBottom: "50px" }}>
-            <img src={require(`../assets/signupLogo.png`)} alt="signupLogo" />
+          <div style={{ marginBottom: "45px" }}>
+            {open === true ? null : (
+              <img src={require(`../assets/fixedSignupLogo.png`)} alt="signupLogo" />
+            )}
           </div>
           <form
             onSubmit={(event) => {
@@ -415,50 +494,59 @@ const Signup = () => {
             }}
           >
             <Grid container direction="row" justifyContent="space-between" alignItems="flex-start">
-              <Grid>
-                <FormControl sx={{ width: "326px", height: "62px" }}>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="flex-start"
+              <FormControl>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ width: "430px" }}
+                >
+                  <OutlinedInput
+                    required
+                    name="email"
+                    type="text"
+                    id="_email"
+                    placeholder="아이디를 입력해 주세요"
+                    variant="standard"
+                    onChange={onMemberIdHandler}
+                    sx={{
+                      width: "276px",
+                      height: "62px",
+                      borderRadius: "14px",
+                      backgroundColor: "white",
+                      fontSize: "20px",
+                      boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                    onClick={memberIdCheckBtn}
+                    sx={{
+                      color: "black",
+                      width: "132px",
+                      height: "62px",
+                      padding: "0",
+                      borderRadius: "14px",
+                      border: "0",
+                      fontSize: "20px",
+                      backgroundColor: "#D7F1FD",
+                      "&:hover": {
+                        backgroundColor: "#D7F1FD",
+                        // border: "0",
+                        boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                      },
+                      boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                    }}
                   >
-                    <OutlinedInput
-                      required
-                      name="email"
-                      type="text"
-                      id="_email"
-                      placeholder="아이디를 입력해 주세요"
-                      variant="standard"
-                      onChange={onMemberIdHandler}
-                      sx={{ width: "65%", borderRadius: "14px" }}
-                    />
-                    <Grid>
-                      <Button
-                        variant="outlined"
-                        onClick={memberIdCheckBtn}
-                        sx={{
-                          color: "black",
-                          width: "110px",
-                          height: "55px",
-                          padding: "0",
-                          borderRadius: "14px",
-                          fontSize: "20px",
-                          backgroundColor: "#D7F1FD",
-                          "&:hover": { backgroundColor: "#D7F1FD" },
-                        }}
-                      >
-                        중복확인
-                      </Button>
-                    </Grid>
-                  </Grid>
-
-                  <IdFormHelperText />
-                </FormControl>
-              </Grid>
+                    중복확인
+                  </Button>
+                </Grid>
+                <IdFormHelperText />
+              </FormControl>
             </Grid>
-            <Grid sx={{ marginTop: "20px" }}>
-              <FormControl sx={{ width: "326px", height: "62px" }}>
+            <Grid sx={{ marginTop: "10px" }}>
+              <FormControl>
                 <OutlinedInput
                   required
                   name="password"
@@ -467,13 +555,20 @@ const Signup = () => {
                   placeholder="비밀번호를 입력해 주세요"
                   variant="standard"
                   onChange={onPasswordHandler}
-                  sx={{ borderRadius: "14px" }}
+                  sx={{
+                    borderRadius: "14px",
+                    backgroundColor: "white",
+                    width: "430px",
+                    height: "62px",
+                    fontSize: "20px",
+                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                  }}
                 />
                 <PwFormHelperText />
               </FormControl>
             </Grid>
-            <Grid sx={{ marginTop: "20px" }}>
-              <FormControl sx={{ width: "326px", height: "62px" }}>
+            <Grid sx={{ marginTop: "10px" }}>
+              <FormControl>
                 <OutlinedInput
                   required
                   name="pwCheck"
@@ -482,14 +577,21 @@ const Signup = () => {
                   placeholder="비밀번호를 다시 입력해 주세요"
                   variant="standard"
                   onChange={onPwCheckHandler}
-                  sx={{ borderRadius: "14px" }}
+                  sx={{
+                    borderRadius: "14px",
+                    backgroundColor: "white",
+                    width: "430px",
+                    height: "62px",
+                    fontSize: "20px",
+                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                  }}
                 />
                 <PwCfnFormHelperText />
               </FormControl>
             </Grid>
 
             <Grid
-              sx={{ marginTop: "20px" }}
+              sx={{ marginTop: "10px" }}
               // container
               // direction="column"
               // justifyContent="center"
@@ -503,13 +605,15 @@ const Signup = () => {
                     type="submit"
                     variant="contained"
                     sx={{
-                      width: "326px",
-                      height: "42px",
+                      width: "430px",
+                      height: "52px",
                       fontSize: "20px",
                       fontWeight: "bold",
                       color: "white",
+                      border: "0",
                       borderRadius: "14px",
                       backgroundColor: "#2967AC",
+                      "&:disabled": { backgroundColor: "gray" },
                     }}
                   >
                     회원가입
@@ -520,13 +624,15 @@ const Signup = () => {
                     type="submit"
                     variant="contained"
                     sx={{
-                      width: "326px",
-                      height: "42px",
+                      width: "430px",
+                      height: "52px",
                       fontSize: "20px",
                       fontWeight: "bold",
                       color: "white",
+                      border: "0",
                       borderRadius: "14px",
                       backgroundColor: "#2967AC",
+                      "&:disabled": { backgroundColor: "gray" },
                     }}
                   >
                     회원가입
@@ -536,14 +642,20 @@ const Signup = () => {
                     type="submit"
                     variant="contained"
                     sx={{
-                      width: "326px",
-                      height: "42px",
+                      width: "430px",
+                      height: "52px",
                       fontSize: "20px",
                       fontWeight: "bold",
                       color: "white",
+                      border: "0",
                       borderRadius: "14px",
                       backgroundColor: "#2967AC",
-                      "&:hover": { backgroundColor: "#2967AC" },
+                      "&:hover": {
+                        backgroundColor: "#2967AC",
+                        // border: "0",
+                        boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                      },
+                      boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                     }}
                   >
                     회원가입
@@ -553,22 +665,29 @@ const Signup = () => {
                 Sign Up
               </Button> */}
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   onClick={goHome}
                   sx={{
-                    width: "326px",
-                    height: "42px",
-                    marginTop: "13px",
+                    width: "430px",
+                    height: "52px",
+                    marginTop: "20px",
                     fontSize: "20px",
                     fontWeight: "bold",
                     color: "white",
+                    border: "0",
                     borderRadius: "14px",
-                    backgroundColor: "#FE5953",
-                    "&:hover": { backgroundColor: "#FE5953" },
+                    backgroundColor: "#FE674C",
+                    "&:hover": {
+                      backgroundColor: "#FE674C",
+                      // border: "0",
+                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                    },
+                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                   }}
                 >
                   취소
                 </Button>
+                <button onClick={handleOpen}>모달테스트</button>
               </Stack>
             </Grid>
           </form>
@@ -579,6 +698,7 @@ const Signup = () => {
 };
 
 const BgDiv = styled.div`
+  margin-top: 256px;
   z-index: 0;
   height: 100%;
   background-image: url("https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png");

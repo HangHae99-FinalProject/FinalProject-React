@@ -25,7 +25,10 @@ const POST_EVALUATION = "myPage/POST_EVALUATION";
 const PUT_USER_INFO_MOD = "myPage/PUT_USER_INFO_MOD";
 const SET_USER_INFO = "myPage/SET_USER_INFO";
 const GET_EMAIL = "GET_EMAIL";
-const IS_SENDED_EMAIL = "mypage/IS_SENDED_EMAIL";
+const IS_SENDED_EMAIL = "myPage/IS_SENDED_EMAIL";
+const UPDATE_EVALUATION_LIST_RECRUIT = "myPage/UPDATE_EVALUATION_LIST_RECRUIT";
+const UPDATE_EVALUATION_LIST_POSTER = "myPage/UPDATE_EVALUATION_LIST_POSTER";
+
 //클린업
 const INIT_USER_INFO = "myPage/INIT_USER_INFO";
 
@@ -66,6 +69,15 @@ const putUserInfoMod = createAction(PUT_USER_INFO_MOD, (userInfoModData) => ({
   userInfoModData,
 }));
 const isSendedEmail = createAction(IS_SENDED_EMAIL, (data) => ({ data }));
+const updateEvaluationListRecruit = createAction(
+  UPDATE_EVALUATION_LIST_RECRUIT,
+  (receiverIdRecruit) => ({ receiverIdRecruit })
+);
+const updateEvaluationListPoster = createAction(
+  UPDATE_EVALUATION_LIST_POSTER,
+  (receiverIdPoster) => ({ receiverIdPoster })
+);
+
 //클린업
 const initUserInfo = createAction(INIT_USER_INFO, () => ({}));
 
@@ -178,8 +190,12 @@ const __getAppliedOver = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const appliedOverData = await userInfoApi.getAppliedOverList(postId);
-      // console.log(appliedOverData);
+      console.log(appliedOverData);
       dispatch(getAppliedOver(appliedOverData));
+      // const postUser = appliedOverData.data.postUser
+      // const poster = [];
+      // poster.push(postUser)
+      // console.log(poster)
     } catch (err) {
       console.log(err);
     }
@@ -188,10 +204,13 @@ const __getAppliedOver = (postId) => {
 
 //유저 평점 기록하기
 const __postEvaluation = (reqeustUserRate) => {
+  console.log(reqeustUserRate);
   return async function (dispatch, getState, { hitory }) {
     try {
       const evaluationData = await userInfoApi.postEvaluation(reqeustUserRate);
       console.log(evaluationData);
+      dispatch(updateEvaluationListRecruit(reqeustUserRate.receiverId));
+      dispatch(updateEvaluationListPoster(reqeustUserRate.receiverId));
     } catch (err) {
       console.log(err);
     }
@@ -269,6 +288,27 @@ export default handleActions(
         draft.isSendedEmail = true;
         console.log(state);
       }),
+    [UPDATE_EVALUATION_LIST_RECRUIT]: (state, action) =>
+      produce(state, (draft) => {
+        draft.appliedOverList.data.recruitUserList =
+          draft.appliedOverList.data?.recruitUserList.filter(
+            (a, idx) => a.userId !== action.payload.receiverIdRecruit
+          );
+      }),
+    [UPDATE_EVALUATION_LIST_POSTER]: (state, action) =>
+      produce(state, (draft) => {
+        const postUser = state.appliedOverList.data.postUser;
+        const poster = [];
+        poster.push(postUser);
+        console.log(poster);
+        console.log(state.appliedOverList.data.postUser);
+        // console.log(Object.values(draft.appliedOverList.data.postUser));
+        // console.log(action.payload.receiverIdPoster);
+        // draft.appliedOverList.data.postUser = poster.filter(
+        //   (a, idx) => a.userId !== action.payload.receiverIdPoster
+        // );
+        draft.appliedOverList.data.postUser = {}
+      }),
     [INIT_USER_INFO]: (state, { payload }) =>
       produce(state, (draft) => {
         draft.userInfo = [];
@@ -276,7 +316,7 @@ export default handleActions(
   },
   initialState
 );
-console.log(initialState.isSendedEmail);
+// console.log(initialState);
 
 //action creator export
 const actionCreators = {

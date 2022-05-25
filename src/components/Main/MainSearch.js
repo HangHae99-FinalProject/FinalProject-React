@@ -263,15 +263,7 @@ const AutoSearchData = styled.div`
   font-size: 16px;
   font-weight: bold;
   z-index: 12px;
-  height: auto;
-  max-height: 300px;
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
   :hover {
     background-color: #f5fcff;
     cursor: pointer;
@@ -287,9 +279,15 @@ const SearchPreview = styled.div`
   height: auto;
   max-height: 500px;
   background-color: #feffff;
-
+  overflow: auto;
   border: 2px solid #d8d8d8;
   top: 550px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const InputBox = styled.div`

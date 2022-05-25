@@ -22,8 +22,12 @@ const EditPost = () => {
 
   const [is_location, setLocation] = useState("");
   const [is_Week, setWeek] = useState("");
-  const [is_title, setIs_Title] = useState(post_list.title);
-  const [is_content, setIs_Content] = useState(post_list.content);
+
+  if (is_Week === undefined) {
+    setWeek("");
+  }
+  const [is_title, setIs_Title] = useState("");
+  const [is_content, setIs_Content] = useState("");
 
   const Files = useSelector((state) => state.image.files);
   // 파일만 넣을 빈 배열
@@ -67,19 +71,7 @@ const EditPost = () => {
   const post_id = param.postid;
   const is_edit = post_id ? true : false;
 
-  useEffect(() => {
-    if (is_edit) {
-      dispatch(PostActions.__getDetail(post_id));
-      dispatch(imgActions.initPre());
-    }
-  }, []);
   // console.log(Event.keyCode);
-  useEffect(() => {
-    setIs_Title(post_list.title);
-    setIs_Content(post_list.content);
-    setLocation(post_list.region);
-    setWeek(post_list.deadline);
-  }, [post_list]);
 
   useEffect(() => {}, []);
   // function doNotReload(e) {
@@ -114,6 +106,20 @@ const EditPost = () => {
     dispatch(PostActions.__editPost(data, post_id, newFiles));
   };
 
+  useEffect(() => {
+    setIs_Title(post_list.title);
+    setIs_Content(post_list.content);
+    setLocation(post_list.region);
+    setWeek(post_list.deadline);
+  }, [post_list]);
+
+  useEffect(() => {
+    if (is_edit) {
+      dispatch(PostActions.__getDetail(post_id));
+      dispatch(imgActions.initPre());
+    }
+  }, []);
+
   return (
     <>
       <Container>
@@ -123,6 +129,7 @@ const EditPost = () => {
         </HeaderText>
 
         {/* 제목 입력 */}
+
         <TitleBox>
           <Text bold size="23px" margin="0 75px 0 20px">
             제목
@@ -130,7 +137,7 @@ const EditPost = () => {
           <InputBox
             placeholder="제목을 20글자 이내 적어주세요!"
             maxLength={20}
-            value={is_title}
+            value={is_title === undefined ? "" : is_title}
             onChange={TitleHandleChange}
           />
         </TitleBox>
@@ -143,8 +150,7 @@ const EditPost = () => {
 
           <FormControl sx={{ width: "33.5rem" }}>
             <Select
-              value={is_Week}
-              defaultValue={post_list.deadline}
+              value={is_Week === undefined ? "" : is_Week}
               onChange={WeekHandleChange}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
@@ -174,7 +180,7 @@ const EditPost = () => {
 
           <FormControl sx={{ width: "33.5rem" }}>
             <Select
-              value={is_location}
+              value={is_location === undefined ? "" : is_location}
               onChange={RegionHandleChange}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}

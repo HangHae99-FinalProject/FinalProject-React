@@ -13,6 +13,9 @@ import {
   Snackbar,
   CircularProgress,
 } from "@mui/material";
+import { chatApi } from "../api/chatApi";
+import { Link, Redirect, useLocation } from "react-router-dom";
+import { history } from "../redux/configureStore";
 
 const cookies = new Cookies();
 
@@ -21,11 +24,12 @@ const Alertmsg = React.forwardRef(function Alert(props, ref) {
 });
 
 const Alert = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
   const [notification, setNotification] = useState([]);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [notificationColor, setNotificationColor] = useState("red");
-  const notificationOpen = Boolean(anchorEl);
+  const [is_open, setIs_open] = useState(false);
+  const [notificationCnt, setNotificationCnt] = useState();
+  const location = useLocation();
+
   const isLogin = useSelector((state) => state.user.isLogin);
   console.log(isLogin);
   console.log(notification);
@@ -45,46 +49,48 @@ const Alert = () => {
           },
         }
       );
-      // source.addEventListener("addComment", function (event) {
-      //   console.log(event);
-      //   console.log(event.data);
-      // });
 
       source.onmessage = (e) => {
-        console.log(e.data);
         if (e.type === "message" && e.data.startsWith("{")) {
-          setNotification((prev) => [...prev, JSON.parse(e.data)]);
+          // setNotification((prev) => [...prev, JSON.parse(e.data)]);
           setAlertOpen(true);
           console.log(notification);
           // unreadMessage();
         }
       };
-      source.addEventListener(
-        "message",
-        function (e) {
-          console.log(e.data);
-        },
-        false
-      );
 
       source.addEventListener("error", function (e) {
-        console.log(e);
         source.close();
-        // source.addEventListener("open", function (e) {
-        //   console.log(e);
-        // });
       });
     }
   }, [isLogin]);
 
-  // const handleClick = (event) => {
-  //   refetch();
-  //   setAnchorEl(event.currentTarget);
-  //   //unreadRefetch();
-  // };
+  const handelOpenMessage = (id, url, status) => {
+    console.log(id, url, status);
+    // if (url) {
+    //   return <Redirect to={{ pathname: url }} />;
+    // }
 
-  const handleClose = () => {
-    setAnchorEl(null);
+    // window.location.href = url;
+    // location.pathname({ url });
+    setIs_open(false);
+    history.push({
+      pathname: url,
+    });
+
+    if (status === false) {
+      chatApi
+        .notificationRead(id)
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const handelOpenBtn = () => {
+    setIs_open(!is_open);
+    // setNotification([]);
   };
 
   const handleAlertClose = (event, reason) => {
@@ -95,9 +101,65 @@ const Alert = () => {
     setAlertOpen(false);
   };
 
+  // useEffect(() => {
+
+  // }, [alertOpen]);
+
+  useEffect(() => {
+    chatApi
+      .notifications()
+      .then((res) => {
+        console.log(res.data);
+        setNotification(res.data);
+        console.log(notification);
+      })
+      .catch((err) => console.log(err));
+    chatApi
+      .notificationsCnt()
+      .then((res) => {
+        console.log(res.data.count);
+        setNotificationCnt(res.data.count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [alertOpen]);
+
   return (
     <Container>
-      {/* <AiTwotoneBell className="icon" /> */}
+      {is_open ? (
+        <div className="listBox">
+          {notification.map((a, idx) => {
+            return (
+              <NotificationsList
+                key={idx}
+                onClick={() => {
+                  handelOpenMessage(a.id, a.url, a.status);
+                }}
+              >
+                <span
+                  className={
+                    a.status === true ? "readMessage" : "notificationsMsg"
+                  }
+                >
+                  {a.content}
+                </span>
+                <div className="line" />
+              </NotificationsList>
+            );
+          })}
+        </div>
+      ) : null}
+      <div className={notificationCnt ? "notifications-cnt" : "cnt-zero"}>
+        {notificationCnt}
+      </div>
+
+      <img
+        src="https://velog.velcdn.com/images/tty5799/post/7fd59818-7932-4120-9c52-cdbc3615228c/image.png"
+        alt=""
+        className="imgBox"
+        onClick={handelOpenBtn}
+      />
 
       <Snackbar
         open={alertOpen}
@@ -113,17 +175,97 @@ const Alert = () => {
   );
 };
 
+const ListBox = styled.div`
+  /* background-color: beige;
+  z-index: 99999px;
+  position: fixed;
+  top: 70%;
+  right: 10%;
+  height: 200px;
+  width: 300px; */
+`;
+
+const NotificationsList = styled.div`
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  height: auto;
+  .readMessage {
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  .notificationsMsg {
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    color: red;
+  }
+
+  .line {
+    width: 340px;
+    height: 2px;
+    background-color: gray;
+  }
+  :hover {
+    color: #b9daf7;
+  }
+`;
+
 const Container = styled.div`
-  /* position: fixed;
-  background-color: azure;
-  border: 1px solid gray;
-  /* border-radius: 50%; */
-  /* padding: 10px;
-  top: 25%;
-  left: 80%;
-  .icon {
-    font-size: 50px;
-  } */
+  .notifications-cnt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background: #b9daf7;
+    border-radius: 12px;
+    width: 22px;
+    height: 22px;
+    color: #2967ac;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50%;
+    text-align: center;
+    margin-left: 20px;
+    z-index: 9999%;
+    right: 6.3%;
+    top: 85%;
+  }
+  .cnt-zero {
+    background-color: transparent;
+  }
+  .listBox {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 2px solid gray;
+    /* padding: 20px; */
+    width: 350px;
+    height: 296px;
+    position: fixed;
+    right: 10%;
+    top: 60%;
+    overflow: auto;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  img {
+    position: fixed;
+    top: 86%;
+    right: 7%;
+    cursor: pointer;
+  }
 `;
 const CategoryMiddleWrapper = styled.div``;
 

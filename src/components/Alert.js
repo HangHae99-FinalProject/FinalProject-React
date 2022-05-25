@@ -52,7 +52,7 @@ const Alert = () => {
 
       source.onmessage = (e) => {
         if (e.type === "message" && e.data.startsWith("{")) {
-          setNotification((prev) => [...prev, JSON.parse(e.data)]);
+          // setNotification((prev) => [...prev, JSON.parse(e.data)]);
           setAlertOpen(true);
           console.log(notification);
           // unreadMessage();
@@ -101,17 +101,9 @@ const Alert = () => {
     setAlertOpen(false);
   };
 
-  useEffect(() => {
-    chatApi
-      .notificationsCnt()
-      .then((res) => {
-        console.log(res.data.count);
-        setNotificationCnt(res.data.count);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [alertOpen]);
+  // useEffect(() => {
+
+  // }, [alertOpen]);
 
   useEffect(() => {
     chatApi
@@ -122,7 +114,16 @@ const Alert = () => {
         console.log(notification);
       })
       .catch((err) => console.log(err));
-  }, []);
+    chatApi
+      .notificationsCnt()
+      .then((res) => {
+        console.log(res.data.count);
+        setNotificationCnt(res.data.count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [alertOpen]);
 
   return (
     <Container>

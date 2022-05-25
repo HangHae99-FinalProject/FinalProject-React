@@ -8,10 +8,11 @@ import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
-const EditImage = (image, props) => {
-  const { margintop, marginleft } = props;
-  const eddit = image.image;
+const EditImage = (props) => {
+  const { image,marginTop, marginLeft, display, marginRight, padding, fontSize, ilWidth, ilHeight, imgDivMargin, ilBorder, imgDivWidth, imgBoxMargin, imgDivPadding, ilBgRepeat, ilIs_inline } = props;
+  const eddit = {image}.image;
   const dispatch = useDispatch();
   const [imgPreview, setImgPreview] = useState([]);
   const [is_open, setIs_open] = useState(false);
@@ -83,18 +84,33 @@ const EditImage = (image, props) => {
     dispatch(imgActions.setURL(is_Url));
   };
 
-  const styles = { margintop: margintop, marginleft: marginleft };
+  const styles = { 
+    marginTop: marginTop, 
+    marginLeft: marginLeft, 
+    display: display,
+    marginRight: marginRight,
+    padding: padding,
+    fontSize: fontSize,
+    ilWidth: ilWidth,
+    ilHeight: ilHeight,
+    imgDivMargin: imgDivMargin,
+    ilBorder: ilBorder,
+    imgDivWidth: imgDivWidth,
+    imgBoxMargin: imgBoxMargin,
+    imgDivPadding: imgDivPadding,
+    ilBgRepeat: ilBgRepeat,
+    ilIs_inline: ilIs_inline,
+  };
 
   return (
     <>
-      <UploadBox>
+      <UploadBox {...styles}>
         <Labels htmlFor="files" onChange={uploadFile}>
-          <InsertPhotoIcon fontSize="large" />
+          <AddPhotoAlternateIcon {...styles} />
           <Inputs type="file" id="files" multiple="multiple" accept="image/*" />
         </Labels>
 
-        <Labels
-          // style={{display:props.display}}
+        <Labels {...styles}
           onClick={() => {
             setIs_open(!is_open);
           }}
@@ -128,10 +144,10 @@ const EditImage = (image, props) => {
           </>
         ) : null}
       </UploadBox>
-      <div style={{ margin: "0 10%" }}>
+      <ImageDiv {...styles}>
         {imgPreview.map((image, id) => {
           return (
-            <ImageBox key={id}>
+            <ImageBox {...styles} key={id}>
               <BiX
                 size="20px"
                 style={{ cursor: "pointer" }}
@@ -141,23 +157,36 @@ const EditImage = (image, props) => {
                 }}
               />
 
-              <ImageList src={`${image}`} alt={`${image}-${id}`} />
+              <ImageList {...styles} src={`${image}`} alt={`${image}-${id}`} />
             </ImageBox>
           );
         })}
-      </div>
+      </ImageDiv>
     </>
   );
 };
 
 EditImage.defaultProps = {
-  margintop: "2rem",
-  marginleft: "1rem",
+  fontSize:"large",
+  marginTop: "2rem",
+  marginLeft: "1rem",
+  display: null,
+  marginRight: "1px",
+  padding: "5px 15px 5px 15px",
+  ilWidth: "220px",
+  ilHeight: "130px",
+  ilBorder: "1px solid rgba(0, 0, 0, 0.07)",
+  ilBgRepeat: null,
+  imgDivMargin: "0 10%",
+  imgDivWidth: null,
+  imgDivPadding: null,
+  imgBoxMargin: "0 20px",
+  ilIs_inline: false
 };
 
 const UploadBox = styled.div`
-  margin-top: ${(props) => props.margintop};
-  margin-left: ${(props) => props.marginleft};
+  margin-top: ${(props) => props.marginTop};
+  margin-left: ${(props) => props.marginLeft};
   display: flex;
   background-color: white;
   width: 80%;
@@ -185,8 +214,19 @@ const UrlBox = styled.input`
     outline: none;
   }
 `;
+
+const ImageDiv = styled.div`
+  margin: ${(props) => props.imgDivMargin};
+  ${(props) => (props.imgDivWidth ? `width: ${props.imgDivWidth}` : "")};
+  ${(props) => (props.imgDivPadding ? `padding: ${props.imgDivPadding}` : "")};
+  ${(props) =>
+    props.ilIs_inline
+      ? `display:flex; flex-direction:row; justify-content: flex-start; align-items: center`
+      : ""}
+`;
+
 const ImageBox = styled.div`
-  margin: 0 20px;
+  margin: ${(props) => props.imgBoxMargin};
   /* margin-right: 50px; */
   /* margin-top: 1%; */
   display: inline-flex;
@@ -195,10 +235,11 @@ const ImageBox = styled.div`
 `;
 
 const Labels = styled.label`
-  margin-right: 1px;
+  ${(props) => (props.display ? `display: ${props.display}` : "")};
+  margin-right: ${(props) => props.marginRight};
   align-items: center;
   cursor: pointer;
-  padding: 5px 15px 5px 15px;
+  padding: ${(props) => props.padding};
   /* line-height: 100px; */
   width: 25px;
   height: 30px;
@@ -212,13 +253,14 @@ const Inputs = styled.input`
 `;
 
 const ImageList = styled.div`
-  width: 220px;
-  height: 130px;
-  border: 1px solid rgba(0, 0, 0, 0.07);
+  width: ${(props) => props.ilWidth};
+  height: ${(props) => props.ilHeight};
+  border: ${(props) => props.ilBorder};
   border-radius: 3px;
   background-image: url("${(props) => props.src}");
 
   background-size: contain;
   background-position: center;
+  ${(props) => (props.ilBgRepeat ? `background-repeat: ${props.ilBgRepeat}` : "")};
 `;
 export default EditImage;

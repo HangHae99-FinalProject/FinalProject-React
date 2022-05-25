@@ -57,9 +57,10 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 }));
 
 const User = (props) => {
-  // const param = useParams();
+  const params = useParams();
   // const p_Id = param.postid;
   const id = localStorage.getItem("userId");
+  // console.log(id);
   const dispatch = useDispatch();
   const [is_open, setIs_open] = useState(false);
   const [ModalState, setModalState] = useState(false);
@@ -91,7 +92,7 @@ const User = (props) => {
   // console.log("포트폴리오사진", getUserInfo.userPortfolioImgList?.length);
   // console.log("신청중리스트", getAppliedList);
   // console.log("모집중리스트", getRecruitList);
-  console.log("모집완료리스트", getRecruitOverList);
+  // console.log("모집완료리스트", getRecruitOverList);
   const getAppliedOverList_postUser = useSelector(
     (state) => state.myPage.appliedOverList.data?.postUser
   );
@@ -101,8 +102,10 @@ const User = (props) => {
   );
   const isSendedEmail = useSelector((state) => state.myPage.isSendedEmail);
   // console.log(isSendedEmail);
-  // console.log("모집완료리스트", getAppliedOverList_postUser);
-  // console.log("모집완료리스트2", getAppliedOverList);
+  console.log("모집완료리스트", getAppliedOverList_postUser);
+  var posterKeys = JSON.stringify(getAppliedOverList_postUser);
+  console.log(posterKeys);
+  // console.log("모집완료리스트", getAppliedOverList);
   // console.log("모집완료지원자리스트", getAppliedOverList_reqruit);
 
   const pathName = useLocation();
@@ -152,11 +155,12 @@ const User = (props) => {
 
   useEffect(() => {
     dispatch(userInfoActions.initUserInfo());
-    dispatch(userInfoActions.__getUserInfo(userId));
-    dispatch(userInfoActions.__getApplied(userId));
-    dispatch(userInfoActions.__getRecruit(userId));
-    dispatch(userInfoActions.__getRecruitOver(userId));
-  }, [dispatch, userId]);
+    dispatch(userInfoActions.__getUserInfo(id));
+    dispatch(userInfoActions.__getApplied(id));
+    dispatch(userInfoActions.__getRecruit(id));
+    dispatch(userInfoActions.__getAppliedOver(id));
+    dispatch(userInfoActions.__getRecruitOver(id));
+  }, [dispatch, id]);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -257,6 +261,11 @@ const User = (props) => {
                         height: "50px",
                         background: "#555555",
                         borderRadius: "10px",
+                        "&:hover": {
+                          backgroundColor: "#555555",
+                          boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                        },
+                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                       }}
                     >
                       신청하기
@@ -264,7 +273,7 @@ const User = (props) => {
                   </Grid>
                 </form>
               </Grid>
-              <Footer position="absolute" width="1200px" />
+              <Footer position="absolute" width="1200px" borderRadius="0px 0px 20px 20px" />
             </>
           )}
         </ModalWindow>
@@ -329,7 +338,7 @@ const User = (props) => {
                   sx={{ margin: "0", padding: "0" }}
                 >
                   {/* 모집글 작성자 */}
-                  {getAppliedOverList_postUser !== null ? (
+                  {posterKeys === "{}"?null:getAppliedOverList_postUser !== null ? (
                     <Card
                       sx={{
                         width: "248px",
@@ -382,11 +391,15 @@ const User = (props) => {
                               background: "#4299E9",
                               borderRadius: "14px",
                               marginBottom: "5px",
+                              "&:hover": {
+                                backgroundColor: "#4299E9",
+                                boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                              },
+                              boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                             }}
                             variant="contained"
                             onClick={() => {
                               setReceiverId(getAppliedOverList_postUser.userId);
-
                               dispatch(
                                 userInfoActions.__postEvaluation({
                                   postId: postId,
@@ -407,6 +420,11 @@ const User = (props) => {
                               background: "#FE5953",
                               borderRadius: "14px",
                               marginTop: "5px",
+                              "&:hover": {
+                                backgroundColor: "#FE5953",
+                                boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                              },
+                              boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                             }}
                             variant="contained"
                             onClick={() => {
@@ -428,9 +446,10 @@ const User = (props) => {
                         </Grid>
                       </CardActions>
                     </Card>
-                  ) : null}
+                  )  : null}
 
                   {/* 지원자 리스트 */}
+
                   {getAppliedOverList_reqruit?.map((appliedOverList, idx) => {
                     return (
                       <Card
@@ -487,6 +506,11 @@ const User = (props) => {
                                 background: "#4299E9",
                                 borderRadius: "14px",
                                 marginBottom: "5px",
+                                "&:hover": {
+                                  backgroundColor: "#4299E9",
+                                  boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                },
+                                boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                               }}
                               variant="contained"
                               onClick={() => {
@@ -512,6 +536,11 @@ const User = (props) => {
                                 background: "#FE5953",
                                 borderRadius: "14px",
                                 marginTop: "5px",
+                                "&:hover": {
+                                  backgroundColor: "#FE5953",
+                                  boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                },
+                                boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                               }}
                               variant="contained"
                               onClick={() => {
@@ -562,30 +591,62 @@ const User = (props) => {
             >
               <Grid>
                 <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
-                  <span style={{ fontSize: "32px", fontWeight: "bold" }}>
-                    {getUserInfo.nickname}
-                  </span>
+                  {getUserInfo.nickname}
                   님의 마이페이지
                 </Typography>
               </Grid>
               <Grid>
                 {userId === id ? (
                   <>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        marginRight: "14px",
-                        width: "100px",
-                        height: "40px",
-                        padding: "0",
-                        background: "#FE5953",
-                        borderRadius: "14px",
-                        "&:hover": { backgroundColor: "#FE5953" },
-                      }}
-                      onClick={handleOpen}
+                    <HtmlTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography>
+                            {getUserInfo.email === null ? (
+                              <Grid
+                                container
+                                direction="row"
+                                justifyContent="flex-end"
+                                alignItems="center"
+                              >
+                                <Typography>알림받는 이메일이 없습니다.</Typography>
+                              </Grid>
+                            ) : (
+                              <Grid
+                                container
+                                direction="row"
+                                justifyContent="flex-end"
+                                alignItems="center"
+                              >
+                                <Typography>알림받는 이메일: test@test.com</Typography>
+                              </Grid>
+                            )}
+                          </Typography>
+                        </React.Fragment>
+                      }
+                      followCursor
                     >
-                      알림받기
-                    </Button>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          marginRight: "14px",
+                          width: "100px",
+                          height: "40px",
+                          padding: "0",
+                          background: "#FE5953",
+                          border: "0",
+                          borderRadius: "14px",
+                          "&:hover": {
+                            backgroundColor: "#FE5953",
+                            boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                          },
+                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                        }}
+                        onClick={handleOpen}
+                      >
+                        알림받기
+                      </Button>
+                    </HtmlTooltip>
                     <Button
                       variant="contained"
                       sx={{
@@ -593,8 +654,13 @@ const User = (props) => {
                         height: "40px",
                         padding: "0",
                         background: "#FFD082",
+                        border: "0",
                         borderRadius: "14px",
-                        "&:hover": { backgroundColor: "#FFD082" },
+                        "&:hover": {
+                          backgroundColor: "#FFD082",
+                          boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                        },
+                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                       }}
                       onClick={() => {
                         history.push(`/edituser/${id}`);
@@ -602,27 +668,6 @@ const User = (props) => {
                     >
                       프로필 수정
                     </Button>
-                    {getUserInfo.email === null ? (
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                        sx={{ marginTop: "14px" }}
-                      >
-                        <Typography>알림받는 이메일이 없습니다.</Typography>
-                      </Grid>
-                    ) : (
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                        sx={{ marginTop: "14px" }}
-                      >
-                        <Typography>알림받는 이메일: test@test.com</Typography>
-                      </Grid>
-                    )}
                   </>
                 ) : (
                   <Grid></Grid>
@@ -712,6 +757,12 @@ const User = (props) => {
                       width: "140px",
                       borderRadius: "14px",
                       marginLeft: "24px",
+                      backgroundColor: "#2967AC",
+                      "&:hover": {
+                        backgroundColor: "#2967AC",
+                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                      },
+                      boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                     }}
                   >
                     {getUserInfo.major}
@@ -775,7 +826,7 @@ const User = (props) => {
                 나의 프로젝트
               </Typography>
               {/* 페이지네이션 게시물 수 셀렉터 */}
-              <label>
+              <label style={{ fontSize: "14px" }}>
                 페이지당 표시할 게시물 수:&nbsp;
                 <select
                   type="number"
@@ -847,16 +898,17 @@ const User = (props) => {
                 {getAppliedList?.length === 0 ? (
                   <Typography
                     sx={{
-                      marginTop: "20px",
+                      marginTop: "40px",
+                      marginBottom: "40px",
                       display: "flex",
                       flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
                       fontSize: "20px",
-                      fontWeight: "bold",
+                      color: "#818181",
                     }}
                   >
-                    조회할 리스트가 없습니다.
+                    선장모집에 신청해보세요!
                   </Typography>
                 ) : (
                   getAppliedList
@@ -920,16 +972,17 @@ const User = (props) => {
                 {getRecruitList?.length === 0 ? (
                   <Typography
                     sx={{
-                      marginTop: "20px",
+                      marginTop: "40px",
+                      marginBottom: "40px",
                       display: "flex",
                       flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
                       fontSize: "20px",
-                      fontWeight: "bold",
+                      color: "#818181",
                     }}
                   >
-                    조회할 리스트가 없습니다.
+                    프로젝트를 시작해보세요!
                   </Typography>
                 ) : (
                   getRecruitList
@@ -977,7 +1030,18 @@ const User = (props) => {
                                     marginBotton: "5px",
                                     width: "190px",
                                     height: "40px",
+                                    border: "0",
                                     borderRadius: "14px",
+                                    background: "#4299E9",
+                                    "&:hover": {
+                                      backgroundColor: "#4299E9",
+                                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                    },
+                                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                  }}
+                                  variant="contained"
+                                  onClick={() => {
+                                    history.push(`/applied/${recruitList.postId}`);
                                   }}
                                   variant="outlined"
                                 >
@@ -1035,16 +1099,17 @@ const User = (props) => {
                 {getRecruitOverList?.length === 0 ? (
                   <Typography
                     sx={{
-                      marginTop: "20px",
+                      marginTop: "40px",
+                      marginBottom: "40px",
                       display: "flex",
                       flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
                       fontSize: "20px",
-                      fontWeight: "bold",
+                      color: "#818181",
                     }}
                   >
-                    조회할 리스트가 없습니다.
+                    아직 모험중!
                   </Typography>
                 ) : (
                   getRecruitOverList
@@ -1069,51 +1134,45 @@ const User = (props) => {
                             justifyContent="space-between"
                             alignItems="center"
                           >
-                            <ListItemText
-                              onClick={() => {
-                                history.push(
-                                  `/detail/${recruitOverList.postId}`
-                                );
-                              }}
-                            >
-                              {recruitOverList.title}
-                              <ArrowForwardIosRoundedIcon
-                                style={{ verticalAlign: "middle" }}
-                              />
-                            </ListItemText>
-                            {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
-                            {userId !== id ? (
-                              <Grid></Grid>
-                            ) : (
-                              <Grid>
-                                <Button
-                                  sx={{
-                                    marginTop: "5px",
-                                    width: "190px",
-                                    height: "40px",
-                                    borderRadius: "14px",
-                                    background: "#4299E9",
-                                    "&:hover": { backgroundColor: "#4299E9" },
-                                  }}
-                                  variant="contained"
-                                  onClick={() => {
-                                    setPostId(recruitOverList.postId);
-                                    modalHandelBtn();
-                                    dispatch(
-                                      userInfoActions.__getAppliedOver(
-                                        recruitOverList.postId
-                                      )
-                                    );
-                                  }}
-                                >
-                                  선장리뷰
-                                </Button>
-                              </Grid>
-                            )}
-                          </Grid>
-                        </ListItem>
-                      );
-                    })
+                            {recruitOverList.title}
+                            <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                          </ListItemText>
+                          {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
+                          {userId !== id ? (
+                            <Grid></Grid>
+                          ) : (
+                            <Grid>
+                              <Button
+                                sx={{
+                                  marginTop: "5px",
+                                  width: "190px",
+                                  height: "40px",
+                                  border: "0",
+                                  borderRadius: "14px",
+                                  background: "#4299E9",
+                                  "&:hover": {
+                                    backgroundColor: "#4299E9",
+                                    boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                  },
+                                  boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                }}
+                                variant="contained"
+                                onClick={() => {
+                                  setPostId(recruitOverList.postId);
+                                  modalHandelBtn();
+                                  dispatch(
+                                    userInfoActions.__getAppliedOver(recruitOverList.postId)
+                                  );
+                                }}
+                              >
+                                선장리뷰
+                              </Button>
+                            </Grid>
+                          )}
+                        </Grid>
+                      </ListItem>
+                    );
+                  })
                 )}
                 <footer>
                   <Pagination

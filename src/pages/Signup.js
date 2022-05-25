@@ -71,7 +71,11 @@ const Signup = () => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   function PwFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -89,7 +93,11 @@ const Signup = () => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   function PwCfnFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -106,7 +114,11 @@ const Signup = () => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   function NicknameFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -126,7 +138,11 @@ const Signup = () => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   function MajorFormHelperText() {
     const { focused } = useFormControl() || {};
@@ -135,7 +151,11 @@ const Signup = () => {
       return " ";
     }, [focused]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   // 여기까지 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
 
@@ -163,9 +183,12 @@ const Signup = () => {
   //중복확인 버튼
   const memberIdCheckBtn = async () => {
     try {
-      const checkMemberId = await axios.post("https://everymohum.shop/user/memberIdCheck", {
-        memberId,
-      });
+      const checkMemberId = await axios.post(
+        "https://everymohum.shop/user/memberIdCheck",
+        {
+          memberId,
+        }
+      );
       console.log(checkMemberId.status);
       checkMemberId.status == 200 && setCheckMemberIdError(true);
       // window.alert("사용이 가능한 아이디입니다.");
@@ -178,10 +201,13 @@ const Signup = () => {
 
   const nicknameCheckBtn = async () => {
     try {
-      const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
-        nickname,
-        major,
-      });
+      const checkNickname = await axios.post(
+        "https://everymohum.shop/user/nicknameCheck",
+        {
+          nickname,
+          major,
+        }
+      );
       console.log(checkNickname.status);
       checkNickname.status == 200 && setCheckNicknameError(true);
       // window.alert("사용이 가능한 아이디입니다.");
@@ -252,7 +278,12 @@ const Signup = () => {
             }}
           >
             <Box sx={style}>
-              <Grid container direction="column" justifyContent="center" alignItems="center">
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+              >
                 <img
                   src={require(`../assets/fixedSignupLogo.png`)}
                   alt="signupLogo"
@@ -484,7 +515,10 @@ const Signup = () => {
         >
           <div style={{ marginBottom: "45px" }}>
             {open === true ? null : (
-              <img src={require(`../assets/fixedSignupLogo.png`)} alt="signupLogo" />
+              <img
+                src={require(`../assets/fixedSignupLogo.png`)}
+                alt="signupLogo"
+              />
             )}
           </div>
           <form
@@ -493,7 +527,12 @@ const Signup = () => {
               goSignup();
             }}
           >
-            <Grid container direction="row" justifyContent="space-between" alignItems="flex-start">
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+            >
               <FormControl>
                 <Grid
                   container

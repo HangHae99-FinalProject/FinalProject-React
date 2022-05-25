@@ -18,15 +18,17 @@ import Button from "@mui/material/Button";
 import Spinner from "./Spinner";
 import styled from "styled-components";
 
-function MajorFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    return "전공을 선택해 주세요.";
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "595px",
+  height: "555px",
+  bgcolor: "background.paper",
+  boxShadow: 0,
+  borderRadius: "14px",
+};
 const OAuthRedirect = () => {
   const dispatch = useDispatch();
   const [nickname, setNickname] = React.useState("");
@@ -40,18 +42,15 @@ const OAuthRedirect = () => {
 
   let code = new URL(window.location.href).searchParams.get("code");
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "480px",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
+  function MajorFormHelperText() {
+    const { focused } = useFormControl() || {};
 
+    const helperText = React.useMemo(() => {
+      return "전공을 선택해 주세요.";
+    }, [focused]);
+
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
   function NicknameFormHelperText() {
     const { focused } = useFormControl() || {};
 

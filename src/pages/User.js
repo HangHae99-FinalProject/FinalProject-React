@@ -1023,31 +1023,20 @@ const User = (props) => {
                             ) : (
                               <Grid>
                                 <button
-                                  style={{
-                                    color: "#FE5953",
-                                    border: "1px solid #FE5953",
-                                    background: "white",
-                                    marginBotton: "5px",
-                                    width: "190px",
-                                    height: "40px",
-                                    border: "0",
-                                    borderRadius: "14px",
-                                    background: "#4299E9",
-                                    "&:hover": {
-                                      backgroundColor: "#4299E9",
-                                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                                    },
-                                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                                  }}
-                                  variant="contained"
-                                  onClick={() => {
-                                    history.push(`/applied/${recruitList.postId}`);
-                                  }}
-                                  variant="outlined"
-                                >
-                                  {recruitList.userApplyList.length}명의 선장이
-                                  신청했어요!
-                                </button>
+                                style={{
+                                  color: "#FE5953",
+                                  border: "1px solid #FE5953",
+                                  background: "white",
+                                  marginBotton: "5px",
+                                  width: "190px",
+                                  height: "40px",
+                                  borderRadius: "14px",
+                                }}
+                                variant="outlined"
+                              >
+                                {recruitList.userApplyList.length}명의 선장이 신청했어요!
+                              </button>
+
                                 <Grid>
                                   <Button
                                     sx={{
@@ -1133,6 +1122,11 @@ const User = (props) => {
                             direction="row"
                             justifyContent="space-between"
                             alignItems="center"
+                          >
+                            <ListItemText
+                            onClick={() => {
+                              history.push(`/detail/${recruitOverList.postId}`);
+                            }}
                           >
                             {recruitOverList.title}
                             <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />

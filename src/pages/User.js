@@ -1039,11 +1039,10 @@ const User = (props) => {
                                     },
                                     boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                                   }}
-                                  variant="contained"
+                                  variant="outlined"
                                   onClick={() => {
                                     history.push(`/applied/${recruitList.postId}`);
                                   }}
-                                  variant="outlined"
                                 >
                                   {recruitList.userApplyList.length}명의 선장이
                                   신청했어요!
@@ -1133,6 +1132,11 @@ const User = (props) => {
                             direction="row"
                             justifyContent="space-between"
                             alignItems="center"
+                          >
+                            <ListItemText
+                            onClick={() => {
+                              history.push(`/detail/${recruitOverList.postId}`);
+                            }}
                           >
                             {recruitOverList.title}
                             <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />

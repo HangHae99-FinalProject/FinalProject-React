@@ -7,9 +7,9 @@ import ChattingItem from "../components/Chat/ChattingItem";
 import Spinner from "../components/Spinner";
 import Footer from "../elements/Footer";
 import { actionCreators as chatActios } from "../redux/modules/chat";
+import Link from "../components/Link";
 
 const Chatting = () => {
-  const dispatch = useDispatch();
   const client = useSelector((state) => state.chat.client);
 
   const { pathname } = useLocation();
@@ -97,6 +97,7 @@ const Chatting = () => {
         </Container>
         <Footer />
       </BackImage>
+      <Link />
     </>
   );
 };
@@ -129,9 +130,9 @@ const Container = styled.div`
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: 782px;
-  height: 777px;
-  margin: 1% auto;
+  width: 1000px;
+  height: 807px;
+  margin: 5% auto;
 `;
 
 const BackImage = styled.div`

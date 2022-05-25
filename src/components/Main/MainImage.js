@@ -31,7 +31,7 @@ const MainImage = () => {
       >
         <SwiperSlide>
           <img
-            src="https://velog.velcdn.com/images/tty5799/post/ddff6790-1f95-411d-b882-12f47069808d/image.png"
+            src="https://velog.velcdn.com/images/tty5799/post/a317a6d0-b084-4e65-9d1c-f250c804dc31/image.svg"
             alt=""
             style={{ width: "1288px", height: "342px" }}
           />

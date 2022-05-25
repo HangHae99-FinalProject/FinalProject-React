@@ -15,6 +15,7 @@ import ImageNotFound from "../assets/imageNotFound.png";
 import ModalWindow from "../elements/ModalWindow";
 import Footer from "../elements/Footer";
 import footer from "../assets/Footer2.svg";
+import Link from "../components/Link";
 
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -273,7 +274,11 @@ const User = (props) => {
                   </Grid>
                 </form>
               </Grid>
-              <Footer position="absolute" width="1200px" borderRadius="0px 0px 20px 20px" />
+              <Footer
+                position="absolute"
+                width="1200px"
+                borderRadius="0px 0px 20px 20px"
+              />
             </>
           )}
         </ModalWindow>
@@ -338,7 +343,8 @@ const User = (props) => {
                   sx={{ margin: "0", padding: "0" }}
                 >
                   {/* 모집글 작성자 */}
-                  {posterKeys === "{}"?null:getAppliedOverList_postUser !== null ? (
+                  {posterKeys === "{}" ? null : getAppliedOverList_postUser !==
+                    null ? (
                     <Card
                       sx={{
                         width: "248px",
@@ -393,9 +399,11 @@ const User = (props) => {
                               marginBottom: "5px",
                               "&:hover": {
                                 backgroundColor: "#4299E9",
-                                boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                boxShadow:
+                                  "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                               },
-                              boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                             }}
                             variant="contained"
                             onClick={() => {
@@ -422,9 +430,11 @@ const User = (props) => {
                               marginTop: "5px",
                               "&:hover": {
                                 backgroundColor: "#FE5953",
-                                boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                boxShadow:
+                                  "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                               },
-                              boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                             }}
                             variant="contained"
                             onClick={() => {
@@ -446,7 +456,7 @@ const User = (props) => {
                         </Grid>
                       </CardActions>
                     </Card>
-                  )  : null}
+                  ) : null}
 
                   {/* 지원자 리스트 */}
 
@@ -508,9 +518,11 @@ const User = (props) => {
                                 marginBottom: "5px",
                                 "&:hover": {
                                   backgroundColor: "#4299E9",
-                                  boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                  boxShadow:
+                                    "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                                 },
-                                boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                boxShadow:
+                                  "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                               }}
                               variant="contained"
                               onClick={() => {
@@ -538,9 +550,11 @@ const User = (props) => {
                                 marginTop: "5px",
                                 "&:hover": {
                                   backgroundColor: "#FE5953",
-                                  boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                  boxShadow:
+                                    "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                                 },
-                                boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                boxShadow:
+                                  "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                               }}
                               variant="contained"
                               onClick={() => {
@@ -609,7 +623,9 @@ const User = (props) => {
                                 justifyContent="flex-end"
                                 alignItems="center"
                               >
-                                <Typography>알림받는 이메일이 없습니다.</Typography>
+                                <Typography>
+                                  알림받는 이메일이 없습니다.
+                                </Typography>
                               </Grid>
                             ) : (
                               <Grid
@@ -618,7 +634,9 @@ const User = (props) => {
                                 justifyContent="flex-end"
                                 alignItems="center"
                               >
-                                <Typography>알림받는 이메일: test@test.com</Typography>
+                                <Typography>
+                                  알림받는 이메일: test@test.com
+                                </Typography>
                               </Grid>
                             )}
                           </Typography>
@@ -1023,19 +1041,20 @@ const User = (props) => {
                             ) : (
                               <Grid>
                                 <button
-                                style={{
-                                  color: "#FE5953",
-                                  border: "1px solid #FE5953",
-                                  background: "white",
-                                  marginBotton: "5px",
-                                  width: "190px",
-                                  height: "40px",
-                                  borderRadius: "14px",
-                                }}
-                                variant="outlined"
-                              >
-                                {recruitList.userApplyList.length}명의 선장이 신청했어요!
-                              </button>
+                                  style={{
+                                    color: "#FE5953",
+                                    border: "1px solid #FE5953",
+                                    background: "white",
+                                    marginBotton: "5px",
+                                    width: "190px",
+                                    height: "40px",
+                                    borderRadius: "14px",
+                                  }}
+                                  variant="outlined"
+                                >
+                                  {recruitList.userApplyList.length}명의 선장이
+                                  신청했어요!
+                                </button>
 
                                 <Grid>
                                   <Button
@@ -1124,49 +1143,57 @@ const User = (props) => {
                             alignItems="center"
                           >
                             <ListItemText
-                            onClick={() => {
-                              history.push(`/detail/${recruitOverList.postId}`);
-                            }}
-                          >
-                            {recruitOverList.title}
-                            <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
-                          </ListItemText>
-                          {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
-                          {userId !== id ? (
-                            <Grid></Grid>
-                          ) : (
-                            <Grid>
-                              <Button
-                                sx={{
-                                  marginTop: "5px",
-                                  width: "190px",
-                                  height: "40px",
-                                  border: "0",
-                                  borderRadius: "14px",
-                                  background: "#4299E9",
-                                  "&:hover": {
-                                    backgroundColor: "#4299E9",
-                                    boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                                  },
-                                  boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                                }}
-                                variant="contained"
-                                onClick={() => {
-                                  setPostId(recruitOverList.postId);
-                                  modalHandelBtn();
-                                  dispatch(
-                                    userInfoActions.__getAppliedOver(recruitOverList.postId)
-                                  );
-                                }}
-                              >
-                                선장리뷰
-                              </Button>
-                            </Grid>
-                          )}
-                        </Grid>
-                      </ListItem>
-                    );
-                  })
+                              onClick={() => {
+                                history.push(
+                                  `/detail/${recruitOverList.postId}`
+                                );
+                              }}
+                            >
+                              {recruitOverList.title}
+                              <ArrowForwardIosRoundedIcon
+                                style={{ verticalAlign: "middle" }}
+                              />
+                            </ListItemText>
+                            {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
+                            {userId !== id ? (
+                              <Grid></Grid>
+                            ) : (
+                              <Grid>
+                                <Button
+                                  sx={{
+                                    marginTop: "5px",
+                                    width: "190px",
+                                    height: "40px",
+                                    border: "0",
+                                    borderRadius: "14px",
+                                    background: "#4299E9",
+                                    "&:hover": {
+                                      backgroundColor: "#4299E9",
+                                      boxShadow:
+                                        "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                    },
+                                    boxShadow:
+                                      "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                  }}
+                                  variant="contained"
+                                  onClick={() => {
+                                    setPostId(recruitOverList.postId);
+                                    modalHandelBtn();
+                                    dispatch(
+                                      userInfoActions.__getAppliedOver(
+                                        recruitOverList.postId
+                                      )
+                                    );
+                                  }}
+                                >
+                                  선장리뷰
+                                </Button>
+                              </Grid>
+                            )}
+                          </Grid>
+                        </ListItem>
+                      );
+                    })
                 )}
                 <footer>
                   <Pagination
@@ -1182,6 +1209,7 @@ const User = (props) => {
           </Grid>
         </Grid>
       </Grid>
+      <Link />
       <Footer />
     </>
   );

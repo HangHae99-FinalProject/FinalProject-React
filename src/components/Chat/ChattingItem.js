@@ -60,7 +60,7 @@ export default ChattingItem;
 const ChattingWrap = styled.div`
   display: flex;
   padding: 20px;
-  max-width: 782px;
+  max-width: 1000px;
   height: 76px;
   border-bottom: 3px solid #ededed;
   cursor: pointer;
@@ -77,10 +77,11 @@ const ChattingWrap = styled.div`
     display: flex;
     align-items: center;
     .profile-img {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       margin-right: 20px;
       border-radius: 50%;
+      margin-left: 30px;
       background: rgba(0, 0, 0, 0.2);
       img {
         width: 100%;
@@ -94,9 +95,10 @@ const ChattingWrap = styled.div`
       .nickname-time-wrap {
         display: flex;
         .nickname {
+          position: relative;
           font-size: 16px;
           font-weight: 500;
-          margin-right: 33rem;
+          margin-right: 30rem;
         }
       }
       p {
@@ -105,7 +107,9 @@ const ChattingWrap = styled.div`
     }
 
     .chat-list {
+      position: absolute;
       width: 80px;
+      right: 27%;
       span {
         color: #9b9798;
       }

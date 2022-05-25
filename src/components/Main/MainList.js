@@ -40,7 +40,6 @@ const MainList = ({ location, category, selected }) => {
     if (pages === 0) {
       is_select = false;
     }
-    console.log(area);
 
     dispatch(
       postActions.__getPost(
@@ -106,7 +105,7 @@ const MainCardBox = styled.div`
 `;
 
 const MainContainer = styled.div`
-  margin-top: 40px;
+  margin-top: 10px;
   .spinner {
     top: 90%;
     left: 90%;

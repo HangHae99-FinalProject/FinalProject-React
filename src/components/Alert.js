@@ -28,7 +28,7 @@ const Alert = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [is_open, setIs_open] = useState(false);
   const [notificationCnt, setNotificationCnt] = useState();
-  const location = useLocation();
+  const pathName = useLocation();
 
   const isLogin = useSelector((state) => state.user.isLogin);
   // console.log(isLogin);
@@ -90,24 +90,35 @@ const Alert = () => {
   };
 
   useEffect(() => {
-    chatApi
-      .notifications()
-      .then((res) => {
-        console.log(res.data);
-        setNotification(res.data);
-        console.log(notification);
-      })
-      .catch((err) => console.log(err));
-    chatApi
-      .notificationsCnt()
-      .then((res) => {
-        console.log(res.data.count);
-        setNotificationCnt(res.data.count);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (pathName.pathname === "/") {
+      return;
+    }
+    if (isLogin) {
+      chatApi
+        .notifications()
+        .then((res) => {
+          console.log(res.data);
+          setNotification(res.data);
+          console.log(notification);
+        })
+        .catch((err) => console.log(err));
+      chatApi
+        .notificationsCnt()
+        .then((res) => {
+          console.log(res.data.count);
+          setNotificationCnt(res.data.count);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [alertOpen]);
+
+  console.log(notification[notification.length] - 1?.content);
+
+  if (pathName.pathname === "/") {
+    return null;
+  }
 
   return (
     <Container>
@@ -152,7 +163,8 @@ const Alert = () => {
         onClose={handleAlertClose}
       >
         <Alertmsg onClose={handleAlertClose} severity="success">
-          {notification[notification.length - 1]?.content}
+          {notification.map((a, idx) => a[0]?.content)}
+          {/* {notification[notification.length]?.content} */}
         </Alertmsg>
       </Snackbar>
     </Container>
@@ -167,6 +179,7 @@ const NotificationsList = styled.div`
   flex-direction: column;
   cursor: pointer;
   height: auto;
+  z-index: 9999px;
   .readMessage {
     font-size: 19px;
     font-weight: bold;
@@ -207,7 +220,7 @@ const Container = styled.div`
     border-radius: 50%;
     text-align: center;
     margin-left: 20px;
-    z-index: 9999%;
+    z-index: 9999px;
     right: 6.3%;
     top: 85%;
   }
@@ -226,6 +239,7 @@ const Container = styled.div`
     right: 10%;
     top: 60%;
     overflow: auto;
+    z-index: 9999px;
 
     -ms-overflow-style: none;
     scrollbar-width: none;

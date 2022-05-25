@@ -1,7 +1,16 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const Link = () => {
+  const pathName = useLocation();
+
+  if (pathName.pathname === "/") {
+    return null;
+  }
+  if (pathName.pathname === "/main") {
+    return null;
+  }
   return (
     <LinkImage>
       <div className="help-tip">

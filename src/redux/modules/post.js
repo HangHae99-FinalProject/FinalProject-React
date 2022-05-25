@@ -165,7 +165,6 @@ const __loginGetDetail =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await postApi.loginGetDetail(postId);
-
       dispatch(commentActions.getComment(data.data.commentList));
       dispatch(setDetail(data.data));
     } catch (err) {

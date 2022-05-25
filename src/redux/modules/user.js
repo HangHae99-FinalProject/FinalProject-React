@@ -69,14 +69,19 @@ const __kakaoLogin = (code) => {
       if (data.data.profileSet === false) {
         dispatch(kakaoLogin(data.data.profileSet, data.data.userId));
       } else {
-        const accessToken = data.data.accessToken;
+        const { accessToken, refreshToken } = data.data;
 
-        cookies.set("accessToken", accessToken, {
-          path: "/",
-          // maxAge: 3600, // 60분
-        });
         const { sub, memberId, nickname, major, profileImg } =
           jwt_decode(accessToken);
+        cookies.set("accessToken", accessToken, {
+          path: "/",
+          maxAge: 86400, // 60분
+          // maxAge: 10, // 10초
+        });
+        cookies.set("refreshToken", refreshToken, {
+          path: "/",
+          // maxAge: 604800, // 7일
+        });
         localStorage.setItem("userId", sub);
         localStorage.setItem("memberId", memberId);
         localStorage.setItem("nickname", nickname);
@@ -86,28 +91,6 @@ const __kakaoLogin = (code) => {
         dispatch(login());
         history.replace("/main");
       }
-
-      const { accessToken, refreshToken } = data.data;
-
-      const { sub, memberId, nickname, major, profileImg } =
-        jwt_decode(accessToken);
-      cookies.set("accessToken", accessToken, {
-        path: "/",
-        maxAge: 86400, // 60분
-        // maxAge: 10, // 10초
-      });
-      cookies.set("refreshToken", refreshToken, {
-        path: "/",
-        // maxAge: 604800, // 7일
-      });
-      localStorage.setItem("userId", sub);
-      localStorage.setItem("memberId", memberId);
-      localStorage.setItem("nickname", nickname);
-      localStorage.setItem("major", major);
-      localStorage.setItem("profileImg", profileImg);
-
-      dispatch(login());
-      history.replace("/main");
     } catch (err) {
       console.log(err);
     }

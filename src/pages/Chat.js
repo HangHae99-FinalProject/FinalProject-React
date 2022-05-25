@@ -164,8 +164,6 @@ const Chat = (data) => {
     }
   };
 
-  useEffect(() => {});
-
   return (
     <BackImage>
       <Container>

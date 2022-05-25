@@ -12,12 +12,16 @@ const CLEAR_POST = "CLEAR_POST";
 const SET_CATE = "SET_CATE";
 const GET_SEARCH = "GET_SEARCH";
 const GET_LANDING = "GET_LANDING";
+const GET_SEARCH_DATA = "GET_SEARCH_DATA";
 // 신청하기
 const ADD_APPLY = "ADD_APPLY";
 const DELETE_APPLY = "DELETE_APPLY";
 const LOGIN_DETAIL = "LOGIN_DETAIL";
 
 // 액션 크리에이터
+const getSearchData = createAction(GET_SEARCH_DATA, (searchList) => ({
+  searchList,
+}));
 const getLanding = createAction(GET_LANDING, (post_list) => ({ post_list }));
 const setSearch = createAction(GET_SEARCH, (searchList) => ({ searchList }));
 const setCate = createAction(SET_CATE, (post_list, page) => ({
@@ -46,9 +50,22 @@ const initialState = {
   post_next: false,
   search: [],
   landingList: [],
+  searchList: [],
 };
 
 //미들웨어
+
+const __getSearchData =
+  () =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.searchData();
+
+      dispatch(getSearchData(data.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
 const __getLanding =
   () =>
@@ -260,6 +277,10 @@ export default handleActions(
       produce(state, (draft) => {
         draft.landingList = action.payload.post_list;
       }),
+    [GET_SEARCH_DATA]: (state, action) =>
+      produce(state, (draft) => {
+        draft.searchList = action.payload.searchList;
+      }),
   },
   initialState
 );
@@ -283,6 +304,8 @@ const actionCreates = {
   setSearch,
   getLanding,
   __getLanding,
+  getSearchData,
+  __getSearchData,
 };
 
 export { actionCreates };

@@ -24,7 +24,7 @@ const MainList = ({ location, category, selected }) => {
   const [hasMore, sethasMore] = useState(true);
 
   const curLocation = () => {
-    if (location === "위치 설정" || location === "전체") {
+    if (location === "위치설정" || location === "전체") {
       return setarea("");
     } else {
       return setarea(location);
@@ -40,6 +40,7 @@ const MainList = ({ location, category, selected }) => {
     if (pages === 0) {
       is_select = false;
     }
+    console.log(area);
 
     dispatch(
       postActions.__getPost(
@@ -48,7 +49,6 @@ const MainList = ({ location, category, selected }) => {
         category,
         searchList.is_search,
         searchList.is_searchValue,
-
         is_select
       )
     );
@@ -94,13 +94,8 @@ const MainList = ({ location, category, selected }) => {
 };
 
 const MainCardBox = styled.div`
-  @media screen and (min-width: 1920px) {
-    width: 1370px;
-    height: 800px;
-  }
-  @media screen and (min-width: 2560px) {
-    width: 1970px;
-  }
+  width: 1370px;
+  height: 800px;
 
   @media screen and (max-height: 1000px) {
     height: 500px;
@@ -111,6 +106,7 @@ const MainCardBox = styled.div`
 `;
 
 const MainContainer = styled.div`
+  margin-top: 40px;
   .spinner {
     top: 90%;
     left: 90%;

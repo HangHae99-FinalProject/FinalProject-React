@@ -10,22 +10,35 @@ import amateurCap from "../../assets/ama.svg";
 import juniorCap from "../../assets/jr.svg";
 import proCap from "../../assets/pro.svg";
 import { history } from "../../redux/configureStore";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+
 const ApplyCard = (props) => {
   const dispatch = useDispatch();
 
-  var likeRatio = (props?.likePoint / 100) * (100 / props?.projectCount) * 100;
+  var likeRatio = (props.likeCount / 100) * (100 / props.projectCount) * 100;
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }
 
-  var evaluationGrade = null;
+  var evaluationRatio = null;
 
   if (likeRatio <= 40) {
-    evaluationGrade = `${likeRatio}% 만족! 아마추어 선장러`;
+    evaluationRatio = `${Math.ceil(likeRatio)}% 만족!`;
   } else if (41 <= likeRatio <= 70) {
-    evaluationGrade = `${likeRatio}% 만족! 주니어 선장러`;
+    evaluationRatio = `${Math.ceil(likeRatio)}% 만족!`;
   } else if (71 <= likeRatio <= 100) {
-    evaluationGrade = `${likeRatio}% 만족! 프로 선장러`;
+    evaluationRatio = `${Math.ceil(likeRatio)}% 만족!`;
+  }
+
+  var evaluationLevel = null;
+
+  if (likeRatio <= 40) {
+    evaluationLevel = "아마추어 선장러";
+  } else if (71 <= likeRatio) {
+    evaluationLevel = "프로 선장러";
+  } else {
+    evaluationLevel = "주니어 선장러";
   }
 
   const addRoomData = {
@@ -67,15 +80,22 @@ const ApplyCard = (props) => {
             <p style={{ fontSize: "23px", fontWeight: "700" }}>
               {props.nickname}
             </p>
+
             <div className="ratingBox">
-              {likeRatio <= 40 ? (
-                <RatingImg src={amateurCap} alt="amateurCap" />
-              ) : 41 <= likeRatio <= 70 ? (
-                <RatingImg src={juniorCap} alt="juniorCap" />
-              ) : (
-                <RatingImg src={proCap} alt="proCap" />
-              )}
-              <span className="rating">{evaluationGrade}</span>
+              <div className="help-tip">
+                <p>현재까지 협업횟수는 {props.projectCount}입니다.</p>
+                {likeRatio <= 40 ? (
+                  <img src={amateurCap} alt="amateurCap" />
+                ) : 71 <= likeRatio ? (
+                  <img src={proCap} alt="proCap" />
+                ) : (
+                  <img src={juniorCap} alt="juniorCap" />
+                )}
+              </div>
+              &nbsp;&nbsp;
+              <span className="rating">{evaluationRatio}</span>
+              &nbsp;
+              <span className="rating">{evaluationLevel}</span>
             </div>
           </div>
         </Profile>
@@ -229,6 +249,57 @@ const Profile = styled.div`
     width: 270px;
     align-items: center;
     margin-top: -4%;
+    .help-tip {
+    }
+
+    .help-tip:hover p {
+      display: block;
+
+      transform-origin: 100% 0%;
+
+      -webkit-animation: fadeIn 0.3s ease-in-out;
+
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .help-tip p {
+      display: none;
+      text-align: center;
+      background-color: #f5f5f9;
+      padding: 10px;
+      max-width: 220px;
+      position: absolute;
+      left: 20%;
+      top: 58%;
+      color: rgba(0, 0, 0, 0.87);
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+
+    @-webkit-keyframes fadeIn {
+      0% {
+        opacity: 0;
+
+        transform: scale(0.6);
+      }
+
+      100% {
+        opacity: 100%;
+
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 100%;
+      }
+    }
   }
   .cardTitle {
     display: flex;

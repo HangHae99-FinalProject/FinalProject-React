@@ -1,0 +1,13 @@
+diff --git a/node_modules/event-source-polyfill/src/eventsource.js b/node_modules/event-source-polyfill/src/eventsource.js
+index af1fbce..31bd22e 100644
+--- a/node_modules/event-source-polyfill/src/eventsource.js
++++ b/node_modules/event-source-polyfill/src/eventsource.js
+@@ -739,7 +739,7 @@
+     var lastEventIdQueryParameterName = options.lastEventIdQueryParameterName || "lastEventId";
+ 
+     var initialRetry = clampDuration(1000);
+-    var heartbeatTimeout = parseDuration(options.heartbeatTimeout, 45000);
++    var heartbeatTimeout = parseDuration(options.heartbeatTimeout, 18000000);
+ 
+     var lastEventId = "";
+     var retry = initialRetry;

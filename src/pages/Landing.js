@@ -6,10 +6,7 @@ import { actionCreates as postActions } from "../redux/modules/post";
 import { FiChevronRight } from "react-icons/fi";
 import { history } from "../redux/configureStore";
 import { useLocation } from "react-router-dom";
-import Cookies from "universal-cookie";
-import Spinner from "../components/Spinner";
 
-const cookies = new Cookies();
 const Landing = () => {
   const dispatch = useDispatch();
   const landingList = useSelector((state) => state.post.landingList);

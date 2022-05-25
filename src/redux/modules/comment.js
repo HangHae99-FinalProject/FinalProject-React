@@ -36,12 +36,10 @@ const __addComment =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await commentApi.postComment(postId, comment);
-
+      console.log(data);
       const today = new Date();
-      let year = today.getFullYear();
-      let month = ("0" + (today.getMonth() + 1)).slice(-2);
-      let date = ("0" + today.getDate()).slice(-2);
-      const createdAt = year + "-" + month + "-" + date;
+
+      const createdAt = today;
 
       const nickname = localStorage.getItem("nickname");
       const profileImg = localStorage.getItem("profileImg");

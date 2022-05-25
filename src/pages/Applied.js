@@ -28,9 +28,6 @@ const Applied = () => {
 
   const subscriberCnt = subscriberList?.length;
   const acceptListCnt = acceptListList?.length;
-  console.log(majorList);
-  console.log(subscriberList);
-  console.log(acceptListList);
 
   const user = localStorage.getItem("userId");
 

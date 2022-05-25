@@ -229,7 +229,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "디자인" ? "active" : "default"}
-              bg={is_cate === "디자인" ? "#2967AC" : "#fff"}
+              bg={is_cate === "디자인" ? "#2967AC" : "#f5fcff"}
             >
               <p>디자인</p>
             </Grid>
@@ -243,7 +243,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "영상" ? "active" : "default"}
-              bg={is_cate === "영상" ? "#6AD8F5" : "#fff"}
+              bg={is_cate === "영상" ? "#6AD8F5" : "#f5fcff"}
             >
               <p>영상</p>
             </Grid>
@@ -257,7 +257,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "배우" ? "active" : "default"}
-              bg={is_cate === "배우" ? "#F58467" : "#fff"}
+              bg={is_cate === "배우" ? "#F58467" : "#f5fcff"}
             >
               <p>배우</p>
             </Grid>
@@ -271,7 +271,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "사진" ? "active" : "default"}
-              bg={is_cate === "사진" ? "#4299E9" : "#fff"}
+              bg={is_cate === "사진" ? "#4299E9" : "#f5fcff"}
             >
               <p>사진</p>
             </Grid>
@@ -288,7 +288,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "프로그래밍" ? "active" : "default"}
-              bg={is_cate === "프로그래밍" ? "#5BC8D2" : "#fff"}
+              bg={is_cate === "프로그래밍" ? "#5BC8D2" : "#f5fcff"}
             >
               <p>프로그래밍</p>
             </Grid>
@@ -302,7 +302,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "모델" ? "active" : "default"}
-              bg={is_cate === "모델" ? "#FE674C" : "#fff"}
+              bg={is_cate === "모델" ? "#FE674C" : "#f5fcff"}
             >
               <p>모델</p>
             </Grid>
@@ -316,7 +316,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "성우" ? "active" : "default"}
-              bg={is_cate === "성우" ? "#FFD082" : "#fff"}
+              bg={is_cate === "성우" ? "#FFD082" : "#f5fcff"}
             >
               <p>성우</p>
             </Grid>
@@ -330,7 +330,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "음향" ? "active" : "default"}
-              bg={is_cate === "음향" ? "#FFEF62" : "#fff"}
+              bg={is_cate === "음향" ? "#FFEF62" : "#f5fcff"}
             >
               <p>음향</p>
             </Grid>
@@ -504,23 +504,20 @@ const CateBtn = styled.div`
     width: 140px;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid black;
-    background-color: #fff;
-    /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: #f5fcff;
+    box-shadow: inset 0px 4px 13px #d7f1fd;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    .icon {
-      font-size: 32px;
-      color: var(--inactive-text-color);
-    }
+
     p {
       text-align: center;
       font-size: 20px;
       font-weight: 700;
-      color: black;
+      color: #2967ac;
     }
   }
   .active {
@@ -532,7 +529,7 @@ const CateBtn = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0px 4px 13px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 
     /* background-color: gray; */

@@ -6,8 +6,8 @@ import { history } from "../../redux/configureStore";
 
 const CommentList = (props) => {
   const dispatch = useDispatch();
-  const created = props.createdAt;
-  const createdAt = created?.split(" ")[0];
+  const [is_createdAt, setIS_createdAt] = useState("");
+
   const localNickName = localStorage.getItem("nickname");
 
   const [is_comment, setIs_comment] = useState("");
@@ -56,6 +56,37 @@ const CommentList = (props) => {
     editEndButton();
   };
 
+  useEffect(() => {
+    const created = props.createdAt;
+    const createdTime = new Date(created);
+    const today = new Date();
+
+    const createdYear = createdTime.getFullYear();
+    const createdMonth = createdTime.getMonth() + 1;
+    const createdDate = createdTime.getDate();
+
+    const createdDay = createdYear + "-" + createdMonth + "-" + createdDate;
+
+    const createdAtTime = Math.floor(
+      (today.getTime() - createdTime.getTime()) / 1000 / 60
+    );
+
+    if (createdAtTime < 1) return setIS_createdAt("방금전");
+
+    if (createdAtTime < 60) {
+      return setIS_createdAt(`${createdAtTime}분전`);
+    }
+    const createdAtTimeHour = Math.floor(createdAtTime / 60);
+
+    if (createdAtTimeHour < 24) {
+      return setIS_createdAt(`${createdAtTimeHour}시간전`);
+    }
+    const createdAtTimeDay = Math.floor(createdAtTime / 60 / 24);
+    if (createdAtTimeDay < 365) {
+      return setIS_createdAt(createdDay);
+    }
+  }, []);
+
   return (
     <>
       <div className="comment">
@@ -68,23 +99,19 @@ const CommentList = (props) => {
           />
           <p className="name">{props.nickname}</p>
 
-          <p
-            style={{
-              fontSize: "13px",
-              marginTop: "1.3rem",
-              marginLeft: "0.7rem",
-            }}
-          >
-            {createdAt}
-          </p>
-          <HeadBtnBox>
+          <p className="created">{is_createdAt}</p>
+          <div className="headBtnBox">
             {userNickName ? (
               <>
-                <Btn1 onClick={editComment}>수정</Btn1>
-                <Btn2 onClick={deleteComment}>삭제</Btn2>
+                <div className="modifyBtn" onClick={editComment}>
+                  수정
+                </div>
+                <div className="deleteBtn" onClick={deleteComment}>
+                  삭제
+                </div>
               </>
             ) : null}
-          </HeadBtnBox>
+          </div>
         </Comments>
         {is_open ? (
           <EditInput>
@@ -92,8 +119,11 @@ const CommentList = (props) => {
               value={is_comment}
               onChange={handleCommentEdit}
               onKeyDown={handleEvent}
+              maxLength={70}
             />
-            <span onClick={editEndButton}>완료</span>
+            <div className="completeBtn">
+              <span onClick={editEndButton}>완료</span>
+            </div>
           </EditInput>
         ) : (
           <>
@@ -106,16 +136,32 @@ const CommentList = (props) => {
 };
 
 const EditInput = styled.div`
-  span {
-    margin-left: -2.5rem;
-    color: rgba(155, 151, 152, 1);
+  display: flex;
+
+  .completeBtn {
+    margin-left: 5px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    height: 2rem;
+    width: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background-color: #2967ac;
+    span {
+      font-size: 14px;
+      color: #fff;
+    }
   }
   input {
+    position: relative;
     margin-left: 4rem;
-    height: 2.5rem;
-    width: 40rem;
-    font-size: 22px;
+    margin-bottom: 20px;
+    height: 2rem;
+    width: 800px;
+    font-size: 16px;
     font-weight: 400;
     border-radius: 10px;
     border: 1px solid #9b9798;
@@ -126,50 +172,56 @@ const EditInput = styled.div`
   }
 `;
 
-const HeadBtnBox = styled.div`
-  margin-left: 61rem;
-  margin-top: 1rem;
-`;
-const Btn1 = styled.button`
-  cursor: pointer;
-  width: 50px;
-  height: 40px;
-  margin-left: 10px;
-  background: transparent;
-  border: none;
-  border-radius: 14px;
-  color: gray;
-  font-size: 16px;
-  font-weight: 700;
-`;
-
-const Btn2 = styled.button`
-  cursor: pointer;
-  width: 50px;
-  height: 40px;
-  margin-left: 10px;
-  background: transparent;
-  border: none;
-  border-radius: 14px;
-  color: gray;
-  font-size: 16px;
-  font-weight: 700;
-`;
-
 const Comments = styled.div`
   display: flex;
+  width: 100%;
+  position: relative;
+
   img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     border-radius: 50%;
     border: 1px solid black;
   }
+  .created {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    margin-left: 10px;
+  }
+  .headBtnBox {
+    position: absolute;
+    left: 92%;
+    top: 35%;
+    display: flex;
+  }
+  .modifyBtn {
+    cursor: pointer;
+
+    background: transparent;
+    border: none;
+    border-radius: 14px;
+    color: #9b9798;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .deleteBtn {
+    cursor: pointer;
+    margin-left: 20px;
+    background: transparent;
+    border: none;
+    border-radius: 14px;
+    color: #9b9798;
+    font-size: 16px;
+    font-weight: 500;
+  }
   .name {
-    font-size: 18px;
+    font-size: 14px;
 
     margin-top: 1rem;
-    margin-left: 1rem;
+    margin-left: 10px;
   }
 `;
 

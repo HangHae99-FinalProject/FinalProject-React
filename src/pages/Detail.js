@@ -24,20 +24,27 @@ const Detail = () => {
   const pathName = useLocation();
 
   const id = param.postid;
-
+  console.log(id);
   const localUserId = localStorage.getItem("userId");
 
   const is_loading = useSelector((state) => state.post.is_loading);
   const is_login = useSelector((state) => state.user.isLogin);
+
   const detailList = useSelector((state) => state.post.detailList);
-  console.log(detailList.userId);
+  console.log(detailList);
 
   const majorList = detailList.majorList;
 
   const userId = Number(localUserId) === detailList.userId ? true : false;
 
   const created = detailList.createdAt;
-  const createdAt = created?.split(" ")[0];
+
+  const createdTime = new Date(created);
+  const createdYear = createdTime.getFullYear();
+  const createdMonth = createdTime.getMonth() + 1;
+  const createdDate = createdTime.getDate();
+
+  const createdDay = createdYear + "-" + createdMonth + "-" + createdDate;
 
   const data = {
     applyMajor: is_cate,
@@ -112,7 +119,7 @@ const Detail = () => {
       dispatch(imgActions.initPre());
       dispatch(postActions.clearPost());
     };
-  }, [dispatch, pathName]);
+  }, [dispatch, pathName, is_login]);
 
   return (
     <>
@@ -130,7 +137,7 @@ const Detail = () => {
                   style={{ cursor: "pointer" }}
                 />
                 <p>
-                  {detailList.nickname} ㅣ {createdAt}
+                  {detailList.nickname} ㅣ {createdDay}
                 </p>
               </Profile>
               <HeadBtnBox>
@@ -148,11 +155,7 @@ const Detail = () => {
                 {detailList.currentStatus === "RECRUITING_CLOSE" ? (
                   <>
                     {detailList.userStatus === "starter" ? (
-                      <div
-                        div
-                        className="starterBtn"
-                        onClick={applyHandelButton}
-                      >
+                      <div className="starterBtn" onClick={applyHandelButton}>
                         선장목록
                       </div>
                     ) : (
@@ -182,11 +185,7 @@ const Detail = () => {
                     ) : null}
 
                     {detailList.userStatus === "starter" ? (
-                      <div
-                        div
-                        className="starterBtn"
-                        onClick={applyHandelButton}
-                      >
+                      <div className="starterBtn" onClick={applyHandelButton}>
                         선장목록
                       </div>
                     ) : null}
@@ -470,10 +469,7 @@ const CateBtn = styled.div`
     cursor: pointer;
 
     animation: 0.6s ease-in-out loadEffect3;
-    .icon {
-      color: #fff;
-      font-size: 32px;
-    }
+
     p {
       font-size: 20px;
       font-weight: 700;
@@ -497,18 +493,6 @@ const CateBtn = styled.div`
     100% {
       opacity: 1;
       transform: scale(1);
-    }
-  }
-
-  .inactive {
-    .icon {
-      color: var(--help-color);
-      font-size: 32px;
-    }
-    p {
-      font-size: 12px;
-
-      color: white;
     }
   }
 `;
@@ -639,6 +623,7 @@ const HeadBtnBox = styled.div`
       color: #fff;
     }
   }
+
   .anonymousBtn {
     justify-content: center;
     align-items: center;

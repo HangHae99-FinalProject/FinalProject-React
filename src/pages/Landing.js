@@ -27,14 +27,9 @@ const Landing = () => {
   };
 
   useEffect(() => {
-    if (isLogin) {
-      alert("잘못된 접근입니다!");
-      history.replace("/main");
-      return;
-    }
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     dispatch(postActions.__getLanding());
-  }, [isLogin, pathName]);
+  }, [pathName]);
 
   return (
     <Container>
@@ -54,9 +49,16 @@ const Landing = () => {
               alt="titleImg"
             />
             <LoginBox>
-              <span className="login" onClick={loginHandelBtn}>
-                LOG IN
-              </span>
+              {isLogin ? (
+                <span className="login" onClick={mainHandelBtn}>
+                  GO HOME
+                </span>
+              ) : (
+                <span className="login" onClick={loginHandelBtn}>
+                  LOG IN
+                </span>
+              )}
+
               <span className="signup" onClick={signUpHandelBtn}>
                 SIGN UP
               </span>
@@ -76,20 +78,27 @@ const Landing = () => {
         </PreviewBtn>
       </PreviewBox>
       <MidBox>
-        <img
-          src="https://velog.velcdn.com/images/tty5799/post/7efc282f-c3d9-4d60-9f85-cad81f0bea14/image.png"
-          alt="bestImg"
-        />
+        <Scrollbar>
+          <ImageScroll>
+            <img
+              src="https://velog.velcdn.com/images/tty5799/post/7efc282f-c3d9-4d60-9f85-cad81f0bea14/image.png"
+              alt="bestImg"
+            />
+            <img
+              src="https://velog.velcdn.com/images/tty5799/post/00498018-3c04-455c-b377-86ed00743d4d/image.png"
+              alt="bestImg"
+            />
+            <img
+              src="https://velog.velcdn.com/images/tty5799/post/2f077193-a88f-4273-808a-a87514975425/image.png"
+              alt="bestImg"
+            />
+          </ImageScroll>
+        </Scrollbar>
       </MidBox>
-      <DetailImg>
-        <img
-          src="https://velog.velcdn.com/images/tty5799/post/00498018-3c04-455c-b377-86ed00743d4d/image.png"
-          alt="detailImg"
-        />
-      </DetailImg>
+
       <LastImage>
         <img
-          src="https://velog.velcdn.com/images/tty5799/post/2f077193-a88f-4273-808a-a87514975425/image.png"
+          src="https://velog.velcdn.com/images/tty5799/post/e586c4aa-8716-40cc-8fb0-9e44b511dd2e/image.png"
           alt="lastImg"
         />
       </LastImage>
@@ -99,7 +108,6 @@ const Landing = () => {
 
 const LastImage = styled.div`
   img {
-    margin-top: 5%;
     width: 100%;
   }
 `;
@@ -112,12 +120,49 @@ const DetailImg = styled.div`
   }
 `;
 
-const MidBox = styled.div`
-  display: flex;
+const ImageScroll = styled.div`
   img {
-    margin: 10% auto 0 auto;
-    width: 70%;
+    display: flex;
+    width: 1369px;
+    height: 852px;
   }
+`;
+
+const Scrollbar = styled.div`
+  width: 98%;
+  overflow: auto;
+  height: 852px;
+  display: flex;
+  justify-content: center;
+
+  -ms-overflow-style: {
+    height: 70%;
+  }
+  /* margin-right: 20px; */
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #03517d;
+    width: 10px;
+    border-radius: 20px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 20px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+`;
+
+const MidBox = styled.div`
+  width: 100%;
+  height: 1006px;
+  background-color: #b9daf6;
+  margin: 10% auto 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PreviewBox = styled.div`

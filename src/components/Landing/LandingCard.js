@@ -1,15 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { history } from "../../redux/configureStore";
 import Grid from "../../elements/Grid";
 const LandingCard = (item) => {
+  const [is_createdAt, setIS_createdAt] = useState("");
   const postId = item.postId;
 
   const majorName = item.majorList;
   const major = majorName.map((a) => a.majorName);
   const majorCnt = major.length;
 
-  const created = item.createdAt;
+  useEffect(() => {
+    const created = item.createdAt;
+
+    const createdTime = new Date(created);
+    const today = new Date();
+
+    const createdYear = createdTime.getFullYear();
+    const createdMonth = createdTime.getMonth() + 1;
+    const createdDate = createdTime.getDate();
+
+    const createdDay = createdYear + "-" + createdMonth + "-" + createdDate;
+
+    const createdAtTime = Math.floor(
+      (today.getTime() - createdTime.getTime()) / 1000 / 60
+    );
+
+    if (createdAtTime < 1) return setIS_createdAt("방금전");
+
+    if (createdAtTime < 60) {
+      return setIS_createdAt(`${createdAtTime}분전`);
+    }
+    const createdAtTimeHour = Math.floor(createdAtTime / 60);
+
+    if (createdAtTimeHour < 24) {
+      return setIS_createdAt(`${createdAtTimeHour}시간전`);
+    }
+    const createdAtTimeDay = Math.floor(createdAtTime / 60 / 24);
+    if (createdAtTimeDay < 365) {
+      return setIS_createdAt(createdDay);
+    }
+  }, []);
 
   return (
     <Container
@@ -76,7 +107,7 @@ const LandingCard = (item) => {
         </MidBox>
         <CreateAtBox>
           <span>
-            {created} ㅣ {item.nickname}
+            {is_createdAt} ㅣ {item.nickname}
           </span>
         </CreateAtBox>
       </div>

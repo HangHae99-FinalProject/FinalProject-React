@@ -41,9 +41,9 @@ function Header(props) {
   const isCookies = cookies.get("accessToken", { path: "/" }) ? true : false;
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
-  // console.log(isLogin);
+
   const pathName = useLocation();
-  // console.log(pathName);
+
   // console.log(id);
 
   // React.useEffect(() => {
@@ -67,7 +67,7 @@ function Header(props) {
   };
   const goUserPage = () => {
     history.push(`/user/${id}`);
-    window.location.reload()
+    window.location.reload();
   };
   const goSignup = () => {
     history.push("/signup");
@@ -91,13 +91,12 @@ function Header(props) {
   }
 
   return (
-    <Grid sx={{ maxWidth: "1920px" }}>
+    <Grid sx={{ Width: "100%" }}>
       <AppBar
         position="static"
         sx={{
-          margin: "auto",
-          width: "1370px",
-          background: "white",
+          margin: "0 auto",
+          background: "#03517D",
           boxShadow: "none",
         }}
       >
@@ -114,12 +113,16 @@ function Header(props) {
             ) : (
               <>
                 <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
-                  <img src={logo} alt="logo" style={{ height: "40px" }} />
+                  <img
+                    src="https://velog.velcdn.com/images/tty5799/post/3463705e-84f3-4ab0-b779-f5af97e19050/image.png"
+                    alt="logo"
+                    style={{ marginLeft: "260px", height: "40px" }}
+                  />
                 </Grid>
               </>
             )}
 
-            <Grid sx={{ width: "30%" }}>
+            <Grid sx={{ width: "31%" }}>
               <Grid
                 container
                 direction="row"
@@ -131,12 +134,12 @@ function Header(props) {
                     sx={{ marginRight: "20px", display: { cursor: "pointer" } }}
                     onClick={goChat}
                   >
-                    <Typography sx={{ color: "#2967AC", fontSize: "20px" }}>
+                    <Typography sx={{ color: "#fff", fontSize: "18px" }}>
                       CHATON
                     </Typography>
                   </Grid>
                 ) : null}
-                {isLogin && isCookies === true ? (
+                {/* {isLogin && isCookies === true ? (
                   <Grid
                     sx={{ marginRight: "20px", display: { cursor: "pointer" } }}
                   >
@@ -144,21 +147,21 @@ function Header(props) {
                       등대
                     </Typography>
                   </Grid>
-                ) : null}
+                ) : null} */}
 
                 <Grid
                   sx={{ marginRight: "20px", display: { cursor: "pointer" } }}
                 >
                   {isLogin && isCookies === true ? (
                     <Typography
-                      sx={{ color: "#2967AC", fontSize: "20px" }}
+                      sx={{ color: "#fff", fontSize: "18px" }}
                       onClick={goUserPage}
                     >
                       MYPAGE
                     </Typography>
                   ) : (
                     <Typography
-                      sx={{ color: "#2967AC", fontSize: "20px" }}
+                      sx={{ color: "#fff", fontSize: "18px" }}
                       onClick={goSignup}
                     >
                       SIGNUP
@@ -168,13 +171,25 @@ function Header(props) {
                 <Grid sx={{ display: { cursor: "pointer" } }}>
                   {isLogin && isCookies === true ? (
                     <Grid onClick={goLogout}>
-                      <Typography sx={{ color: "#2967AC", fontSize: "20px" }}>
+                      <Typography
+                        sx={{
+                          color: "#fff",
+                          fontSize: "18px",
+                          marginRight: "260px",
+                        }}
+                      >
                         LOGOUT
                       </Typography>
                     </Grid>
                   ) : (
                     <Grid onClick={goLogin}>
-                      <Typography sx={{ color: "#2967AC", fontSize: "20px" }}>
+                      <Typography
+                        sx={{
+                          color: "#fff",
+                          fontSize: "18px",
+                          marginRight: "300px",
+                        }}
+                      >
                         LOGIN
                       </Typography>
                     </Grid>
@@ -184,7 +199,6 @@ function Header(props) {
             </Grid>
           </Grid>
         </Toolbar>
-        {pathName.pathname === "/main" ? null : <Line />}
       </AppBar>
     </Grid>
   );

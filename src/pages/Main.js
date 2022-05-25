@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Grid } from "../elements/Index";
 
 import MainList from "../components/Main/MainList";
-import mainImage from "../assets/Group 36.png";
+import MainImage from "../components/Main/MainImage";
 
 import { actionCreates as postActions } from "../redux/modules/post";
 import { actionCreates as recruitActions } from "../redux/modules/recruit";
@@ -65,7 +65,8 @@ const Main = () => {
   return (
     <>
       <Container>
-        <MainImage>
+        <MainImage />
+        {/* <MainImage>
           <img
             src={mainImage}
             alt="MainImage"
@@ -73,7 +74,7 @@ const Main = () => {
               window.location.reload();
             }}
           />
-        </MainImage>
+        </MainImage> */}
         <Category>
           <CateBtn
             onClick={() => {
@@ -279,23 +280,23 @@ const BackImage = styled.div`
   }
 `;
 
-const MainImage = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+// const MainImage = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
 
-  img {
-    width: 230px;
-    cursor: pointer;
-    @media screen and (min-width: 1920px) {
-      width: 415px;
-    }
-    @media screen and (min-width: 2560px) {
-      width: 700px;
-    }
-  }
-`;
+//   img {
+//     width: 230px;
+//     cursor: pointer;
+//     @media screen and (min-width: 1920px) {
+//       width: 415px;
+//     }
+//     @media screen and (min-width: 2560px) {
+//       width: 700px;
+//     }
+//   }
+// `;
 
 const Container = styled.div`
   width: 1370px;
@@ -382,7 +383,7 @@ const LocationBox = styled.div`
 `;
 
 const Category = styled.div`
-  margin-top: 5%;
+  margin-top: 50px;
   margin-bottom: 2%;
   display: flex;
   flex-direction: row;

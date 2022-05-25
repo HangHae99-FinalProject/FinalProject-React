@@ -126,7 +126,7 @@ const Write = () => {
 
         {/* 제목 입력 */}
         <TitleBox>
-          <Text bold size="23px" margin="0 75px 0 20px">
+          <Text bold size="23px" margin="0 4.9% 0 20px">
             제목
           </Text>
           <InputBox
@@ -139,7 +139,7 @@ const Write = () => {
 
         {/* 모집기간/ 지역 */}
         <DropBox>
-          <Text bold size="23px" margin="0 40px 0 15px">
+          <Text bold size="23px" margin="0 1.8% 0 15px">
             모집기간
           </Text>
 
@@ -456,6 +456,7 @@ const RecruitBox = styled.div`
 const TitleBox = styled.div`
   margin-top: 1%;
   align-items: center;
+  flex-direction: row;
   display: flex;
 `;
 

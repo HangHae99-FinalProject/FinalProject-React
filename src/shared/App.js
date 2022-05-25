@@ -31,7 +31,7 @@ import styled from "styled-components";
 import Landing from "../pages/Landing";
 import OAuthRedirect from "../components/OAuthRedirect";
 import Alert from "../components/Alert";
-import Link from "../components/Link";
+
 import OnTopBtn from "../components/OnTopBtn";
 import RouteChangeTracker from "../components/RouteChangeTracker";
 
@@ -76,7 +76,7 @@ function App() {
           <Route path="/chat" exact component={Chat} />
           <Route path="/applied/:postid" exact component={Applied} />
         </Container>
-        <Link />
+
         <Alert />
         <OnTopBtn />
       </ConnectedRouter>

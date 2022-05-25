@@ -45,12 +45,12 @@ const EditUser = () => {
 
   const [selected, setSelected] = useState(false);
   // const [profileImgUrl, setProfileImgUrl] = useState("");
-  const [nickname, setNickname] = useState(getUserInfo?.nickname);
-  const [major, setMajor] = useState(getUserInfo?.major);
-  const [intro, setIntro] = useState(getUserInfo?.intro);
-  const [portfolioLink, setPortfolioLink] = useState(getUserInfo?.portfolioLink);
-  const [currentImgUrl, setCurrentImgUrl] = useState(getUserInfo?.userPortfolioImgList);
-  const [profileImgUrl, setProfileImgUrl] = useState(getUserInfo?.profileImg);
+  const [nickname, setNickname] = useState("");
+  const [major, setMajor] = useState("");
+  const [intro, setIntro] = useState("");
+  const [portfolioLink, setPortfolioLink] = useState("");
+  const [currentImgUrl, setCurrentImgUrl] = useState("");
+  const [profileImgUrl, setProfileImgUrl] = useState("");
 
   // const onProfileImgUrlHandler = (e) => {
   //   setProfileImgUrl(e.target.value);
@@ -90,7 +90,7 @@ const EditUser = () => {
     portfolioLink: portfolioLink,
     currentImgUrl: currentImgUrl,
   };
-  // console.log(requestDto)
+  console.log(requestDto);
 
   const userId = param.id;
 
@@ -136,10 +136,13 @@ const EditUser = () => {
   //닉네임 중복확인 버튼
   const nicknameCheckBtn = async () => {
     try {
-      const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
-        nickname,
-        major,
-      });
+      const checkNickname = await axios.post(
+        "https://everymohum.shop/user/nicknameCheck",
+        {
+          nickname,
+          major,
+        }
+      );
       console.log(checkNickname.status);
       checkNickname.status == 200 && setCheckNicknameError(true);
       // window.alert("사용이 가능한 아이디입니다.");
@@ -173,9 +176,10 @@ const EditUser = () => {
       alert("포트폴리오 링크를 입력해 주세요.");
       return;
     }
+    console.log(userId, requestDto, newFiles);
     dispatch(userInfoActions.__putUserInfoMod(userId, requestDto, newFiles));
     history.push(`/user/${_id}`);
-    location.reload();
+    // location.reload();
     // console.log(
     //   "프로필:",
     //   profileImgUrl,
@@ -195,14 +199,28 @@ const EditUser = () => {
   };
 
   useEffect(() => {
-    dispatch(userInfoActions.__getUserInfo());
+    setNickname(getUserInfo.nickname);
+    setMajor(getUserInfo.major);
+    setIntro(getUserInfo.intro);
+    setPortfolioLink(getUserInfo.portfolioLink);
+    setProfileImgUrl(getUserInfo.profileImg);
+    setCurrentImgUrl(getUserInfo.userPortfolioImgList);
+  }, [getUserInfo]);
+
+  useEffect(() => {
+    dispatch(userInfoActions.__getUserInfo(_id));
     // dispatch(userInfoActions.setUserInfo(requestDto));
-    return;
   }, []);
 
   return (
     <>
-      <Grid_2 sx={{ margin: "68px auto auto auto", width: "1370px", paddingBottom: "109px" }}>
+      <Grid_2
+        sx={{
+          margin: "68px auto auto auto",
+          width: "1370px",
+          paddingBottom: "109px",
+        }}
+      >
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -224,7 +242,9 @@ const EditUser = () => {
               <Profile>
                 <img
                   src={
-                    profileImgUrl == getUserInfo.profileImg ? getUserInfo.profileImg : profileImgUrl
+                    profileImgUrl == getUserInfo.profileImg
+                      ? getUserInfo.profileImg
+                      : profileImgUrl
                   }
                   alt="profile"
                 />
@@ -236,7 +256,10 @@ const EditUser = () => {
                 }}
                 onClick={handleClick}
               >
-                <AddCircleRoundedIcon fontSize="large" sx={{ color: "#2967AC" }} />
+                <AddCircleRoundedIcon
+                  fontSize="large"
+                  sx={{ color: "#2967AC" }}
+                />
               </Badge>
               {/* 프로필사진변경 팝오버 */}
               <Grid_2>
@@ -311,7 +334,13 @@ const EditUser = () => {
                   alignItems="center"
                   sx={{ width: "1181px" }}
                 >
-                  <Grid_2 sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}>
+                  <Grid_2
+                    sx={{
+                      width: "110px",
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                    }}
+                  >
                     <Typography></Typography>
                   </Grid_2>
                   <Grid_2
@@ -399,7 +428,13 @@ const EditUser = () => {
                   justifyContent="flex-start"
                   alignItems="center"
                 >
-                  <Typography sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}>
+                  <Typography
+                    sx={{
+                      width: "110px",
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                    }}
+                  >
                     닉네임
                   </Typography>
                   <input
@@ -445,7 +480,13 @@ const EditUser = () => {
                   alignItems="center"
                   sx={{ width: "1181px" }}
                 >
-                  <Grid_2 sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}>
+                  <Grid_2
+                    sx={{
+                      width: "110px",
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                    }}
+                  >
                     <Typography></Typography>
                   </Grid_2>
                   <Grid_2>
@@ -520,12 +561,16 @@ const EditUser = () => {
                     </CateBtn>
                     <CateBtn
                       onClick={() => {
-                        major === "프로그래밍" ? setMajor("") : setMajor("프로그래밍");
+                        major === "프로그래밍"
+                          ? setMajor("")
+                          : setMajor("프로그래밍");
                         setSelected(true);
                       }}
                     >
                       <Grid
-                        _className={major === "프로그래밍" ? "active" : "default"}
+                        _className={
+                          major === "프로그래밍" ? "active" : "default"
+                        }
                         bg={major === "프로그래밍" ? "#5BC8D2" : "#f5fcff"}
                       >
                         <p>프로그래밍</p>
@@ -592,7 +637,13 @@ const EditUser = () => {
                   sx={{ marginTop: "40px", width: "1181px" }}
                 >
                   <Grid_2>
-                    <Typography sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}>
+                    <Typography
+                      sx={{
+                        width: "110px",
+                        fontSize: "18px",
+                        fontWeight: "bold",
+                      }}
+                    >
                       자기소개
                     </Typography>
                   </Grid_2>
@@ -610,6 +661,7 @@ const EditUser = () => {
                       defaultValue={intro}
                       placeholder="자기소개를 부탁해요."
                       onChange={onIntroHandler}
+                      maxLength={100}
                     />
                   </Grid_2>
                 </Grid_2>
@@ -621,7 +673,13 @@ const EditUser = () => {
                   alignItems="center"
                 >
                   <Grid_2>
-                    <Typography sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}>
+                    <Typography
+                      sx={{
+                        width: "110px",
+                        fontSize: "18px",
+                        fontWeight: "bold",
+                      }}
+                    >
                       포트폴리오
                     </Typography>
                   </Grid_2>
@@ -651,7 +709,11 @@ const EditUser = () => {
                 >
                   <Grid_2>
                     <Typography
-                      sx={{ width: "110px", fontSize: "18px", fontWeight: "bold" }}
+                      sx={{
+                        width: "110px",
+                        fontSize: "18px",
+                        fontWeight: "bold",
+                      }}
                     ></Typography>
                   </Grid_2>
                   <Grid_2 sx={{ margin: "20px auto auto 10px" }}>

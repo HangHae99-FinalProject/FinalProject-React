@@ -19,7 +19,7 @@ import { history } from "../redux/configureStore";
 
 const cookies = new Cookies();
 
-const Alertmsg = React.forwardRef(function Alert(props, ref) {
+const AlertMsg = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
@@ -31,10 +31,8 @@ const Alert = () => {
   const pathName = useLocation();
 
   const isLogin = useSelector((state) => state.user.isLogin);
-  // console.log(isLogin);
-  // console.log(notification);
+
   const accessToken = cookies.get("accessToken");
-  const user = localStorage.getItem("userID");
 
   const EventSource = EventSourcePolyfill || NativeEventSource;
 
@@ -52,6 +50,7 @@ const Alert = () => {
 
       source.onmessage = (e) => {
         if (e.type === "message" && e.data.startsWith("{")) {
+          setNotification((prev) => [JSON.parse(e.data)]);
           setAlertOpen(true);
         }
       };
@@ -74,6 +73,26 @@ const Alert = () => {
         .catch((err) => {
           console.log(err);
         });
+    }
+  };
+
+  const handelDeleteMessage = (id) => {
+    console.log(id);
+    chatApi
+      .notificationDelete(id)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setNotification(notification.filter((a, idx) => a.id !== id));
+    if (notification) {
+      setNotificationCnt(notificationCnt - 1);
+      return;
+    } else if (!notificationCnt) {
+      setNotificationCnt();
+      is_open(false);
     }
   };
 
@@ -112,9 +131,7 @@ const Alert = () => {
           console.log(err);
         });
     }
-  }, [alertOpen]);
-
-  console.log(notification[notification.length] - 1?.content);
+  }, [alertOpen, isLogin]);
 
   if (pathName.pathname === "/") {
     return null;
@@ -126,19 +143,26 @@ const Alert = () => {
         <div className="listBox">
           {notification.map((a, idx) => {
             return (
-              <NotificationsList
-                key={idx}
-                onClick={() => {
-                  handelOpenMessage(a.id, a.url, a.status);
-                }}
-              >
+              <NotificationsList key={idx}>
                 <span
+                  className="delete"
+                  onClick={() => {
+                    handelDeleteMessage(a.id);
+                  }}
+                >
+                  x
+                </span>
+                <span
+                  onClick={() => {
+                    handelOpenMessage(a.id, a.url, a.status);
+                  }}
                   className={
                     a.status === true ? "readMessage" : "notificationsMsg"
                   }
                 >
                   {a.content}
                 </span>
+
                 <div className="line" />
               </NotificationsList>
             );
@@ -148,13 +172,21 @@ const Alert = () => {
       <div className={notificationCnt ? "notifications-cnt" : "cnt-zero"}>
         {notificationCnt}
       </div>
-
-      <img
-        src="https://velog.velcdn.com/images/tty5799/post/7fd59818-7932-4120-9c52-cdbc3615228c/image.png"
-        alt=""
-        className="imgBox"
-        onClick={handelOpenBtn}
-      />
+      {notificationCnt ? (
+        <img
+          src="https://velog.velcdn.com/images/tty5799/post/5709cebe-6e89-4ca8-8ae7-1d383feaf100/image.svg"
+          alt=""
+          className="imgBox"
+          onClick={handelOpenBtn}
+        />
+      ) : (
+        <img
+          src="https://velog.velcdn.com/images/tty5799/post/7fd59818-7932-4120-9c52-cdbc3615228c/image.png"
+          alt=""
+          className="imgBox"
+          onClick={handelOpenBtn}
+        />
+      )}
 
       <Snackbar
         open={alertOpen}
@@ -162,10 +194,9 @@ const Alert = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         onClose={handleAlertClose}
       >
-        <Alertmsg onClose={handleAlertClose} severity="success">
-          {notification.map((a, idx) => a[0]?.content)}
-          {/* {notification[notification.length]?.content} */}
-        </Alertmsg>
+        <AlertMsg onClose={handleAlertClose} severity="success">
+          {notification[notification.length - notification.length]?.content}
+        </AlertMsg>
       </Snackbar>
     </Container>
   );
@@ -179,19 +210,22 @@ const NotificationsList = styled.div`
   flex-direction: column;
   cursor: pointer;
   height: auto;
-  z-index: 9999px;
+
   .readMessage {
-    font-size: 19px;
+    font-size: 16px;
     font-weight: bold;
     line-height: 1.4;
     margin-bottom: 10px;
   }
   .notificationsMsg {
-    font-size: 19px;
+    font-size: 16px;
     font-weight: bold;
     line-height: 1.4;
     margin-bottom: 10px;
-    color: red;
+    color: #c2c0c1;
+    :hover {
+      color: #b9daf7;
+    }
   }
 
   .line {
@@ -199,12 +233,24 @@ const NotificationsList = styled.div`
     height: 2px;
     background-color: gray;
   }
-  :hover {
-    color: #b9daf7;
+  .delete {
+    margin-left: 90%;
+    margin-top: -4%;
+    :hover {
+      font-weight: bold;
+    }
   }
 `;
 
 const Container = styled.div`
+  /* .title {
+    position: fixed;
+    top: 55%;
+    right: 17%;
+    font-size: 30px;
+    font-weight: bold;
+  } */
+
   .notifications-cnt {
     display: flex;
     justify-content: center;
@@ -220,7 +266,7 @@ const Container = styled.div`
     border-radius: 50%;
     text-align: center;
     margin-left: 20px;
-    z-index: 9999px;
+    z-index: 999px;
     right: 6.3%;
     top: 85%;
   }
@@ -231,15 +277,13 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     background-color: #fff;
-    border: 2px solid gray;
-    /* padding: 20px; */
-    width: 350px;
-    height: 296px;
+    border: 1px solid gray;
+    width: 320px;
+    height: 295px;
     position: fixed;
     right: 10%;
-    top: 60%;
+    top: 58%;
     overflow: auto;
-    z-index: 9999px;
 
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -253,6 +297,8 @@ const Container = styled.div`
     top: 86%;
     right: 7%;
     cursor: pointer;
+    width: 32px;
+    height: 40px;
   }
 `;
 

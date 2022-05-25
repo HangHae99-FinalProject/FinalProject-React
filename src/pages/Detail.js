@@ -3,6 +3,7 @@ import Grid from "../elements/Grid";
 import styled from "styled-components";
 import ReactModal from "react-modal";
 import DetailImage from "../components/Detail/DetailImage";
+import Link from "../components/Link";
 
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
@@ -371,6 +372,7 @@ const Detail = () => {
               </BackImage>
             </ReactModal>
           </Container>
+          <Link />
           <Footer />
         </>
       )}

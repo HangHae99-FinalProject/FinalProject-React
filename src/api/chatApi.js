@@ -9,4 +9,6 @@ export const chatApi = {
   notificationRead: (notificationId) =>
     instance.post(`/notification/read/
   ${notificationId}`),
+  notificationDelete: (notificationId) =>
+    instance.delete(`/notifications/delete/${notificationId}`),
 };

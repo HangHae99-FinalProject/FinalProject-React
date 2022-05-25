@@ -5,6 +5,7 @@ import { chatApi } from "../api/chatApi";
 import MyChat from "../components/Chat/MyChat";
 import NotMyChat from "../components/Chat/NotMyChat";
 import Grid from "../elements/Grid";
+import Link from "../components/Link";
 
 import { history } from "../redux/configureStore";
 import { IoPaperPlane } from "react-icons/io5";
@@ -289,6 +290,7 @@ const Chat = (data) => {
           </ChatInput>
         </Grid>
       </Container>
+      <Link />
       <Footer />
     </BackImage>
   );

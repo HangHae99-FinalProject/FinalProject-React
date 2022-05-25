@@ -155,7 +155,6 @@ const __login = (_memberId, password) => {
       localStorage.setItem("major", major);
       localStorage.setItem("profileImg", profileImg);
       dispatch(login());
-      window.alert(`${nickname}님 반갑습니다~`);
       history.replace("/main");
     } catch (err) {
       dispatch(loginErrorCode(err.response.data.errorCode));

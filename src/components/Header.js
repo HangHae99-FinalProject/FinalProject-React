@@ -114,7 +114,7 @@ function Header(props) {
               <>
                 <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
                   <img
-                    src="https://velog.velcdn.com/images/tty5799/post/3463705e-84f3-4ab0-b779-f5af97e19050/image.png"
+                    src="https://velog.velcdn.com/images/tty5799/post/89054416-3241-4eaa-984e-931466ff2329/image.svg"
                     alt="logo"
                     style={{ marginLeft: "260px", height: "40px" }}
                   />

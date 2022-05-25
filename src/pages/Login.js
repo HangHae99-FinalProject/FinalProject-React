@@ -59,7 +59,11 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   function PwFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -77,7 +81,11 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   // 여기까지 헬퍼텍스트 -아이디, 패스워드
 
@@ -118,14 +126,17 @@ const Login = ({ location }) => {
       alert("이미 로그인을 하셨습니다!");
       history.replace("/main");
     }
-  }, []);
+  }, [isLogin]);
 
   return (
     <React.Fragment>
       <BgDiv>
         <Grid is_center margin="auto auto">
           <div style={{ marginBottom: "45px" }}>
-            <img src={require(`../assets/fixedSignupLogo.png`)} alt="signupLogo" />
+            <img
+              src={require(`../assets/fixedSignupLogo.png`)}
+              alt="signupLogo"
+            />
           </div>
           <form
             onSubmit={(event) => {

@@ -307,7 +307,7 @@ export default handleActions(
         // draft.appliedOverList.data.postUser = poster.filter(
         //   (a, idx) => a.userId !== action.payload.receiverIdPoster
         // );
-        draft.appliedOverList.data.postUser = {}
+        draft.appliedOverList.data.postUser = {};
       }),
     [INIT_USER_INFO]: (state, { payload }) =>
       produce(state, (draft) => {

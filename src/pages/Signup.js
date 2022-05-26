@@ -563,10 +563,10 @@ const Signup = () => {
                     variant="contained"
                     onClick={memberIdCheckBtn}
                     sx={{
-                      color: "black",
                       width: "132px",
                       height: "62px",
                       padding: "0",
+                      color:"#2967AC",
                       borderRadius: "14px",
                       border: "0",
                       fontSize: "20px",

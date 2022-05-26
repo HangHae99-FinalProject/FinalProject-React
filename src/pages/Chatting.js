@@ -15,6 +15,7 @@ const Chatting = () => {
   const { pathname } = useLocation();
   const from = localStorage.getItem("from");
   const user = localStorage.getItem("userId");
+  const isLogin = useSelector((state) => state.user.isLogin);
 
   const [rooms, setRooms] = useState([]);
   const [stomp, setStomp] = useState();
@@ -36,7 +37,7 @@ const Chatting = () => {
         setIs_Loading(false);
       })
       .catch((err) => {});
-  }, []);
+  }, [isLogin]);
   if (!user) {
     alert("로그인을 먼저 해주세요!");
     return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />;

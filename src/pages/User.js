@@ -83,9 +83,12 @@ const User = (props) => {
     (state) => state.myPage.appliedOverList.data?.postUser
   );
   const getAppliedOverList_reqruit = useSelector(
-    (state) => state.myPage.appliedOverList.data?.recruitUserList
+    (state) => state.myPage.getAppliedOverList_reqruit
   );
   const isSendedEmail = useSelector((state) => state.myPage.isSendedEmail);
+
+  const test = useSelector((state) => state.myPage.test);
+  console.log(test);
 
   var posterKeys = JSON.stringify(getAppliedOverList_postUser);
 
@@ -289,7 +292,8 @@ const User = (props) => {
             <BgDiv>
               <Grid>
                 <Grid>
-                  {getAppliedOverList_reqruit?.length === 0 ? (
+                  {test?.length === 0 ||
+                  getAppliedOverList_reqruit?.length === 0 ? (
                     <Grid
                       container
                       direction="column"
@@ -340,238 +344,257 @@ const User = (props) => {
                   sx={{ margin: "0", padding: "0" }}
                 >
                   {/* 모집글 작성자 */}
-                  {posterKeys === "{}" ? null : getAppliedOverList_postUser !==
-                    null ? (
-                    <Card
-                      sx={{
-                        width: "248px",
-                        height: "248px",
-                        margin: "auto",
-                        borderRadius: "14px",
-                      }}
-                    >
-                      <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
-                        <Grid
-                          container
-                          direction="row"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <img
-                            src={getAppliedOverList_postUser?.profileImg}
-                            alt="profileImg"
-                            style={{
-                              width: "80px",
-                              height: "80px",
-                              border: "1px solid #818181",
-                              borderRadius: "50%",
-                              marginRight: "5px",
-                            }}
-                          />
-                          <Typography
+                  {getAppliedOverList_postUser === null ? (
+                    <>
+                      {getAppliedOverList_reqruit?.map(
+                        (appliedOverList, idx) => {
+                          return (
+                            <Card
+                              key={idx}
+                              sx={{
+                                width: "248px",
+                                height: "248px",
+                                marginLeft: "15px",
+                                marginRight: "15px",
+                                borderRadius: "14px",
+                              }}
+                            >
+                              <CardContent
+                                sx={{ padding: "34px 20px 16px 20px" }}
+                              >
+                                <Grid
+                                  container
+                                  direction="row"
+                                  justifyContent="center"
+                                  alignItems="center"
+                                >
+                                  <img
+                                    src={appliedOverList?.profileImg}
+                                    alt="profileImg"
+                                    style={{
+                                      width: "80px",
+                                      height: "80px",
+                                      border: "1px solid #818181",
+                                      borderRadius: "50%",
+                                      marginRight: "5px",
+                                    }}
+                                  />
+                                  <Typography
+                                    sx={{
+                                      width: "85px",
+                                      height: "23px",
+                                      marginLeft: "5px",
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    {appliedOverList?.nickname}
+                                  </Typography>
+                                </Grid>
+                              </CardContent>
+                              <CardActions>
+                                <Grid
+                                  container
+                                  direction="column"
+                                  justifyContent="center"
+                                  alignItems="center"
+                                >
+                                  <Button
+                                    sx={{
+                                      width: "180px",
+                                      height: "40px",
+                                      background: "#4299E9",
+                                      borderRadius: "14px",
+                                      marginBottom: "5px",
+                                      "&:hover": {
+                                        backgroundColor: "#4299E9",
+                                        boxShadow:
+                                          "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                      },
+                                      boxShadow:
+                                        "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                    }}
+                                    variant="contained"
+                                    onClick={() => {
+                                      setReceiverId(appliedOverList.userId);
+                                      dispatch(
+                                        userInfoActions.__postEvaluations({
+                                          postId: postId,
+                                          receiverId: appliedOverList.userId,
+                                          point: 1,
+                                        })
+                                      );
+                                    }}
+                                  >
+                                    <FavoriteRoundedIcon
+                                      sx={{ marginRight: "12px" }}
+                                    />
+                                    또 모험 같이해요!
+                                  </Button>
+                                  <Button
+                                    sx={{
+                                      width: "180px",
+                                      height: "40px",
+                                      background: "#FE5953",
+                                      borderRadius: "14px",
+                                      marginTop: "5px",
+                                      "&:hover": {
+                                        backgroundColor: "#FE5953",
+                                        boxShadow:
+                                          "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                      },
+                                      boxShadow:
+                                        "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                    }}
+                                    variant="contained"
+                                    onClick={() => {
+                                      setReceiverId(appliedOverList.userId);
+                                      dispatch(
+                                        userInfoActions.__postEvaluations({
+                                          postId: postId,
+                                          receiverId: appliedOverList.userId,
+                                          point: 0,
+                                        })
+                                      );
+                                    }}
+                                  >
+                                    <PanToolRoundedIcon
+                                      sx={{ marginRight: "12px" }}
+                                    />
+                                    모험은 여기까지..
+                                  </Button>
+                                </Grid>
+                              </CardActions>
+                            </Card>
+                          );
+                        }
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {test?.map((appliedOverList, idx) => {
+                        return (
+                          <Card
+                            key={idx}
                             sx={{
-                              width: "85px",
-                              height: "23px",
-                              marginLeft: "5px",
-                              fontSize: "16px",
-                            }}
-                          >
-                            {getAppliedOverList_postUser?.nickname}
-                          </Typography>
-                        </Grid>
-                      </CardContent>
-                      <CardActions>
-                        <Grid
-                          container
-                          direction="column"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <Button
-                            sx={{
-                              width: "180px",
-                              height: "40px",
-                              background: "#4299E9",
+                              width: "248px",
+                              height: "248px",
+                              marginLeft: "15px",
+                              marginRight: "15px",
                               borderRadius: "14px",
-                              marginBottom: "5px",
-                              "&:hover": {
-                                backgroundColor: "#4299E9",
-                                boxShadow:
-                                  "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                              },
-                              boxShadow:
-                                "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                            }}
-                            variant="contained"
-                            onClick={() => {
-                              setReceiverId(getAppliedOverList_postUser.userId);
-                              dispatch(
-                                userInfoActions.__postEvaluation({
-                                  postId: postId,
-                                  receiverId:
-                                    getAppliedOverList_postUser.userId,
-                                  point: 1,
-                                })
-                              );
                             }}
                           >
-                            <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />
-                            또 모험 같이해요!
-                          </Button>
-                          <Button
-                            sx={{
-                              width: "180px",
-                              height: "40px",
-                              background: "#FE5953",
-                              borderRadius: "14px",
-                              marginTop: "5px",
-                              "&:hover": {
-                                backgroundColor: "#FE5953",
-                                boxShadow:
-                                  "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                              },
-                              boxShadow:
-                                "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                            }}
-                            variant="contained"
-                            onClick={() => {
-                              setReceiverId(getAppliedOverList_postUser.userId);
-                              dispatch(
-                                userInfoActions.__postEvaluation({
-                                  postId: postId,
-                                  receiverId:
-                                    getAppliedOverList_postUser.userId,
-                                  point: 0,
-                                })
-                              );
-                            }}
-                          >
-                            <PanToolRoundedIcon sx={{ marginRight: "12px" }} />
-                            모험은 여기까지..
-                          </Button>
-                        </Grid>
-                      </CardActions>
-                    </Card>
-                  ) : null}
+                            <CardContent
+                              sx={{ padding: "34px 20px 16px 20px" }}
+                            >
+                              <Grid
+                                container
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="center"
+                              >
+                                <img
+                                  src={appliedOverList?.profileImg}
+                                  alt="profileImg"
+                                  style={{
+                                    width: "80px",
+                                    height: "80px",
+                                    border: "1px solid #818181",
+                                    borderRadius: "50%",
+                                    marginRight: "5px",
+                                  }}
+                                />
+                                <Typography
+                                  sx={{
+                                    width: "85px",
+                                    height: "23px",
+                                    marginLeft: "5px",
+                                    fontSize: "16px",
+                                  }}
+                                >
+                                  {appliedOverList?.nickname}
+                                </Typography>
+                              </Grid>
+                            </CardContent>
+                            <CardActions>
+                              <Grid
+                                container
+                                direction="column"
+                                justifyContent="center"
+                                alignItems="center"
+                              >
+                                <Button
+                                  sx={{
+                                    width: "180px",
+                                    height: "40px",
+                                    background: "#4299E9",
+                                    borderRadius: "14px",
+                                    marginBottom: "5px",
+                                    "&:hover": {
+                                      backgroundColor: "#4299E9",
+                                      boxShadow:
+                                        "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                    },
+                                    boxShadow:
+                                      "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                  }}
+                                  variant="contained"
+                                  onClick={() => {
+                                    setReceiverId(appliedOverList.userId);
+                                    dispatch(
+                                      userInfoActions.__postEvaluation({
+                                        postId: postId,
+                                        receiverId: appliedOverList.userId,
+                                        point: 1,
+                                      })
+                                    );
+                                  }}
+                                >
+                                  <FavoriteRoundedIcon
+                                    sx={{ marginRight: "12px" }}
+                                  />
+                                  또 모험 같이해요!
+                                </Button>
+                                <Button
+                                  sx={{
+                                    width: "180px",
+                                    height: "40px",
+                                    background: "#FE5953",
+                                    borderRadius: "14px",
+                                    marginTop: "5px",
+                                    "&:hover": {
+                                      backgroundColor: "#FE5953",
+                                      boxShadow:
+                                        "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                    },
+                                    boxShadow:
+                                      "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                  }}
+                                  variant="contained"
+                                  onClick={() => {
+                                    setReceiverId(appliedOverList.userId);
+                                    dispatch(
+                                      userInfoActions.__postEvaluation({
+                                        postId: postId,
+                                        receiverId: appliedOverList.userId,
+                                        point: 0,
+                                      })
+                                    );
+                                  }}
+                                >
+                                  <PanToolRoundedIcon
+                                    sx={{ marginRight: "12px" }}
+                                  />
+                                  모험은 여기까지..
+                                </Button>
+                              </Grid>
+                            </CardActions>
+                          </Card>
+                        );
+                      })}
+                    </>
+                  )}
+
                   {/* 지원자 리스트 */}
-                  {getAppliedOverList_reqruit?.map((appliedOverList, idx) => {
-                    return (
-                      <Card
-                        key={idx}
-                        sx={{
-                          width: "248px",
-                          height: "248px",
-                          marginLeft: "15px",
-                          marginRight: "15px",
-                          borderRadius: "14px",
-                        }}
-                      >
-                        <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
-                          <Grid
-                            container
-                            direction="row"
-                            justifyContent="center"
-                            alignItems="center"
-                          >
-                            <img
-                              src={appliedOverList.profileImg}
-                              alt="profileImg"
-                              style={{
-                                width: "80px",
-                                height: "80px",
-                                border: "1px solid #818181",
-                                borderRadius: "50%",
-                                marginRight: "5px",
-                              }}
-                            />
-                            <Typography
-                              sx={{
-                                width: "85px",
-                                height: "23px",
-                                marginLeft: "5px",
-                                fontSize: "16px",
-                              }}
-                            >
-                              {appliedOverList.nickname}
-                            </Typography>
-                          </Grid>
-                        </CardContent>
-                        <CardActions>
-                          <Grid
-                            container
-                            direction="column"
-                            justifyContent="center"
-                            alignItems="center"
-                          >
-                            <Button
-                              sx={{
-                                width: "180px",
-                                height: "40px",
-                                background: "#4299E9",
-                                borderRadius: "14px",
-                                marginBottom: "5px",
-                                "&:hover": {
-                                  backgroundColor: "#4299E9",
-                                  boxShadow:
-                                    "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                                },
-                                boxShadow:
-                                  "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                              }}
-                              variant="contained"
-                              onClick={() => {
-                                setReceiverId(appliedOverList.userId);
-                                dispatch(
-                                  userInfoActions.__postEvaluation({
-                                    postId: postId,
-                                    receiverId: appliedOverList.userId,
-                                    point: 1,
-                                  })
-                                );
-                              }}
-                            >
-                              <FavoriteRoundedIcon
-                                sx={{ marginRight: "12px" }}
-                              />
-                              또 모험 같이해요!
-                            </Button>
-                            <Button
-                              sx={{
-                                width: "180px",
-                                height: "40px",
-                                background: "#FE5953",
-                                borderRadius: "14px",
-                                marginTop: "5px",
-                                "&:hover": {
-                                  backgroundColor: "#FE5953",
-                                  boxShadow:
-                                    "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                                },
-                                boxShadow:
-                                  "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                              }}
-                              variant="contained"
-                              onClick={() => {
-                                setReceiverId(appliedOverList.userId);
-                                dispatch(
-                                  userInfoActions.__postEvaluation({
-                                    postId: postId,
-                                    receiverId: appliedOverList.userId,
-                                    point: 0,
-                                  })
-                                );
-                              }}
-                            >
-                              <PanToolRoundedIcon
-                                sx={{ marginRight: "12px" }}
-                              />
-                              모험은 여기까지..
-                            </Button>
-                          </Grid>
-                        </CardActions>
-                      </Card>
-                    );
-                  })}
                 </Grid>
               </Grid>
             </BgDiv>

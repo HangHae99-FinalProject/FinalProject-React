@@ -281,7 +281,7 @@ const SearchPreview = styled.div`
   background-color: #feffff;
   overflow: auto;
   border: 2px solid #d8d8d8;
-  top: 550px;
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 

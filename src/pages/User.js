@@ -14,6 +14,7 @@ import Pagination from "../components/MyPage/Pagination";
 import ModalWindow from "../elements/ModalWindow";
 import Footer from "../elements/Footer";
 import Link from "../components/Link";
+import produce from "immer";
 
 import PropTypes from "prop-types";
 import Tab from "@mui/material/Tab";
@@ -53,6 +54,7 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 }));
 
 const User = (props) => {
+  const arr = [];
   const params = useParams();
   const id = localStorage.getItem("userId");
   const dispatch = useDispatch();
@@ -88,8 +90,7 @@ const User = (props) => {
   const pathName = useLocation();
   const userId = pathName.pathname.split("/")[2];
 
-  var likeRatio =
-    (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
+  var likeRatio = (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }
@@ -132,7 +133,7 @@ const User = (props) => {
     dispatch(userInfoActions.__getUserInfo(userId));
     dispatch(userInfoActions.__getApplied(userId));
     dispatch(userInfoActions.__getRecruit(userId));
-    dispatch(userInfoActions.__getAppliedOver(userId));
+    // dispatch(userInfoActions.__getAppliedOver(postId));
     dispatch(userInfoActions.__getRecruitOver(userId));
   }, [dispatch, userId, pathName]);
 
@@ -208,12 +209,7 @@ const User = (props) => {
                     emailCheckBtn();
                   }}
                 >
-                  <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
+                  <Grid container direction="column" justifyContent="center" alignItems="center">
                     <input
                       type="text"
                       placeholder="이메일을 입력해주세요"
@@ -247,11 +243,7 @@ const User = (props) => {
                   </Grid>
                 </form>
               </Grid>
-              <Footer
-                position="absolute"
-                width="1200px"
-                borderRadius="0px 0px 20px 20px"
-              />
+              <Footer position="absolute" width="1200px" borderRadius="0px 0px 20px 20px" />
             </>
           )}
         </ModalWindow>
@@ -285,7 +277,22 @@ const User = (props) => {
             <BgDiv>
               <Grid>
                 <Grid>
-                  {getAppliedOverList_reqruit?.length === 0 ? (
+                  {getAppliedOverList_postUser !== null ? (
+                    <Typography
+                      sx={{
+                        marginTop: "100px",
+                        marginBottom: "40px",
+                        fontSize: "32px",
+                        fontWeight: "bold",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      함께 모험한 선장들의 리뷰를 남겨주세요.
+                    </Typography>
+                  ) : getAppliedOverList_reqruit?.length === 0 ? (
                     <Grid container direction="column" justifyContent="center" alignItems="center">
                       <Typography
                         sx={{
@@ -328,11 +335,10 @@ const User = (props) => {
                   direction="row"
                   justifyContent="center"
                   alignItems="center"
-                  sx={{ margin: "0", padding: "0" }}
+                  sx={{ margin: "0 0 16px 0", padding: "0" }}
                 >
                   {/* 모집글 작성자 */}
-                  {posterKeys === "{}" ? null : getAppliedOverList_postUser !==
-                    null ? (
+                  {posterKeys === "{}" ? null : getAppliedOverList_postUser !== null ? (
                     <Card
                       sx={{
                         width: "248px",
@@ -342,12 +348,7 @@ const User = (props) => {
                       }}
                     >
                       <CardContent sx={{ padding: "34px 20px 16px 20px" }}>
-                        <Grid
-                          container
-                          direction="row"
-                          justifyContent="center"
-                          alignItems="center"
-                        >
+                        <Grid container direction="row" justifyContent="center" alignItems="center">
                           <img
                             src={getAppliedOverList_postUser?.profileImg}
                             alt="profileImg"
@@ -387,11 +388,9 @@ const User = (props) => {
                               marginBottom: "5px",
                               "&:hover": {
                                 backgroundColor: "#4299E9",
-                                boxShadow:
-                                  "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                               },
-                              boxShadow:
-                                "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                              boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                             }}
                             variant="contained"
                             onClick={() => {
@@ -399,15 +398,13 @@ const User = (props) => {
                               dispatch(
                                 userInfoActions.__postEvaluation({
                                   postId: postId,
-                                  receiverId:
-                                    getAppliedOverList_postUser.userId,
+                                  receiverId: getAppliedOverList_postUser.userId,
                                   point: 1,
                                 })
                               );
                             }}
                           >
-                            <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />
-                            또 모험 같이해요!
+                            <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또 모험 같이해요!
                           </Button>
                           <Button
                             sx={{
@@ -418,11 +415,9 @@ const User = (props) => {
                               marginTop: "5px",
                               "&:hover": {
                                 backgroundColor: "#FE5953",
-                                boxShadow:
-                                  "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                               },
-                              boxShadow:
-                                "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                              boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                             }}
                             variant="contained"
                             onClick={() => {
@@ -430,8 +425,7 @@ const User = (props) => {
                               dispatch(
                                 userInfoActions.__postEvaluation({
                                   postId: postId,
-                                  receiverId:
-                                    getAppliedOverList_postUser.userId,
+                                  receiverId: getAppliedOverList_postUser.userId,
                                   point: 0,
                                 })
                               );
@@ -468,8 +462,8 @@ const User = (props) => {
                               src={appliedOverList.profileImg}
                               alt="profileImg"
                               style={{
-                                width: "80px",
-                                height: "80px",
+                                width: "77px",
+                                height: "77px",
                                 border: "1px solid #818181",
                                 borderRadius: "50%",
                                 marginRight: "5px",
@@ -477,7 +471,7 @@ const User = (props) => {
                             />
                             <Typography
                               sx={{
-                                width: "85px",
+                                width: "98px",
                                 height: "23px",
                                 marginLeft: "5px",
                                 fontSize: "16px",
@@ -496,18 +490,16 @@ const User = (props) => {
                           >
                             <Button
                               sx={{
-                                width: "180px",
+                                width: "188px",
                                 height: "40px",
                                 background: "#4299E9",
                                 borderRadius: "14px",
                                 marginBottom: "5px",
                                 "&:hover": {
                                   backgroundColor: "#4299E9",
-                                  boxShadow:
-                                    "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                  boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                                 },
-                                boxShadow:
-                                  "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                               }}
                               variant="contained"
                               onClick={() => {
@@ -521,25 +513,20 @@ const User = (props) => {
                                 );
                               }}
                             >
-                              <FavoriteRoundedIcon
-                                sx={{ marginRight: "12px" }}
-                              />
-                              또 모험 같이해요!
+                              <FavoriteRoundedIcon sx={{ marginRight: "12px" }} />또 모험 같이해요!
                             </Button>
                             <Button
                               sx={{
-                                width: "180px",
+                                width: "188px",
                                 height: "40px",
                                 background: "#FE5953",
                                 borderRadius: "14px",
                                 marginTop: "5px",
                                 "&:hover": {
                                   backgroundColor: "#FE5953",
-                                  boxShadow:
-                                    "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                  boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                                 },
-                                boxShadow:
-                                  "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                               }}
                               variant="contained"
                               onClick={() => {
@@ -553,9 +540,7 @@ const User = (props) => {
                                 );
                               }}
                             >
-                              <PanToolRoundedIcon
-                                sx={{ marginRight: "12px" }}
-                              />
+                              <PanToolRoundedIcon sx={{ marginRight: "12px" }} />
                               모험은 여기까지..
                             </Button>
                           </Grid>
@@ -582,12 +567,7 @@ const User = (props) => {
               "& .MuiTextField-root": { marginLeft: "24px", width: "1370px" },
             }}
           >
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="flex-end"
-            >
+            <Grid container direction="row" justifyContent="space-between" alignItems="flex-end">
               <Grid>
                 <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
                   {getUserInfo.nickname}
@@ -608,9 +588,7 @@ const User = (props) => {
                                 justifyContent="flex-end"
                                 alignItems="center"
                               >
-                                <Typography>
-                                  알림받는 이메일이 없습니다.
-                                </Typography>
+                                <Typography>알림받는 이메일이 없습니다.</Typography>
                               </Grid>
                             ) : (
                               <Grid
@@ -619,9 +597,7 @@ const User = (props) => {
                                 justifyContent="flex-end"
                                 alignItems="center"
                               >
-                                <Typography>
-                                  알림받는 이메일: test@test.com
-                                </Typography>
+                                <Typography>알림받는 이메일: test@test.com</Typography>
                               </Grid>
                             )}
                           </Typography>
@@ -691,20 +667,13 @@ const User = (props) => {
               }}
             >
               <Grid sx={{ marginLeft: "100px" }}>
-                <Grid
-                  container
-                  direction="column"
-                  justifyContent="center"
-                  alignItems="center"
-                >
+                <Grid container direction="column" justifyContent="center" alignItems="center">
                   <HtmlTooltip
                     title={
                       <React.Fragment>
                         <Typography>
-                          현재까지 협업횟수는{" "}
-                          <span style={{ fontWeight: "bold" }}>
-                            {getUserInfo.projectCount}{" "}
-                          </span>{" "}
+                          현재까지 협업횟수는&nbsp;
+                          <span style={{ fontWeight: "bold" }}>{getUserInfo.projectCount}회</span>
                           입니다.
                         </Typography>
                       </React.Fragment>
@@ -723,12 +692,7 @@ const User = (props) => {
                       </div>
                     </Profile>
                   </HtmlTooltip>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
+                  <Grid container direction="row" justifyContent="center" alignItems="center">
                     {likeRatio <= 40 ? (
                       <img src={amateurCap} alt="amateurCap" />
                     ) : 71 <= likeRatio ? (
@@ -737,9 +701,7 @@ const User = (props) => {
                       <img src={juniorCap} alt="juniorCap" />
                     )}
                     &nbsp;&nbsp;
-                    <Typography sx={{ fontSize: "20px" }}>
-                      {evaluationRatio}
-                    </Typography>
+                    <Typography sx={{ fontSize: "20px" }}>{evaluationRatio}</Typography>
                   </Grid>
                   <Grid>
                     <Typography sx={{ fontSize: "16px", color: "#818181" }}>
@@ -819,15 +781,8 @@ const User = (props) => {
             alignItems="center"
             sx={{ width: "1370px", marginTop: "24px" }}
           >
-            <Grid
-              container
-              direction="column"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-            >
-              <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-                나의 프로젝트
-              </Typography>
+            <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start">
+              <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>나의 프로젝트</Typography>
               {/* 페이지네이션 게시물 수 셀렉터 */}
               <label style={{ fontSize: "14px" }}>
                 페이지당 표시할 게시물 수:&nbsp;
@@ -855,11 +810,7 @@ const User = (props) => {
               }}
             >
               {/* 탭 속성 */}
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="basic tabs example"
-              >
+              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                 <Tab
                   sx={{ width: "456px" }}
                   label={userId === id ? "신청중" : "진행중"}
@@ -896,42 +847,38 @@ const User = (props) => {
                     선장모집에 신청해보세요!
                   </Typography>
                 ) : (
-                  getAppliedList
-                    ?.slice(offset, offset + limit)
-                    .map((appliedList, idx) => {
-                      return (
-                        <ListItem
+                  getAppliedList?.slice(offset, offset + limit).map((appliedList, idx) => {
+                    return (
+                      <ListItem
+                        sx={{
+                          padding: "0px 16px",
+                        }}
+                        button
+                        key={idx}
+                        divider
+                      >
+                        <Grid
                           sx={{
-                            padding: "0px 16px",
+                            margin: "10px 0px",
+                            height: "90px",
                           }}
-                          button
-                          key={idx}
-                          divider
+                          container
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
                         >
-                          <Grid
-                            sx={{
-                              margin: "10px 0px",
-                              height: "90px",
+                          <ListItemText
+                            onClick={() => {
+                              history.push(`/detail/${appliedList.postId}`);
                             }}
-                            container
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
                           >
-                            <ListItemText
-                              onClick={() => {
-                                history.push(`/detail/${appliedList.postId}`);
-                              }}
-                            >
-                              {appliedList.title}
-                              <ArrowForwardIosRoundedIcon
-                                style={{ verticalAlign: "middle" }}
-                              />
-                            </ListItemText>
-                          </Grid>
-                        </ListItem>
-                      );
-                    })
+                            {appliedList.title}
+                            <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                          </ListItemText>
+                        </Grid>
+                      </ListItem>
+                    );
+                  })
                 )}
                 <footer>
                   <Pagination
@@ -970,11 +917,9 @@ const User = (props) => {
                     프로젝트를 시작해보세요!
                   </Typography>
                 ) : (
-                  getRecruitList
-                    ?.slice(offset, offset + limit)
-                    .map((recruitList, idx) => {
-                      return (
-                        <ListItem
+                  getRecruitList?.slice(offset, offset + limit).map((recruitList, idx) => {
+                    return (
+                      <ListItem
                         sx={{
                           padding: "0px 16px",
                         }}
@@ -1030,11 +975,9 @@ const User = (props) => {
                                     background: "#4299E9",
                                     "&:hover": {
                                       backgroundColor: "#4299E9",
-                                      boxShadow:
-                                        "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                                     },
-                                    boxShadow:
-                                      "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                                   }}
                                   variant="contained"
                                   onClick={() => {
@@ -1048,8 +991,8 @@ const User = (props) => {
                           )}
                         </Grid>
                       </ListItem>
-                      );
-                    })
+                    );
+                  })
                 )}
                 <footer>
                   <Pagination
@@ -1088,80 +1031,70 @@ const User = (props) => {
                     아직 모험중!
                   </Typography>
                 ) : (
-                  getRecruitOverList
-                    ?.slice(offset, offset + limit)
-                    .map((recruitOverList, idx) => {
-                      return (
-                        <ListItem
+                  getRecruitOverList?.slice(offset, offset + limit).map((recruitOverList, idx) => {
+                    return (
+                      <ListItem
+                        sx={{
+                          padding: "0px 16px",
+                        }}
+                        button
+                        key={idx}
+                        divider
+                      >
+                        <Grid
                           sx={{
-                            padding: "0px 16px",
+                            margin: "10px 0px",
+                            height: "90px",
                           }}
-                          button
-                          key={idx}
-                          divider
+                          container
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
                         >
-                          <Grid
-                            sx={{
-                              margin: "10px 0px",
-                              height: "90px",
+                          <ListItemText
+                            onClick={() => {
+                              history.push(`/detail/${recruitOverList.postId}`);
                             }}
-                            container
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
                           >
-                            <ListItemText
-                              onClick={() => {
-                                history.push(
-                                  `/detail/${recruitOverList.postId}`
-                                );
-                              }}
-                            >
-                              {recruitOverList.title}
-                              <ArrowForwardIosRoundedIcon
-                                style={{ verticalAlign: "middle" }}
-                              />
-                            </ListItemText>
-                            {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
-                            {userId !== id ? (
-                              <Grid></Grid>
-                            ) : (
-                              <Grid>
-                                <Button
-                                  sx={{
-                                    marginTop: "5px",
-                                    width: "190px",
-                                    height: "40px",
-                                    border: "0",
-                                    borderRadius: "14px",
-                                    background: "#4299E9",
-                                    "&:hover": {
-                                      backgroundColor: "#4299E9",
-                                      boxShadow:
-                                        "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                                    },
-                                    boxShadow:
-                                      "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                                  }}
-                                  variant="contained"
-                                  onClick={() => {
-                                    setPostId(recruitOverList.postId);
-                                    modalHandelBtn();
-                                    dispatch(
-                                      userInfoActions.__getAppliedOver(
-                                        recruitOverList.postId
-                                      )
-                                    );
-                                  }}
-                                >
-                                  선장리뷰
-                                </Button>
-                              </Grid>
-                            )}
-                          </Grid>
-                        </ListItem>
-                      );
-                    })
+                            {recruitOverList.title}
+                            <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
+                          </ListItemText>
+                          {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
+                          {userId !== id ? (
+                            <Grid></Grid>
+                          ) : (
+                            <Grid>
+                              <Button
+                                sx={{
+                                  marginTop: "5px",
+                                  width: "190px",
+                                  height: "40px",
+                                  border: "0",
+                                  borderRadius: "14px",
+                                  background: "#4299E9",
+                                  "&:hover": {
+                                    backgroundColor: "#4299E9",
+                                    boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                  },
+                                  boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                }}
+                                variant="contained"
+                                onClick={() => {
+                                  setPostId(recruitOverList.postId);
+                                  modalHandelBtn();
+                                  dispatch(
+                                    userInfoActions.__getAppliedOver(recruitOverList.postId)
+                                  );
+                                }}
+                              >
+                                선장리뷰
+                              </Button>
+                            </Grid>
+                          )}
+                        </Grid>
+                      </ListItem>
+                    );
+                  })
                 )}
                 <footer>
                   <Pagination

@@ -181,11 +181,12 @@ const EditPost = () => {
               <MenuItem style={{ fontSize: "20px" }} value={"강원"}>
                 강원
               </MenuItem>
+
               <MenuItem style={{ fontSize: "20px" }} value={"전북"}>
                 전북
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"전라"}>
-                전라
+              <MenuItem style={{ fontSize: "20px" }} value={"전남"}>
+                전남
               </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={"충북"}>
                 충북
@@ -193,17 +194,14 @@ const EditPost = () => {
               <MenuItem style={{ fontSize: "20px" }} value={"충남"}>
                 충남
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"경남"}>
-                경남
-              </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={"경북"}>
                 경북
               </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"경남"}>
+                경남
+              </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={"제주"}>
                 제주
-              </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"온라인"}>
-                온라인
               </MenuItem>
             </Select>
           </FormControl>

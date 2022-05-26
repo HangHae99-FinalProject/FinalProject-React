@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Grid from "../../elements/Grid";
 
@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { actionCreates as applyActions } from "../../redux/modules/apply";
 import { history } from "../../redux/configureStore";
+import { actionCreators as chatActions } from "../../redux/modules/chat";
 
 const AppliedCard = (item) => {
   const dispatch = useDispatch();
@@ -17,6 +18,11 @@ const AppliedCard = (item) => {
 
   const refuseDto = {
     userId: item.userId,
+    postId: param.postid,
+  };
+
+  const addRoomData = {
+    toUserId: item.userId,
     postId: param.postid,
   };
 
@@ -38,6 +44,18 @@ const AppliedCard = (item) => {
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }
+
+  const chatHandelBtn = () => {
+    for (let i = 0; i < item.roomUserId.length; i++) {
+      console.log(item.roomUserId[i]);
+      if (item.userId === item.roomUserId[i]) {
+        console.log(i);
+        alert("이미 채팅방이 존재 합니다!");
+        return;
+      }
+    }
+    dispatch(chatActions.__addRoom(addRoomData));
+  };
 
   var evaluationRatio = null;
 
@@ -121,6 +139,9 @@ const AppliedCard = (item) => {
       <CommentBox>
         <span>{item.message}</span>
       </CommentBox>
+      <span className="chatButton" onClick={chatHandelBtn}>
+        채팅
+      </span>
     </Container>
   );
 };
@@ -209,6 +230,7 @@ const Profile = styled.div`
       display: none;
       text-align: center;
       background-color: #f5f5f9;
+      width: 150px;
       padding: 10px;
       max-width: 220px;
       position: absolute;
@@ -276,14 +298,31 @@ const RatingImg = styled.img`
 `;
 
 const Container = styled.div`
-  height: 399px;
-  width: 414px;
+  width: 399px;
   display: inline-block;
   margin-left: 2.5%;
   border: 1px solid #c2c0c1;
   border-radius: 14px;
   margin-right: 1%;
   margin-top: 3%;
+
+  .chatButton {
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 375px;
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background: #ffd082;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 14px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+  }
 `;
 
 export default AppliedCard;

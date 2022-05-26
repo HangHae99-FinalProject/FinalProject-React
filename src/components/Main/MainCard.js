@@ -14,7 +14,7 @@ const MainCard = (item) => {
 
   React.useEffect(() => {
     const created = item.item.createdAt;
-
+    console.log(created);
     const createdTime = new Date(created);
     const today = new Date();
 
@@ -27,7 +27,7 @@ const MainCard = (item) => {
     const createdAtTime = Math.floor(
       (today.getTime() - createdTime.getTime()) / 1000 / 60
     );
-
+    console.log(createdAtTime);
     if (createdAtTime < 1) return setIS_createdAt("방금전");
 
     if (createdAtTime < 60) {
@@ -42,8 +42,9 @@ const MainCard = (item) => {
     if (createdAtTimeDay < 365) {
       return setIS_createdAt(createdDay);
     }
+    console.log(is_createdAt);
   }, []);
-
+  console.log(is_createdAt);
   return (
     <Container
       onClick={() => {

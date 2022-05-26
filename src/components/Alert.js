@@ -216,8 +216,8 @@ const Alert = () => {
 const NotificationsList = styled.div`
   margin-top: 15px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  margin-left: 20px;
   flex-direction: column;
   cursor: pointer;
   height: auto;
@@ -241,7 +241,7 @@ const NotificationsList = styled.div`
   }
 
   .line {
-    width: 340px;
+    width: 93%;
     height: 2px;
     background-color: gray;
   }
@@ -288,13 +288,14 @@ const Container = styled.div`
   .listBox {
     display: flex;
     flex-direction: column;
+
     background-color: #fff;
     border: 1px solid gray;
-    width: 350px;
+    width: 420px;
     height: 295px;
     position: fixed;
     right: 10%;
-    top: 62%;
+    top: 58%;
     overflow: auto;
 
     -ms-overflow-style: none;

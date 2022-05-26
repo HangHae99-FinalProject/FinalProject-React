@@ -975,22 +975,27 @@ const User = (props) => {
                     .map((recruitList, idx) => {
                       return (
                         <ListItem
+                        sx={{
+                          padding: "0px 16px",
+                        }}
+                        button
+                        key={idx}
+                        divider
+                      >
+                        <Grid
                           sx={{
-                            padding: "0px 16px",
+                            margin: "10px 0px",
+                            height: "90px",
                           }}
-                          button
-                          key={idx}
-                          divider
+                          container
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
                         >
-                          <Grid
-                            sx={{
-                              margin: "10px 0px",
-                              height: "90px",
+                          <ListItemText
+                            onClick={() => {
+                              history.push(`/detail/${recruitList.postId}`);
                             }}
-                            container
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
                           >
                             {recruitList.title}
                             <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
@@ -1014,47 +1019,35 @@ const User = (props) => {
                               >
                                 {recruitList.userApplyList.length}명의 선장이 신청했어요!
                               </button>
+
                               <Grid>
-                                <button
-                                  style={{
-                                    color: "#FE5953",
-                                    border: "1px solid #FE5953",
-                                    background: "white",
-                                    marginBotton: "5px",
+                                <Button
+                                  sx={{
+                                    marginTop: "5px",
                                     width: "190px",
                                     height: "40px",
                                     borderRadius: "14px",
+                                    background: "#4299E9",
+                                    "&:hover": {
+                                      backgroundColor: "#4299E9",
+                                      boxShadow:
+                                        "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                    },
+                                    boxShadow:
+                                      "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                                   }}
-                                  variant="outlined"
+                                  variant="contained"
+                                  onClick={() => {
+                                    history.push(`/applied/${recruitList.postId}`);
+                                  }}
                                 >
-                                  {recruitList.userApplyList.length}명의 선장이
-                                  신청했어요!
-                                </button>
-
-                                <Grid>
-                                  <Button
-                                    sx={{
-                                      marginTop: "5px",
-                                      width: "190px",
-                                      height: "40px",
-                                      borderRadius: "14px",
-                                      background: "#4299E9",
-                                      "&:hover": { backgroundColor: "#4299E9" },
-                                    }}
-                                    variant="contained"
-                                    onClick={() => {
-                                      history.push(
-                                        `/applied/${recruitList.postId}`
-                                      );
-                                    }}
-                                  >
-                                    선장명단 보러가기
-                                  </Button>
-                                </Grid>
+                                  선장명단 보러가기
+                                </Button>
                               </Grid>
-                            )}
-                          </Grid>
-                        </ListItem>
+                            </Grid>
+                          )}
+                        </Grid>
+                      </ListItem>
                       );
                     })
                 )}

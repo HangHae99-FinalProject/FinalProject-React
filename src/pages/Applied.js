@@ -23,6 +23,7 @@ const Applied = () => {
 
   const majorList = useSelector((state) => state.apply.majorList);
   const roomUserId = useSelector((state) => state.chat.roomUserId);
+  const majorData = subscriber.majorList;
 
   const acceptListList = useSelector(
     (state) => state.apply.acceptListList.applyUserLists
@@ -176,7 +177,13 @@ const Applied = () => {
             <>
               {subscriberList?.map((a, idx) => {
                 return (
-                  <ApplyCard {...a} id={id} roomUserId={roomUserId} key={idx} />
+                  <ApplyCard
+                    {...a}
+                    id={id}
+                    roomUserId={roomUserId}
+                    majorData={majorData}
+                    key={idx}
+                  />
                 );
               })}
             </>
@@ -461,7 +468,7 @@ const ButtonBox = styled.div`
 
 const Container = styled.div`
   width: 1370px;
-
+  height: 1000px;
   margin: 3% auto;
 `;
 

@@ -145,21 +145,20 @@ const Chat = (data) => {
   const ModalControl = () => {
     if (is_open) {
       setIs_open(false);
-      document.body.style.cssText = `
-      position: none; 
-      overflow-y: none;
-      width: 100%;
-      `;
     } else {
       setIs_open(true);
-      document.body.style.cssText = `
-      position: fixed; 
-      overflow-y: scroll;
-      width: 100%;
-      `;
     }
   };
+  useEffect(() => {
+    window.onbeforeunload = function () {
+      return true;
+    };
 
+    return () => {
+      window.onbeforeunload = null;
+      return false;
+    };
+  }, []);
   return (
     <BackImage>
       <Container>
@@ -206,6 +205,7 @@ const Chat = (data) => {
                       onClick={() => {
                         ModalControl();
                         OptionTwoControl();
+                        alert("준비중 입니다!");
                       }}
                     >
                       신고하기
@@ -216,6 +216,7 @@ const Chat = (data) => {
                       onClick={() => {
                         ModalControl();
                         OptionThreeControl();
+                        alert("준비중 입니다!");
                       }}
                     >
                       차단하기
@@ -341,9 +342,9 @@ const Container = styled.div`
 
         background-color: white;
         position: absolute;
-        top: -8%;
+        top: 10%;
         left: 71.9%;
-        transform: translate(-50%, 110%);
+        transform: translate(-50%, 50%);
         display: flex;
         flex-direction: column;
         text-align: center;
@@ -352,7 +353,8 @@ const Container = styled.div`
         filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
         cursor: pointer;
         .unactive {
-          font-size: 16px;
+          /* padding: 8px 8px; */
+          font-size: 20px;
         }
       }
     }

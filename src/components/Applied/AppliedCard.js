@@ -47,9 +47,7 @@ const AppliedCard = (item) => {
 
   const chatHandelBtn = () => {
     for (let i = 0; i < item.roomUserId.length; i++) {
-      console.log(item.roomUserId[i]);
       if (item.userId === item.roomUserId[i]) {
-        console.log(i);
         alert("이미 채팅방이 존재 합니다!");
         return;
       }

@@ -8,24 +8,42 @@ import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 const EditImage = (props) => {
-  const { image,marginTop, marginLeft, display, marginRight, padding, fontSize, ilWidth, ilHeight, imgDivMargin, ilBorder, imgDivWidth, imgBoxMargin, imgDivPadding, ilBgRepeat, ilIs_inline, _onChange } = props;
-  const eddit = {image}.image;
-  // console.log(eddit)
+  const {
+    image,
+    marginTop,
+    marginLeft,
+    display,
+    marginRight,
+    padding,
+    fontSize,
+    ilWidth,
+    ilHeight,
+    imgDivMargin,
+    ilBorder,
+    imgDivWidth,
+    imgBoxMargin,
+    imgDivPadding,
+    ilBgRepeat,
+    ilIs_inline,
+    _onChange,
+  } = props;
+  const eddit = { image }.image;
+
   const dispatch = useDispatch();
   const [imgPreview, setImgPreview] = useState([]);
-  console.log(imgPreview)
+
   const [is_open, setIs_open] = useState(false);
   const [is_Url, setIs_url] = useState("");
   const Link = useSelector((state) => state.image.Url);
 
   const uploadFile = (e) => {
     const imageList = e.target.files;
-    // console.log(imageList)
+
     let imageUrlList = [...imgPreview];
-    console.log(imageUrlList)
+
     const maxImageCnt = 4;
 
     if (imageList.length > maxImageCnt) {
@@ -35,7 +53,7 @@ const EditImage = (props) => {
     // 파일들을 URL로 만듬
     for (let i = 0; i < imageList.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageList[i]);
-      console.log(currentImageUrl)
+
       imageUrlList.push(currentImageUrl);
     }
 
@@ -89,9 +107,9 @@ const EditImage = (props) => {
     dispatch(imgActions.setURL(is_Url));
   };
 
-  const styles = { 
-    marginTop: marginTop, 
-    marginLeft: marginLeft, 
+  const styles = {
+    marginTop: marginTop,
+    marginLeft: marginLeft,
     display: display,
     marginRight: marginRight,
     padding: padding,
@@ -115,7 +133,8 @@ const EditImage = (props) => {
           <Inputs type="file" id="files" multiple="multiple" accept="image/*" />
         </Labels>
 
-        <Labels {...styles}
+        <Labels
+          {...styles}
           onClick={() => {
             setIs_open(!is_open);
           }}
@@ -124,7 +143,11 @@ const EditImage = (props) => {
         </Labels>
         {is_open ? (
           <>
-            <UrlBox value={is_Url} placeholder="URL을 입력해주세요!" onChange={handleUrl} />
+            <UrlBox
+              value={is_Url}
+              placeholder="URL을 입력해주세요!"
+              onChange={handleUrl}
+            />
             <UrlBtn title="submit" onClick={UrlButton}>
               확인
             </UrlBtn>
@@ -162,7 +185,12 @@ const EditImage = (props) => {
                 }}
               />
 
-              <ImageList {...styles} src={`${image}`} alt={`${image}-${id}`} onChange={_onChange} />
+              <ImageList
+                {...styles}
+                src={`${image}`}
+                alt={`${image}-${id}`}
+                onChange={_onChange}
+              />
             </ImageBox>
           );
         })}
@@ -172,7 +200,7 @@ const EditImage = (props) => {
 };
 
 EditImage.defaultProps = {
-  fontSize:"large",
+  fontSize: "large",
   marginTop: "2rem",
   marginLeft: "1rem",
   display: null,
@@ -187,7 +215,7 @@ EditImage.defaultProps = {
   imgDivPadding: null,
   imgBoxMargin: "0 20px",
   ilIs_inline: false,
-  _onChange: ()=>{}
+  _onChange: () => {},
 };
 
 const UploadBox = styled.div`
@@ -267,6 +295,7 @@ const ImageList = styled.div`
 
   background-size: contain;
   background-position: center;
-  ${(props) => (props.ilBgRepeat ? `background-repeat: ${props.ilBgRepeat}` : "")};
+  ${(props) =>
+    props.ilBgRepeat ? `background-repeat: ${props.ilBgRepeat}` : ""};
 `;
 export default EditImage;

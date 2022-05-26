@@ -34,7 +34,6 @@ const MainSearch = ({ location, category, selected }) => {
 
   const searchHandleChange = (event) => {
     setIs_Search(event.target.value);
-    console.log(event.target.value);
   };
 
   const searchValueHandle = (e) => {
@@ -116,7 +115,6 @@ const MainSearch = ({ location, category, selected }) => {
   };
 
   const searchButton = () => {
-    console.log(is_searchValue);
     if (is_search === "") {
       alert("검색어를 설정해 주세요!");
       return;

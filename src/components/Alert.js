@@ -69,25 +69,18 @@ const Alert = () => {
     if (status === false) {
       chatApi
         .notificationRead(id)
-        .then((res) => console.log(res))
-        .catch((err) => {
-          console.log(err);
-        });
+        .then((res) => {})
+        .catch((err) => {});
     }
   };
 
   const handelDeleteMessage = (id, status) => {
-    console.log(id);
     setNotification(notification.filter((a, idx) => a.id !== id));
 
     chatApi
       .notificationDelete(id)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((res) => {})
+      .catch((err) => {});
     if (notificationCnt && status === false) {
       setNotificationCnt(notificationCnt - 1);
       return;
@@ -118,20 +111,15 @@ const Alert = () => {
       chatApi
         .notifications()
         .then((res) => {
-          console.log(res.data);
           setNotification(res.data);
-          console.log(notification);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {});
       chatApi
         .notificationsCnt()
         .then((res) => {
-          console.log(res.data.count);
           setNotificationCnt(res.data.count);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   }, [alertOpen, isLogin]);
 

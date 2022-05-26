@@ -109,13 +109,11 @@ const __getEmail = (email) => {
   return async function (dispatch, getState, { history }) {
     try {
       const { data } = await userInfoApi.emailCheck(email);
-      console.log(data);
+
       if (data.msg !== false) {
         dispatch(isSendedEmail());
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
@@ -127,9 +125,7 @@ const __getUserInfo = (userId) => {
 
       dispatch(getUser(data));
       //   console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
@@ -140,9 +136,7 @@ const __getApplied = (userId) => {
       const appliedData = await userInfoApi.getAppliedList(userId);
       // console.log(appliedData.data);
       dispatch(getApplied(appliedData));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
@@ -153,9 +147,7 @@ const __getRecruit = (userId) => {
       const recruitData = await userInfoApi.getRecruitList(userId);
       // console.log(recruitData.data);
       dispatch(getRecruit(recruitData));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
@@ -166,9 +158,7 @@ const __getApplier = (postId) => {
       const applierData = await userInfoApi.getApplierList(postId);
       // console.log(applierData);
       dispatch(getApplier(applierData));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
@@ -179,9 +169,7 @@ const __getRecruitOver = (userId) => {
       const recruitOverData = await userInfoApi.getRecruitOverList(userId);
       // console.log(recruitOverData);
       dispatch(getRecruitOver(recruitOverData));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
@@ -196,32 +184,25 @@ const __getAppliedOver = (postId) => {
       // const poster = [];
       // poster.push(postUser)
       // console.log(poster)
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
 //유저 평점 기록하기
 const __postEvaluation = (reqeustUserRate) => {
-  console.log(reqeustUserRate);
   return async function (dispatch, getState, { hitory }) {
     try {
       const evaluationData = await userInfoApi.postEvaluation(reqeustUserRate);
-      console.log(evaluationData);
+
       dispatch(updateEvaluationListRecruit(reqeustUserRate.receiverId));
       dispatch(updateEvaluationListPoster(reqeustUserRate.receiverId));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
 //유저 정보 수정
 const __putUserInfoMod = (userId, data, files) => {
   return async function (dispatch, getState, { history }) {
-    console.log(data);
-    console.log(files);
     const newProfileImg = data.profileImg;
     localStorage.setItem("profileImg", newProfileImg);
     const formData = new FormData();
@@ -234,13 +215,11 @@ const __putUserInfoMod = (userId, data, files) => {
     files.map((e) => {
       return formData.append("imgs", e);
     });
-    console.log(formData);
+
     try {
       await userInfoApi.putUserInfoModData(userId, formData);
       history.replace(`/user/${id}`);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
@@ -276,18 +255,13 @@ export default handleActions(
     //     draft.requestDto = action.payload.userInfo;
     //   }),
     [POST_EVALUATION]: (state, dispatch, action) =>
-      produce(
-        state,
-        (draft) => {
-          draft.evaluationInfo = action.payload.evaluationData;
-        },
-        console.log(action)
-      ),
+      produce(state, (draft) => {
+        draft.evaluationInfo = action.payload.evaluationData;
+      }),
     [IS_SENDED_EMAIL]: (state, action) =>
       produce(state, (draft) => {
         cookies.set("123", { path: "/" });
         draft.isSendedEmail = true;
-        console.log(state);
       }),
     [UPDATE_EVALUATION_LIST_RECRUIT]: (state, action) =>
       produce(state, (draft) => {
@@ -301,8 +275,7 @@ export default handleActions(
         const postUser = state.appliedOverList.data.postUser;
         const poster = [];
         poster.push(postUser);
-        console.log(poster);
-        console.log(state.appliedOverList.data.postUser);
+
         // console.log(Object.values(draft.appliedOverList.data.postUser));
         // console.log(action.payload.receiverIdPoster);
         // draft.appliedOverList.data.postUser = poster.filter(

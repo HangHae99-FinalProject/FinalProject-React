@@ -113,16 +113,7 @@ const __login = (_memberId, password) => {
 
       const { sub, memberId, nickname, major, profileImg } =
         jwt_decode(accessToken);
-      console.log(
-        "userid:",
-        sub,
-        "memberId:",
-        memberId,
-        "닉네임:",
-        nickname,
-        "전공:",
-        major
-      );
+
       cookies.set("accessToken", accessToken, {
         path: "/",
         maxAge: 86400, // 60분
@@ -155,7 +146,6 @@ const __signup = (memberId, password, pwCheck) => {
         pwCheck,
       });
 
-      console.log(signup);
       localStorage.setItem("userId", signup.data.data.userId);
       // if (signup.data) {
       //   window.alert(
@@ -164,10 +154,8 @@ const __signup = (memberId, password, pwCheck) => {
       //   // history.replace("/login");
       // }
     } catch (err) {
-      console.log(err);
       if (err.errorCode === 400) {
         window.alert("오류가 발생했습니다.");
-        console.log(err.errorCode, err.errorMessage);
       }
     }
   };
@@ -205,10 +193,8 @@ const __additionalInfo = (_userId, nickName, majors) => {
 
       history.replace("/main");
     } catch (err) {
-      console.log(err);
       if (err.errorCode === 400) {
         window.alert("오류가 발생했습니다.");
-        console.log(err.errorCode, err.errorMessage);
       }
     }
   };
@@ -224,7 +210,7 @@ const __emailCheck =
           email,
         }
       );
-      console.log(checkEmailAlert);
+
       // dispatch(checkEmailDup(checkEmailAlert));
       if (checkEmailAlert.data.errorCode === "200") {
         window.alert("입력하신 이메일은 사용이 가능합니다.");
@@ -234,7 +220,6 @@ const __emailCheck =
         return;
       }
     } catch (err) {
-      console.log(err);
       window.alert("입력하신 이메일은 사용이 불가능합니다.");
     }
   };
@@ -246,7 +231,6 @@ const __nicknameCheck =
       await userApi.nicknameCheck(nickname);
       window.alert("입력하신 닉네임은 사용이 가능합니다.");
     } catch (err) {
-      console.log(err);
       window.alert("입력하신 닉네임은 사용이 불가능합니다.");
     }
   };
@@ -267,9 +251,7 @@ const __logout = () => {
       await dispatch(logout());
       window.alert("로그아웃되었습니다.");
       history.replace("/");
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 };
 
@@ -325,7 +307,6 @@ export default handleActions(
     [LOGIN_ERROR_CODE]: (state, action) =>
       produce(state, (draft) => {
         draft.loginErrorCode = action.payload.data;
-        console.log(state);
       }),
   },
   initialState

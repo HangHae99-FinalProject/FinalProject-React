@@ -91,8 +91,6 @@ const Write = () => {
   };
 
   const PostDetailBtn = () => {
-    console.log(data.majorList);
-    console.log(majorList);
     if (data.title === "") {
       alert("제목을 입력해주세요!");
       return;

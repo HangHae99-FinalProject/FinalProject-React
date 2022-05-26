@@ -59,7 +59,11 @@ const OAuthRedirect = () => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
 
   function MajorFormHelperText() {
@@ -69,7 +73,11 @@ const OAuthRedirect = () => {
       return " ";
     }, [focused]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   // 여기까지 헬퍼텍스트 -닉네임, 전공
 
@@ -84,15 +92,17 @@ const OAuthRedirect = () => {
   //중복확인 버튼
   const nicknameCheckBtn = async () => {
     try {
-      const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
-        nickname,
-        major,
-      });
-      console.log(checkNickname.status);
+      const checkNickname = await axios.post(
+        "https://everymohum.shop/user/nicknameCheck",
+        {
+          nickname,
+          major,
+        }
+      );
+
       checkNickname.status == 200 && setCheckNicknameError(true);
       // window.alert("사용이 가능한 아이디입니다.");
     } catch (err) {
-      console.log(err);
       setCheckNicknameError(false);
       // window.alert("중복된 아이디입니다.");
     }
@@ -145,7 +155,12 @@ const OAuthRedirect = () => {
             }}
           >
             <Box sx={style}>
-              <Grid container direction="column" justifyContent="center" alignItems="center">
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+              >
                 <img
                   src={require(`../assets/fixedSignupLogo.png`)}
                   alt="signupLogo"

@@ -14,7 +14,6 @@ const Landing = () => {
   const pathName = useLocation();
 
   const isLogin = useSelector((state) => state.user.isLogin);
-  console.log(isLogin);
 
   const loginHandelBtn = () => {
     history.push("/login");
@@ -27,7 +26,7 @@ const Landing = () => {
   };
 
   useEffect(() => {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     dispatch(postActions.__getLanding());
   }, [pathName]);
 
@@ -81,15 +80,31 @@ const Landing = () => {
         <Scrollbar>
           <ImageScroll>
             <img
-              src="https://velog.velcdn.com/images/tty5799/post/7efc282f-c3d9-4d60-9f85-cad81f0bea14/image.png"
+              src="https://velog.velcdn.com/images/tty5799/post/39a8d144-f810-4b4e-a8f3-1c59cdca54fa/image.png"
               alt="bestImg"
             />
             <img
-              src="https://velog.velcdn.com/images/tty5799/post/00498018-3c04-455c-b377-86ed00743d4d/image.png"
+              src="https://velog.velcdn.com/images/tty5799/post/a207d900-8227-4fb1-854a-4781287b50b4/image.png"
               alt="bestImg"
             />
             <img
-              src="https://velog.velcdn.com/images/tty5799/post/2f077193-a88f-4273-808a-a87514975425/image.png"
+              src="https://velog.velcdn.com/images/tty5799/post/d47aab59-55b1-4155-bfac-ec69bba32c2c/image.png"
+              alt="bestImg"
+            />
+            <img
+              src="https://velog.velcdn.com/images/tty5799/post/9542c9c7-a7bb-4c2c-ae8f-52ca409fca52/image.png"
+              alt="bestImg"
+            />
+            <img
+              src="https://velog.velcdn.com/images/tty5799/post/519fb1b4-29e8-4c80-927b-cf219a2cdeb1/image.png"
+              alt="bestImg"
+            />
+            <img
+              src="https://velog.velcdn.com/images/tty5799/post/806c1bce-d170-475d-8b51-e799b87e2947/image.png"
+              alt="bestImg"
+            />
+            <img
+              src="https://velog.velcdn.com/images/tty5799/post/a44a32e9-8723-4c4c-95ac-9165b333530e/image.png"
               alt="bestImg"
             />
           </ImageScroll>
@@ -112,19 +127,12 @@ const LastImage = styled.div`
   }
 `;
 
-const DetailImg = styled.div`
-  img {
-    width: 100%;
-
-    margin-top: 10%;
-  }
-`;
-
 const ImageScroll = styled.div`
   img {
     display: flex;
-    width: 1369px;
-    height: 852px;
+    width: 1260px;
+    height: 310px;
+    margin-bottom: 100px;
   }
 `;
 
@@ -138,7 +146,6 @@ const Scrollbar = styled.div`
   -ms-overflow-style: {
     height: 70%;
   }
-  /* margin-right: 20px; */
 
   &::-webkit-scrollbar-thumb {
     background-color: #03517d;
@@ -264,77 +271,6 @@ const HeadImage = styled.div`
 const Container = styled.div`
   width: 100%;
   height: 100%;
-
-  .tilt-in-tl {
-    -webkit-animation: tilt-in-tl 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-    animation: tilt-in-tl 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  }
-  @-webkit-keyframes tilt-in-tl {
-    0% {
-      -webkit-transform: rotateY(35deg) rotateX(20deg) translate(-250px, -250px)
-        skew(12deg, 15deg);
-      transform: rotateY(35deg) rotateX(20deg) translate(-250px, -250px)
-        skew(12deg, 15deg);
-      opacity: 0;
-    }
-    100% {
-      -webkit-transform: rotateY(0) rotateX(0deg) translate(0, 0)
-        skew(0deg, 0deg);
-      transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
-      opacity: 1;
-    }
-  }
-  @keyframes tilt-in-tl {
-    0% {
-      -webkit-transform: rotateY(35deg) rotateX(20deg) translate(-250px, -250px)
-        skew(12deg, 15deg);
-      transform: rotateY(35deg) rotateX(20deg) translate(-250px, -250px)
-        skew(12deg, 15deg);
-      opacity: 0;
-    }
-    100% {
-      -webkit-transform: rotateY(0) rotateX(0deg) translate(0, 0)
-        skew(0deg, 0deg);
-      transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
-      opacity: 1;
-    }
-  }
-
-  .tilt-in-fwd-tr {
-    -webkit-animation: tilt-in-fwd-tr 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-      both;
-    animation: tilt-in-fwd-tr 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  }
-  @-webkit-keyframes tilt-in-fwd-tr {
-    0% {
-      -webkit-transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
-        skew(-35deg, 10deg);
-      transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
-        skew(-35deg, 10deg);
-      opacity: 0;
-    }
-    100% {
-      -webkit-transform: rotateY(0) rotateX(0deg) translate(0, 0)
-        skew(0deg, 0deg);
-      transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
-      opacity: 1;
-    }
-  }
-  @keyframes tilt-in-fwd-tr {
-    0% {
-      -webkit-transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
-        skew(-35deg, 10deg);
-      transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px)
-        skew(-35deg, 10deg);
-      opacity: 0;
-    }
-    100% {
-      -webkit-transform: rotateY(0) rotateX(0deg) translate(0, 0)
-        skew(0deg, 0deg);
-      transform: rotateY(0) rotateX(0deg) translate(0, 0) skew(0deg, 0deg);
-      opacity: 1;
-    }
-  }
 `;
 
 export default Landing;

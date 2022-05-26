@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { AiTwotoneBell } from "react-icons/ai";
+
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import Cookies from "universal-cookie";
 import { useSelector } from "react-redux";
 import MuiAlert from "@mui/material/Alert";
-import {
-  Paper,
-  Badge,
-  Menu,
-  MenuItem,
-  Snackbar,
-  CircularProgress,
-} from "@mui/material";
+import { Snackbar } from "@mui/material";
 import { chatApi } from "../api/chatApi";
 import { Link, Redirect, useLocation } from "react-router-dom";
-import { history } from "../redux/configureStore";
 
 const cookies = new Cookies();
 
@@ -69,25 +61,18 @@ const Alert = () => {
     if (status === false) {
       chatApi
         .notificationRead(id)
-        .then((res) => console.log(res))
-        .catch((err) => {
-          console.log(err);
-        });
+        .then((res) => {})
+        .catch((err) => {});
     }
   };
 
   const handelDeleteMessage = (id, status) => {
-    console.log(id);
     setNotification(notification.filter((a, idx) => a.id !== id));
 
     chatApi
       .notificationDelete(id)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((res) => {})
+      .catch((err) => {});
     if (notificationCnt && status === false) {
       setNotificationCnt(notificationCnt - 1);
       return;
@@ -118,20 +103,15 @@ const Alert = () => {
       chatApi
         .notifications()
         .then((res) => {
-          console.log(res.data);
           setNotification(res.data);
-          console.log(notification);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {});
       chatApi
         .notificationsCnt()
         .then((res) => {
-          console.log(res.data.count);
           setNotificationCnt(res.data.count);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   }, [alertOpen, isLogin]);
 
@@ -216,8 +196,8 @@ const Alert = () => {
 const NotificationsList = styled.div`
   margin-top: 15px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  margin-left: 20px;
   flex-direction: column;
   cursor: pointer;
   height: auto;
@@ -241,7 +221,7 @@ const NotificationsList = styled.div`
   }
 
   .line {
-    width: 340px;
+    width: 93%;
     height: 2px;
     background-color: gray;
   }
@@ -288,13 +268,14 @@ const Container = styled.div`
   .listBox {
     display: flex;
     flex-direction: column;
+
     background-color: #fff;
     border: 1px solid gray;
-    width: 350px;
+    width: 420px;
     height: 295px;
     position: fixed;
     right: 10%;
-    top: 62%;
+    top: 58%;
     overflow: auto;
 
     -ms-overflow-style: none;

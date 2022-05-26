@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import rr from "../../assets/image 35.png";
+
 import Grid from "../../elements/Grid";
 import { actionCreates as applyActions } from "../../redux/modules/apply";
 import { actionCreators as chatActions } from "../../redux/modules/chat";
@@ -10,8 +10,6 @@ import amateurCap from "../../assets/ama.svg";
 import juniorCap from "../../assets/jr.svg";
 import proCap from "../../assets/pro.svg";
 import { history } from "../../redux/configureStore";
-import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 
 const ApplyCard = (props) => {
   const dispatch = useDispatch();
@@ -55,14 +53,32 @@ const ApplyCard = (props) => {
   };
 
   const requestHandelBtn = () => {
+    if (window.confirm("신청하신 선장님과 충분한 대화를 나누셨나요?")) {
+      alert("수락하셨습니다!");
+    } else {
+      alert("취소하셨습니다!");
+      return;
+    }
     dispatch(applyActions.__postRequest(acceptedDto));
   };
 
   const rejectHandelBtn = () => {
+    if (window.confirm("거절 하시겠습니까?")) {
+      alert("거절하셨습니다!");
+    } else {
+      alert("취소되었습니다!");
+      return;
+    }
     dispatch(applyActions.__postReject(acceptedDto));
   };
 
   const chatHandelBtn = () => {
+    for (let i = 0; i < props.roomUserId.length; i++) {
+      if (props.userId === props.roomUserId[i]) {
+        alert("이미 채팅방이 존재 합니다!");
+        return;
+      }
+    }
     dispatch(chatActions.__addRoom(addRoomData));
   };
 
@@ -144,11 +160,6 @@ const ApplyCard = (props) => {
   );
 };
 
-const RatingImg = styled.img`
-  width: 22px;
-  margin-right: 2%;
-`;
-
 const BottomBtn = styled.div`
   display: flex;
   margin-top: 7%;
@@ -199,6 +210,7 @@ const BottomBtn = styled.div`
     color: #fff;
     font-size: 16px;
     font-weight: 700;
+    border: 1px solid rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -242,7 +254,7 @@ const Profile = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 3% 4%;
+  margin: 4% 4%;
   .ratingBox {
     display: flex;
     flex-direction: row;

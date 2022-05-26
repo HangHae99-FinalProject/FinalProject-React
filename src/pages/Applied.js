@@ -8,6 +8,7 @@ import Footer from "../elements/Footer";
 import ReactModal from "react-modal";
 import Grid from "../elements/Grid";
 import { actionCreates as applyActions } from "../redux/modules/apply";
+import { actionCreators as chatActions } from "../redux/modules/chat";
 
 const Applied = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const Applied = () => {
   const subscriberList = subscriber.applyUserLists;
 
   const majorList = useSelector((state) => state.apply.majorList);
+  const roomUserId = useSelector((state) => state.chat.roomUserId);
 
   const acceptListList = useSelector(
     (state) => state.apply.acceptListList.applyUserLists
@@ -56,10 +58,11 @@ const Applied = () => {
       dispatch(applyActions.__getSubscriber(id));
       return;
     }
-    // return () => {
-    //   dispatch(applyActions.clearApply());
-    // };
   }, [pathname]);
+
+  useEffect(() => {
+    dispatch(chatActions.__getRoom());
+  }, []);
 
   if (!user) {
     alert("로그인을 먼저 해주세요!");
@@ -172,13 +175,22 @@ const Applied = () => {
           {is_open === false ? (
             <>
               {subscriberList?.map((a, idx) => {
-                return <ApplyCard {...a} id={id} key={idx} />;
+                return (
+                  <ApplyCard {...a} id={id} roomUserId={roomUserId} key={idx} />
+                );
               })}
             </>
           ) : (
             <>
               {acceptListList?.map((a, idx) => {
-                return <AppliedCard {...a} key={idx} />;
+                return (
+                  <AppliedCard
+                    {...a}
+                    id={id}
+                    roomUserId={roomUserId}
+                    key={idx}
+                  />
+                );
               })}
             </>
           )}
@@ -449,7 +461,7 @@ const ButtonBox = styled.div`
 
 const Container = styled.div`
   width: 1370px;
-  height: 1020px;
+
   margin: 3% auto;
 `;
 

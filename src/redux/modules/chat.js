@@ -15,10 +15,11 @@ const ROAD_ROOM = "ROAD_ROOM";
 
 const setStomp = createAction(SET_STOMP, (data) => ({ data }));
 const addRoom = createAction(ADD_ROOM, (data) => ({ data }));
-const roadRoom = createAction(ROAD_ROOM, (data) => ({ data }));
+const roadRoom = createAction(ROAD_ROOM, (roomUserId) => ({ roomUserId }));
 
 const initialState = {
   client: client,
+  roomUserId: [],
 };
 
 const __addRoom =
@@ -35,9 +36,18 @@ const __addRoom =
           postId: data.postId,
         },
       });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
+  };
+
+const __getRoom =
+  () =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await chatApi.roadRoom();
+      const roomUserId = data.map((a) => a.user.userId);
+
+      dispatch(roadRoom(roomUserId));
+    } catch (err) {}
   };
 
 export default handleActions(
@@ -45,6 +55,10 @@ export default handleActions(
     [SET_STOMP]: (state, action) =>
       produce(state, (draft) => {
         draft.client = action.payload.data;
+      }),
+    [ROAD_ROOM]: (state, action) =>
+      produce(state, (draft) => {
+        draft.roomUserId = action.payload.roomUserId;
       }),
   },
   initialState
@@ -55,6 +69,7 @@ const actionCreators = {
   __addRoom,
   addRoom,
   roadRoom,
+  __getRoom,
 };
 
 export { actionCreators };

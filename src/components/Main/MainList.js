@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import styled from "styled-components";
 import MainCard from "./MainCard";
-import flex from "../../themes/flex";
+
 import InfiniteScroll from "react-infinite-scroll-component";
 import { actionCreates as postActions } from "../../redux/modules/post";
 import Spinner from "../Spinner";

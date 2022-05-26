@@ -66,15 +66,7 @@ const Main = () => {
     <>
       <Container>
         <MainImage />
-        {/* <MainImage>
-          <img
-            src={mainImage}
-            alt="MainImage"
-            onClick={() => {
-              window.location.reload();
-            }}
-          />
-        </MainImage> */}
+
         <Category>
           <CateBtn
             onClick={() => {
@@ -279,24 +271,6 @@ const BackImage = styled.div`
     width: 100%;
   }
 `;
-
-// const MainImage = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-
-//   img {
-//     width: 230px;
-//     cursor: pointer;
-//     @media screen and (min-width: 1920px) {
-//       width: 415px;
-//     }
-//     @media screen and (min-width: 2560px) {
-//       width: 700px;
-//     }
-//   }
-// `;
 
 const Container = styled.div`
   width: 1370px;

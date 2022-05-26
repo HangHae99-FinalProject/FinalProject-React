@@ -16,7 +16,7 @@ import Footer from "../elements/Footer";
 
 const EditPost = () => {
   const post_list = useSelector((state) => state.post.detailList);
-  console.log(post_list)
+
   const link = useSelector((state) => state.image.Url);
   const dispatch = useDispatch();
   const param = useParams();
@@ -43,7 +43,7 @@ const EditPost = () => {
   }
 
   const imgUrl = useSelector((state) => state.image.editUrl);
-  console.log(imgUrl)
+
   const data = {
     imgUrl,
     content: is_content,
@@ -71,21 +71,6 @@ const EditPost = () => {
 
   const post_id = param.postid;
   const is_edit = post_id ? true : false;
-
-  // console.log(Event.keyCode);
-
-  useEffect(() => {}, []);
-  // function doNotReload(e) {
-  //   console.log(e);
-  //   e.preventDefault();
-  //   return "잘못된 접근이라우";
-  // }
-
-  // window.onbeforeunload = function (e) {
-  //   var dialogText = "안된다";
-  //   e.returnValue = dialogText;
-  //   return dialogText;
-  // };
 
   const editDetailBtn = () => {
     if (data.title === "") {

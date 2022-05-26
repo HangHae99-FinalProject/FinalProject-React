@@ -47,7 +47,7 @@ const Signup = () => {
   // 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
   function IdFormHelperText() {
     const { focused, filled } = useFormControl() || {};
-    
+
     const helperText = React.useMemo(() => {
       if (focused) {
         return "예. 영문 대소문자, 숫자 포함 4~12자 입니다.";
@@ -237,7 +237,7 @@ const Signup = () => {
     const _userId = localStorage.getItem("userId");
     dispatch(userActions.__additionalInfo(_userId, nickname, major));
   };
-//여기까지 추가정보기입후 회원가입 완료
+  //여기까지 추가정보기입후 회원가입 완료
 
   React.useEffect(() => {});
 
@@ -544,7 +544,7 @@ const Signup = () => {
                       width: "132px",
                       height: "62px",
                       padding: "0",
-                      color:"#2967AC",
+                      color: "#2967AC",
                       borderRadius: "14px",
                       border: "0",
                       fontSize: "20px",

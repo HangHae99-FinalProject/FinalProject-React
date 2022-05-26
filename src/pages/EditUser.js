@@ -8,8 +8,8 @@ import EditImage from "../elements/EditImage";
 import Footer from "../elements/Footer";
 import axios from "axios";
 import { history } from "../redux/configureStore";
-import { imgActions } from "../redux/modules/image"; 
-import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
+import { imgActions } from "../redux/modules/image";
+import { nicknameCheckRE } from "../shared/common";
 
 import Grid_2 from "@mui/material/Grid";
 import Badge from "@mui/material/Badge";
@@ -17,8 +17,6 @@ import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import { styled } from "@mui/material/styles";
 import ImageList from "@mui/material/ImageList";
-import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import ImageListItem from "@mui/material/ImageListItem";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
@@ -27,36 +25,23 @@ import FormControl, { useFormControl } from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 
 const EditUser = () => {
-  // console.log(
-  //   "https://velog.velcdn.com/images/tty5799/post/4c81b900-5ebd-491e-8f9c-4dbb464c277f/image.png"
-  // );
   const param = useParams();
   const dispatch = useDispatch();
   const [checkNicknameError, setCheckNicknameError] = React.useState(null);
   const _id = localStorage.getItem("userId");
 
   const pathName = useLocation();
-  // console.log(pathName);
   const pathUserId = pathName.pathname.split("/")[2];
-  // console.log(pathUserId);
 
   const getUserInfo = useSelector((state) => state.myPage?.userInfo);
-  // const post_list = useSelector((state) => state.post.detailList);
-  // const setUserInfo = useSelector((state) => state.myPage.requestDto);
-  console.log(getUserInfo.userPortfolioImgList);
 
   const [selected, setSelected] = useState(false);
-  // const [profileImgUrl, setProfileImgUrl] = useState("");
   const [nickname, setNickname] = useState("");
   const [major, setMajor] = useState("");
   const [intro, setIntro] = useState("");
   const [portfolioLink, setPortfolioLink] = useState("");
-  // const [currentImgUrl, setCurrentImgUrl] = useState("");
   const [profileImgUrl, setProfileImgUrl] = useState("");
-  // console.log(currentImgUrl)
-  // const onProfileImgUrlHandler = (e) => {
-  //   setProfileImgUrl(e.target.value);
-  // };
+
   const onNicknameHandler = (e) => {
     setNickname(e.target.value);
   };
@@ -82,7 +67,6 @@ const EditUser = () => {
     }
   }
 
-  // const imgUrl = useSelector((state) => state.image.editUrl);
   const currentImgUrl = useSelector((state) => state.image.editUrl);
 
   const requestDto = {
@@ -93,7 +77,6 @@ const EditUser = () => {
     portfolioLink: portfolioLink,
     currentImgUrl,
   };
-  console.log(requestDto);
 
   const userId = param.id;
 
@@ -108,8 +91,6 @@ const EditUser = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  // console.log(id)
-  // console.log(userId);
   // 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
   function NicknameFormHelperText() {
     const { focused } = useFormControl() || {};
@@ -141,25 +122,17 @@ const EditUser = () => {
   //닉네임 중복확인 버튼
   const nicknameCheckBtn = async () => {
     try {
-      const checkNickname = await axios.post(
-        "https://everymohum.shop/user/nicknameCheck",
-        {
-          nickname,
-          major,
-        }
-      );
-      console.log(checkNickname.status);
+      const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
+        nickname,
+        major,
+      });
       checkNickname.status == 200 && setCheckNicknameError(true);
-      // window.alert("사용이 가능한 아이디입니다.");
     } catch (err) {
-      console.log(err.response);
       setCheckNicknameError(false);
-      // window.alert("중복된 아이디입니다.");
     }
   };
   //여기까지 닉네임 중복확인 버튼
 
-  // 다중이미지 첨부 기능 작업할 것!!!!!
   const goEdit = () => {
     if (requestDto.profileImgUrl === "") {
       alert("프로필 이미지를 선택해 주세요.");
@@ -181,26 +154,8 @@ const EditUser = () => {
       alert("포트폴리오 링크를 입력해 주세요.");
       return;
     }
-    console.log(userId, requestDto, newFiles);
     dispatch(userInfoActions.__putUserInfoMod(userId, requestDto, newFiles));
     history.push(`/user/${_id}`);
-    // location.reload();
-    // console.log(
-    //   "프로필:",
-    //   profileImgUrl,
-    //   "닉네임:",
-    //   nickname,
-    //   "전공:",
-    //   major,
-    //   "자기소개:",
-    //   intro,
-    //   "포트폴리오:",
-    //   portfolioLink,
-    //   "현재첨부이미지",
-    //   currentImgUrl,
-    //   "신규이미지",
-    //   newFiles,
-    // );
   };
 
   useEffect(() => {
@@ -209,14 +164,11 @@ const EditUser = () => {
     setIntro(getUserInfo.intro);
     setPortfolioLink(getUserInfo.portfolioLink);
     setProfileImgUrl(getUserInfo.profileImg);
-    // setCurrentImgUrl(getUserInfo.userPortfolioImgList);
   }, [getUserInfo]);
 
   useEffect(() => {
     dispatch(userInfoActions.__getUserInfo(_id));
-    dispatch(imgActions.initPre())
-    // dispatch(userInfoActions.initUserInfo())
-    // dispatch(userInfoActions.setUserInfo(requestDto));
+    dispatch(imgActions.initPre());
   }, []);
 
   return (
@@ -249,9 +201,7 @@ const EditUser = () => {
               <Profile>
                 <img
                   src={
-                    profileImgUrl == getUserInfo.profileImg
-                      ? getUserInfo.profileImg
-                      : profileImgUrl
+                    profileImgUrl == getUserInfo.profileImg ? getUserInfo.profileImg : profileImgUrl
                   }
                   alt="profile"
                 />
@@ -263,10 +213,7 @@ const EditUser = () => {
                 }}
                 onClick={handleClick}
               >
-                <AddCircleRoundedIcon
-                  fontSize="large"
-                  sx={{ color: "#2967AC" }}
-                />
+                <AddCircleRoundedIcon fontSize="large" sx={{ color: "#2967AC" }} />
               </Badge>
               {/* 프로필사진변경 팝오버 */}
               <Grid_2>
@@ -569,16 +516,12 @@ const EditUser = () => {
                     </CateBtn>
                     <CateBtn
                       onClick={() => {
-                        major === "프로그래밍"
-                          ? setMajor("")
-                          : setMajor("프로그래밍");
+                        major === "프로그래밍" ? setMajor("") : setMajor("프로그래밍");
                         setSelected(true);
                       }}
                     >
                       <Grid
-                        _className={
-                          major === "프로그래밍" ? "active" : "default"
-                        }
+                        _className={major === "프로그래밍" ? "active" : "default"}
                         bg={major === "프로그래밍" ? "#5BC8D2" : "#f5fcff"}
                       >
                         <p>프로그래밍</p>
@@ -623,16 +566,6 @@ const EditUser = () => {
                         <p>음향</p>
                       </Grid>
                     </CateBtn>
-                    {/* <CateBtn
-                      onClick={() => {
-                        major === "기타" ? setMajor("") : setMajor("기타");
-                        setSelected(true);
-                      }}
-                    >
-                      <Grid _className={major === "기타" ? "active" : "default"}>
-                        <p>기타</p>
-                      </Grid>
-                    </CateBtn> */}
                   </Category>
                 </Grid_2>
               </Grid_2>
@@ -741,7 +674,6 @@ const EditUser = () => {
                       marginTop="0"
                       marginLeft="0"
                       image={getUserInfo.userPortfolioImgList}
-                      // _onChange={onCurrentImgUrlHandler}
                     />
                   </Grid_2>
                 </Grid_2>
@@ -831,16 +763,11 @@ const CateBtn = _styled.div`
     border-radius: 14px;
     background-color: #f5fcff;
     box-shadow: inset 0px 4px 13px #d7f1fd;
-    /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    /* .icon {
-      font-size: 32px;
-      color: var(--inactive-text-color);
-    } */
     p {
       text-align: center;
       font-size: 20px;
@@ -859,8 +786,6 @@ const CateBtn = _styled.div`
     align-items: center;
     box-shadow: inset 0px 4px 13px #d7f1fd;
     cursor: pointer;
-
-    /* background-color: gray; */
     animation: 0.6s ease-in-out loadEffect3;
     .icon {
       color: #fff;

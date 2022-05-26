@@ -3,8 +3,7 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
-import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
-import kakaoBtn from "../assets/kakao_login.png";
+import { memberIdCheckRE, pwCheckRE } from "../shared/common";
 import styled from "styled-components";
 import kakao from "../assets/kakao.png";
 
@@ -15,13 +14,6 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "../elements/Grid";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import axios from "axios";
-import Box from "@mui/material/Box";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import { Redirect } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -41,7 +33,6 @@ const Login = ({ location }) => {
     localStorage.setItem("from", location?.state?.from);
   }
 
-  const isLogin = useSelector((state) => state.user.isLogin);
   const token = cookies.get("accessToken", { path: "/" });
 
   // 헬퍼텍스트 -아이디, 패스워드
@@ -59,11 +50,7 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return (
-      <FormHelperText sx={{ margin: "0", height: "20px" }}>
-        {helperText}
-      </FormHelperText>
-    );
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
   function PwFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -81,17 +68,12 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return (
-      <FormHelperText sx={{ margin: "0", height: "20px" }}>
-        {helperText}
-      </FormHelperText>
-    );
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
   // 여기까지 헬퍼텍스트 -아이디, 패스워드
 
   const onLoginHandler = () => {
     window.location.href = kakaoUrl;
-    // history.replace(`/${kakaoUrl}`);
   };
 
   const onMemberIdHandler = (e) => {
@@ -123,8 +105,6 @@ const Login = ({ location }) => {
   }
 
   React.useEffect(() => {
-    console.log(isLogin);
-    console.log(token);
     if (token) {
       alert("이미 로그인을 하셨습니다!");
       history.replace("/main");
@@ -136,10 +116,7 @@ const Login = ({ location }) => {
       <BgDiv>
         <Grid is_center margin="auto auto">
           <div style={{ marginBottom: "45px" }}>
-            <img
-              src={require(`../assets/fixedSignupLogo.png`)}
-              alt="signupLogo"
-            />
+            <img src={require(`../assets/fixedSignupLogo.png`)} alt="signupLogo" />
           </div>
           <form
             onSubmit={(event) => {
@@ -213,8 +190,6 @@ const Login = ({ location }) => {
                 </Button>
                 <Button
                   variant="contained"
-                  // src={kakaoBtn}
-                  // alt="kakaoLogin"
                   onClick={onLoginHandler}
                   sx={{
                     marginTop: "20px",

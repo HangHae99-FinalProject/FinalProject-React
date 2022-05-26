@@ -1,12 +1,11 @@
 import * as React from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
 import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
 import axios from "axios";
 import styled from "styled-components";
-import BgImg from "../assets/signupBackground.png";
 
 //MUI import
 import Grid from "@mui/material/Grid";
@@ -19,22 +18,17 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import SelectUnstyled from "@mui/base/SelectUnstyled";
-import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
 //추가 정보 기입 모달
 const style = {
   position: "absolute",
-  // top: "340px",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "595px",
   height: "555px",
   bgcolor: "background.paper",
-  // border: "2px solid #000",
   boxShadow: 0,
-
   borderRadius: "14px",
 };
 
@@ -47,10 +41,8 @@ const Signup = () => {
   const [pwCheck, setPwCheck] = React.useState("");
   const [nickname, setNickname] = React.useState("");
   const [major, setMajor] = React.useState("");
-  const [activationSignBtn, setActivationSignBtn] = React.useState(false);
   const [checkMemberIdError, setCheckMemberIdError] = React.useState(null);
   const [checkNicknameError, setCheckNicknameError] = React.useState(null);
-  console.log(checkMemberIdError);
 
   // 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
   function IdFormHelperText() {
@@ -178,7 +170,6 @@ const Signup = () => {
   const onMajorHandler = (e) => {
     setMajor(e.target.value);
   };
-  // console.log(major);
 
   //중복확인 버튼
   const memberIdCheckBtn = async () => {
@@ -189,11 +180,9 @@ const Signup = () => {
           memberId,
         }
       );
-      console.log(checkMemberId.status);
       checkMemberId.status == 200 && setCheckMemberIdError(true);
       // window.alert("사용이 가능한 아이디입니다.");
     } catch (err) {
-      console.log(err);
       setCheckMemberIdError(false);
       // window.alert("중복된 아이디입니다.");
     }
@@ -208,11 +197,9 @@ const Signup = () => {
           major,
         }
       );
-      console.log(checkNickname.status);
       checkNickname.status == 200 && setCheckNicknameError(true);
       // window.alert("사용이 가능한 아이디입니다.");
     } catch (err) {
-      console.log(err);
       setCheckNicknameError(false);
       // window.alert("중복된 아이디입니다.");
     }
@@ -231,20 +218,13 @@ const Signup = () => {
 
   //goSignup()시 추가정보기입 모달 오픈
   const goSignup = () => {
-    // if (!memberIdCheckRE(memberId)) {
-    //   window.alert("아이디 형식을 확인해주세요.");
-    //   return;
-    // }
     if (!pwCheckRE(password)) {
-      // window.alert("패스워드 형식을 확인해주세요.");
       return;
     }
     if (password !== pwCheck) {
-      // window.alert("패스워드와 패스워드 확인이 일치하지 않습니다.");
       return;
     }
     dispatch(userActions.__signup(memberId, password, pwCheck));
-    // console.log(memberId, password, pwCheck)
     handleOpen();
   };
 
@@ -256,7 +236,6 @@ const Signup = () => {
     }
     const _userId = localStorage.getItem("userId");
     dispatch(userActions.__additionalInfo(_userId, nickname, major));
-    console.log(nickname, major);
   };
 //여기까지 추가정보기입후 회원가입 완료
 
@@ -512,7 +491,6 @@ const Signup = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          // margin="auto auto auto auto"
         >
           <div style={{ marginBottom: "45px" }}>
             {open === true ? null : (
@@ -573,7 +551,6 @@ const Signup = () => {
                       backgroundColor: "#D7F1FD",
                       "&:hover": {
                         backgroundColor: "#D7F1FD",
-                        // border: "0",
                         boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                       },
                       boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
@@ -632,11 +609,6 @@ const Signup = () => {
 
             <Grid
               sx={{ marginTop: "10px" }}
-              // container
-              // direction="column"
-              // justifyContent="center"
-              // alignItems="center"
-              // margin="30px auto"
             >
               <Stack direction="column">
                 {checkMemberIdError === false ? (
@@ -692,7 +664,6 @@ const Signup = () => {
                       backgroundColor: "#2967AC",
                       "&:hover": {
                         backgroundColor: "#2967AC",
-                        // border: "0",
                         boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                       },
                       boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
@@ -701,9 +672,6 @@ const Signup = () => {
                     회원가입
                   </Button>
                 )}
-                {/* <Button type="submit" variant="contained">
-                Sign Up
-              </Button> */}
                 <Button
                   variant="contained"
                   onClick={goHome}
@@ -719,7 +687,6 @@ const Signup = () => {
                     backgroundColor: "#FE674C",
                     "&:hover": {
                       backgroundColor: "#FE674C",
-                      // border: "0",
                       boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                     },
                     boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",

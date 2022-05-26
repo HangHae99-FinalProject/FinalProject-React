@@ -11,14 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import DetailImage from "../components/Detail/DetailImage";
 import { actionCreators as userInfoActions } from "../redux/modules/myPage";
 import Pagination from "../components/MyPage/Pagination";
-import ImageNotFound from "../assets/imageNotFound.png";
 import ModalWindow from "../elements/ModalWindow";
 import Footer from "../elements/Footer";
-import footer from "../assets/Footer2.svg";
 import Link from "../components/Link";
 
 import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Card from "@mui/material/Card";
@@ -26,7 +23,6 @@ import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import Button from "@mui/material/Button";
 import ListItem from "@mui/material/ListItem";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -35,9 +31,7 @@ import PanToolRoundedIcon from "@mui/icons-material/PanToolRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import flex from "../themes/flex";
 import { styled } from "@mui/material/styles";
-import Input from "@mui/material/Input";
 
 const a11yProps = (index) => {
   return {
@@ -60,9 +54,7 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 
 const User = (props) => {
   const params = useParams();
-  // const p_Id = param.postid;
   const id = localStorage.getItem("userId");
-  // console.log(id);
   const dispatch = useDispatch();
   const [is_open, setIs_open] = useState(false);
   const [ModalState, setModalState] = useState(false);
@@ -76,45 +68,30 @@ const User = (props) => {
 
   const modalHandelBtn = () => {
     setModalState(!ModalState);
-    // console.log(ModalState);
   };
+
   const getUserInfo = useSelector((state) => state.myPage.userInfo);
   const getAppliedList = useSelector((state) => state.myPage.appliedList?.data); //신청중 리스트
   const getRecruitList = useSelector((state) => state.myPage.recruitList?.data); //모집중 리스트
   const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data); //모집완료 리스트
   const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
-  // console.log("유저정보", getUserInfo);
-  // console.log(postId);
-  // console.log("자기소개", getUserInfo.intro);
-  // console.log("포트폴리오링크", getUserInfo.portfolioLink);
-  // console.log("포트폴리오사진", getUserInfo.userPortfolioImgList?.length);
-  // console.log("신청중리스트", getAppliedList);
-  // console.log("모집중리스트", getRecruitList);
-  // console.log("모집완료리스트", getRecruitOverList);
   const getAppliedOverList_postUser = useSelector(
     (state) => state.myPage.appliedOverList.data?.postUser
   );
-
   const getAppliedOverList_reqruit = useSelector(
     (state) => state.myPage.appliedOverList.data?.recruitUserList
   );
   const isSendedEmail = useSelector((state) => state.myPage.isSendedEmail);
-  // console.log(isSendedEmail);
-  // console.log("모집완료리스트", getAppliedOverList_postUser);
+
   var posterKeys = JSON.stringify(getAppliedOverList_postUser);
-  // console.log(posterKeys);
-  // console.log("모집완료리스트", getAppliedOverList);
-  console.log("모집완료지원자리스트", getAppliedOverList_reqruit);
 
   const pathName = useLocation();
-  // console.log(pathName);
   const userId = pathName.pathname.split("/")[2];
 
   var likeRatio = (getUserInfo.likeCount / 100) * (100 / getUserInfo.projectCount) * 100;
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }
-  // console.log(likeRatio);
 
   var evaluationRatio = null;
 
@@ -148,7 +125,6 @@ const User = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  // console.log(userId);
 
   useEffect(() => {
     dispatch(userInfoActions.initUserInfo());
@@ -283,17 +259,9 @@ const User = (props) => {
               backgroundColor: "rgba(0,0,0,0.5)",
             },
             content: {
-              // display: "flex",
-              // flexDirection: "column",
-              // justifyContent: "center",
-              // alignItems: "center",
-              // position: "fixed",
               top: "50%",
               left: "50%",
-              // right: "auto",
-              // bottom: "auto",
               borderRadius: "20px",
-              // minHeight: "600px",
               height: "600px",
               marginRight: "-50%",
               transform: "translate(-50%, -50%)",
@@ -307,20 +275,43 @@ const User = (props) => {
             <BgDiv>
               <Grid>
                 <Grid>
-                  <Typography
-                    sx={{
-                      marginTop: "100px",
-                      marginBottom: "40px",
-                      fontSize: "32px",
-                      fontWeight: "bold",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    함께 모험한 선장들의 리뷰를 남겨주세요.
-                  </Typography>
+                  {getAppliedOverList_reqruit?.length === 0 ? (
+                    <Grid container direction="column" justifyContent="center" alignItems="center">
+                      <Typography
+                        sx={{
+                          marginTop: "150px",
+                          fontSize: "32px",
+                          fontWeight: "bold",
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        리뷰를 남길 선장이 없어요.
+                      </Typography>
+                      <img
+                        style={{ marginTop: "20px" }}
+                        src="https://velog.velcdn.com/images/tty5799/post/5004946d-e4ad-4c5d-8855-67107d89ce05/image.png"
+                        alt="noChatImg"
+                      />
+                    </Grid>
+                  ) : (
+                    <Typography
+                      sx={{
+                        marginTop: "100px",
+                        marginBottom: "40px",
+                        fontSize: "32px",
+                        fontWeight: "bold",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      함께 모험한 선장들의 리뷰를 남겨주세요.
+                    </Typography>
+                  )}
                 </Grid>
                 <Grid
                   container
@@ -414,7 +405,6 @@ const User = (props) => {
                             variant="contained"
                             onClick={() => {
                               setReceiverId(getAppliedOverList_postUser.userId);
-
                               dispatch(
                                 userInfoActions.__postEvaluation({
                                   postId: postId,
@@ -431,9 +421,7 @@ const User = (props) => {
                       </CardActions>
                     </Card>
                   ) : null}
-
                   {/* 지원자 리스트 */}
-
                   {getAppliedOverList_reqruit?.map((appliedOverList, idx) => {
                     return (
                       <Card
@@ -685,7 +673,6 @@ const User = (props) => {
                       >
                         <img src={getUserInfo.profileImg} alt="profileImg" />
                       </div>
-                      {/* <Button>top-end</Button> */}
                     </Profile>
                   </HtmlTooltip>
                   <Grid container direction="row" justifyContent="center" alignItems="center">
@@ -732,7 +719,6 @@ const User = (props) => {
                 <Grid sx={{ backgroundColor: "none", width: "900px" }}>
                   <Typography
                     id="myIntro"
-                    // value=
                     sx={{
                       marginTop: "20px",
                       marginLeft: "24px",
@@ -745,25 +731,6 @@ const User = (props) => {
                       ? "프로필을 수정해 자기소개를 입력해 주세요."
                       : getUserInfo.intro}
                   </Typography>
-                  {/* <TextField fullWidth
-                    id="myIntro"
-                    multiline
-                    maxRows={4}
-                    disabled
-                    // variant="outlined"
-                    value={
-                      getUserInfo.intro === null
-                        ? "프로필을 수정해 자기소개를 입력해 주세요."
-                        : getUserInfo.intro
-                    }
-                    sx={{
-                      marginTop: "20px",
-                      marginLeft: "24px",
-                      backgroundColor: "none",
-                      border:"0",
-                      color: "black",
-                    }}
-                  /> */}
                 </Grid>
                 {/* 여기까지 자기소개 */}
                 {/* 포트폴리오링크 */}
@@ -821,7 +788,6 @@ const User = (props) => {
               alignItems="center"
               sx={{
                 width: "1370px",
-                // padding: "0px 20px",
                 borderBottom: 1,
                 borderColor: "divider",
               }}
@@ -832,26 +798,9 @@ const User = (props) => {
                   sx={{ width: "456px" }}
                   label={userId === id ? "신청중" : "진행중"}
                   {...a11yProps(0)}
-                  // onClick={() => {
-                  //   dispatch(userInfoActions.__getApplied(userId));
-                  // }}
                 />
-                <Tab
-                  sx={{ width: "456px" }}
-                  label="모집중"
-                  {...a11yProps(1)}
-                  // onClick={() => {
-                  //   dispatch(userInfoActions.__getRecruit(userId));
-                  // }}
-                />
-                <Tab
-                  sx={{ width: "456px" }}
-                  label="모집/진행 완료"
-                  {...a11yProps(2)}
-                  onClick={() => {
-                    dispatch(userInfoActions.__getAppliedOver());
-                  }}
-                />
+                <Tab sx={{ width: "456px" }} label="모집중" {...a11yProps(1)} />
+                <Tab sx={{ width: "456px" }} label="모집/진행 완료" {...a11yProps(2)} />
               </Tabs>
               {/* 여기까지 탭 속성 */}
             </Grid>
@@ -998,7 +947,6 @@ const User = (props) => {
                               >
                                 {recruitList.userApplyList.length}명의 선장이 신청했어요!
                               </button>
-
                               <Grid>
                                 <Button
                                   sx={{
@@ -1152,12 +1100,6 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-// const style = {
-//   height: "90px",
-//   width: "1370px",
-//   bgcolor: "background.paper",
-// };
-
 const BgDiv = _styled.div`
   z-index: 0;
   width: 1200px;
@@ -1165,12 +1107,10 @@ const BgDiv = _styled.div`
   background-repeat: no-repeat;
   height: 600px;
   background-size: corver;
-  /* background-position-y: bottom; */
   position: absolute;
 `;
 
 const Profile = _styled.div`
-  /* margin-top: 5%; */
   float: left;
   height: auto;
   width: auto;

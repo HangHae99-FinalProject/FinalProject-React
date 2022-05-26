@@ -221,6 +221,7 @@ const __postEvaluation = (reqeustUserRate) => {
 const __putUserInfoMod = (userId, data, files) => {
   return async function (dispatch, getState, { history }) {
     console.log(data);
+    console.log(files);
     const newProfileImg = data.profileImg;
     localStorage.setItem("profileImg", newProfileImg);
     const formData = new FormData();

@@ -219,6 +219,7 @@ const BottomBtn = styled.div`
     color: #fff;
     font-size: 16px;
     font-weight: 700;
+    border: 1px solid rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -262,7 +263,7 @@ const Profile = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 3% 4%;
+  margin: 4% 4%;
   .ratingBox {
     display: flex;
     flex-direction: row;

@@ -79,9 +79,6 @@ const AppliedCard = (item) => {
 
   return (
     <Container>
-      <RefuseBtn>
-        <FiX className="refuse" onClick={refuseHandelBtn} />
-      </RefuseBtn>
       <Profile>
         <img
           className="profile"
@@ -139,36 +136,62 @@ const AppliedCard = (item) => {
       <CommentBox>
         <span>{item.message}</span>
       </CommentBox>
-      <span className="chatButton" onClick={chatHandelBtn}>
-        채팅
-      </span>
+      <BottomBtn>
+        <span className="chatButton" onClick={chatHandelBtn}>
+          체팅
+        </span>
+        <span className="noButton" onClick={refuseHandelBtn}>
+          강퇴
+        </span>
+      </BottomBtn>
     </Container>
   );
 };
 
-const RefuseBtn = styled.div`
-  margin-left: 90%;
-  margin-top: 10px;
-  cursor: pointer;
-  .refuse {
-    position: absolute;
+const BottomBtn = styled.div`
+  display: flex;
+  align-items: center;
+
+  margin-top: 30px;
+  margin-bottom: 10px;
+
+  .chatButton {
+    cursor: pointer;
+    display: flex;
     align-items: center;
     justify-content: center;
-    display: flex;
-    background-color: #fe5953;
-    width: 24px;
-    height: 24px;
-    border-radius: 12px;
-    margin: 0;
+    width: 120px;
+    height: 40px;
+    margin-left: 10px;
+    background: #ffd082;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 14px;
     color: #fff;
-    font-size: small;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .noButton {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 40px;
+    margin-left: 139px;
+    background: #fe5953;
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    border: 1px solid rgba(0, 0, 0, 0.2);
   }
 `;
 
 const CommentBox = styled.div`
   width: 379px;
   height: 149px;
-  margin: 6% auto 0 auto;
+  margin: 8% auto 0 auto;
   background: #f5fcff;
   border: 1px solid #c2c0c1;
   border-radius: 14px;
@@ -182,7 +205,7 @@ const CommentBox = styled.div`
 `;
 
 const MidBtnBox = styled.div`
-  margin-top: 39%;
+  margin-top: 40%;
 
   .majorName {
     margin-left: 1rem;
@@ -204,7 +227,7 @@ const Profile = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 1% 4%;
+  margin: 4% 4%;
   .refuseBtn {
   }
   .ratingBox {
@@ -292,11 +315,6 @@ const Profile = styled.div`
   }
 `;
 
-const RatingImg = styled.img`
-  width: 22px;
-  margin-right: 2%;
-`;
-
 const Container = styled.div`
   width: 399px;
   display: inline-block;
@@ -305,24 +323,6 @@ const Container = styled.div`
   border-radius: 14px;
   margin-right: 1%;
   margin-top: 3%;
-
-  .chatButton {
-    margin-bottom: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 375px;
-    height: 40px;
-    margin-top: 10px;
-    margin-left: 10px;
-    background: #ffd082;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 14px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 700;
-  }
 `;
 
 export default AppliedCard;

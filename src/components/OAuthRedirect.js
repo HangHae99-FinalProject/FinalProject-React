@@ -34,50 +34,60 @@ const OAuthRedirect = () => {
   const [nickname, setNickname] = React.useState("");
   const [major, setMajor] = React.useState("");
   const [checkNicknameError, setCheckNicknameError] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
 
   const profileSet = useSelector((state) => state.user.profileSet);
   const kakaoId = useSelector((state) => state.user.kakaoId);
 
   let code = new URL(window.location.href).searchParams.get("code");
 
-  function MajorFormHelperText() {
-    const { focused } = useFormControl() || {};
-
-    const helperText = React.useMemo(() => {
-      return "전공을 선택해 주세요.";
-    }, [focused]);
-
-    return <FormHelperText>{helperText}</FormHelperText>;
-  }
+  // 헬퍼텍스트 -닉네임, 전공
   function NicknameFormHelperText() {
-    const { focused } = useFormControl() || {};
+    const { focused, filled } = useFormControl() || {};
 
     const helperText = React.useMemo(() => {
       if (focused) {
         return "예. 영문 대소문자, 한글, 숫자 포함 4~10자 입니다.";
+      } else if (filled !== true) {
+        return " ";
+      } else if (!nicknameCheckRE(nickname)) {
+        return "닉네임 형식을 확인해주세요.";
       } else if (checkNicknameError === false) {
         return "중복된 닉네임입니다.";
       } else if (checkNicknameError === true) {
         return "사용 가능한 닉네임입니다.";
       }
+      return " ";
+    }, [focused, filled]);
 
-      return "닉네임을 입력해 주세요.";
-    }, [focused]);
-
-    return <FormHelperText>{helperText}</FormHelperText>;
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
   }
 
+  function MajorFormHelperText() {
+    const { focused } = useFormControl() || {};
+
+    const helperText = React.useMemo(() => {
+      return " ";
+    }, [focused]);
+
+    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+  }
+  // 여기까지 헬퍼텍스트 -닉네임, 전공
+
+  const onNicknameHandler = (e) => {
+    e.preventDefault();
+    setNickname(e.target.value);
+  };
+  const onMajorHandler = (e) => {
+    setMajor(e.target.value);
+  };
+
+  //중복확인 버튼
   const nicknameCheckBtn = async () => {
     try {
-      const checkNickname = await axios.post(
-        "https://everymohum.shop/user/nicknameCheck",
-        {
-          nickname,
-          major,
-        }
-      );
+      const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
+        nickname,
+        major,
+      });
       console.log(checkNickname.status);
       checkNickname.status == 200 && setCheckNicknameError(true);
       // window.alert("사용이 가능한 아이디입니다.");
@@ -87,15 +97,15 @@ const OAuthRedirect = () => {
       // window.alert("중복된 아이디입니다.");
     }
   };
-  const onNicknameHandler = (e) => {
-    e.preventDefault();
-    setNickname(e.target.value);
-  };
-  const onMajorHandler = (e) => {
-    setMajor(e.target.value);
-  };
-  const handleClose = () => setOpen(false);
+  //여기까지 중복확인 버튼
 
+  //추가정보기입 모달
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  //여기까지 추가정보기입 모달
+
+  //추가정보기입후 회원가입 완료
   const goAdditionalInfo = () => {
     if (!nicknameCheckRE(nickname)) {
       window.alert("닉네임 형식을 확인해주세요.");
@@ -110,9 +120,11 @@ const OAuthRedirect = () => {
       return;
     }
   }, [profileSet]);
+
   useEffect(() => {
     dispatch(userActions.__kakaoLogin(code));
   }, []);
+  //여기까지 추가정보기입후 회원가입 완료
 
   return (
     <React.Fragment>
@@ -133,12 +145,7 @@ const OAuthRedirect = () => {
             }}
           >
             <Box sx={style}>
-              <Grid
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-              >
+              <Grid container direction="column" justifyContent="center" alignItems="center">
                 <img
                   src={require(`../assets/fixedSignupLogo.png`)}
                   alt="signupLogo"

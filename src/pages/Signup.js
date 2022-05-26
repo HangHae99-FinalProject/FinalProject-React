@@ -55,7 +55,7 @@ const Signup = () => {
   // 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
   function IdFormHelperText() {
     const { focused, filled } = useFormControl() || {};
-
+    
     const helperText = React.useMemo(() => {
       if (focused) {
         return "예. 영문 대소문자, 숫자 포함 4~12자 입니다.";
@@ -258,6 +258,7 @@ const Signup = () => {
     dispatch(userActions.__additionalInfo(_userId, nickname, major));
     console.log(nickname, major);
   };
+//여기까지 추가정보기입후 회원가입 완료
 
   React.useEffect(() => {});
 

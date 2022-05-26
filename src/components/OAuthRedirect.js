@@ -12,7 +12,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import FormHelperText from "@mui/material/FormHelperText";
-import Grid from "../elements/Grid";
+import Grid from "@mui/material/Grid";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
 import Spinner from "./Spinner";

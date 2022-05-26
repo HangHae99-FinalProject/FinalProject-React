@@ -11,7 +11,7 @@ import Header from "../components/Header";
 import Main from "../pages/Main";
 import Signup from "../pages/Signup";
 import Login from "../pages/Login";
-import Post from "../pages/Post";
+// import Post from "../pages/Post";
 import Write from "../pages/Write";
 import User from "../pages/User";
 import EditUser from "../pages/EditUser";

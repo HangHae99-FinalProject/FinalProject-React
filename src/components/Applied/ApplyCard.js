@@ -55,14 +55,34 @@ const ApplyCard = (props) => {
   };
 
   const requestHandelBtn = () => {
+    if (window.confirm("신청하신 선장님과 충분한 대화를 나누셨나요?")) {
+      alert("수락하셨습니다!");
+    } else {
+      alert("취소하셨습니다!");
+      return;
+    }
     dispatch(applyActions.__postRequest(acceptedDto));
   };
 
   const rejectHandelBtn = () => {
+    if (window.confirm("거절 하시겠습니까?")) {
+      alert("거절하셨습니다!");
+    } else {
+      alert("취소되었습니다!");
+      return;
+    }
     dispatch(applyActions.__postReject(acceptedDto));
   };
 
   const chatHandelBtn = () => {
+    for (let i = 0; i < props.roomUserId.length; i++) {
+      console.log(props.roomUserId[i]);
+      if (props.userId === props.roomUserId[i]) {
+        console.log(i);
+        alert("이미 채팅방이 존재 합니다!");
+        return;
+      }
+    }
     dispatch(chatActions.__addRoom(addRoomData));
   };
 

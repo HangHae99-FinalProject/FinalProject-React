@@ -100,11 +100,11 @@ const User = (props) => {
   );
   const isSendedEmail = useSelector((state) => state.myPage.isSendedEmail);
   // console.log(isSendedEmail);
-  console.log("모집완료리스트", getAppliedOverList_postUser);
+  // console.log("모집완료리스트", getAppliedOverList_postUser);
   var posterKeys = JSON.stringify(getAppliedOverList_postUser);
-  console.log(posterKeys);
+  // console.log(posterKeys);
   // console.log("모집완료리스트", getAppliedOverList);
-  // console.log("모집완료지원자리스트", getAppliedOverList_reqruit);
+  console.log("모집완료지원자리스트", getAppliedOverList_reqruit);
 
   const pathName = useLocation();
   // console.log(pathName);
@@ -729,7 +729,7 @@ const User = (props) => {
                   </Button>
                 </Grid>
                 {/* 자기소개 */}
-                <Grid sx={{ backgroundColor: "none", width:"900px" }}>
+                <Grid sx={{ backgroundColor: "none", width: "900px" }}>
                   <Typography
                     id="myIntro"
                     // value=
@@ -848,9 +848,9 @@ const User = (props) => {
                   sx={{ width: "456px" }}
                   label="모집/진행 완료"
                   {...a11yProps(2)}
-                  // onClick={() => {
-                  //   dispatch(userInfoActions.__getRecruitOver(userId));
-                  // }}
+                  onClick={() => {
+                    dispatch(userInfoActions.__getAppliedOver());
+                  }}
                 />
               </Tabs>
               {/* 여기까지 탭 속성 */}

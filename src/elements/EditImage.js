@@ -11,17 +11,21 @@ import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 const EditImage = (props) => {
-  const { image,marginTop, marginLeft, display, marginRight, padding, fontSize, ilWidth, ilHeight, imgDivMargin, ilBorder, imgDivWidth, imgBoxMargin, imgDivPadding, ilBgRepeat, ilIs_inline } = props;
+  const { image,marginTop, marginLeft, display, marginRight, padding, fontSize, ilWidth, ilHeight, imgDivMargin, ilBorder, imgDivWidth, imgBoxMargin, imgDivPadding, ilBgRepeat, ilIs_inline, _onChange } = props;
   const eddit = {image}.image;
+  // console.log(eddit)
   const dispatch = useDispatch();
   const [imgPreview, setImgPreview] = useState([]);
+  console.log(imgPreview)
   const [is_open, setIs_open] = useState(false);
   const [is_Url, setIs_url] = useState("");
   const Link = useSelector((state) => state.image.Url);
 
   const uploadFile = (e) => {
     const imageList = e.target.files;
+    // console.log(imageList)
     let imageUrlList = [...imgPreview];
+    console.log(imageUrlList)
     const maxImageCnt = 4;
 
     if (imageList.length > maxImageCnt) {
@@ -31,6 +35,7 @@ const EditImage = (props) => {
     // 파일들을 URL로 만듬
     for (let i = 0; i < imageList.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageList[i]);
+      console.log(currentImageUrl)
       imageUrlList.push(currentImageUrl);
     }
 
@@ -157,7 +162,7 @@ const EditImage = (props) => {
                 }}
               />
 
-              <ImageList {...styles} src={`${image}`} alt={`${image}-${id}`} />
+              <ImageList {...styles} src={`${image}`} alt={`${image}-${id}`} onChange={_onChange} />
             </ImageBox>
           );
         })}
@@ -181,7 +186,8 @@ EditImage.defaultProps = {
   imgDivWidth: null,
   imgDivPadding: null,
   imgBoxMargin: "0 20px",
-  ilIs_inline: false
+  ilIs_inline: false,
+  _onChange: ()=>{}
 };
 
 const UploadBox = styled.div`

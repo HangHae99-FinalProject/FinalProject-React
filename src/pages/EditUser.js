@@ -8,6 +8,8 @@ import EditImage from "../elements/EditImage";
 import Footer from "../elements/Footer";
 import axios from "axios";
 import { history } from "../redux/configureStore";
+import { imgActions } from "../redux/modules/image"; 
+import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
 
 import Grid_2 from "@mui/material/Grid";
 import Badge from "@mui/material/Badge";
@@ -34,14 +36,14 @@ const EditUser = () => {
   const _id = localStorage.getItem("userId");
 
   const pathName = useLocation();
-  console.log(pathName);
+  // console.log(pathName);
   const pathUserId = pathName.pathname.split("/")[2];
-  console.log(pathUserId);
+  // console.log(pathUserId);
 
   const getUserInfo = useSelector((state) => state.myPage?.userInfo);
   // const post_list = useSelector((state) => state.post.detailList);
   // const setUserInfo = useSelector((state) => state.myPage.requestDto);
-  // console.log(getUserInfo);
+  console.log(getUserInfo.userPortfolioImgList);
 
   const [selected, setSelected] = useState(false);
   // const [profileImgUrl, setProfileImgUrl] = useState("");
@@ -49,9 +51,9 @@ const EditUser = () => {
   const [major, setMajor] = useState("");
   const [intro, setIntro] = useState("");
   const [portfolioLink, setPortfolioLink] = useState("");
-  const [currentImgUrl, setCurrentImgUrl] = useState("");
+  // const [currentImgUrl, setCurrentImgUrl] = useState("");
   const [profileImgUrl, setProfileImgUrl] = useState("");
-
+  // console.log(currentImgUrl)
   // const onProfileImgUrlHandler = (e) => {
   //   setProfileImgUrl(e.target.value);
   // };
@@ -80,7 +82,8 @@ const EditUser = () => {
     }
   }
 
-  const imgUrl = useSelector((state) => state.image.editUrl);
+  // const imgUrl = useSelector((state) => state.image.editUrl);
+  const currentImgUrl = useSelector((state) => state.image.editUrl);
 
   const requestDto = {
     profileImg: profileImgUrl,
@@ -88,7 +91,7 @@ const EditUser = () => {
     intro: intro,
     major: major,
     portfolioLink: portfolioLink,
-    currentImgUrl: currentImgUrl,
+    currentImgUrl,
   };
   console.log(requestDto);
 
@@ -106,7 +109,7 @@ const EditUser = () => {
   const id = open ? "simple-popover" : undefined;
 
   // console.log(id)
-  console.log(userId);
+  // console.log(userId);
   // 헬퍼텍스트 -아이디, 패스워드, 패스워드확인, 닉네임, 전공
   function NicknameFormHelperText() {
     const { focused } = useFormControl() || {};
@@ -116,6 +119,8 @@ const EditUser = () => {
         return "예. 영문 대소문자, 한글, 숫자 포함 4~10자 입니다.";
       } else if (getUserInfo.nickname === nickname) {
         return " ";
+      } else if (!nicknameCheckRE(nickname)) {
+        return "닉네임 형식을 확인해주세요.";
       } else if (checkNicknameError === false) {
         return "중복된 닉네임입니다.";
       } else if (checkNicknameError === true) {
@@ -147,7 +152,7 @@ const EditUser = () => {
       checkNickname.status == 200 && setCheckNicknameError(true);
       // window.alert("사용이 가능한 아이디입니다.");
     } catch (err) {
-      console.log(err);
+      console.log(err.response);
       setCheckNicknameError(false);
       // window.alert("중복된 아이디입니다.");
     }
@@ -204,11 +209,13 @@ const EditUser = () => {
     setIntro(getUserInfo.intro);
     setPortfolioLink(getUserInfo.portfolioLink);
     setProfileImgUrl(getUserInfo.profileImg);
-    setCurrentImgUrl(getUserInfo.userPortfolioImgList);
+    // setCurrentImgUrl(getUserInfo.userPortfolioImgList);
   }, [getUserInfo]);
 
   useEffect(() => {
     dispatch(userInfoActions.__getUserInfo(_id));
+    dispatch(imgActions.initPre())
+    // dispatch(userInfoActions.initUserInfo())
     // dispatch(userInfoActions.setUserInfo(requestDto));
   }, []);
 
@@ -450,6 +457,7 @@ const EditUser = () => {
                     defaultValue={nickname}
                     placeholder="닉네임을 작성해 주세요."
                     onChange={onNicknameHandler}
+                    maxLength={10}
                   />
                   <Button
                     variant="contained"
@@ -661,7 +669,7 @@ const EditUser = () => {
                       defaultValue={intro}
                       placeholder="자기소개를 부탁해요."
                       onChange={onIntroHandler}
-                      maxLength={100}
+                      maxLength={200}
                     />
                   </Grid_2>
                 </Grid_2>
@@ -733,6 +741,7 @@ const EditUser = () => {
                       marginTop="0"
                       marginLeft="0"
                       image={getUserInfo.userPortfolioImgList}
+                      // _onChange={onCurrentImgUrlHandler}
                     />
                   </Grid_2>
                 </Grid_2>

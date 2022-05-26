@@ -16,6 +16,7 @@ import Footer from "../elements/Footer";
 
 const EditPost = () => {
   const post_list = useSelector((state) => state.post.detailList);
+  console.log(post_list)
   const link = useSelector((state) => state.image.Url);
   const dispatch = useDispatch();
   const param = useParams();
@@ -42,7 +43,7 @@ const EditPost = () => {
   }
 
   const imgUrl = useSelector((state) => state.image.editUrl);
-
+  console.log(imgUrl)
   const data = {
     imgUrl,
     content: is_content,

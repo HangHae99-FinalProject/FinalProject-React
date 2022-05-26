@@ -117,7 +117,7 @@ const Signup = () => {
 
     const helperText = React.useMemo(() => {
       if (focused) {
-        return "예. 영문 대소문자, 한글, 숫자 포함 4~10자 입니다.";
+        return "예. 영문 대소문자, 한글, 숫자 포함 2~6자 입니다.";
       } else if (filled !== true) {
         return " ";
       } else if (!nicknameCheckRE(nickname)) {

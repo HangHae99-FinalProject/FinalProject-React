@@ -87,6 +87,8 @@ const initialState = {
   applierList: [],
   recruitOverList: [],
   appliedOverList: [],
+  getAppliedOverList_reqruit: [],
+  test: [],
   evaluationInfo: {
     postId: "",
     receiverId: "",
@@ -103,8 +105,7 @@ const __getEmail = (email) => {
       if (data.msg !== false) {
         dispatch(isSendedEmail());
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -115,8 +116,7 @@ const __getUserInfo = (userId) => {
       const { data } = await userInfoApi.getUserInfo(userId);
 
       dispatch(getUser(data));
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -126,8 +126,7 @@ const __getApplied = (userId) => {
     try {
       const appliedData = await userInfoApi.getAppliedList(userId);
       dispatch(getApplied(appliedData));
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -137,8 +136,7 @@ const __getRecruit = (userId) => {
     try {
       const recruitData = await userInfoApi.getRecruitList(userId);
       dispatch(getRecruit(recruitData));
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -148,8 +146,7 @@ const __getApplier = (postId) => {
     try {
       const applierData = await userInfoApi.getApplierList(postId);
       dispatch(getApplier(applierData));
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -159,8 +156,7 @@ const __getRecruitOver = (userId) => {
     try {
       const recruitOverData = await userInfoApi.getRecruitOverList(userId);
       dispatch(getRecruitOver(recruitOverData));
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -169,9 +165,9 @@ const __getAppliedOver = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const appliedOverData = await userInfoApi.getAppliedOverList(postId);
+
       dispatch(getAppliedOver(appliedOverData));
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -180,10 +176,18 @@ const __postEvaluation = (reqeustUserRate) => {
   return async function (dispatch, getState, { hitory }) {
     try {
       const evaluationData = await userInfoApi.postEvaluation(reqeustUserRate);
+
       dispatch(updateEvaluationListRecruit(reqeustUserRate.receiverId));
+    } catch (err) {}
+  };
+};
+const __postEvaluations = (reqeustUserRate) => {
+  return async function (dispatch, getState, { hitory }) {
+    try {
+      const evaluationData = await userInfoApi.postEvaluation(reqeustUserRate);
+
       dispatch(updateEvaluationListPoster(reqeustUserRate.receiverId));
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -205,8 +209,7 @@ const __putUserInfoMod = (userId, data, files) => {
     try {
       await userInfoApi.putUserInfoModData(userId, formData);
       history.replace(`/user/${id}`);
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -235,15 +238,23 @@ export default handleActions(
       }),
     [GET_APPLIED_OVER]: (state, action) =>
       produce(state, (draft) => {
+        const list = [];
+        list.push(action.payload.appliedOverData.data.postUser);
+
+        const ttt = [
+          ...list,
+          ...action.payload.appliedOverData.data.recruitUserList,
+        ];
+
         draft.appliedOverList = action.payload.appliedOverData;
+        draft.test = ttt;
+        draft.getAppliedOverList_reqruit =
+          action.payload.appliedOverData.data.recruitUserList;
       }),
     [POST_EVALUATION]: (state, dispatch, action) =>
-      produce(
-        state,
-        (draft) => {
-          draft.evaluationInfo = action.payload.evaluationData;
-        },
-      ),
+      produce(state, (draft) => {
+        draft.evaluationInfo = action.payload.evaluationData;
+      }),
     [IS_SENDED_EMAIL]: (state, action) =>
       produce(state, (draft) => {
         cookies.set("123", { path: "/" });
@@ -251,17 +262,16 @@ export default handleActions(
       }),
     [UPDATE_EVALUATION_LIST_RECRUIT]: (state, action) =>
       produce(state, (draft) => {
-        draft.appliedOverList.data.recruitUserList =
-          draft.appliedOverList.data?.recruitUserList.filter(
-            (a, idx) => a.userId !== action.payload.receiverIdRecruit
-          );
+        draft.test = draft.test.filter(
+          (a) => a.userId !== action.payload.receiverIdRecruit
+        );
       }),
     [UPDATE_EVALUATION_LIST_POSTER]: (state, action) =>
       produce(state, (draft) => {
-        const postUser = state.appliedOverList.data.postUser;
-        const poster = [];
-        poster.push(postUser);
-        draft.appliedOverList.data.postUser = {};
+        draft.getAppliedOverList_reqruit =
+          draft.getAppliedOverList_reqruit.filter(
+            (a) => a.userId !== action.payload.receiverIdPoster
+          );
       }),
     [INIT_USER_INFO]: (state, { payload }) =>
       produce(state, (draft) => {
@@ -286,6 +296,7 @@ const actionCreators = {
   initUserInfo,
   getEmail,
   __getEmail,
+  __postEvaluations,
 };
 
 export { actionCreators };

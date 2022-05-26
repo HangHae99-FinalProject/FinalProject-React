@@ -31,19 +31,15 @@ const Uploads = () => {
       setImgPreview(imageUrlList);
     }
 
-    if (imageUrlList.length > 4) {
-      window.alert("이미지는 최대 4개까지 가능합니다!");
-    } else {
-      let imgList = [];
-      // 파일들을 꺼내 배열안에 넣어줌
-      for (const key in imageList) {
-        if (Object.hasOwnProperty.call(imageList, key)) {
-          imgList.push(imageList[key]);
-        }
+    let imgList = [];
+    // 파일들을 꺼내 배열안에 넣어줌
+    for (const key in imageList) {
+      if (Object.hasOwnProperty.call(imageList, key)) {
+        imgList.push(imageList[key]);
       }
-      setImgPreview(imageUrlList);
-      dispatch(imgActions.setPre(imgList));
     }
+    setImgPreview(imageUrlList);
+    dispatch(imgActions.setPre(imgList));
   };
 
   const handleUrl = (e) => {

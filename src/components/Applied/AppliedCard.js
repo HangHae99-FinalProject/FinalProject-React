@@ -320,6 +320,7 @@ const Container = styled.div`
   border-radius: 14px;
   margin-right: 1%;
   margin-top: 3%;
+  background-color: #fff;
 `;
 
 export default AppliedCard;

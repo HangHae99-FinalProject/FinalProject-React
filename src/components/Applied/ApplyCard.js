@@ -13,6 +13,7 @@ import { history } from "../../redux/configureStore";
 
 const ApplyCard = (props) => {
   const dispatch = useDispatch();
+  const majorList = props.majorData;
 
   var likeRatio = (props.likeCount / 100) * (100 / props.projectCount) * 100;
   if (isNaN(likeRatio)) {
@@ -53,22 +54,19 @@ const ApplyCard = (props) => {
   };
 
   const requestHandelBtn = () => {
-    if (window.confirm("신청하신 선장님과 충분한 대화를 나누셨나요?")) {
-      alert("수락하셨습니다!");
-    } else {
-      alert("취소하셨습니다!");
-      return;
+    for (let i = 0; i < majorList.length; i++) {
+      if (
+        majorList[i].majorName === props.applyMajor &&
+        majorList[i].numOfPeopleSet === majorList[i].numOfPeopleApply
+      ) {
+        alert("인원이 찼습니다!");
+        return;
+      }
     }
     dispatch(applyActions.__postRequest(acceptedDto));
   };
 
   const rejectHandelBtn = () => {
-    if (window.confirm("거절 하시겠습니까?")) {
-      alert("거절하셨습니다!");
-    } else {
-      alert("취소되었습니다!");
-      return;
-    }
     dispatch(applyActions.__postReject(acceptedDto));
   };
 

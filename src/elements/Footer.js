@@ -6,7 +6,12 @@ import footer from "../assets/Footer2.svg";
 
 const Footer = (props) => {
   const { position, width, bottom, borderRadius } = props;
-  const styles = { position: position, width: width, bottom: bottom, borderRadius: borderRadius };
+  const styles = {
+    position: position,
+    width: width,
+    bottom: bottom,
+    borderRadius: borderRadius,
+  };
   // const _styles = { width: width };
   return <Image {...styles} src={footer} alt="footer" />;
 };

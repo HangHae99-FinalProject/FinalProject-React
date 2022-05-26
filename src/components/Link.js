@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+
 import styled from "styled-components";
 
 const Link = () => {
@@ -22,7 +22,7 @@ const Link = () => {
 const LinkImage = styled.div`
   position: fixed;
   top: 80%;
-  /* top: 20%; */
+
   left: 7%;
   .help-tip {
   }

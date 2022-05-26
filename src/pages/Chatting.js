@@ -19,7 +19,7 @@ const Chatting = () => {
   const [rooms, setRooms] = useState([]);
   const [stomp, setStomp] = useState();
   const [test, setTest] = useState(true);
-  const [newMsgData, setNewMsgData] = useState("");
+
   const myUserId = localStorage.getItem("userId");
   const [is_loading, setIs_Loading] = useState(false);
 
@@ -36,24 +36,6 @@ const Chatting = () => {
         setIs_Loading(false);
       })
       .catch((err) => {});
-    // client.subscribe(`/sub/${myUserId}`, (data) => {
-    //   console.log(data);
-    //   const onMessage = JSON.parse(data.body);
-    //   console.log(onMessage);
-    // setNewMsgData(onMessage);
-    // const updateCountDto = {
-    //   roomName: onMessage.roomName,
-    //   userId: myUserId,
-    // };
-    // chatApi
-    //   .roomCount(updateCountDto)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    // });
   }, []);
   if (!user) {
     alert("로그인을 먼저 해주세요!");

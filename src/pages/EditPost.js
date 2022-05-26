@@ -72,21 +72,6 @@ const EditPost = () => {
   const post_id = param.postid;
   const is_edit = post_id ? true : false;
 
-  // console.log(Event.keyCode);
-
-  useEffect(() => {}, []);
-  // function doNotReload(e) {
-  //   console.log(e);
-  //   e.preventDefault();
-  //   return "잘못된 접근이라우";
-  // }
-
-  // window.onbeforeunload = function (e) {
-  //   var dialogText = "안된다";
-  //   e.returnValue = dialogText;
-  //   return dialogText;
-  // };
-
   const editDetailBtn = () => {
     if (data.title === "") {
       alert("제목을 입력해주세요!");

@@ -146,7 +146,6 @@ const Scrollbar = styled.div`
   -ms-overflow-style: {
     height: 70%;
   }
-  /* margin-right: 20px; */
 
   &::-webkit-scrollbar-thumb {
     background-color: #03517d;

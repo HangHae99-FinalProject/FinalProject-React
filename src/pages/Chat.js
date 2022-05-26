@@ -17,7 +17,6 @@ import Spinner from "../components/Spinner";
 import Footer from "../elements/Footer";
 
 const Chat = (data) => {
-  const dispatch = useDispatch();
   const client = useSelector((state) => state.chat.client);
 
   const nickName = localStorage.getItem("nickname");
@@ -55,7 +54,7 @@ const Chat = (data) => {
         setIs_Loading(true);
       })
       .catch((err) => {});
-    // client.unsubscribe(`/sub/${myUserId}`);
+
     client.send("/pub/join", {}, JSON.stringify(`${roomName}`));
     client.subscribe(`/sub/${roomName}`, (data) => {
       const onMessage = JSON.parse(data.body);
@@ -183,7 +182,7 @@ const Chat = (data) => {
                 <p className="header-title">
                   {data.location.state.sender.nickname}님과 대화
                 </p>
-                {/* <Grid _className="ct-wrap"> */}
+
                 <BiDotsVerticalRounded
                   onClick={ModalControl}
                   style={{
@@ -193,7 +192,6 @@ const Chat = (data) => {
                   }}
                   className="point-icon"
                 />
-                {/* </Grid> */}
               </div>
               {is_open && (
                 <>
@@ -307,7 +305,7 @@ const Container = styled.div`
       height: 64px;
       background-color: white;
       box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.1);
-      /* position: fixed; */
+
       top: 0;
       z-index: 10;
 
@@ -340,7 +338,7 @@ const Container = styled.div`
       .drop-chat {
         height: 179px;
         width: 158px;
-        /* border-radius: 12px; */
+
         background-color: white;
         position: absolute;
         top: -8%;
@@ -354,7 +352,6 @@ const Container = styled.div`
         filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
         cursor: pointer;
         .unactive {
-          /* padding: 8px 8px; */
           font-size: 16px;
         }
       }
@@ -410,8 +407,7 @@ const ChatBox = styled.div`
 
 const ChatInput = styled.div`
   width: 972px;
-  /* position: fixed; */
-  /* bottom: 50px; */
+
   padding: 0px 8px 0px 20px;
 
   background-color: white;
@@ -436,7 +432,6 @@ const ChatInput = styled.div`
       }
     }
     .send-chat-icon {
-      /* margin: 0 0 4px 8px; */
       color: black;
       cursor: pointer;
     }

@@ -20,7 +20,6 @@ const Spinner = () => {
 
 export default Spinner;
 const Wrap = styled.div`
-  /* height: 100vh; */
   .spinners {
     position: absolute;
     top: 45%;

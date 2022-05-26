@@ -5,13 +5,6 @@ const MyChat = (props) => {
   return (
     <React.Fragment>
       <MyChatBox>
-        {/* <div className="imgBox">
-          <img
-            src={props.sender.profileImg}
-            className="profileImg"
-            alt="profileImg"
-          ></img>
-        </div> */}
         <div></div>
         <div className="chat-box">
           <span className="createdAt">{props.data.createdAt}</span>

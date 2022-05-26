@@ -138,6 +138,15 @@ const Alert = () => {
   if (pathName.pathname === "/") {
     return null;
   }
+  if (pathName.pathname === "/user/kakao/login") {
+    return null;
+  }
+  if (pathName.pathname === "/signup") {
+    return null;
+  }
+  if (pathName.pathname === "/login") {
+    return null;
+  }
 
   return (
     <Container>

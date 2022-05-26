@@ -91,6 +91,7 @@ const Login = ({ location }) => {
 
   const onLoginHandler = () => {
     window.location.href = kakaoUrl;
+    // history.replace(`/${kakaoUrl}`);
   };
 
   const onMemberIdHandler = (e) => {
@@ -124,10 +125,6 @@ const Login = ({ location }) => {
   React.useEffect(() => {
     console.log(isLogin);
     console.log(token);
-    if (isLogin) {
-      alert("이미 로그인을 하셨습니다!");
-      history.replace("/main");
-    }
     if (token) {
       alert("이미 로그인을 하셨습니다!");
       history.replace("/main");

@@ -80,6 +80,9 @@ const EditUser = () => {
     }
   }
 
+  console.log(newFiles);
+  console.log(Files);
+
   const imgUrl = useSelector((state) => state.image.editUrl);
 
   const requestDto = {

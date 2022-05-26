@@ -36,6 +36,8 @@
 }
 
 .swiper-slide img {
-  width: 73%;
-  height: 100%;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
 }

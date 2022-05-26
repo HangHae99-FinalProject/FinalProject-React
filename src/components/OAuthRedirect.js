@@ -12,20 +12,23 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import FormHelperText from "@mui/material/FormHelperText";
-import Grid from "../elements/Grid";
+import Grid from "@mui/material/Grid";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
 import Spinner from "./Spinner";
+import styled from "styled-components";
 
-function MajorFormHelperText() {
-  const { focused } = useFormControl() || {};
-
-  const helperText = React.useMemo(() => {
-    return "전공을 선택해 주세요.";
-  }, [focused]);
-
-  return <FormHelperText>{helperText}</FormHelperText>;
-}
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "595px",
+  height: "555px",
+  bgcolor: "background.paper",
+  boxShadow: 0,
+  borderRadius: "14px",
+};
 const OAuthRedirect = () => {
   const dispatch = useDispatch();
   const [nickname, setNickname] = React.useState("");
@@ -39,18 +42,15 @@ const OAuthRedirect = () => {
 
   let code = new URL(window.location.href).searchParams.get("code");
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "480px",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
+  function MajorFormHelperText() {
+    const { focused } = useFormControl() || {};
 
+    const helperText = React.useMemo(() => {
+      return "전공을 선택해 주세요.";
+    }, [focused]);
+
+    return <FormHelperText>{helperText}</FormHelperText>;
+  }
   function NicknameFormHelperText() {
     const { focused } = useFormControl() || {};
 
@@ -94,6 +94,7 @@ const OAuthRedirect = () => {
   const onMajorHandler = (e) => {
     setMajor(e.target.value);
   };
+  const handleClose = () => setOpen(false);
 
   const goAdditionalInfo = () => {
     if (!nicknameCheckRE(nickname)) {
@@ -114,12 +115,14 @@ const OAuthRedirect = () => {
   }, []);
 
   return (
-    <>
+    <React.Fragment>
+      <BgDiv />
       <Spinner />
       {/* 추가정보 기입 모달 */}
       <Grid>
         <Modal
-          open={open}
+          open={open} //모달 열기
+          onClose={handleClose} //모달 닫기
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -137,15 +140,17 @@ const OAuthRedirect = () => {
                 alignItems="center"
               >
                 <img
-                  src={require(`../assets/signupLogo.png`)}
+                  src={require(`../assets/fixedSignupLogo.png`)}
                   alt="signupLogo"
+                  style={{ padding: "80px 0 0 0 " }}
                 />
-                <FormControl sx={{ width: "100%" }}>
+                <FormControl>
                   <Grid
                     container
                     direction="row"
                     justifyContent="space-between"
                     alignItems="center"
+                    sx={{ marginTop: "69px", width: "430px" }}
                   >
                     <OutlinedInput
                       required
@@ -155,13 +160,34 @@ const OAuthRedirect = () => {
                       placeholder="닉네임을 입력해 주세요"
                       variant="standard"
                       onChange={onNicknameHandler}
-                      sx={{ width: "65%" }}
+                      sx={{
+                        marginRight: "21px",
+                        width: "276px",
+                        height: "62px",
+                        borderRadius: "14px",
+                        fontSize: "20px",
+                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                      }}
                     />
                     <Grid>
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         onClick={nicknameCheckBtn}
-                        sx={{ width: "110px", height: "55px", padding: "0" }}
+                        sx={{
+                          width: "132px",
+                          height: "62px",
+                          padding: "0",
+                          border: "0",
+                          borderRadius: "14px",
+                          fontSize: "20px",
+                          color: "#2967AC",
+                          backgroundColor: "#D7F1FD",
+                          "&:hover": {
+                            backgroundColor: "#D7F1FD",
+                            boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                          },
+                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                        }}
                       >
                         중복확인
                       </Button>
@@ -169,47 +195,161 @@ const OAuthRedirect = () => {
                   </Grid>
                   <NicknameFormHelperText />
                 </FormControl>
-                <Grid sx={{ marginTop: "20px" }}>
-                  <Box sx={{ width: "480px" }}>
+                <Grid sx={{ marginTop: "10px" }}>
+                  <Box>
                     <FormControl fullWidth>
                       <Select
+                        // IconComponent={() => (
+                        //   <KeyboardArrowDownRoundedIcon
+                        //     fontSize="large"
+                        //     sx={{ color: "#2967AC", pointerEvents: "none" }}
+                        //   />
+                        // )}
                         required
+                        // autoWidth
                         labelId="major"
                         id="demo-simple-select"
                         value={major}
                         displayEmpty
                         onChange={onMajorHandler}
                         inputProps={{ "aria-label": "select major" }}
+                        MenuProps={{
+                          PaperProps: {
+                            sx: { maxHeight: 250 },
+                          },
+                        }}
+                        sx={{
+                          width: "430px",
+                          height: "62px",
+                          borderRadius: "14px",
+                          fontSize: "20px",
+                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                        }}
                       >
                         <MenuItem disabled value="">
-                          <em style={{ color: "#888888", fontStyle: "normal" }}>
+                          <em
+                            style={{
+                              color: "#888888",
+                              fontStyle: "normal",
+                              margin: "auto",
+                              fontSize: "20px",
+                            }}
+                          >
                             전공을 선택해 주세요
                           </em>
                         </MenuItem>
-                        <MenuItem value={"디자인"}>디자인</MenuItem>
-                        <MenuItem value={"프로그래밍"}>프로그래밍</MenuItem>
-                        <MenuItem value={"영상"}>영상</MenuItem>
-                        <MenuItem value={"사진"}>사진</MenuItem>
-                        <MenuItem value={"모델"}>모델</MenuItem>
-                        <MenuItem value={"배우"}>배우</MenuItem>
-                        <MenuItem value={"성우"}>성우</MenuItem>
-                        <MenuItem value={"음향"}>음향</MenuItem>
+                        <MenuItem
+                          value={"디자인"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          디자인
+                        </MenuItem>
+                        <MenuItem
+                          value={"프로그래밍"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          프로그래밍
+                        </MenuItem>
+                        <MenuItem
+                          value={"영상"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          영상
+                        </MenuItem>
+                        <MenuItem
+                          value={"사진"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          사진
+                        </MenuItem>
+                        <MenuItem
+                          value={"모델"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          모델
+                        </MenuItem>
+                        <MenuItem
+                          value={"배우"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          배우
+                        </MenuItem>
+                        <MenuItem
+                          value={"성우"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          성우
+                        </MenuItem>
+                        <MenuItem
+                          value={"음향"}
+                          sx={{ justifyContent: "center", fontSize: "20px" }}
+                        >
+                          음향
+                        </MenuItem>
                       </Select>
                       <MajorFormHelperText />
                     </FormControl>
                   </Box>
                 </Grid>
-                <Box>
+                <Box sx={{ marginTop: "10px" }}>
                   {checkNicknameError === false ? (
-                    <Button disabled type="submit" variant="contained">
+                    <Button
+                      disabled
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        width: "430px",
+                        height: "62px",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        color: "white",
+                        border: "0",
+                        borderRadius: "14px",
+                        backgroundColor: "#2967AC",
+                        "&:disabled": { backgroundColor: "gray" },
+                      }}
+                    >
                       등록완료
                     </Button>
                   ) : checkNicknameError === null ? (
-                    <Button disabled type="submit" variant="contained">
+                    <Button
+                      disabled
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        width: "430px",
+                        height: "62px",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        color: "white",
+                        border: "0",
+                        borderRadius: "14px",
+                        backgroundColor: "#2967AC",
+                        "&:disabled": { backgroundColor: "gray" },
+                      }}
+                    >
                       등록완료
                     </Button>
                   ) : (
-                    <Button type="submit" variant="contained">
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        width: "430px",
+                        height: "62px",
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        color: "white",
+                        border: "0",
+                        borderRadius: "14px",
+                        backgroundColor: "#FE674C",
+                        "&:hover": {
+                          backgroundColor: "#FE674C",
+                          boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                        },
+                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                      }}
+                    >
                       등록완료
                     </Button>
                   )}
@@ -220,8 +360,19 @@ const OAuthRedirect = () => {
         </Modal>
       </Grid>
       {/* 여기까지가 추가정보 기입 모달 */}
-    </>
+    </React.Fragment>
   );
 };
+
+const BgDiv = styled.div`
+  margin-top: 256px;
+  z-index: 0;
+  height: 100%;
+  background-image: url("https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png");
+  background-repeat: no-repeat;
+  height: 765px;
+  background-size: corver;
+  background-position-y: bottom;
+`;
 
 export default OAuthRedirect;

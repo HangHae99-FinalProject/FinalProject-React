@@ -36,13 +36,13 @@ const Login = ({ location }) => {
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUri}&response_type=code`;
 
   const loginErrorCode = useSelector((state) => state.user.loginErrorCode);
-  console.log(loginErrorCode === "404");
 
   if (location?.state) {
     localStorage.setItem("from", location?.state?.from);
   }
 
   const isLogin = useSelector((state) => state.user.isLogin);
+  const token = cookies.get("accessToken", { path: "/" });
 
   // 헬퍼텍스트 -아이디, 패스워드
   function IdFormHelperText() {
@@ -91,6 +91,7 @@ const Login = ({ location }) => {
 
   const onLoginHandler = () => {
     window.location.href = kakaoUrl;
+    // history.replace(`/${kakaoUrl}`);
   };
 
   const onMemberIdHandler = (e) => {
@@ -122,11 +123,13 @@ const Login = ({ location }) => {
   }
 
   React.useEffect(() => {
-    if (isLogin) {
+    console.log(isLogin);
+    console.log(token);
+    if (token) {
       alert("이미 로그인을 하셨습니다!");
       history.replace("/main");
     }
-  }, [isLogin]);
+  }, []);
 
   return (
     <React.Fragment>

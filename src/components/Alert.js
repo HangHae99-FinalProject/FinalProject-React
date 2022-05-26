@@ -78,6 +78,8 @@ const Alert = () => {
 
   const handelDeleteMessage = (id) => {
     console.log(id);
+    setNotification(notification.filter((a, idx) => a.id !== id));
+
     chatApi
       .notificationDelete(id)
       .then((res) => {
@@ -86,13 +88,13 @@ const Alert = () => {
       .catch((err) => {
         console.log(err);
       });
-    setNotification(notification.filter((a, idx) => a.id !== id));
-    if (notification) {
+    if (notificationCnt) {
       setNotificationCnt(notificationCnt - 1);
       return;
-    } else if (!notificationCnt) {
+    }
+    if (!notificationCnt) {
       setNotificationCnt();
-      is_open(false);
+      return;
     }
   };
 
@@ -134,6 +136,15 @@ const Alert = () => {
   }, [alertOpen, isLogin]);
 
   if (pathName.pathname === "/") {
+    return null;
+  }
+  if (pathName.pathname === "/user/kakao/login") {
+    return null;
+  }
+  if (pathName.pathname === "/signup") {
+    return null;
+  }
+  if (pathName.pathname === "/login") {
     return null;
   }
 

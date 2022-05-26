@@ -1,9 +1,7 @@
 import instance from "./api";
-import axios from "axios";
 import Cookies from "universal-cookie";
 import { formDataApi } from "./api";
 
-import { useSelector } from "react-redux";
 
 const cookies = new Cookies();
 const accessToken = cookies.get("accessToken");

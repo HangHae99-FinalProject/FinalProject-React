@@ -7,9 +7,6 @@ import Footer from "./Footer";
 import footer from "../assets/Footer2.svg";
 
 const ModalWindow = (props) => {
-  //   const [open, setOpen] = React.useState(false);
-  //   const handleOpen = () => setOpen(true);
-  //   const handleClose = () => setOpen(false);
 
   const {
     position,
@@ -46,7 +43,6 @@ const ModalWindow = (props) => {
 
   return (
     <div>
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -68,9 +64,7 @@ ModalWindow.defaultProps = {
   width: "480px",
   height: null,
   bgcolor: "background.paper",
-  // border: "2px solid #000",
   borderRadius: null,
-  // boxShadow: 24,
   p: 0,
   padding: 0,
 };

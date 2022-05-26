@@ -3,13 +3,6 @@ import { produce } from "immer"; //불변성 관리를 위해 사용
 
 import { userInfoApi } from "../../api/userInfoApi";
 import Cookies from "universal-cookie";
-import jwt_decode from "jwt-decode";
-import instance from "../../api/api";
-import { history } from "../configureStore";
-
-import axios from "axios";
-import { ConstructionOutlined } from "@mui/icons-material";
-import { create } from "@mui/material/styles/createTransitions";
 
 const cookies = new Cookies();
 const id = localStorage.getItem("userId");
@@ -100,20 +93,18 @@ const initialState = {
     point: 0,
   },
   isSendedEmail: false,
-  // requestDto: []
 };
 
 //middleware actions
-
 const __getEmail = (email) => {
   return async function (dispatch, getState, { history }) {
     try {
       const { data } = await userInfoApi.emailCheck(email);
-
       if (data.msg !== false) {
         dispatch(isSendedEmail());
       }
-    } catch (err) {}
+    } catch (err) {
+    }
   };
 };
 
@@ -124,8 +115,8 @@ const __getUserInfo = (userId) => {
       const { data } = await userInfoApi.getUserInfo(userId);
 
       dispatch(getUser(data));
-      //   console.log(data);
-    } catch (err) {}
+    } catch (err) {
+    }
   };
 };
 
@@ -134,9 +125,9 @@ const __getApplied = (userId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const appliedData = await userInfoApi.getAppliedList(userId);
-      // console.log(appliedData.data);
       dispatch(getApplied(appliedData));
-    } catch (err) {}
+    } catch (err) {
+    }
   };
 };
 
@@ -145,9 +136,9 @@ const __getRecruit = (userId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const recruitData = await userInfoApi.getRecruitList(userId);
-      // console.log(recruitData.data);
       dispatch(getRecruit(recruitData));
-    } catch (err) {}
+    } catch (err) {
+    }
   };
 };
 
@@ -156,9 +147,9 @@ const __getApplier = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const applierData = await userInfoApi.getApplierList(postId);
-      // console.log(applierData);
       dispatch(getApplier(applierData));
-    } catch (err) {}
+    } catch (err) {
+    }
   };
 };
 
@@ -167,9 +158,9 @@ const __getRecruitOver = (userId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const recruitOverData = await userInfoApi.getRecruitOverList(userId);
-      // console.log(recruitOverData);
       dispatch(getRecruitOver(recruitOverData));
-    } catch (err) {}
+    } catch (err) {
+    }
   };
 };
 
@@ -178,13 +169,9 @@ const __getAppliedOver = (postId) => {
   return async function (dispatch, getState, { history }) {
     try {
       const appliedOverData = await userInfoApi.getAppliedOverList(postId);
-      // console.log(appliedOverData);
       dispatch(getAppliedOver(appliedOverData));
-      // const postUser = appliedOverData.data.postUser
-      // const poster = [];
-      // poster.push(postUser)
-      // console.log(poster)
-    } catch (err) {}
+    } catch (err) {
+    }
   };
 };
 
@@ -193,10 +180,10 @@ const __postEvaluation = (reqeustUserRate) => {
   return async function (dispatch, getState, { hitory }) {
     try {
       const evaluationData = await userInfoApi.postEvaluation(reqeustUserRate);
-
       dispatch(updateEvaluationListRecruit(reqeustUserRate.receiverId));
       dispatch(updateEvaluationListPoster(reqeustUserRate.receiverId));
-    } catch (err) {}
+    } catch (err) {
+    }
   };
 };
 
@@ -215,11 +202,11 @@ const __putUserInfoMod = (userId, data, files) => {
     files.map((e) => {
       return formData.append("imgs", e);
     });
-
     try {
       await userInfoApi.putUserInfoModData(userId, formData);
       history.replace(`/user/${id}`);
-    } catch (err) {}
+    } catch (err) {
+    }
   };
 };
 
@@ -250,14 +237,13 @@ export default handleActions(
       produce(state, (draft) => {
         draft.appliedOverList = action.payload.appliedOverData;
       }),
-    // [SET_USER_INFO]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.requestDto = action.payload.userInfo;
-    //   }),
     [POST_EVALUATION]: (state, dispatch, action) =>
-      produce(state, (draft) => {
-        draft.evaluationInfo = action.payload.evaluationData;
-      }),
+      produce(
+        state,
+        (draft) => {
+          draft.evaluationInfo = action.payload.evaluationData;
+        },
+      ),
     [IS_SENDED_EMAIL]: (state, action) =>
       produce(state, (draft) => {
         cookies.set("123", { path: "/" });
@@ -275,12 +261,6 @@ export default handleActions(
         const postUser = state.appliedOverList.data.postUser;
         const poster = [];
         poster.push(postUser);
-
-        // console.log(Object.values(draft.appliedOverList.data.postUser));
-        // console.log(action.payload.receiverIdPoster);
-        // draft.appliedOverList.data.postUser = poster.filter(
-        //   (a, idx) => a.userId !== action.payload.receiverIdPoster
-        // );
         draft.appliedOverList.data.postUser = {};
       }),
     [INIT_USER_INFO]: (state, { payload }) =>
@@ -290,7 +270,6 @@ export default handleActions(
   },
   initialState
 );
-// console.log(initialState);
 
 //action creator export
 const actionCreators = {

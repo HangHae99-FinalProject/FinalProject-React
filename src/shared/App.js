@@ -16,11 +16,9 @@ import Write from "../pages/Write";
 import User from "../pages/User";
 import EditUser from "../pages/EditUser";
 import Chat from "../pages/Chat";
-import Footer from "../elements/Footer";
 
 //기타 임포트
 import { history } from "../redux/configureStore";
-import { Grid } from "@mui/material";
 import Detail from "../pages/Detail";
 import { actionCreators as userActions } from "../redux/modules/user";
 import EditPost from "../pages/EditPost";
@@ -75,12 +73,9 @@ function App() {
           <Route path="/chat" exact component={Chat} />
           <Route path="/applied/:postid" exact component={Applied} />
         </Container>
-
         <Alert />
         <OnTopBtn />
       </ConnectedRouter>
-
-      {/* <Footer></Footer> */}
     </>
   );
 }

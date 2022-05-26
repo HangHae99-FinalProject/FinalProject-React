@@ -1,49 +1,30 @@
 import * as React from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import store, { history } from "../redux/configureStore";
+import { useLocation } from "react-router-dom";
+import { history } from "../redux/configureStore";
 import Cookies from "universal-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
-import logo from "../assets/logo.png";
 
 //MUI 관련 임포트
-import { alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
-import ChatIcon from "@mui/icons-material/Chat";
-import HomeIcon from "@mui/icons-material/Home";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import Grid from "@mui/material/Grid";
 
 //미사용 임포트
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import styled from "styled-components";
 
 const cookies = new Cookies();
 
 function Header(props) {
   const dispatch = useDispatch();
-
   const isCookies = cookies.get("accessToken", { path: "/" }) ? true : false;
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
 
   const pathName = useLocation();
 
+  const menuId = "primary-search-account-menu";
   const goHome = () => {
     history.push("/main");
   };
@@ -63,10 +44,6 @@ function Header(props) {
   const goSignup = () => {
     history.push("/signup");
   };
-
-  // React.useEffect(() => {
-  //   dispatch(userActions.__loginCheck());
-  // }, []);
 
   if (pathName.pathname === "/user/kakao/login") {
     return null;
@@ -112,7 +89,6 @@ function Header(props) {
                 </Grid>
               </>
             )}
-
             <Grid sx={{ width: "31%" }}>
               <Grid
                 container
@@ -130,16 +106,6 @@ function Header(props) {
                     </Typography>
                   </Grid>
                 ) : null}
-                {/* {isLogin && isCookies === true ? (
-                  <Grid
-                    sx={{ marginRight: "20px", display: { cursor: "pointer" } }}
-                  >
-                    <Typography sx={{ color: "#2967AC", fontSize: "20px" }}>
-                      등대
-                    </Typography>
-                  </Grid>
-                ) : null} */}
-
                 <Grid
                   sx={{ marginRight: "20px", display: { cursor: "pointer" } }}
                 >

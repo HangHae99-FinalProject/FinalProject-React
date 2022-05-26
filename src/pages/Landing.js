@@ -14,7 +14,6 @@ const Landing = () => {
   const pathName = useLocation();
 
   const isLogin = useSelector((state) => state.user.isLogin);
-  console.log(isLogin);
 
   const loginHandelBtn = () => {
     history.push("/login");
@@ -27,7 +26,7 @@ const Landing = () => {
   };
 
   useEffect(() => {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     dispatch(postActions.__getLanding());
   }, [pathName]);
 

@@ -62,9 +62,7 @@ const __getSearchData =
       const { data } = await postApi.searchData();
 
       dispatch(getSearchData(data.data));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __getLanding =
@@ -73,9 +71,7 @@ const __getLanding =
     try {
       const { data } = await postApi.getLanding();
       dispatch(getLanding(data.data));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __postApply =
@@ -84,9 +80,7 @@ const __postApply =
     try {
       const { res } = await postApi.postApply(postId, data);
       dispatch(addApply("applicant"));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __deleteApply =
@@ -95,9 +89,7 @@ const __deleteApply =
     try {
       const { data } = await postApi.deleteApply(postId);
       dispatch(addApply("user"));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 // 메인,게시글
@@ -107,9 +99,7 @@ const __deletePost =
     try {
       const { data } = await postApi.deletePost(postId);
       history.replace("/main");
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __editPost =
@@ -130,9 +120,7 @@ const __editPost =
       await postApi.editPost(postId, formData);
 
       history.replace("/main");
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __addPost =
@@ -155,9 +143,7 @@ const __addPost =
     try {
       await postApi.postWrite(formData);
       history.replace("/main");
-    } catch (err) {
-      console.log(err.errorMessage);
-    }
+    } catch (err) {}
   };
 
 const __loginGetDetail =
@@ -167,9 +153,7 @@ const __loginGetDetail =
       const { data } = await postApi.loginGetDetail(postId);
       dispatch(commentActions.getComment(data.data.commentList));
       dispatch(setDetail(data.data));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __getDetail =
@@ -180,9 +164,7 @@ const __getDetail =
 
       dispatch(commentActions.getComment(data.data.commentList));
       dispatch(setDetail(data.data));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __getPost =

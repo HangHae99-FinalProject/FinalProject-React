@@ -34,9 +34,7 @@ const __deadlinePatch =
       await applyApi.deadlinePatch(postId);
 
       history.replace("/main");
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __postReject =
@@ -46,9 +44,7 @@ const __postReject =
       await applyApi.postReject(rejectDto);
 
       dispatch(deleteApply(rejectDto.userId));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 const __postRefuse =
   (refuseDto) =>
@@ -57,9 +53,7 @@ const __postRefuse =
       await applyApi.postReject(refuseDto);
 
       dispatch(refuseApply(refuseDto.userId));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __postRequest =
@@ -67,11 +61,9 @@ const __postRequest =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await applyApi.postRequest(acceptedDto);
-      console.log(data);
+
       dispatch(addRequest(acceptedDto.userId));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __getSubscriber =
@@ -79,11 +71,9 @@ const __getSubscriber =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await applyApi.getSubscriber(postId);
-      console.log(data);
+
       dispatch(setSubscriber(data));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __getAccept =
@@ -93,9 +83,7 @@ const __getAccept =
       const { data } = await applyApi.getAccept(postId);
 
       dispatch(setAccept(data));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 export default handleActions(

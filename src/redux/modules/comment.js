@@ -36,7 +36,7 @@ const __addComment =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await commentApi.postComment(postId, comment);
-      console.log(data);
+
       const today = new Date();
 
       const createdAt = today;
@@ -48,9 +48,7 @@ const __addComment =
       dispatch(
         addComment({ comment, createdAt, profileImg, nickname, commentId })
       );
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __deleteComment =
@@ -60,9 +58,7 @@ const __deleteComment =
       await commentApi.deleteComment(commentId);
 
       dispatch(deleteComment(commentId));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __editComment =
@@ -72,9 +68,7 @@ const __editComment =
       await commentApi.editComment(commentId, comment);
 
       dispatch(editComment(comment, commentId));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 // 리듀서

@@ -68,7 +68,6 @@ export default handleActions(
     [SET_URL]: (state, action) =>
       produce(state, (draft) => {
         draft.Url = action.payload.Url;
-        console.log(draft.Url);
       }),
   },
   initialState

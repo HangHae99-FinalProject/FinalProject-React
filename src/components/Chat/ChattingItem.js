@@ -4,7 +4,6 @@ import { history } from "../../redux/configureStore";
 // import { getCookie } from "../shared/Cookie";
 
 const ChattingItem = (p) => {
-  console.log(p);
   const stompClient = p.client;
   const myUserId = localStorage.getItem("userId");
 

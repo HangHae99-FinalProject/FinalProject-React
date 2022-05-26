@@ -36,9 +36,7 @@ const __addRoom =
           postId: data.postId,
         },
       });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 const __getRoom =
@@ -49,9 +47,7 @@ const __getRoom =
       const roomUserId = data.map((a) => a.user.userId);
 
       dispatch(roadRoom(roomUserId));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
 export default handleActions(

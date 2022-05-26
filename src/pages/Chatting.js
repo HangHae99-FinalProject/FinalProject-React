@@ -35,7 +35,7 @@ const Chatting = () => {
         setRooms(res.data);
         setIs_Loading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
     // client.subscribe(`/sub/${myUserId}`, (data) => {
     //   console.log(data);
     //   const onMessage = JSON.parse(data.body);

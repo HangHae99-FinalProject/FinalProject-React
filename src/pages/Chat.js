@@ -51,17 +51,13 @@ const Chat = (data) => {
     chatApi
       .roadMessage(roadMessageBox)
       .then((res) => {
-        console.log(res);
         setMessageList(res.data.message);
         setIs_Loading(true);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
     // client.unsubscribe(`/sub/${myUserId}`);
     client.send("/pub/join", {}, JSON.stringify(`${roomName}`));
     client.subscribe(`/sub/${roomName}`, (data) => {
-      console.log(data);
       const onMessage = JSON.parse(data.body);
       setMessageList((messageList) => messageList.concat(onMessage));
 

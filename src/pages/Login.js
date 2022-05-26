@@ -123,8 +123,6 @@ const Login = ({ location }) => {
   }
 
   React.useEffect(() => {
-    console.log(isLogin);
-    console.log(token);
     if (token) {
       alert("이미 로그인을 하셨습니다!");
       history.replace("/main");

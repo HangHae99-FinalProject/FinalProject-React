@@ -8,7 +8,7 @@ import EditImage from "../elements/EditImage";
 import Footer from "../elements/Footer";
 import axios from "axios";
 import { history } from "../redux/configureStore";
-import { imgActions } from "../redux/modules/image"; 
+import { imgActions } from "../redux/modules/image";
 import { memberIdCheckRE, nicknameCheckRE, pwCheckRE } from "../shared/common";
 
 import Grid_2 from "@mui/material/Grid";
@@ -43,7 +43,6 @@ const EditUser = () => {
   const getUserInfo = useSelector((state) => state.myPage?.userInfo);
   // const post_list = useSelector((state) => state.post.detailList);
   // const setUserInfo = useSelector((state) => state.myPage.requestDto);
-  console.log(getUserInfo.userPortfolioImgList);
 
   const [selected, setSelected] = useState(false);
   // const [profileImgUrl, setProfileImgUrl] = useState("");
@@ -93,7 +92,6 @@ const EditUser = () => {
     portfolioLink: portfolioLink,
     currentImgUrl,
   };
-  console.log(requestDto);
 
   const userId = param.id;
 
@@ -148,11 +146,10 @@ const EditUser = () => {
           major,
         }
       );
-      console.log(checkNickname.status);
+
       checkNickname.status == 200 && setCheckNicknameError(true);
       // window.alert("사용이 가능한 아이디입니다.");
     } catch (err) {
-      console.log(err.response);
       setCheckNicknameError(false);
       // window.alert("중복된 아이디입니다.");
     }
@@ -181,7 +178,7 @@ const EditUser = () => {
       alert("포트폴리오 링크를 입력해 주세요.");
       return;
     }
-    console.log(userId, requestDto, newFiles);
+
     dispatch(userInfoActions.__putUserInfoMod(userId, requestDto, newFiles));
     history.push(`/user/${_id}`);
     // location.reload();
@@ -214,7 +211,7 @@ const EditUser = () => {
 
   useEffect(() => {
     dispatch(userInfoActions.__getUserInfo(_id));
-    dispatch(imgActions.initPre())
+    dispatch(imgActions.initPre());
     // dispatch(userInfoActions.initUserInfo())
     // dispatch(userInfoActions.setUserInfo(requestDto));
   }, []);

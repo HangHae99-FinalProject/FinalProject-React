@@ -76,7 +76,7 @@ const Alert = () => {
     }
   };
 
-  const handelDeleteMessage = (id) => {
+  const handelDeleteMessage = (id, status) => {
     console.log(id);
     setNotification(notification.filter((a, idx) => a.id !== id));
 
@@ -88,7 +88,7 @@ const Alert = () => {
       .catch((err) => {
         console.log(err);
       });
-    if (notificationCnt) {
+    if (notificationCnt && status === false) {
       setNotificationCnt(notificationCnt - 1);
       return;
     }
@@ -158,7 +158,7 @@ const Alert = () => {
                 <span
                   className="delete"
                   onClick={() => {
-                    handelDeleteMessage(a.id);
+                    handelDeleteMessage(a.id, a.status);
                   }}
                 >
                   x
@@ -227,13 +227,14 @@ const NotificationsList = styled.div`
     font-weight: bold;
     line-height: 1.4;
     margin-bottom: 10px;
+    color: #c2c0c1;
   }
   .notificationsMsg {
     font-size: 16px;
     font-weight: bold;
     line-height: 1.4;
     margin-bottom: 10px;
-    color: #c2c0c1;
+
     :hover {
       color: #b9daf7;
     }
@@ -277,7 +278,7 @@ const Container = styled.div`
     border-radius: 50%;
     text-align: center;
     margin-left: 20px;
-    z-index: 999px;
+
     right: 6.3%;
     top: 85%;
   }
@@ -289,11 +290,11 @@ const Container = styled.div`
     flex-direction: column;
     background-color: #fff;
     border: 1px solid gray;
-    width: 320px;
+    width: 350px;
     height: 295px;
     position: fixed;
     right: 10%;
-    top: 58%;
+    top: 62%;
     overflow: auto;
 
     -ms-overflow-style: none;

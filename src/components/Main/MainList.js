@@ -19,6 +19,7 @@ const MainList = ({ location, category, selected }) => {
   const [area, setarea] = useState(location);
   const [is_search, setIs_Search] = useState("");
   const [is_searchValue, setIs_SearchValue] = useState("");
+  const [is_loading, setIs_loading] = useState(false);
   let is_select = selected;
 
   const [hasMore, sethasMore] = useState(true);
@@ -51,6 +52,7 @@ const MainList = ({ location, category, selected }) => {
         is_select
       )
     );
+    setIs_loading(true);
   }, [area, category, page]);
 
   const getData = () => {
@@ -62,12 +64,13 @@ const MainList = ({ location, category, selected }) => {
       postActions.__getPost(count, area, category, is_search, is_searchValue)
     );
     setpages(count);
+    setIs_loading(true);
   };
 
   return (
     <React.Fragment>
       <MainContainer>
-        {postList?.length === 0 && category === "" && (
+        {is_loading === false && (
           <div className="spinner">
             <Spinner />
           </div>
@@ -77,7 +80,7 @@ const MainList = ({ location, category, selected }) => {
           next={getData}
           hasMore={hasMore}
         >
-          {postList?.length === 0 && category !== "" ? (
+          {postList.length === 0 ? (
             <NoPost />
           ) : (
             <MainCardBox>

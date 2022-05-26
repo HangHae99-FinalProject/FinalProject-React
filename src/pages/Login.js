@@ -269,9 +269,9 @@ const Login = ({ location }) => {
 };
 
 const BgDiv = styled.div`
-  margin-top: 256px;
+  margin-top: 150px;
   z-index: 9999;
-  height: 100%;
+  height: auto;
   background-image: url("https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png");
   background-repeat: no-repeat;
   height: 765px;

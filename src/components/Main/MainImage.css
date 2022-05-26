@@ -1,13 +1,14 @@
 .swiper {
   width: 1288px;
   height: 342px;
+  z-index: -9999px;
 }
 
 .swiper-slide {
   text-align: center;
   font-size: 18px;
   /* background: #fff; */
-
+  z-index: -9999px;
   /* Center slide text vertically */
   display: -webkit-box;
   display: -ms-flexbox;
@@ -28,4 +29,5 @@
   width: 1288px;
   height: 342px;
   object-fit: cover;
+  z-index: -99px;
 }

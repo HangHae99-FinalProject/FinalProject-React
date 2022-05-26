@@ -23,7 +23,7 @@ const DetailImage = (imgList) => {
         }}
         navigation={true}
         modules={[Pagination, Navigation]}
-        className="mySwiper"
+        className="ImageStyle.css"
       >
         {imgList.image?.length === 0 ? ( //마이페이지에서 포트폴리오 사진이 없는 경우에 보여줄 이미지입니다.
           <SwiperSlide>

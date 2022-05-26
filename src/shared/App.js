@@ -65,7 +65,6 @@ function App() {
           <Route path="/signup" exact component={Signup} />
           <Route path="/login" exact component={Login} />
           <Route path="/user/kakao/login" exact component={OAuthRedirect} />
-          <Route path="/post/:id" exact component={Post} />
           <Route path="/detail/:postid" exact component={Detail} />
           <Route path="/write" exact component={Write} />
           <Route path="/editpost/:postid" exact component={EditPost} />

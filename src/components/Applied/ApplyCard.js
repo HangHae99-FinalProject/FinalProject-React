@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import rr from "../../assets/image 35.png";
+
 import Grid from "../../elements/Grid";
 import { actionCreates as applyActions } from "../../redux/modules/apply";
 import { actionCreators as chatActions } from "../../redux/modules/chat";
@@ -10,8 +10,6 @@ import amateurCap from "../../assets/ama.svg";
 import juniorCap from "../../assets/jr.svg";
 import proCap from "../../assets/pro.svg";
 import { history } from "../../redux/configureStore";
-import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 
 const ApplyCard = (props) => {
   const dispatch = useDispatch();
@@ -161,11 +159,6 @@ const ApplyCard = (props) => {
     </>
   );
 };
-
-const RatingImg = styled.img`
-  width: 22px;
-  margin-right: 2%;
-`;
 
 const BottomBtn = styled.div`
   display: flex;

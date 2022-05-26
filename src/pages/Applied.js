@@ -58,9 +58,6 @@ const Applied = () => {
       dispatch(applyActions.__getSubscriber(id));
       return;
     }
-    // return () => {
-    //   dispatch(applyActions.clearApply());
-    // };
   }, [pathname]);
 
   useEffect(() => {

@@ -221,14 +221,7 @@ const OAuthRedirect = () => {
                   <Box>
                     <FormControl fullWidth>
                       <Select
-                        // IconComponent={() => (
-                        //   <KeyboardArrowDownRoundedIcon
-                        //     fontSize="large"
-                        //     sx={{ color: "#2967AC", pointerEvents: "none" }}
-                        //   />
-                        // )}
                         required
-                        // autoWidth
                         labelId="major"
                         id="demo-simple-select"
                         value={major}

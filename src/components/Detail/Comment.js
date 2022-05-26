@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
-import rr from "../../assets/image 35.png";
+
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 import { useParams } from "react-router-dom";

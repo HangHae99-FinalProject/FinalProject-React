@@ -5,7 +5,6 @@ import Select from "@mui/material/Select";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreates as postActions } from "../../redux/modules/post";
-import { history } from "../../redux/configureStore";
 
 const MainSearch = ({ location, category, selected }) => {
   const dispatch = useDispatch();
@@ -13,7 +12,7 @@ const MainSearch = ({ location, category, selected }) => {
   const [is_searchValue, setIs_SearchValue] = useState("");
   const [pages, setpages] = useState(0);
   const [area, setarea] = useState(location);
-  const [is_titleSearch, setIs_TitleSearch] = useState([]);
+
   const [is_SearchList, setIS_SearchList] = useState([]);
 
   const searchList = useSelector((state) => state.post.searchList);
@@ -66,29 +65,6 @@ const MainSearch = ({ location, category, selected }) => {
   };
 
   const handleEvent = (e) => {
-    // if (is_nameSearch.length > 0 || is_titleSearch.length > 0) {
-    //   if (e.key === "ArrowDown") {
-    //     setIndex(index + 1);
-    //     if (autoRef.current?.childElementCount === index + 1) setIndex(0);
-
-    //     return;
-    //   } else if (e.key === "ArrowUp") {
-    //     setIndex(index - 1);
-
-    //     if (index <= 0) {
-    //       setIS_NameSearch([]);
-    //       setIs_TitleSearch([]);
-    //       setIndex(-1);
-    //     }
-    //     return;
-    //   } else if (e.key === "Escaop") {
-    //     setIS_NameSearch([]);
-    //     setIs_TitleSearch([]);
-    //     setIndex(-1);
-    //     return;
-    //   }
-    // }
-
     if (e.nativeEvent.isComposing) {
       return;
     }
@@ -96,22 +72,6 @@ const MainSearch = ({ location, category, selected }) => {
       return;
     }
     searchButton();
-    // if (e.key === "Enter") {
-    //   is_titleSearch.map((a, idx) => {
-    //     if (a.idx === index) {
-    //       dispatch(
-    //         postActions.__getPost(
-    //           pages,
-    //           area,
-    //           category,
-    //           is_search,
-    //           a,
-    //           is_select
-    //         )
-    //       );
-    //     }
-    //   });
-    // }
   };
 
   const searchButton = () => {

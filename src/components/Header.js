@@ -37,22 +37,13 @@ const cookies = new Cookies();
 
 function Header(props) {
   const dispatch = useDispatch();
-  // const isCookies = cookies.get("isLogin", { path: "/" }) ? true : false;
+
   const isCookies = cookies.get("accessToken", { path: "/" }) ? true : false;
   const isLogin = useSelector((state) => state.user.isLogin);
   const id = localStorage.getItem("userId");
 
   const pathName = useLocation();
 
-  // console.log(id);
-
-  // React.useEffect(() => {
-  //   if (isCookies) {
-  //     return;
-  //   }
-  // });
-
-  const menuId = "primary-search-account-menu";
   const goHome = () => {
     history.push("/main");
   };

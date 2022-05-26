@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { AiTwotoneBell } from "react-icons/ai";
+
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import Cookies from "universal-cookie";
 import { useSelector } from "react-redux";
 import MuiAlert from "@mui/material/Alert";
-import {
-  Paper,
-  Badge,
-  Menu,
-  MenuItem,
-  Snackbar,
-  CircularProgress,
-} from "@mui/material";
+import { Snackbar } from "@mui/material";
 import { chatApi } from "../api/chatApi";
 import { Link, Redirect, useLocation } from "react-router-dom";
-import { history } from "../redux/configureStore";
 
 const cookies = new Cookies();
 

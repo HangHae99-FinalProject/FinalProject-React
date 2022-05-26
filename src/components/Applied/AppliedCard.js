@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
 import styled from "styled-components";
 import Grid from "../../elements/Grid";
 
 import amateurCap from "../../assets/ama.svg";
 import juniorCap from "../../assets/jr.svg";
 import proCap from "../../assets/pro.svg";
-import { FiX } from "react-icons/fi";
+
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { actionCreates as applyActions } from "../../redux/modules/apply";

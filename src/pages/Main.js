@@ -285,6 +285,7 @@ const BtnTest = styled.button`
   background: #ffd082;
   border: none;
   box-shadow: inset 0px 2px 8px #ffffff;
+  /* box-shadow: 0px 0px 0px ; */
   border-radius: 14px;
   font-size: 25px;
   font-weight: 700;
@@ -305,6 +306,7 @@ const LocationBox = styled.div`
   font-weight: 700;
   color: #f5fcff;
   box-shadow: inset 0px 2px 13px #d7f1fd;
+  /* box-shadow:  0px 0px 0px ; */
   border-radius: 14px;
 
   cursor: pointer;

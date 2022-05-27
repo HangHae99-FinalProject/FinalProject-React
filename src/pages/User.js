@@ -694,11 +694,9 @@ const User = (props) => {
                               borderRadius: "14px",
                               "&:hover": {
                                 backgroundColor: "#FE5953",
-                                boxShadow:
-                                  "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                boxShadow: "0",
                               },
-                              boxShadow:
-                                "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                              boxShadow: "0",
                             }}
                             onClick={handleOpen}
                           >
@@ -716,10 +714,9 @@ const User = (props) => {
                             borderRadius: "14px",
                             "&:hover": {
                               backgroundColor: "#FFD082",
-                              boxShadow:
-                                "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                              boxShadow: "0",
                             },
-                            boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                            boxShadow: "0",
                           }}
                           onClick={() => {
                             history.push(`/edituser/${id}`);
@@ -810,6 +807,7 @@ const User = (props) => {
                   <Grid sx={{ marginLeft: "140px" }}>
                     <Grid>
                       <Button
+                        disableRipple
                         value="major"
                         variant="contained"
                         sx={{
@@ -821,9 +819,10 @@ const User = (props) => {
                           backgroundColor: "#2967AC",
                           "&:hover": {
                             backgroundColor: "#2967AC",
-                            boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                            boxShadow: "0",
+                            cursor: "default",
                           },
-                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                          boxShadow: "0",
                         }}
                       >
                         {getUserInfo.major}
@@ -839,7 +838,6 @@ const User = (props) => {
                           width: "900px",
                           backgroundColor: "none",
                         }}
-                        multiline
                       >
                         {getUserInfo.intro === null
                           ? "프로필을 수정해 자기소개를 입력해 주세요."
@@ -1106,11 +1104,9 @@ const User = (props) => {
                                           background: "#4299E9",
                                           "&:hover": {
                                             backgroundColor: "#4299E9",
-                                            boxShadow:
-                                              "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                            boxShadow: "0",
                                           },
-                                          boxShadow:
-                                            "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                          boxShadow: "0",
                                         }}
                                         variant="contained"
                                         onClick={() => {
@@ -1215,11 +1211,9 @@ const User = (props) => {
                                         background: "#4299E9",
                                         "&:hover": {
                                           backgroundColor: "#4299E9",
-                                          boxShadow:
-                                            "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                          boxShadow: "0",
                                         },
-                                        boxShadow:
-                                          "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                        boxShadow: "0",
                                       }}
                                       variant="contained"
                                       onClick={() => {

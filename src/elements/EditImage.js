@@ -13,21 +13,20 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 const EditImage = (props) => {
   const {
     image,
-    marginTop,
-    marginLeft,
+    margintop,
+    marginleft,
     display,
-    marginRight,
+    marginright,
     padding,
     fontSize,
-    ilWidth,
-    ilHeight,
-    imgDivMargin,
-    ilBorder,
-    imgDivWidth,
-    imgBoxMargin,
-    imgDivPadding,
-    ilBgRepeat,
-    ilIs_inline,
+    il_width,
+    il_height,
+    img_div_margin,
+    il_border,
+    img_div_width,
+    img_box_margin,
+    img_div_padding,
+    il_bg_repeat,
     _onChange,
   } = props;
   const eddit = { image }.image;
@@ -108,21 +107,20 @@ const EditImage = (props) => {
   };
 
   const styles = {
-    marginTop: marginTop,
-    marginLeft: marginLeft,
+    margintop: margintop,
+    marginleft: marginleft,
     display: display,
-    marginRight: marginRight,
+    marginright: marginright,
     padding: padding,
     fontSize: fontSize,
-    ilWidth: ilWidth,
-    ilHeight: ilHeight,
-    imgDivMargin: imgDivMargin,
-    ilBorder: ilBorder,
-    imgDivWidth: imgDivWidth,
-    imgBoxMargin: imgBoxMargin,
-    imgDivPadding: imgDivPadding,
-    ilBgRepeat: ilBgRepeat,
-    ilIs_inline: ilIs_inline,
+    il_width: il_width,
+    il_height: il_height,
+    img_div_margin: img_div_margin,
+    il_border: il_border,
+    img_div_width: img_div_width,
+    img_box_margin: img_box_margin,
+    img_div_padding: img_div_padding,
+    il_bg_repeat: il_bg_repeat,
   };
 
   return (
@@ -201,26 +199,25 @@ const EditImage = (props) => {
 
 EditImage.defaultProps = {
   fontSize: "large",
-  marginTop: "2rem",
-  marginLeft: "1rem",
+  margintop: "2rem",
+  marginleft: "1rem",
   display: null,
-  marginRight: "1px",
+  marginright: "1px",
   padding: "5px 15px 5px 15px",
-  ilWidth: "220px",
-  ilHeight: "130px",
-  ilBorder: "1px solid rgba(0, 0, 0, 0.07)",
-  ilBgRepeat: null,
-  imgDivMargin: "0 10%",
-  imgDivWidth: null,
-  imgDivPadding: null,
-  imgBoxMargin: "0 20px",
-  ilIs_inline: false,
+  il_width: "220px",
+  il_height: "130px",
+  il_border: "1px solid rgba(0, 0, 0, 0.07)",
+  il_bg_repeat: null,
+  img_div_margin: "0 10%",
+  img_div_width: null,
+  img_div_padding: null,
+  img_box_margin: "0 20px",
   _onChange: () => {},
 };
 
 const UploadBox = styled.div`
-  margin-top: ${(props) => props.marginTop};
-  margin-left: ${(props) => props.marginLeft};
+  margin-top: ${(props) => props.margintop};
+  margin-left: ${(props) => props.marginleft};
   display: flex;
   background-color: white;
   width: 80%;
@@ -250,17 +247,13 @@ const UrlBox = styled.input`
 `;
 
 const ImageDiv = styled.div`
-  margin: ${(props) => props.imgDivMargin};
-  ${(props) => (props.imgDivWidth ? `width: ${props.imgDivWidth}` : "")};
-  ${(props) => (props.imgDivPadding ? `padding: ${props.imgDivPadding}` : "")};
-  ${(props) =>
-    props.ilIs_inline
-      ? `display:flex; flex-direction:row; justify-content: flex-start; align-items: center`
-      : ""}
+  margin: ${(props) => props.img_div_margin};
+  ${(props) => (props.img_div_width ? `width: ${props.img_div_width}` : "")};
+  ${(props) => (props.img_div_padding ? `padding: ${props.img_div_padding}` : "")};
 `;
 
 const ImageBox = styled.div`
-  margin: ${(props) => props.imgBoxMargin};
+  margin: ${(props) => props.img_box_margin};
   /* margin-right: 50px; */
   /* margin-top: 1%; */
   display: inline-flex;
@@ -287,15 +280,15 @@ const Inputs = styled.input`
 `;
 
 const ImageList = styled.div`
-  width: ${(props) => props.ilWidth};
-  height: ${(props) => props.ilHeight};
-  border: ${(props) => props.ilBorder};
+  width: ${(props) => props.il_width};
+  height: ${(props) => props.il_height};
+  border: ${(props) => props.il_border};
   border-radius: 3px;
   background-image: url("${(props) => props.src}");
 
   background-size: contain;
   background-position: center;
   ${(props) =>
-    props.ilBgRepeat ? `background-repeat: ${props.ilBgRepeat}` : ""};
+    props.il_bg_repeat ? `background-repeat: ${props.il_bg_repeat}` : ""};
 `;
 export default EditImage;

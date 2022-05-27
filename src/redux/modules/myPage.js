@@ -88,7 +88,7 @@ const initialState = {
   recruitOverList: [],
   appliedOverList: [],
   getAppliedOverList_reqruit: [],
-  test: [],
+  evaluationList: [],
   evaluationInfo: {
     postId: "",
     receiverId: "",
@@ -247,7 +247,7 @@ export default handleActions(
         ];
 
         draft.appliedOverList = action.payload.appliedOverData;
-        draft.test = ttt;
+        draft.evaluationList = ttt;
         draft.getAppliedOverList_reqruit =
           action.payload.appliedOverData.data.recruitUserList;
       }),
@@ -262,7 +262,7 @@ export default handleActions(
       }),
     [UPDATE_EVALUATION_LIST_RECRUIT]: (state, action) =>
       produce(state, (draft) => {
-        draft.test = draft.test.filter(
+        draft.evaluationList = draft.evaluationList.filter(
           (a) => a.userId !== action.payload.receiverIdRecruit
         );
       }),

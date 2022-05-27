@@ -345,6 +345,8 @@ const Container = styled.div`
   border-radius: 14px;
   margin-right: 1%;
   margin-top: 3%;
+  z-index: 999px;
+  background-color: #fff;
 `;
 
 export default ApplyCard;

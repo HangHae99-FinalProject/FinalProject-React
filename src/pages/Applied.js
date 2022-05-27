@@ -468,7 +468,8 @@ const ButtonBox = styled.div`
 
 const Container = styled.div`
   width: 1370px;
-  height: 1000px;
+  height: auto;
+  min-height: 1080px;
   margin: 3% auto;
 `;
 

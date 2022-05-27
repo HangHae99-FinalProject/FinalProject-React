@@ -1258,9 +1258,9 @@ const User = (props) => {
             </Grid>
           </>
         )}
-        <Footer />
         <Link />
       </Grid>
+      <Footer/>
     </>
   );
 };

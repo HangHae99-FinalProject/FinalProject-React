@@ -29,6 +29,9 @@ const Alert = () => {
   const EventSource = EventSourcePolyfill || NativeEventSource;
 
   useEffect(() => {
+    if (pathName.pathname === "/") {
+      return;
+    }
     if (isLogin) {
       const source = new EventSource(
         "https://everymohum.shop/subscribe",
@@ -48,7 +51,9 @@ const Alert = () => {
       };
 
       source.addEventListener("error", function (e) {
-        source.close();
+        if (e) {
+          source.close();
+        }
       });
     }
   }, [isLogin]);
@@ -63,15 +68,15 @@ const Alert = () => {
         .then((res) => {
           setNotification(res.data);
         })
-        .catch((err) => {});
+        .catch((error) => {});
       chatApi
         .notificationsCnt()
         .then((res) => {
           setNotificationCnt(res.data.count);
         })
-        .catch((err) => {});
+        .catch((error) => {});
     }
-  }, [alertOpen]);
+  }, [alertOpen, isLogin]);
   const handelOpenMessage = (id, url, status) => {
     window.location.href = url;
 

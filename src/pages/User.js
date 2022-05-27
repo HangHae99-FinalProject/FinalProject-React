@@ -891,7 +891,7 @@ const User = (props) => {
                   </Typography>
                   {/* 페이지네이션 게시물 수 셀렉터 */}
                   <label style={{ fontSize: "14px" }}>
-                    페이지당 표시할 게시물 수:&nbsp;
+                    볼 수 있는 게시물 수 : &nbsp;
                     <select
                       type="number"
                       value={limit}

@@ -618,9 +618,7 @@ const User = (props) => {
         </ReactModal>
         {/* 여기까지 평점 모달창 */}
         {/* 본문  */}
-        {isLoading === false ? (
-          <Spinner />
-        ) : (
+        {(
           <>
             <Grid
               container

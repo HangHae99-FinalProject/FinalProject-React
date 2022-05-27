@@ -181,9 +181,9 @@ const Login = ({ location }) => {
                     backgroundColor: "#2967AC",
                     "&:hover": {
                       backgroundColor: "#2967AC",
-                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                      boxShadow: "0",
                     },
-                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                    boxShadow: "0",
                   }}
                 >
                   모험 시작하기
@@ -204,9 +204,9 @@ const Login = ({ location }) => {
                     backgroundColor: "#FFD082",
                     "&:hover": {
                       backgroundColor: "#FFD082",
-                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                      boxShadow: "0",
                     },
-                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                    boxShadow: "0",
                   }}
                 >
                   카카오 로그인
@@ -227,9 +227,9 @@ const Login = ({ location }) => {
                     backgroundColor: "#FE674C",
                     "&:hover": {
                       backgroundColor: "#FE674C",
-                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                      boxShadow: "0",
                     },
-                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                    boxShadow: "0",
                   }}
                 >
                   회원가입

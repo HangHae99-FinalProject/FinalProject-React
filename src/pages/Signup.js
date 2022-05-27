@@ -309,9 +309,9 @@ const Signup = () => {
                           backgroundColor: "#D7F1FD",
                           "&:hover": {
                             backgroundColor: "#D7F1FD",
-                            boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                            boxShadow: "0px 0px 0px",
                           },
-                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                          boxShadow: "0px 0px 0px",
                         }}
                       >
                         중복확인
@@ -470,9 +470,9 @@ const Signup = () => {
                         backgroundColor: "#FE674C",
                         "&:hover": {
                           backgroundColor: "#FE674C",
-                          boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                          boxShadow: "0",
                         },
-                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                        boxShadow: "0",
                       }}
                     >
                       등록완료
@@ -551,7 +551,7 @@ const Signup = () => {
                       backgroundColor: "#D7F1FD",
                       "&:hover": {
                         backgroundColor: "#D7F1FD",
-                        // boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                        boxShadow: "0",
                       },
                       boxShadow: "0px 0px 0px",
                     }}
@@ -664,9 +664,9 @@ const Signup = () => {
                       backgroundColor: "#2967AC",
                       "&:hover": {
                         backgroundColor: "#2967AC",
-                        boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                        boxShadow: "0",
                       },
-                      boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                      boxShadow: "0",
                     }}
                   >
                     회원가입
@@ -687,9 +687,9 @@ const Signup = () => {
                     backgroundColor: "#FE674C",
                     "&:hover": {
                       backgroundColor: "#FE674C",
-                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                      boxShadow: "0",
                     },
-                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                    boxShadow: "0",
                   }}
                 >
                   취소

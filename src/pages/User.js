@@ -346,8 +346,7 @@ const User = (props) => {
                   sx={{ margin: "0 0 16px 0", padding: "0" }}
                 >
                   {/* 모집글 작성자 */}
-                  {getAppliedOverList_postUser === null &&
-                  getAppliedOverList_reqruit !== 0 ? (
+                  {getAppliedOverList_postUser === null ? (
                     <>
                       {getAppliedOverList_reqruit?.map(
                         (appliedOverList, idx) => {
@@ -473,8 +472,7 @@ const User = (props) => {
                         }
                       )}
                     </>
-                  ) : getAppliedOverList_postUser !== null &&
-                    evaluationList?.length !== 1 ? (
+                  ) : (
                     <>
                       {evaluationList?.map((appliedOverList, idx) => {
                         return (
@@ -598,7 +596,7 @@ const User = (props) => {
                         );
                       })}
                     </>
-                  ) : null}
+                  )}
 
                   {/* 지원자 리스트 */}
                 </Grid>

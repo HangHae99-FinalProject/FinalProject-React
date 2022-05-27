@@ -29,6 +29,9 @@ const Alert = () => {
   const EventSource = EventSourcePolyfill || NativeEventSource;
 
   useEffect(() => {
+    if (pathName.pathname === "/") {
+      return;
+    }
     if (isLogin) {
       const source = new EventSource(
         "https://everymohum.shop/subscribe",

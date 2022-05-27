@@ -353,6 +353,7 @@ const User = (props) => {
                                 height: "248px",
                                 marginLeft: "15px",
                                 marginRight: "15px",
+                                marginBottom: "30px",
                                 borderRadius: "14px",
                               }}
                             >
@@ -477,6 +478,7 @@ const User = (props) => {
                               height: "248px",
                               marginLeft: "15px",
                               marginRight: "15px",
+                              marginBottom: "30px",
                               borderRadius: "14px",
                             }}
                           >

@@ -24,6 +24,7 @@ const UPDATE_EVALUATION_LIST_POSTER = "myPage/UPDATE_EVALUATION_LIST_POSTER";
 
 //클린업
 const INIT_USER_INFO = "myPage/INIT_USER_INFO";
+const INIT_LIST = "myPage/INIT_LIST";
 
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
@@ -37,6 +38,7 @@ const INIT_USER_INFO = "myPage/INIT_USER_INFO";
 //       state.user = action.user;
 //   }
 // };
+const initList = createAction(INIT_LIST, () => ({}));
 const getEmail = createAction(GET_EMAIL, (data) => ({ data }));
 const getUser = createAction(GET_USER, (data_list) => ({ data_list }));
 const getApplied = createAction(GET_APPLIED, (appliedData) => ({
@@ -95,6 +97,7 @@ const initialState = {
     point: 0,
   },
   isSendedEmail: false,
+  isLoading: false,
 };
 
 //middleware actions
@@ -219,6 +222,7 @@ export default handleActions(
     [GET_USER]: (state, action) =>
       produce(state, (draft) => {
         draft.userInfo = action.payload?.data_list;
+        draft.isLoading = true;
       }),
     [GET_APPLIED]: (state, action) =>
       produce(state, (draft) => {
@@ -250,6 +254,7 @@ export default handleActions(
         draft.evaluationList = ttt;
         draft.getAppliedOverList_reqruit =
           action.payload.appliedOverData.data.recruitUserList;
+        draft.isLoading = true;
       }),
     [POST_EVALUATION]: (state, dispatch, action) =>
       produce(state, (draft) => {
@@ -275,7 +280,13 @@ export default handleActions(
       }),
     [INIT_USER_INFO]: (state, { payload }) =>
       produce(state, (draft) => {
-        draft.userInfo = [];
+        return initialState;
+      }),
+    [INIT_LIST]: (state, { payload }) =>
+      produce(state, (draft) => {
+        draft.getAppliedOverList_reqruit = [];
+        draft.evaluationList = [];
+        draft.isLoading = false;
       }),
   },
   initialState
@@ -291,6 +302,7 @@ const actionCreators = {
   __getAppliedOver,
   __postEvaluation,
   postEvaluation,
+  initList,
   // setUserInfo
   __putUserInfoMod,
   initUserInfo,

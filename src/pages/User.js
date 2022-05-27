@@ -34,6 +34,7 @@ import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRound
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import { ConstructionOutlined } from "@mui/icons-material";
+import Spinner from "../components/Spinner";
 
 const a11yProps = (index) => {
   return {
@@ -91,6 +92,7 @@ const User = (props) => {
   const isSendedEmail = useSelector((state) => state.myPage.isSendedEmail);
 
   const evaluationList = useSelector((state) => state.myPage.evaluationList);
+  const isLoading = useSelector((state) => state.myPage.isLoading);
 
   var posterKeys = JSON.stringify(getAppliedOverList_postUser);
 
@@ -137,12 +139,18 @@ const User = (props) => {
   };
 
   useEffect(() => {
-    dispatch(userInfoActions.initUserInfo());
+    dispatch(userInfoActions.initList());
+  }, [ModalState]);
+
+  useEffect(() => {
     dispatch(userInfoActions.__getUserInfo(userId));
     dispatch(userInfoActions.__getApplied(userId));
     dispatch(userInfoActions.__getRecruit(userId));
-    // dispatch(userInfoActions.__getAppliedOver(postId));
+
     dispatch(userInfoActions.__getRecruitOver(userId));
+    return () => {
+      dispatch(userInfoActions.initUserInfo());
+    };
   }, [dispatch, userId, pathName]);
 
   const [open, setOpen] = React.useState(false);
@@ -294,8 +302,12 @@ const User = (props) => {
             <BgDiv>
               <Grid>
                 <Grid>
-                  {evaluationList?.length === 1 &&
-                  getAppliedOverList_reqruit?.length === 0 ? (
+                  {isLoading === false ? (
+                    <Spinner />
+                  ) : (evaluationList?.length === 0 &&
+                      getAppliedOverList_reqruit?.length === 0) ||
+                    (evaluationList[0] === null &&
+                      getAppliedOverList_reqruit?.length === 0) ? (
                     <Grid
                       container
                       direction="column"
@@ -606,624 +618,649 @@ const User = (props) => {
         </ReactModal>
         {/* 여기까지 평점 모달창 */}
         {/* 본문  */}
-        <Grid
-          container
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{ marginTop: "20px", flexGrow: 1, width: "100%" }}
-        >
-          <Grid
-            sx={{
-              "& .MuiTextField-root": { marginLeft: "24px", width: "1370px" },
-            }}
-          >
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="flex-end"
-            >
-              <Grid>
-                <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
-                  {getUserInfo.nickname}
-                  님의 마이페이지
-                </Typography>
-              </Grid>
-              <Grid>
-                {userId === id ? (
-                  <>
-                    <HtmlTooltip
-                      title={
-                        <React.Fragment>
-                          <Typography>
-                            {getUserInfo.email === null ? (
-                              <Grid
-                                container
-                                direction="row"
-                                justifyContent="flex-end"
-                                alignItems="center"
-                              >
-                                <Typography>
-                                  알림받는 이메일이 없습니다.
-                                </Typography>
-                              </Grid>
-                            ) : (
-                              <Grid
-                                container
-                                direction="row"
-                                justifyContent="flex-end"
-                                alignItems="center"
-                              >
-                                <Typography>
-                                  알림받는 이메일: test@test.com
-                                </Typography>
-                              </Grid>
-                            )}
-                          </Typography>
-                        </React.Fragment>
-                      }
-                      followCursor
-                    >
-                      <Button
-                        variant="contained"
-                        sx={{
-                          marginRight: "14px",
-                          width: "100px",
-                          height: "40px",
-                          padding: "0",
-                          background: "#FE5953",
-                          border: "0",
-                          borderRadius: "14px",
-                          "&:hover": {
-                            backgroundColor: "#FE5953",
-                            boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                          },
-                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                        }}
-                        onClick={handleOpen}
-                      >
-                        알림받기
-                      </Button>
-                    </HtmlTooltip>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        width: "100px",
-                        height: "40px",
-                        padding: "0",
-                        background: "#FFD082",
-                        border: "0",
-                        borderRadius: "14px",
-                        "&:hover": {
-                          backgroundColor: "#FFD082",
-                          boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                        },
-                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                      }}
-                      onClick={() => {
-                        history.push(`/edituser/${id}`);
-                      }}
-                    >
-                      프로필 수정
-                    </Button>
-                  </>
-                ) : (
-                  <Grid></Grid>
-                )}
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
-              sx={{
-                marginTop: "14px",
-                width: "1370px",
-                border: "1px solid #c6c6c6",
-                borderRadius: "10px",
-                padding: "14px",
-              }}
-            >
-              <Grid sx={{ marginLeft: "100px" }}>
-                <Grid
-                  container
-                  direction="column"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <HtmlTooltip
-                    title={
-                      <React.Fragment>
-                        <Typography>
-                          현재까지 협업횟수는&nbsp;
-                          <span style={{ fontWeight: "bold" }}>
-                            {getUserInfo.projectCount}회
-                          </span>
-                          입니다.
-                        </Typography>
-                      </React.Fragment>
-                    }
-                    followCursor
-                  >
-                    <Profile>
-                      <div
-                        style={{
-                          margin: "auto",
-                          width: "auto",
-                          height: "auto",
-                        }}
-                      >
-                        <img src={getUserInfo.profileImg} alt="profileImg" />
-                      </div>
-                    </Profile>
-                  </HtmlTooltip>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    {likeRatio <= 40 ? (
-                      <img src={amateurCap} alt="amateurCap" />
-                    ) : 71 <= likeRatio ? (
-                      <img src={proCap} alt="proCap" />
-                    ) : (
-                      <img src={juniorCap} alt="juniorCap" />
-                    )}
-                    &nbsp;&nbsp;
-                    <Typography sx={{ fontSize: "20px" }}>
-                      {evaluationRatio}
-                    </Typography>
-                  </Grid>
-                  <Grid>
-                    <Typography sx={{ fontSize: "16px", color: "#818181" }}>
-                      {evaluationLevel}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid sx={{ marginLeft: "140px" }}>
-                <Grid>
-                  <Button
-                    value="major"
-                    variant="contained"
-                    sx={{
-                      fontSize: "20px",
-                      height: "50px",
-                      width: "140px",
-                      borderRadius: "14px",
-                      marginLeft: "24px",
-                      backgroundColor: "#2967AC",
-                      "&:hover": {
-                        backgroundColor: "#2967AC",
-                        boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                      },
-                      boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                    }}
-                  >
-                    {getUserInfo.major}
-                  </Button>
-                </Grid>
-                {/* 자기소개 */}
-                <Grid sx={{ backgroundColor: "none", width: "900px" }}>
-                  <Typography
-                    id="myIntro"
-                    sx={{
-                      marginTop: "20px",
-                      marginLeft: "24px",
-                      width: "900px",
-                      backgroundColor: "none",
-                    }}
-                    multiline
-                  >
-                    {getUserInfo.intro === null
-                      ? "프로필을 수정해 자기소개를 입력해 주세요."
-                      : getUserInfo.intro}
-                  </Typography>
-                </Grid>
-                {/* 여기까지 자기소개 */}
-                {/* 포트폴리오링크 */}
-                <Grid>
-                  <Typography
-                    id="myPortfolioLink"
-                    sx={{
-                      marginTop: "14px",
-                      marginLeft: "24px",
-                      width: "900px",
-                    }}
-                  >
-                    {getUserInfo.portfolioLink === null
-                      ? "프로필을 수정해 링크할 포트폴리오를 입력해 주세요."
-                      : getUserInfo.portfolioLink}
-                  </Typography>
-                </Grid>
-                {/* 여기까지 포트폴리오링크 */}
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid sx={{ marginTop: "24px", width: "1270px", height: "450" }}>
-            <ImageBox>
-              <DetailImage image={getUserInfo.userPortfolioImgList} />
-            </ImageBox>
-          </Grid>
-          <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ width: "1370px", marginTop: "24px" }}
-          >
+        {isLoading === false ? (
+          <Spinner />
+        ) : (
+          <>
             <Grid
               container
               direction="column"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-            >
-              <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-                나의 프로젝트
-              </Typography>
-              {/* 페이지네이션 게시물 수 셀렉터 */}
-              <label style={{ fontSize: "14px" }}>
-                페이지당 표시할 게시물 수:&nbsp;
-                <select
-                  type="number"
-                  value={limit}
-                  onChange={({ target: { value } }) => setLimit(Number(value))}
-                >
-                  <option value="3">3</option>
-                  <option value="6">6</option>
-                  <option value="9">9</option>
-                </select>
-              </label>
-              {/* 여기까지 페이지네이션 게시물 수 셀렉터 */}
-            </Grid>
-            <Grid
-              container
-              direction="row"
               justifyContent="center"
               alignItems="center"
-              sx={{
-                width: "1370px",
-                borderBottom: 1,
-                borderColor: "divider",
-              }}
+              sx={{ marginTop: "20px", flexGrow: 1, width: "100%" }}
             >
-              {/* 탭 속성 */}
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="basic tabs example"
-              >
-                <Tab
-                  sx={{ width: "456px" }}
-                  label={userId === id ? "신청중" : "진행중"}
-                  {...a11yProps(0)}
-                />
-                <Tab sx={{ width: "456px" }} label="모집중" {...a11yProps(1)} />
-                <Tab
-                  sx={{ width: "456px" }}
-                  label="모집/진행 완료"
-                  {...a11yProps(2)}
-                />
-              </Tabs>
-              {/* 여기까지 탭 속성 */}
-            </Grid>
-            {/* 신청중 탭 */}
-            <TabPanel value={value} index={0}>
-              <List
+              <Grid
                 sx={{
-                  padding: "0px 16px",
-                  width: "1370px",
+                  "& .MuiTextField-root": {
+                    marginLeft: "24px",
+                    width: "1370px",
+                  },
                 }}
-                component="nav"
-                aria-label="mailbox folders"
               >
-                {getAppliedList?.length === 0 ? (
-                  <Typography
-                    sx={{
-                      marginTop: "40px",
-                      marginBottom: "40px",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "20px",
-                      color: "#818181",
-                    }}
-                  >
-                    선장모집에 신청해보세요!
-                  </Typography>
-                ) : (
-                  getAppliedList
-                    ?.slice(offset, offset + limit)
-                    .map((appliedList, idx) => {
-                      return (
-                        <ListItem
-                          sx={{
-                            padding: "0px 16px",
-                          }}
-                          button
-                          key={idx}
-                          divider
-                        >
-                          <Grid
-                            sx={{
-                              margin: "10px 0px",
-                              height: "90px",
-                            }}
-                            container
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                          >
-                            <ListItemText
-                              onClick={() => {
-                                history.push(`/detail/${appliedList.postId}`);
-                              }}
-                            >
-                              {appliedList.title}
-                              <ArrowForwardIosRoundedIcon
-                                style={{ verticalAlign: "middle" }}
-                              />
-                            </ListItemText>
-                          </Grid>
-                        </ListItem>
-                      );
-                    })
-                )}
-                <footer>
-                  <Pagination
-                    total={getAppliedList?.length}
-                    limit={limit}
-                    page={page}
-                    setPage={setPage}
-                  />
-                </footer>
-              </List>
-            </TabPanel>
-            {/* 여기까지 신청중 탭 */}
-            {/* 모집중 탭 */}
-            <TabPanel value={value} index={1}>
-              <List
-                sx={{
-                  padding: "0px 16px",
-                  width: "1370px",
-                }}
-                component="nav"
-                aria-label="mailbox folders"
-              >
-                {getRecruitList?.length === 0 ? (
-                  <Typography
-                    sx={{
-                      marginTop: "40px",
-                      marginBottom: "40px",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "20px",
-                      color: "#818181",
-                    }}
-                  >
-                    프로젝트를 시작해보세요!
-                  </Typography>
-                ) : (
-                  getRecruitList
-                    ?.slice(offset, offset + limit)
-                    .map((recruitList, idx) => {
-                      return (
-                        <ListItem
-                          sx={{
-                            padding: "0px 16px",
-                          }}
-                          button
-                          key={idx}
-                          divider
-                        >
-                          <Grid
-                            sx={{
-                              margin: "10px 0px",
-                              height: "90px",
-                            }}
-                            container
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                          >
-                            <ListItemText
-                              onClick={() => {
-                                history.push(`/detail/${recruitList.postId}`);
-                              }}
-                            >
-                              {recruitList.title}
-                              <ArrowForwardIosRoundedIcon
-                                style={{ verticalAlign: "middle" }}
-                              />
-                            </ListItemText>
-                            {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
-                            {userId !== id ? (
-                              <Grid></Grid>
-                            ) : (
-                              <Grid>
-                                <button
-                                  style={{
-                                    color: "#FE5953",
-                                    border: "1px solid #FE5953",
-                                    background: "white",
-                                    marginBotton: "5px",
-                                    width: "190px",
-                                    height: "40px",
-                                    borderRadius: "14px",
-                                  }}
-                                  variant="outlined"
-                                >
-                                  {recruitList.userApplyList.length}명의 선장이
-                                  신청했어요!
-                                </button>
-
-                                <Grid>
-                                  <Button
-                                    sx={{
-                                      marginTop: "5px",
-                                      width: "190px",
-                                      height: "40px",
-                                      borderRadius: "14px",
-                                      background: "#4299E9",
-                                      "&:hover": {
-                                        backgroundColor: "#4299E9",
-                                        boxShadow:
-                                          "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                                      },
-                                      boxShadow:
-                                        "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                                    }}
-                                    variant="contained"
-                                    onClick={() => {
-                                      history.push(
-                                        `/applied/${recruitList.postId}`
-                                      );
-                                    }}
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="flex-end"
+                >
+                  <Grid>
+                    <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>
+                      {getUserInfo.nickname}
+                      님의 마이페이지
+                    </Typography>
+                  </Grid>
+                  <Grid>
+                    {userId === id ? (
+                      <>
+                        <HtmlTooltip
+                          title={
+                            <React.Fragment>
+                              <Typography>
+                                {getUserInfo.email === null ? (
+                                  <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="flex-end"
+                                    alignItems="center"
                                   >
-                                    선장명단 보러가기
-                                  </Button>
-                                </Grid>
-                              </Grid>
-                            )}
-                          </Grid>
-                        </ListItem>
-                      );
-                    })
-                )}
-                <footer>
-                  <Pagination
-                    total={getRecruitList?.length}
-                    limit={limit}
-                    page={page}
-                    setPage={setPage}
-                  />
-                </footer>
-              </List>
-            </TabPanel>
-            {/* 여기까지 모집중 탭 */}
-            {/* 모집완료 탭 */}
-            <TabPanel value={value} index={2}>
-              <List
-                sx={{
-                  padding: "0px 16px",
-                  width: "1370px",
-                }}
-                component="nav"
-                aria-label="mailbox folders"
-              >
-                {getRecruitOverList?.length === 0 ? (
-                  <Typography
-                    sx={{
-                      marginTop: "40px",
-                      marginBottom: "40px",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "20px",
-                      color: "#818181",
-                    }}
-                  >
-                    아직 모험중!
-                  </Typography>
-                ) : (
-                  getRecruitOverList
-                    ?.slice(offset, offset + limit)
-                    .map((recruitOverList, idx) => {
-                      return (
-                        <ListItem
-                          sx={{
-                            padding: "0px 16px",
-                          }}
-                          button
-                          key={idx}
-                          divider
+                                    <Typography>
+                                      알림받는 이메일이 없습니다.
+                                    </Typography>
+                                  </Grid>
+                                ) : (
+                                  <Grid
+                                    container
+                                    direction="row"
+                                    justifyContent="flex-end"
+                                    alignItems="center"
+                                  >
+                                    <Typography>
+                                      알림받는 이메일: test@test.com
+                                    </Typography>
+                                  </Grid>
+                                )}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                          followCursor
                         >
-                          <Grid
+                          <Button
+                            variant="contained"
                             sx={{
-                              margin: "10px 0px",
-                              height: "90px",
+                              marginRight: "14px",
+                              width: "100px",
+                              height: "40px",
+                              padding: "0",
+                              background: "#FE5953",
+                              border: "0",
+                              borderRadius: "14px",
+                              "&:hover": {
+                                backgroundColor: "#FE5953",
+                                boxShadow:
+                                  "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                              },
+                              boxShadow:
+                                "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                             }}
-                            container
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
+                            onClick={handleOpen}
                           >
-                            <ListItemText
-                              onClick={() => {
-                                history.push(
-                                  `/detail/${recruitOverList.postId}`
-                                );
+                            알림받기
+                          </Button>
+                        </HtmlTooltip>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            width: "100px",
+                            height: "40px",
+                            padding: "0",
+                            background: "#FFD082",
+                            border: "0",
+                            borderRadius: "14px",
+                            "&:hover": {
+                              backgroundColor: "#FFD082",
+                              boxShadow:
+                                "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                            },
+                            boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                          }}
+                          onClick={() => {
+                            history.push(`/edituser/${id}`);
+                          }}
+                        >
+                          프로필 수정
+                        </Button>
+                      </>
+                    ) : (
+                      <Grid></Grid>
+                    )}
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  sx={{
+                    marginTop: "14px",
+                    width: "1370px",
+                    border: "1px solid #c6c6c6",
+                    borderRadius: "10px",
+                    padding: "14px",
+                  }}
+                >
+                  <Grid sx={{ marginLeft: "100px" }}>
+                    <Grid
+                      container
+                      direction="column"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <HtmlTooltip
+                        title={
+                          <React.Fragment>
+                            <Typography>
+                              현재까지 협업횟수는&nbsp;
+                              <span style={{ fontWeight: "bold" }}>
+                                {getUserInfo.projectCount}회
+                              </span>
+                              입니다.
+                            </Typography>
+                          </React.Fragment>
+                        }
+                        followCursor
+                      >
+                        <Profile>
+                          <div
+                            style={{
+                              margin: "auto",
+                              width: "auto",
+                              height: "auto",
+                            }}
+                          >
+                            <img
+                              src={getUserInfo.profileImg}
+                              alt="profileImg"
+                            />
+                          </div>
+                        </Profile>
+                      </HtmlTooltip>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        {likeRatio <= 40 ? (
+                          <img src={amateurCap} alt="amateurCap" />
+                        ) : 71 <= likeRatio ? (
+                          <img src={proCap} alt="proCap" />
+                        ) : (
+                          <img src={juniorCap} alt="juniorCap" />
+                        )}
+                        &nbsp;&nbsp;
+                        <Typography sx={{ fontSize: "20px" }}>
+                          {evaluationRatio}
+                        </Typography>
+                      </Grid>
+                      <Grid>
+                        <Typography sx={{ fontSize: "16px", color: "#818181" }}>
+                          {evaluationLevel}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid sx={{ marginLeft: "140px" }}>
+                    <Grid>
+                      <Button
+                        value="major"
+                        variant="contained"
+                        sx={{
+                          fontSize: "20px",
+                          height: "50px",
+                          width: "140px",
+                          borderRadius: "14px",
+                          marginLeft: "24px",
+                          backgroundColor: "#2967AC",
+                          "&:hover": {
+                            backgroundColor: "#2967AC",
+                            boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                          },
+                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        {getUserInfo.major}
+                      </Button>
+                    </Grid>
+                    {/* 자기소개 */}
+                    <Grid sx={{ backgroundColor: "none", width: "900px" }}>
+                      <Typography
+                        id="myIntro"
+                        sx={{
+                          marginTop: "20px",
+                          marginLeft: "24px",
+                          width: "900px",
+                          backgroundColor: "none",
+                        }}
+                        multiline
+                      >
+                        {getUserInfo.intro === null
+                          ? "프로필을 수정해 자기소개를 입력해 주세요."
+                          : getUserInfo.intro}
+                      </Typography>
+                    </Grid>
+                    {/* 여기까지 자기소개 */}
+                    {/* 포트폴리오링크 */}
+                    <Grid>
+                      <Typography
+                        id="myPortfolioLink"
+                        sx={{
+                          marginTop: "14px",
+                          marginLeft: "24px",
+                          width: "900px",
+                        }}
+                      >
+                        {getUserInfo.portfolioLink === null
+                          ? "프로필을 수정해 링크할 포트폴리오를 입력해 주세요."
+                          : getUserInfo.portfolioLink}
+                      </Typography>
+                    </Grid>
+                    {/* 여기까지 포트폴리오링크 */}
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid sx={{ marginTop: "24px", width: "1270px", height: "450" }}>
+                <ImageBox>
+                  <DetailImage image={getUserInfo.userPortfolioImgList} />
+                </ImageBox>
+              </Grid>
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ width: "1370px", marginTop: "24px" }}
+              >
+                <Grid
+                  container
+                  direction="column"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                >
+                  <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+                    나의 프로젝트
+                  </Typography>
+                  {/* 페이지네이션 게시물 수 셀렉터 */}
+                  <label style={{ fontSize: "14px" }}>
+                    페이지당 표시할 게시물 수:&nbsp;
+                    <select
+                      type="number"
+                      value={limit}
+                      onChange={({ target: { value } }) =>
+                        setLimit(Number(value))
+                      }
+                    >
+                      <option value="3">3</option>
+                      <option value="6">6</option>
+                      <option value="9">9</option>
+                    </select>
+                  </label>
+                  {/* 여기까지 페이지네이션 게시물 수 셀렉터 */}
+                </Grid>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{
+                    width: "1370px",
+                    borderBottom: 1,
+                    borderColor: "divider",
+                  }}
+                >
+                  {/* 탭 속성 */}
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="basic tabs example"
+                  >
+                    <Tab
+                      sx={{ width: "456px" }}
+                      label={userId === id ? "신청중" : "진행중"}
+                      {...a11yProps(0)}
+                    />
+                    <Tab
+                      sx={{ width: "456px" }}
+                      label="모집중"
+                      {...a11yProps(1)}
+                    />
+                    <Tab
+                      sx={{ width: "456px" }}
+                      label="모집/진행 완료"
+                      {...a11yProps(2)}
+                    />
+                  </Tabs>
+                  {/* 여기까지 탭 속성 */}
+                </Grid>
+                {/* 신청중 탭 */}
+                <TabPanel value={value} index={0}>
+                  <List
+                    sx={{
+                      padding: "0px 16px",
+                      width: "1370px",
+                    }}
+                    component="nav"
+                    aria-label="mailbox folders"
+                  >
+                    {getAppliedList?.length === 0 ? (
+                      <Typography
+                        sx={{
+                          marginTop: "40px",
+                          marginBottom: "40px",
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          fontSize: "20px",
+                          color: "#818181",
+                        }}
+                      >
+                        선장모집에 신청해보세요!
+                      </Typography>
+                    ) : (
+                      getAppliedList
+                        ?.slice(offset, offset + limit)
+                        .map((appliedList, idx) => {
+                          return (
+                            <ListItem
+                              sx={{
+                                padding: "0px 16px",
                               }}
+                              button
+                              key={idx}
+                              divider
                             >
-                              {recruitOverList.title}
-                              <ArrowForwardIosRoundedIcon
-                                style={{ verticalAlign: "middle" }}
-                              />
-                            </ListItemText>
-                            {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
-                            {userId !== id ? (
-                              <Grid></Grid>
-                            ) : (
-                              <Grid>
-                                <Button
-                                  sx={{
-                                    marginTop: "5px",
-                                    width: "190px",
-                                    height: "40px",
-                                    border: "0",
-                                    borderRadius: "14px",
-                                    background: "#4299E9",
-                                    "&:hover": {
-                                      backgroundColor: "#4299E9",
-                                      boxShadow:
-                                        "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                                    },
-                                    boxShadow:
-                                      "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
-                                  }}
-                                  variant="contained"
+                              <Grid
+                                sx={{
+                                  margin: "10px 0px",
+                                  height: "90px",
+                                }}
+                                container
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                              >
+                                <ListItemText
                                   onClick={() => {
-                                    setPostId(recruitOverList.postId);
-                                    modalHandelBtn();
-                                    dispatch(
-                                      userInfoActions.__getAppliedOver(
-                                        recruitOverList.postId
-                                      )
+                                    history.push(
+                                      `/detail/${appliedList.postId}`
                                     );
                                   }}
                                 >
-                                  선장리뷰
-                                </Button>
+                                  {appliedList.title}
+                                  <ArrowForwardIosRoundedIcon
+                                    style={{ verticalAlign: "middle" }}
+                                  />
+                                </ListItemText>
                               </Grid>
-                            )}
-                          </Grid>
-                        </ListItem>
-                      );
-                    })
-                )}
-                <footer>
-                  <Pagination
-                    total={getRecruitOverList?.length}
-                    limit={limit}
-                    page={page}
-                    setPage={setPage}
-                  />
-                </footer>
-              </List>
-            </TabPanel>
-            {/* 여기까지 모집완료 탭 */}
-          </Grid>
-        </Grid>
+                            </ListItem>
+                          );
+                        })
+                    )}
+                    <footer>
+                      <Pagination
+                        total={getAppliedList?.length}
+                        limit={limit}
+                        page={page}
+                        setPage={setPage}
+                      />
+                    </footer>
+                  </List>
+                </TabPanel>
+                {/* 여기까지 신청중 탭 */}
+                {/* 모집중 탭 */}
+                <TabPanel value={value} index={1}>
+                  <List
+                    sx={{
+                      padding: "0px 16px",
+                      width: "1370px",
+                    }}
+                    component="nav"
+                    aria-label="mailbox folders"
+                  >
+                    {getRecruitList?.length === 0 ? (
+                      <Typography
+                        sx={{
+                          marginTop: "40px",
+                          marginBottom: "40px",
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          fontSize: "20px",
+                          color: "#818181",
+                        }}
+                      >
+                        프로젝트를 시작해보세요!
+                      </Typography>
+                    ) : (
+                      getRecruitList
+                        ?.slice(offset, offset + limit)
+                        .map((recruitList, idx) => {
+                          return (
+                            <ListItem
+                              sx={{
+                                padding: "0px 16px",
+                              }}
+                              button
+                              key={idx}
+                              divider
+                            >
+                              <Grid
+                                sx={{
+                                  margin: "10px 0px",
+                                  height: "90px",
+                                }}
+                                container
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                              >
+                                <ListItemText
+                                  onClick={() => {
+                                    history.push(
+                                      `/detail/${recruitList.postId}`
+                                    );
+                                  }}
+                                >
+                                  {recruitList.title}
+                                  <ArrowForwardIosRoundedIcon
+                                    style={{ verticalAlign: "middle" }}
+                                  />
+                                </ListItemText>
+                                {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
+                                {userId !== id ? (
+                                  <Grid></Grid>
+                                ) : (
+                                  <Grid>
+                                    <button
+                                      style={{
+                                        color: "#FE5953",
+                                        border: "1px solid #FE5953",
+                                        background: "white",
+                                        marginBotton: "5px",
+                                        width: "190px",
+                                        height: "40px",
+                                        borderRadius: "14px",
+                                      }}
+                                      variant="outlined"
+                                    >
+                                      {recruitList.userApplyList.length}명의
+                                      선장이 신청했어요!
+                                    </button>
+
+                                    <Grid>
+                                      <Button
+                                        sx={{
+                                          marginTop: "5px",
+                                          width: "190px",
+                                          height: "40px",
+                                          borderRadius: "14px",
+                                          background: "#4299E9",
+                                          "&:hover": {
+                                            backgroundColor: "#4299E9",
+                                            boxShadow:
+                                              "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                          },
+                                          boxShadow:
+                                            "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                        }}
+                                        variant="contained"
+                                        onClick={() => {
+                                          history.push(
+                                            `/applied/${recruitList.postId}`
+                                          );
+                                        }}
+                                      >
+                                        선장명단 보러가기
+                                      </Button>
+                                    </Grid>
+                                  </Grid>
+                                )}
+                              </Grid>
+                            </ListItem>
+                          );
+                        })
+                    )}
+                    <footer>
+                      <Pagination
+                        total={getRecruitList?.length}
+                        limit={limit}
+                        page={page}
+                        setPage={setPage}
+                      />
+                    </footer>
+                  </List>
+                </TabPanel>
+                {/* 여기까지 모집중 탭 */}
+                {/* 모집완료 탭 */}
+                <TabPanel value={value} index={2}>
+                  <List
+                    sx={{
+                      padding: "0px 16px",
+                      width: "1370px",
+                    }}
+                    component="nav"
+                    aria-label="mailbox folders"
+                  >
+                    {getRecruitOverList?.length === 0 ? (
+                      <Typography
+                        sx={{
+                          marginTop: "40px",
+                          marginBottom: "40px",
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          fontSize: "20px",
+                          color: "#818181",
+                        }}
+                      >
+                        아직 모험중!
+                      </Typography>
+                    ) : (
+                      getRecruitOverList
+                        ?.slice(offset, offset + limit)
+                        .map((recruitOverList, idx) => {
+                          return (
+                            <ListItem
+                              sx={{
+                                padding: "0px 16px",
+                              }}
+                              button
+                              key={idx}
+                              divider
+                            >
+                              <Grid
+                                sx={{
+                                  margin: "10px 0px",
+                                  height: "90px",
+                                }}
+                                container
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                              >
+                                <ListItemText
+                                  onClick={() => {
+                                    history.push(
+                                      `/detail/${recruitOverList.postId}`
+                                    );
+                                  }}
+                                >
+                                  {recruitOverList.title}
+                                  <ArrowForwardIosRoundedIcon
+                                    style={{ verticalAlign: "middle" }}
+                                  />
+                                </ListItemText>
+                                {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
+                                {userId !== id ? (
+                                  <Grid></Grid>
+                                ) : (
+                                  <Grid>
+                                    <Button
+                                      sx={{
+                                        marginTop: "5px",
+                                        width: "190px",
+                                        height: "40px",
+                                        border: "0",
+                                        borderRadius: "14px",
+                                        background: "#4299E9",
+                                        "&:hover": {
+                                          backgroundColor: "#4299E9",
+                                          boxShadow:
+                                            "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                        },
+                                        boxShadow:
+                                          "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                      }}
+                                      variant="contained"
+                                      onClick={() => {
+                                        setPostId(recruitOverList.postId);
+                                        modalHandelBtn();
+                                        dispatch(
+                                          userInfoActions.__getAppliedOver(
+                                            recruitOverList.postId
+                                          )
+                                        );
+                                      }}
+                                    >
+                                      선장리뷰
+                                    </Button>
+                                  </Grid>
+                                )}
+                              </Grid>
+                            </ListItem>
+                          );
+                        })
+                    )}
+                    <footer>
+                      <Pagination
+                        total={getRecruitOverList?.length}
+                        limit={limit}
+                        page={page}
+                        setPage={setPage}
+                      />
+                    </footer>
+                  </List>
+                </TabPanel>
+                {/* 여기까지 모집완료 탭 */}
+              </Grid>
+            </Grid>
+          </>
+        )}
+        <Footer />
+        <Link />
       </Grid>
-      <Link />
-      <Footer />
     </>
   );
 };

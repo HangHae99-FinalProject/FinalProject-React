@@ -129,7 +129,12 @@ const EditImage = (props) => {
       <UploadBox {...styles}>
         <Labels htmlFor="files" onChange={uploadFile}>
           <AddPhotoAlternateIcon {...styles} />
-          <Inputs type="file" id="files" multiple="multiple" accept="image/*" />
+          <Inputs
+            type="file"
+            id="files"
+            multiple="multiple"
+            accept=".jpg,.png"
+          />
         </Labels>
 
         <Labels
@@ -174,7 +179,7 @@ const EditImage = (props) => {
       <ImageComment>
         <span>
           (권장 사이즈 <span className="imageSize">990*500)</span>
-          &nbsp;JPG,PNG,SVG로 올려주세요!
+          &nbsp;JPG,PNG로 올려주세요!
         </span>
       </ImageComment>
       <ImageDiv {...styles}>
@@ -265,7 +270,8 @@ const UrlBox = styled.input`
 const ImageDiv = styled.div`
   margin: ${(props) => props.img_div_margin};
   ${(props) => (props.img_div_width ? `width: ${props.img_div_width}` : "")};
-  ${(props) => (props.img_div_padding ? `padding: ${props.img_div_padding}` : "")};
+  ${(props) =>
+    props.img_div_padding ? `padding: ${props.img_div_padding}` : ""};
 `;
 
 const ImageBox = styled.div`

@@ -64,7 +64,7 @@ const Uploads = () => {
             type="file"
             id="files"
             multiple="multiple"
-            accept=".jpg,.png,.svg"
+            accept=".jpg,.png"
           />
         </Labels>
 
@@ -110,7 +110,7 @@ const Uploads = () => {
       <ImageComment>
         <span>
           (권장 사이즈 <span className="imageSize">990*500)</span>
-          &nbsp;JPG,PNG,SVG로 올려주세요!
+          &nbsp;JPG,PNG로 올려주세요!
         </span>
       </ImageComment>
       <div style={{ margin: "0 10%" }}>

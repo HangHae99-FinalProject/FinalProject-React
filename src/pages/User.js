@@ -75,8 +75,12 @@ const User = (props) => {
   const getUserInfo = useSelector((state) => state.myPage.userInfo);
   const getAppliedList = useSelector((state) => state.myPage.appliedList?.data); //신청중 리스트
   const getRecruitList = useSelector((state) => state.myPage.recruitList?.data); //모집중 리스트
-  const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data); //모집완료 리스트
-  const getAppliedOverList = useSelector((state) => state.myPage.appliedOverList.data);
+  const getRecruitOverList = useSelector(
+    (state) => state.myPage.recruitOverList.data
+  ); //모집완료 리스트
+  const getAppliedOverList = useSelector(
+    (state) => state.myPage.appliedOverList.data
+  );
   const getAppliedOverList_postUser = useSelector(
     (state) => state.myPage.appliedOverList.data?.postUser
   );
@@ -290,7 +294,9 @@ const User = (props) => {
               <Grid>
                 <Grid>
                   {evaluationList?.length === 0 ||
-                  getAppliedOverList_reqruit?.length === 0 ? (
+                  !evaluationList ||
+                  getAppliedOverList_reqruit?.length === 0 ||
+                  !getAppliedOverList_reqruit ? (
                     <Grid
                       container
                       direction="column"
@@ -897,7 +903,11 @@ const User = (props) => {
                   {...a11yProps(0)}
                 />
                 <Tab sx={{ width: "456px" }} label="모집중" {...a11yProps(1)} />
-                <Tab sx={{ width: "456px" }} label="모집/진행 완료" {...a11yProps(2)} />
+                <Tab
+                  sx={{ width: "456px" }}
+                  label="모집/진행 완료"
+                  {...a11yProps(2)}
+                />
               </Tabs>
               {/* 여기까지 탭 속성 */}
             </Grid>
@@ -1001,82 +1011,91 @@ const User = (props) => {
                     프로젝트를 시작해보세요!
                   </Typography>
                 ) : (
-                  getRecruitList?.slice(offset, offset + limit).map((recruitList, idx) => {
-                    return (
-                      <ListItem
-                        sx={{
-                          padding: "0px 16px",
-                        }}
-                        button
-                        key={idx}
-                        divider
-                      >
-                        <Grid
+                  getRecruitList
+                    ?.slice(offset, offset + limit)
+                    .map((recruitList, idx) => {
+                      return (
+                        <ListItem
                           sx={{
-                            margin: "10px 0px",
-                            height: "90px",
+                            padding: "0px 16px",
                           }}
-                          container
-                          direction="row"
-                          justifyContent="space-between"
-                          alignItems="center"
+                          button
+                          key={idx}
+                          divider
                         >
-                          <ListItemText
-                            onClick={() => {
-                              history.push(`/detail/${recruitList.postId}`);
+                          <Grid
+                            sx={{
+                              margin: "10px 0px",
+                              height: "90px",
                             }}
+                            container
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
                           >
-                            {recruitList.title}
-                            <ArrowForwardIosRoundedIcon style={{ verticalAlign: "middle" }} />
-                          </ListItemText>
-                          {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
-                          {userId !== id ? (
-                            <Grid></Grid>
-                          ) : (
-                            <Grid>
-                              <button
-                                style={{
-                                  color: "#FE5953",
-                                  border: "1px solid #FE5953",
-                                  background: "white",
-                                  marginBotton: "5px",
-                                  width: "190px",
-                                  height: "40px",
-                                  borderRadius: "14px",
-                                }}
-                                variant="outlined"
-                              >
-                                {recruitList.userApplyList.length}명의 선장이 신청했어요!
-                              </button>
-
+                            <ListItemText
+                              onClick={() => {
+                                history.push(`/detail/${recruitList.postId}`);
+                              }}
+                            >
+                              {recruitList.title}
+                              <ArrowForwardIosRoundedIcon
+                                style={{ verticalAlign: "middle" }}
+                              />
+                            </ListItemText>
+                            {/* 로그인한 userId와 현재 보고있는 마이페이지 주인의 userId를 비교하여 다르면 버튼을 숨겨준다. */}
+                            {userId !== id ? (
+                              <Grid></Grid>
+                            ) : (
                               <Grid>
-                                <Button
-                                  sx={{
-                                    marginTop: "5px",
+                                <button
+                                  style={{
+                                    color: "#FE5953",
+                                    border: "1px solid #FE5953",
+                                    background: "white",
+                                    marginBotton: "5px",
                                     width: "190px",
                                     height: "40px",
                                     borderRadius: "14px",
-                                    background: "#4299E9",
-                                    "&:hover": {
-                                      backgroundColor: "#4299E9",
-                                      boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
-                                    },
-                                    boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
                                   }}
-                                  variant="contained"
-                                  onClick={() => {
-                                    history.push(`/applied/${recruitList.postId}`);
-                                  }}
+                                  variant="outlined"
                                 >
-                                  선장명단 보러가기
-                                </Button>
+                                  {recruitList.userApplyList.length}명의 선장이
+                                  신청했어요!
+                                </button>
+
+                                <Grid>
+                                  <Button
+                                    sx={{
+                                      marginTop: "5px",
+                                      width: "190px",
+                                      height: "40px",
+                                      borderRadius: "14px",
+                                      background: "#4299E9",
+                                      "&:hover": {
+                                        backgroundColor: "#4299E9",
+                                        boxShadow:
+                                          "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                                      },
+                                      boxShadow:
+                                        "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                                    }}
+                                    variant="contained"
+                                    onClick={() => {
+                                      history.push(
+                                        `/applied/${recruitList.postId}`
+                                      );
+                                    }}
+                                  >
+                                    선장명단 보러가기
+                                  </Button>
+                                </Grid>
                               </Grid>
-                            </Grid>
-                          )}
-                        </Grid>
-                      </ListItem>
-                    );
-                  })
+                            )}
+                          </Grid>
+                        </ListItem>
+                      );
+                    })
                 )}
                 <footer>
                   <Pagination

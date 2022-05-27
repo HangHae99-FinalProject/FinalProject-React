@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
@@ -13,6 +13,7 @@ import { actionCreates as RecruitActions } from "../redux/modules/recruit";
 import { actionCreates as PostActions } from "../redux/modules/post";
 import { history } from "../redux/configureStore";
 import Footer from "../elements/Footer";
+import { useLocation } from "react-router-dom";
 
 const Write = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,8 @@ const Write = () => {
 
   const majorList = useSelector((state) => state.recruit.majorList);
   const link = useSelector((state) => state.image.Url);
+
+  const pathName = useLocation();
 
   const data = {
     content: is_content,
@@ -114,6 +117,10 @@ const Write = () => {
     dispatch(PostActions.__addPost(data));
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathName]);
+
   return (
     <>
       <Container>
@@ -129,7 +136,7 @@ const Write = () => {
           </Text>
           <InputBox
             placeholder="제목을 20글자 이내 적어주세요!"
-            maxLength={20}
+            maxLength={25}
             value={is_title}
             onChange={TitleHandleChange}
           />

@@ -147,7 +147,7 @@ const Alert = () => {
                 </div>
                 <img
                   src="
-                  https://velog.velcdn.com/images/tty5799/post/5004946d-e4ad-4c5d-8855-67107d89ce05/image.png"
+                  https://velog.velcdn.com/images/tty5799/post/d04c4b94-f56d-40e0-8a5e-ab090dc68e7f/image.svg"
                   alt="noImage"
                   className="noImage"
                 />
@@ -320,7 +320,23 @@ const Container = styled.div`
     top: 85%;
   }
   .cnt-zero {
-    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background: transparent;
+    border-radius: 12px;
+    width: 22px;
+    height: 22px;
+    color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50%;
+    text-align: center;
+    margin-left: 20px;
+
+    right: 6.3%;
+    top: 85%;
   }
   .listBox {
     display: flex;

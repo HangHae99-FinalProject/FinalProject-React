@@ -4,7 +4,7 @@ import { BiX } from "react-icons/bi";
 import styled from "styled-components";
 import { HiUpload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
@@ -59,8 +59,13 @@ const Uploads = () => {
     <>
       <UploadBox>
         <Labels htmlFor="files" onChange={uploadFile}>
-          <InsertPhotoIcon fontSize="large" />
-          <Inputs type="file" id="files" multiple="multiple" accept="image/*" />
+          <AddPhotoAlternateIcon fontSize="large" />
+          <Inputs
+            type="file"
+            id="files"
+            multiple="multiple"
+            accept=".jpg,.png,.svg"
+          />
         </Labels>
 
         <Labels
@@ -70,6 +75,7 @@ const Uploads = () => {
         >
           <LinkIcon fontSize="large" />
         </Labels>
+
         {is_open ? (
           <>
             <UrlBox
@@ -101,6 +107,12 @@ const Uploads = () => {
           </>
         ) : null}
       </UploadBox>
+      <ImageComment>
+        <span>
+          (권장 사이즈 <span className="imageSize">990*500)</span>
+          &nbsp;JPG,PNG,SVG로 올려주세요!
+        </span>
+      </ImageComment>
       <div style={{ margin: "0 10%" }}>
         {imgPreview.map((image, id) => {
           return (
@@ -124,6 +136,15 @@ const Uploads = () => {
 };
 
 export default Uploads;
+
+const ImageComment = styled.div`
+  font-size: 20px;
+  margin-left: 36px;
+  font-weight: 500;
+  .imageSize {
+    font-weight: bold;
+  }
+`;
 
 const UploadBox = styled.div`
   margin-top: 2rem;

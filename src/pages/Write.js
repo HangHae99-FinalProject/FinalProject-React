@@ -511,7 +511,7 @@ const CateBtn = styled.div`
     width: 140px;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid #E0F4FE;
     background-color: #f5fcff;
     box-shadow: inset 0px 4px 13px #d7f1fd;
     display: flex;

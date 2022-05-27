@@ -549,9 +549,10 @@ const ButtonBox = styled.div`
     min-width: 110px;
     padding: 16px;
     width: auto;
-    height: 40px;
+    height: 47px;
+    font-size: 16px;
 
-    border-radius: 20px;
+    border-radius: 14px;
     display: flex;
     flex-direction: column;
     justify-content: center;

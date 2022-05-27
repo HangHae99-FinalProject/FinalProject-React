@@ -81,6 +81,7 @@ const EditImage = (props) => {
     setImgPreview(editPree);
     // 리덕스에 files 인덱스를 맞추기 위해 URL도 같이 넣우줌
     dispatch(imgActions.setPre(editPree));
+    setIs_url(Link);
   }, [eddit]);
 
   const handleDeleteImage = (x, id) => {
@@ -170,6 +171,12 @@ const EditImage = (props) => {
           </>
         ) : null}
       </UploadBox>
+      <ImageComment>
+        <span>
+          (권장 사이즈 <span className="imageSize">990*500)</span>
+          &nbsp;JPG,PNG,SVG로 올려주세요!
+        </span>
+      </ImageComment>
       <ImageDiv {...styles}>
         {imgPreview.map((image, id) => {
           return (
@@ -214,6 +221,15 @@ EditImage.defaultProps = {
   img_box_margin: "0 20px",
   _onChange: () => {},
 };
+
+const ImageComment = styled.div`
+  font-size: 20px;
+  margin-left: 36px;
+  font-weight: 500;
+  .imageSize {
+    font-weight: bold;
+  }
+`;
 
 const UploadBox = styled.div`
   margin-top: ${(props) => props.margintop};

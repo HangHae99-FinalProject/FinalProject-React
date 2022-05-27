@@ -33,6 +33,7 @@ import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const a11yProps = (index) => {
   return {
@@ -293,10 +294,8 @@ const User = (props) => {
             <BgDiv>
               <Grid>
                 <Grid>
-                  {evaluationList?.length === 0 ||
-                  !evaluationList ||
-                  getAppliedOverList_reqruit?.length === 0 ||
-                  !getAppliedOverList_reqruit ? (
+                  {evaluationList?.length === 1 &&
+                  getAppliedOverList_reqruit?.length === 0 ? (
                     <Grid
                       container
                       direction="column"
@@ -475,7 +474,7 @@ const User = (props) => {
                       )}
                     </>
                   ) : getAppliedOverList_postUser !== null &&
-                    evaluationList?.length !== 0 ? (
+                    evaluationList?.length !== 1 ? (
                     <>
                       {evaluationList?.map((appliedOverList, idx) => {
                         return (

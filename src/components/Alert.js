@@ -139,7 +139,7 @@ const Alert = () => {
             {notification.length === 0 ? (
               <NoMessage>
                 <div>
-                  <p className="noMessage">알림이 없어요!</p>
+                  <p className="noMessage">아직 알림이 없어요!</p>
                 </div>
                 <img
                   src="
@@ -281,8 +281,16 @@ const Container = styled.div`
     background-color: gray;
   }
   .delete {
-    margin-left: 90%;
-    margin-top: -4%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    margin-left: 85%;
+    margin-top: -3%;
+    font-size: 20px;
     :hover {
       font-weight: bold;
     }

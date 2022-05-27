@@ -19,7 +19,7 @@ const DetailImage = (imgList) => {
     <>
       <Swiper
         pagination={{
-          type: "fraction",
+          clickable: true,
         }}
         navigation={true}
         modules={[Pagination, Navigation]}

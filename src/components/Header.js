@@ -59,7 +59,10 @@ function Header(props) {
   }
 
   return (
-    <Grid sx={{ Width: "100%" }}>
+    <Grid sx={{ 
+      // Width: "100%" 
+      }}
+    >
       <AppBar
         position="static"
         sx={{
@@ -70,7 +73,7 @@ function Header(props) {
       >
         <Toolbar>
           <Grid
-            sx={{ color: "#C2C0C1" }}
+            sx={{ color: "#C2C0C1", width:"1370px", margin:"auto" }}
             container
             direction="row"
             justifyContent="space-between"
@@ -84,12 +87,18 @@ function Header(props) {
                   <img
                     src="https://velog.velcdn.com/images/tty5799/post/89054416-3241-4eaa-984e-931466ff2329/image.svg"
                     alt="logo"
-                    style={{ marginLeft: "260px", height: "40px" }}
+                    style={{ 
+                      // marginLeft: "260px", 
+                      height: "40px" 
+                    }}
                   />
                 </Grid>
               </>
             )}
-            <Grid sx={{ width: "31%" }}>
+            <Grid sx={{ 
+              // width: "31%" 
+              }}
+            >
               <Grid
                 container
                 direction="row"
@@ -132,7 +141,7 @@ function Header(props) {
                         sx={{
                           color: "#fff",
                           fontSize: "18px",
-                          marginRight: "260px",
+                          // marginRight: "260px",
                         }}
                       >
                         LOGOUT
@@ -144,7 +153,7 @@ function Header(props) {
                         sx={{
                           color: "#fff",
                           fontSize: "18px",
-                          marginRight: "300px",
+                          // marginRight: "300px",
                         }}
                       >
                         LOGIN

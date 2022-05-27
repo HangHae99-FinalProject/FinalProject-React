@@ -321,11 +321,11 @@ const EditUser = () => {
                           backgroundColor: "#FFD082",
                           "&:hover": {
                             backgroundColor: "#FFD082",
-                            boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                            boxShadow: "0",
                           },
                           fontSize: "16px",
                           fontWeight: "bold",
-                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                          boxShadow: "0",
                         }}
                       >
                         수정완료
@@ -343,11 +343,11 @@ const EditUser = () => {
                           backgroundColor: "#FFD082",
                           "&:hover": {
                             backgroundColor: "#FFD082",
-                            boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                            boxShadow: "0",
                           },
                           fontSize: "16px",
                           fontWeight: "bold",
-                          boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                          boxShadow: "0",
                         }}
                       >
                         수정완료
@@ -417,11 +417,11 @@ const EditUser = () => {
                       backgroundColor: "#707070",
                       "&:hover": {
                         backgroundColor: "#707070",
-                        boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                        boxShadow: "0",
                       },
                       fontSize: "16px",
                       fontWeight: "bold",
-                      boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                      boxShadow: "0",
                     }}
                     onClick={nicknameCheckBtn}
                   >
@@ -659,20 +659,19 @@ const EditUser = () => {
                   </Grid_2>
                   <Grid_2 sx={{ margin: "20px auto auto 10px" }}>
                     <EditImage
-                      ilIs_inline
-                      ilBgRepeat="no-repeat"
-                      imgBoxMargin="0 5px 0 5px"
-                      ilBorder="0"
-                      imgDivMargin="0"
-                      imgDivWidth="1058px"
-                      ilWidth="200px"
-                      ilHeight="140px"
+                      il_bg_repeat="no-repeat"
+                      img_box_margin="0 5px 0 5px"
+                      il_border="0"
+                      img_div_margin="0"
+                      img_div_width="1058px"
+                      il_width="200px"
+                      il_height="140px"
                       fontSize="medium"
                       padding="0"
-                      marginRight="0"
+                      marginright="0"
                       display="none"
-                      marginTop="0"
-                      marginLeft="0"
+                      margintop="0"
+                      marginleft="0"
                       image={getUserInfo.userPortfolioImgList}
                     />
                   </Grid_2>

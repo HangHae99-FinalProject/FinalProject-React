@@ -551,9 +551,9 @@ const Signup = () => {
                       backgroundColor: "#D7F1FD",
                       "&:hover": {
                         backgroundColor: "#D7F1FD",
-                        boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
+                        // boxShadow: "0px 0px 4px inset rgba(0, 0, 0, 0.25)",
                       },
-                      boxShadow: "0px 4px 4px inset rgba(0, 0, 0, 0.25)",
+                      boxShadow: "0px 0px 0px",
                     }}
                   >
                     중복확인

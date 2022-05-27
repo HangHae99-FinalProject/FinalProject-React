@@ -2,6 +2,9 @@ import React, { useRef, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import "./MainImage.css";
 
 // import required modules
@@ -21,9 +24,10 @@ const MainImage = () => {
         pagination={{
           clickable: true,
         }}
-        navigation={true}
+        navigation={false}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
+        speed={500}
       >
         <SwiperSlide>
           <img

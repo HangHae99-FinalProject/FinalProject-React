@@ -90,7 +90,6 @@ const User = (props) => {
   const isSendedEmail = useSelector((state) => state.myPage.isSendedEmail);
 
   const test = useSelector((state) => state.myPage.test);
-  console.log(test);
 
   var posterKeys = JSON.stringify(getAppliedOverList_postUser);
 
@@ -284,7 +283,7 @@ const User = (props) => {
             <BgDiv>
               <Grid>
                 <Grid>
-                  {test?.length === 0 ||
+                  {test?.length === 0 &&
                   getAppliedOverList_reqruit?.length === 0 ? (
                     <Grid
                       container

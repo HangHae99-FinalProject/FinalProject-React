@@ -70,7 +70,7 @@ const MainList = ({ location, category, selected }) => {
   return (
     <React.Fragment>
       <MainContainer>
-        {is_loading === false && (
+        {postList.length === 0 && category === "" && (
           <div className="spinner">
             <Spinner />
           </div>
@@ -80,7 +80,7 @@ const MainList = ({ location, category, selected }) => {
           next={getData}
           hasMore={hasMore}
         >
-          {postList.length === 0 ? (
+          {postList.length === 0 && is_loading === true && category !== "" ? (
             <NoPost />
           ) : (
             <MainCardBox>

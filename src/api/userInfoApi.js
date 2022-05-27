@@ -1,21 +1,30 @@
 import instance from "./api";
-import axios from "axios";
+import Cookies from "universal-cookie";
+import { formDataApi } from "./api";
 
-// export const userInfoApi = {
-//   userMod: (
-//     profileImgUrl,
-//     nickname,
-//     is_cate,
-//     intro,
-//     portfolioLink,
-//     currentImgUrl,
-//     {imgs}
-//   ) => instance.put("/user/Info/{userId}/modify", { nickname }),
-// };
+
+const cookies = new Cookies();
+const accessToken = cookies.get("accessToken");
+
 export const userInfoApi = {
-  userMod: (profileImgUrl, nickname, is_cate, intro, portfolioLink, currentImgUrl, { imgs }) =>
-    instance.put(
-      "/user/Info/{userId}/modify",
-      (profileImgUrl, nickname, is_cate, intro, portfolioLink, currentImgUrl, { imgs })
-    ),
+  getUserInfo: (userId) => instance.get(`/user/info/${userId}`),
+
+  getAppliedList: (userId) => instance.get(`/user/applied/${userId}`),
+
+  getRecruitList: (userId) => instance.get(`/user/recruiting/${userId}`),
+
+  getApplierList: (postId) => instance.get(`/user/apply/${postId}`),
+
+  getRecruitOverList: (userId) => instance.get(`/user/over/${userId}`),
+
+  getAppliedOverList: (postId) =>
+    instance.get(`/user/recruiting/evaluation/${postId}`),
+
+  postEvaluation: (reqeustUserRate) =>
+    instance.post("/user/recruiting/evaluation", reqeustUserRate),
+
+  putUserInfoModData: (userId, formData) =>
+    formDataApi.patch(`/user/info/${userId}/modify`, formData),
+
+  emailCheck: (email) => instance.get(`/user/email?email=${email}`),
 };

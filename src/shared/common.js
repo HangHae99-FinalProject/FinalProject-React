@@ -1,13 +1,13 @@
-export const emailCheckRE = (email) => {
-  //email 형식
-  let _reg = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/g;
+export const memberIdCheckRE = (memberId) => {
+  //memberId 형식
+  let _reg = /^[a-zA-Z0-9]{4,12}$/g;
 
-  return _reg.test(email);
+  return _reg.test(memberId);
 };
 
 export const nicknameCheckRE = (nickname) => {
-  //영문 대소문자, 한글, 숫자 포함 4~10자
-  let _reg = /^[A-Za-z0-9가-힣]{4,10}$/g;
+  //영문 대소문자, 한글, 숫자 포함 2~6자
+  let _reg = /^[A-Za-z0-9가-힣]{2,6}$/g;
 
   return _reg.test(nickname);
 };

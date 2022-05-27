@@ -3,56 +3,82 @@ import styled from "styled-components";
 import { Grid } from "../elements/Index";
 
 import MainList from "../components/Main/MainList";
-import mainImage from "../assets/Group 36.png";
-import PlaceIcon from "@mui/icons-material/Place";
+import MainImage from "../components/Main/MainImage";
 
 import { actionCreates as postActions } from "../redux/modules/post";
+import { actionCreates as recruitActions } from "../redux/modules/recruit";
 
 import { useDispatch, useSelector } from "react-redux";
 import MainSearch from "../components/Main/MainSearch";
 import { history } from "../redux/configureStore";
+import { Redirect, useLocation } from "react-router-dom";
 
 const Main = () => {
-  const [is_location, setLocation] = useState("위치 설정");
+  const [is_location, setLocation] = useState("위치설정");
   const [is_open, setIs_open] = useState(false);
   const [selected, setSelected] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
 
+  const pathName = useLocation();
+
+  const is_login = useSelector((state) => state.user.isLogin);
+
+  const from = localStorage.getItem("from");
+
   const dispatch = useDispatch();
+
+  const writeBtn = () => {
+    if (is_login === false) {
+      alert("로그인을 먼저 해주세요!");
+      history.push("/login");
+      return;
+    }
+    history.push("/write");
+  };
 
   //지역 옵션
   const locations = [
     { id: 1, locationName: "전체" },
-    { id: 2, locationName: "동대문구" },
-    { id: 3, locationName: "마포구" },
-    { id: 4, locationName: "서대문구" },
-    { id: 5, locationName: "성북구" },
+    { id: 2, locationName: "서울/경기" },
+    { id: 3, locationName: "강원" },
+    { id: 4, locationName: "전북" },
+    { id: 5, locationName: "전남" },
+    { id: 6, locationName: "충북" },
+    { id: 7, locationName: "충남" },
+    { id: 8, locationName: "경북" },
+    { id: 9, locationName: "경남" },
+    { id: 10, locationName: "제주" },
   ];
 
   useEffect(() => {
-    dispatch(postActions.__getPost());
-  }, []);
+    window.scrollTo(0, 0);
+    return () => {
+      dispatch(recruitActions.initRecruit());
+      dispatch(postActions.clearPost());
+    };
+  }, [dispatch, pathName]);
+
+  if (from) {
+    return <Redirect to={{ pathname: from }} />;
+  }
 
   return (
     <>
       <Container>
-        <MainImage>
-          <img src={mainImage} alt="MainImage" />
-        </MainImage>
+        <MainImage />
+
         <Category>
           <CateBtn
             onClick={() => {
-              is_cate === "미술/디자인"
-                ? setIs_Cate("")
-                : setIs_Cate("미술/디자인");
+              is_cate === "디자인" ? setIs_Cate("") : setIs_Cate("디자인");
               setSelected(true);
             }}
           >
             <Grid
-              _className={is_cate === "미술/디자인" ? "active" : "default"}
-              bg={is_cate === "미술/디자인" ? "#2967AC" : "#f5fcff"}
+              _className={is_cate === "디자인" ? "active" : "default"}
+              bg={is_cate === "디자인" ? "#2967AC" : "#f5fcff"}
             >
-              <p>미술/디자인</p>
+              <p>디자인</p>
             </Grid>
           </CateBtn>
 
@@ -158,6 +184,7 @@ const Main = () => {
         </Category>
 
         {/* 위치설정 */}
+
         <div
           style={{
             width: "100%",
@@ -170,9 +197,7 @@ const Main = () => {
           <LocationBox>
             <Grid
               _onClick={() => setIs_open(!is_open)}
-              _className={
-                is_location === "위치 설정하기" ? "default" : "active"
-              }
+              _className={is_location === "위치설정" ? "default" : "active"}
             >
               <div
                 style={{
@@ -183,7 +208,11 @@ const Main = () => {
                   justifyContent: "center",
                 }}
               >
-                <PlaceIcon className="icon" fontSize="large" />
+                <img
+                  src="https://velog.velcdn.com/images/tty5799/post/0f54f707-bc7a-4710-9f7a-7a82b5d3dce3/image.png"
+                  alt="locationImg"
+                  style={{ marginRight: "20px" }}
+                />
                 <p>{is_location}</p>
               </div>
             </Grid>
@@ -209,28 +238,38 @@ const Main = () => {
               ) : null}
             </Grid>
           </LocationBox>
-          <MainSearch />
-          <BtnTest
-            onClick={() => {
-              history.push("/write");
-            }}
-          >
-            글쓰기
-          </BtnTest>
+          <MainSearch
+            location={is_location}
+            category={is_cate}
+            selected={selected}
+          />
+          <BtnTest onClick={writeBtn}>글쓰기</BtnTest>
         </div>
 
         {/* 메인카드 */}
-        <MainList />
+        <MainList
+          location={is_location}
+          category={is_cate}
+          selected={selected}
+        />
       </Container>
+      <BackImage>
+        <img
+          src="https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png"
+          alt="backImg"
+        />
+      </BackImage>
     </>
   );
 };
 
-const MainImage = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+const BackImage = styled.div`
+  z-index: 9999;
+  bottom: 0px;
+  left: 0;
+  img {
+    width: 100%;
+  }
 `;
 
 const Container = styled.div`
@@ -242,11 +281,11 @@ const BtnTest = styled.button`
   cursor: pointer;
   width: 150px;
   height: 63px;
-
+  margin-left: 25px;
   background: #ffd082;
   border: none;
-  box-sizing: border-box;
-  box-shadow: inset 0px 4px 13px #d7f1fd;
+  box-shadow: inset 0px 2px 8px #ffffff;
+  /* box-shadow: 0px 0px 0px ; */
   border-radius: 14px;
   font-size: 25px;
   font-weight: 700;
@@ -255,21 +294,21 @@ const BtnTest = styled.button`
 
 const LocationBox = styled.div`
   justify-content: center;
-
   flex-direction: column;
   display: flex;
-
   width: 198px;
   height: 63px;
-  margin-right: 1rem;
-  border-radius: 14px;
+  margin-right: 25px;
+
   position: relative;
   background-color: #2967ac;
   font-size: 24px;
   font-weight: 700;
   color: #f5fcff;
-  box-shadow: inset 0px 4px 13px #d7f1fd;
-  /* box-shadow: inset 0px 4px 13px #d7f1fd; */
+  box-shadow: inset 0px 2px 13px #d7f1fd;
+  /* box-shadow:  0px 0px 0px ; */
+  border-radius: 14px;
+
   cursor: pointer;
   .icon {
     margin-right: 5px;
@@ -301,27 +340,26 @@ const LocationBox = styled.div`
   }
 
   .location-option {
-    margin: 28rem 0 0 -7%;
-
     position: absolute;
-    color: black;
-    background-color: rgba(255, 208, 130, 1);
-    box-shadow: inset 0px 4px 13px #d7f1fd;
-
-    border-radius: 6px;
+    margin-top: 50.9rem;
+    color: #fff;
+    background-color: #2967ac;
+    box-shadow: inset 0px 2px 13px #d7f1fd;
+    border-radius: 14px;
     z-index: 15;
     cursor: pointer;
     p {
       padding: 10px 10px;
       &:hover {
-        background-color: yellowgreen;
+        font-size: 27px;
+        font-weight: 700;
       }
     }
   }
 `;
 
 const Category = styled.div`
-  margin-top: 5%;
+  margin-top: 50px;
   margin-bottom: 2%;
   display: flex;
   flex-direction: row;
@@ -330,14 +368,14 @@ const Category = styled.div`
 `;
 
 const CateBtn = styled.div`
-  margin: 0 5px;
+  margin: 0 7px;
   .default {
     width: 140px;
     height: 50px;
     border-radius: 14px;
 
     background-color: #f5fcff;
-    /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -347,7 +385,8 @@ const CateBtn = styled.div`
 
     p {
       text-align: center;
-      font-size: 15px;
+      font-size: 20px;
+      font-weight: 700;
 
       color: rgba(41, 103, 172, 1);
     }
@@ -370,10 +409,13 @@ const CateBtn = styled.div`
       font-size: 32px;
     }
     p {
-      font-size: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+
+      color: #fff;
 
       text-align: center;
-      color: #f5fcff;
     }
   }
   @keyframes loadEffect3 {

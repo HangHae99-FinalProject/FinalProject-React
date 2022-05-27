@@ -1,30 +1,18 @@
-import instance from "./api";
+import instance, { notLogin } from "./api";
 import axios from "axios";
 
 export const userApi = {
-  signup: (email, password, pwCheck, nickname, major) =>
-    axios.post("user/signup", { email, password, pwCheck, nickname, major }),
+  signup: (memberId, password, pwCheck) =>
+    notLogin.post("/user/signup", { memberId, password, pwCheck }),
 
-  emailCheck: (email) => instance.post("/user/emailCheck", { email }),
+  memberIdCheck: (memberId) => axios.post("/user/memberIdCheck", { memberId }),
 
-  nicknameCheck: (nickname) => instance.post("/user/nicknameCheck", { nickname }),
+  nicknameCheck: (nickname) => axios.post("/nickname-check", nickname),
 
-  login: (email, password) => axios.post("user/login", { email, password }),
+  login: (memberId, password) =>
+    notLogin.post("user/login", { memberId, password }),
 
   remove: () => instance.delete("/user/remove"),
 
-  getUserInfo: (userId = localStorage.getItem("userId")) => instance.get(`/user/info/${userId}`),
-  // getUserInfo: (userId) =>
-  //   instance.get(`/user/info/${userId}`, {
-  //     data: {
-  //       userId,
-  //       nickname,
-  //       profileImg,
-  //       major,
-  //       intro,
-  //       introImgUrlList,
-  //       projectCount,
-  //       likeCount,
-  //     },
-  //   }),
+  kakaoGet: (code) => notLogin.get(`/user/kakao/login?code=${code}`),
 };

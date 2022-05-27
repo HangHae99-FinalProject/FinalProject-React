@@ -3,40 +3,103 @@ import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
 import { postApi } from "../../api/postApi";
 import { actionCreators as commentActions } from "../modules/comment";
+import axios from "axios";
 
 // 액션
 const SET_POST = "SET_POST";
 const SET_DETAIL = "SET_DETAIL";
-const ADD_POST = "ADD_POST";
-const EDIT_POST = "EDIT_POST";
-const DELETE_POST = "DELETE_POST";
+const CLEAR_POST = "CLEAR_POST";
+const SET_CATE = "SET_CATE";
+const GET_SEARCH = "GET_SEARCH";
+const GET_LANDING = "GET_LANDING";
+const GET_SEARCH_DATA = "GET_SEARCH_DATA";
+// 신청하기
+const ADD_APPLY = "ADD_APPLY";
+const DELETE_APPLY = "DELETE_APPLY";
+const LOGIN_DETAIL = "LOGIN_DETAIL";
 
 // 액션 크리에이터
-const setPost = createAction(SET_POST, (post_list) => ({ post_list }));
+const getSearchData = createAction(GET_SEARCH_DATA, (searchList) => ({
+  searchList,
+}));
+const getLanding = createAction(GET_LANDING, (post_list) => ({ post_list }));
+const setSearch = createAction(GET_SEARCH, (searchList) => ({ searchList }));
+const setCate = createAction(SET_CATE, (post_list, page) => ({
+  post_list,
+  page,
+}));
+const setPost = createAction(SET_POST, (post_list) => ({
+  post_list,
+}));
 const setDetail = createAction(SET_DETAIL, (detail_list) => ({ detail_list }));
-const addPost = createAction(ADD_POST, (post_list) => ({ post_list }));
-const editPost = createAction(EDIT_POST, (post_list) => ({ post_list }));
-const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
+const setLoginDetail = createAction(SET_DETAIL, (detail_list) => ({
+  detail_list,
+}));
+const clearPost = createAction(CLEAR_POST, () => ({}));
+// 신청하기
+const addApply = createAction(ADD_APPLY, (apply) => ({ apply }));
+const deleteApply = createAction(DELETE_APPLY, (apply) => ({ apply }));
 
 // 초기값
 const initialState = {
+  apply: "",
   list: [],
   is_loading: false,
   detailList: [],
+  page: 0,
+  post_next: false,
+  search: [],
+  landingList: [],
+  searchList: [],
 };
 
 //미들웨어
 
+const __getSearchData =
+  () =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.searchData();
+
+      dispatch(getSearchData(data.data));
+    } catch (err) {}
+  };
+
+const __getLanding =
+  () =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.getLanding();
+      dispatch(getLanding(data.data));
+    } catch (err) {}
+  };
+
+const __postApply =
+  (postId, data) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { res } = await postApi.postApply(postId, data);
+      dispatch(addApply("applicant"));
+    } catch (err) {}
+  };
+
+const __deleteApply =
+  (postId) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.deleteApply(postId);
+      dispatch(addApply("user"));
+    } catch (err) {}
+  };
+
+// 메인,게시글
 const __deletePost =
   (postId) =>
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await postApi.deletePost(postId);
-      history.replace("/");
-      alert("삭제가 완료됐습니다!");
-    } catch (err) {
-      console.log(err);
-    }
+      history.replace("/main");
+    } catch (err) {}
   };
 
 const __editPost =
@@ -54,12 +117,10 @@ const __editPost =
       return formData.append("img", e);
     });
     try {
-      const data = await postApi.editPost(postId, formData);
-      console.log(data);
-      history.replace("/");
-    } catch (err) {
-      console.log(err);
-    }
+      await postApi.editPost(postId, formData);
+
+      history.replace("/main");
+    } catch (err) {}
   };
 
 const __addPost =
@@ -80,11 +141,19 @@ const __addPost =
     });
 
     try {
-      const data = await postApi.postWrite(formData);
-      history.replace("/");
-    } catch (err) {
-      console.log(err);
-    }
+      await postApi.postWrite(formData);
+      history.replace("/main");
+    } catch (err) {}
+  };
+
+const __loginGetDetail =
+  (postId) =>
+  async (dispatch, getState, { history }) => {
+    try {
+      const { data } = await postApi.loginGetDetail(postId);
+      dispatch(commentActions.getComment(data.data.commentList));
+      dispatch(setDetail(data.data));
+    } catch (err) {}
   };
 
 const __getDetail =
@@ -92,51 +161,107 @@ const __getDetail =
   async (dispatch, getState, { history }) => {
     try {
       const { data } = await postApi.getDetail(postId);
-      console.log(data.commentList.length);
 
-      dispatch(commentActions.getComment(data.commentList));
-      dispatch(setDetail(data));
-    } catch (err) {
-      console.log(err);
-    }
+      dispatch(commentActions.getComment(data.data.commentList));
+      dispatch(setDetail(data.data));
+    } catch (err) {}
   };
 
 const __getPost =
-  () =>
+  (count, region, major, is_search, is_searchValue, is_select) =>
   async (dispatch, getState, { history }) => {
-    try {
-      const { data } = await postApi.getPost();
-      console.log(data.date);
-      dispatch(setPost(data.date));
-    } catch (err) {
-      console.log(err);
+    if (is_select) {
+      count = 0;
     }
-  };
+    try {
+      const { data } = await postApi.getPost(
+        count,
+        region,
+        major,
+        is_search,
+        is_searchValue
+      );
 
-// const __getPost = (postId) => {
-//   return function (dispatch, getState, { history }) {
-//     postApi.getDetail(postId).then((res) => {
-//       console.log(res);
-//     });
-//   };
-// };
+      dispatch(setSearch({ is_search, is_searchValue }));
+      let is_next = null;
+      if (data.data.length < 8) {
+        is_next = false;
+      } else {
+        is_next = true;
+      }
+
+      if (is_select || count === 0) {
+        let post_list = {
+          posts: data.data,
+          page: count + 1,
+        };
+
+        dispatch(setCate(post_list));
+      } else if (count === 0 && data.data.length < 9) {
+        let post_list = {
+          posts: data.data,
+          page: count + 1,
+        };
+        dispatch(setCate(post_list));
+      } else {
+        let post_list = {
+          posts: data.data,
+          page: count + 1,
+        };
+        dispatch(setPost(post_list));
+      }
+    } catch {}
+  };
 
 // 리덕스
 export default handleActions(
   {
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.list = action.payload.post_list;
+        draft.list.push(...action.payload.post_list.posts);
+        if (action.payload.page) {
+          draft.page = action.payload.page;
+        }
         draft.is_loading = false;
+      }),
+    [SET_CATE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = [...action.payload.post_list.posts];
+
+        if (action.payload.post_list.page) {
+          draft.page = action.payload.post_list.page;
+        }
+      }),
+    [GET_SEARCH]: (state, action) =>
+      produce(state, (draft) => {
+        draft.search = action.payload.searchList;
       }),
     [SET_DETAIL]: (state, action) =>
       produce(state, (draft) => {
         draft.detailList = action.payload.detail_list;
+        draft.is_loading = true;
       }),
-    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
-    // [SET_POST]: (state, action) => produce(state, (draft) => {}),
+    [LOGIN_DETAIL]: (state, action) =>
+      produce(state, (draft) => {
+        draft.detailList = action.payload.detail_list;
+        draft.is_loading = true;
+      }),
+    [ADD_APPLY]: (state, action) =>
+      produce(state, (draft) => {
+        draft.detailList.userStatus = action.payload.apply;
+      }),
+    [CLEAR_POST]: (state, action) =>
+      produce(state, (draft) => {
+        return initialState;
+      }),
+    [GET_LANDING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.landingList = action.payload.post_list;
+      }),
+    [GET_SEARCH_DATA]: (state, action) =>
+      produce(state, (draft) => {
+        draft.searchList = action.payload.searchList;
+      }),
   },
   initialState
 );
@@ -149,6 +274,19 @@ const actionCreates = {
   setDetail,
   __editPost,
   __deletePost,
+  __loginGetDetail,
+  setLoginDetail,
+  addApply,
+  __postApply,
+  __deleteApply,
+  deleteApply,
+  clearPost,
+  setCate,
+  setSearch,
+  getLanding,
+  __getLanding,
+  getSearchData,
+  __getSearchData,
 };
 
 export { actionCreates };

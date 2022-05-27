@@ -9,6 +9,8 @@ import post from "./modules/post";
 import recruit from "./modules/recruit";
 import image from "./modules/image";
 import comment from "./modules/comment";
+import apply from "./modules/apply";
+import myPage from "./modules/myPage";
 // import Post from "./modules/post";
 // import Image from "./modules/image";
 
@@ -21,6 +23,8 @@ const rootReducer = combineReducers({
   post: post,
   chat: chat,
   comment: comment,
+  apply: apply,
+  myPage: myPage,
   router: connectRouter(history),
 });
 
@@ -30,10 +34,10 @@ const middlewares = [thunk.withExtraArgument({ history: history })];
 const env = process.env.NODE_ENV;
 
 // 개발환경에서의 logger 추가
-if (env === "development") {
-  const { logger } = require("redux-logger");
-  middlewares.push(logger);
-}
+// if (env === "development") {
+//   const { logger } = require("redux-logger");
+//   middlewares.push(logger);
+// }
 
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

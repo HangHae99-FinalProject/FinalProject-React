@@ -4,7 +4,7 @@ import { BiX } from "react-icons/bi";
 import styled from "styled-components";
 import { HiUpload } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
@@ -25,25 +25,21 @@ const Uploads = () => {
       imageUrlList.push(currentImageUrl);
     }
 
-    if (imageUrlList.length > 5) {
-      alert("사진은 최대 5장만 가능합니다!");
+    if (imageUrlList.length > 4) {
+      alert("사진은 최대 4장만 가능합니다!");
     } else {
       setImgPreview(imageUrlList);
     }
 
-    if (imageUrlList.length > 10) {
-      window.alert("이미지는 최대 10개까지 가능합니다!");
-    } else {
-      let imgList = [];
-      // 파일들을 꺼내 배열안에 넣어줌
-      for (const key in imageList) {
-        if (Object.hasOwnProperty.call(imageList, key)) {
-          imgList.push(imageList[key]);
-        }
+    let imgList = [];
+    // 파일들을 꺼내 배열안에 넣어줌
+    for (const key in imageList) {
+      if (Object.hasOwnProperty.call(imageList, key)) {
+        imgList.push(imageList[key]);
       }
-      setImgPreview(imageUrlList);
-      dispatch(imgActions.setPre(imgList));
     }
+    setImgPreview(imageUrlList);
+    dispatch(imgActions.setPre(imgList));
   };
 
   const handleUrl = (e) => {
@@ -52,7 +48,6 @@ const Uploads = () => {
 
   const UrlButton = () => {
     dispatch(imgActions.setURL(is_Url));
-    // setIs_url("");
   };
 
   const handleDeleteImage = (id) => {
@@ -64,8 +59,13 @@ const Uploads = () => {
     <>
       <UploadBox>
         <Labels htmlFor="files" onChange={uploadFile}>
-          <InsertPhotoIcon fontSize="large" />
-          <Inputs type="file" id="files" multiple="multiple" accept="image/*" />
+          <AddPhotoAlternateIcon fontSize="large" />
+          <Inputs
+            type="file"
+            id="files"
+            multiple="multiple"
+            accept=".jpg,.png,.svg"
+          />
         </Labels>
 
         <Labels
@@ -75,6 +75,7 @@ const Uploads = () => {
         >
           <LinkIcon fontSize="large" />
         </Labels>
+
         {is_open ? (
           <>
             <UrlBox
@@ -106,6 +107,12 @@ const Uploads = () => {
           </>
         ) : null}
       </UploadBox>
+      <ImageComment>
+        <span>
+          (권장 사이즈 <span className="imageSize">990*500)</span>
+          &nbsp;JPG,PNG,SVG로 올려주세요!
+        </span>
+      </ImageComment>
       <div style={{ margin: "0 10%" }}>
         {imgPreview.map((image, id) => {
           return (
@@ -129,6 +136,15 @@ const Uploads = () => {
 };
 
 export default Uploads;
+
+const ImageComment = styled.div`
+  font-size: 20px;
+  margin-left: 36px;
+  font-weight: 500;
+  .imageSize {
+    font-weight: bold;
+  }
+`;
 
 const UploadBox = styled.div`
   margin-top: 2rem;

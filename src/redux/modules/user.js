@@ -4,7 +4,6 @@ import { produce } from "immer"; //불변성 관리를 위해 사용
 import { userApi } from "../../api/userApi";
 import Cookies from "universal-cookie";
 import jwt_decode from "jwt-decode";
-import instance from "../../api/api";
 import { history } from "../configureStore";
 
 import axios from "axios";
@@ -14,9 +13,10 @@ const cookies = new Cookies();
 //actions
 const LOG_IN = "user/LOG_IN";
 const LOG_OUT = "user/LOG_OUT";
-const GET_USER = "user/GET_USER";
-// const SET_USER = "user/SET_USER";
-
+const CHECK_EMAIL_DUP = "user/CHECK_EMAIL_DUP";
+const INIT_CHECK_EMAIL_DUP = "user/INIT_CHECK_EMAIL_DUP";
+const KAKAO_LOGIN = "KAKAO_LOGIN";
+const LOGIN_ERROR_CODE = "user/LOGIN_ERROR_CODE";
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
 // const logIn = (user) => {
@@ -30,10 +30,15 @@ const GET_USER = "user/GET_USER";
 //     }
 //   }
 // };
+
 const login = createAction(LOG_IN, (user) => ({ user }));
 const logout = createAction(LOG_OUT, (user) => ({ user }));
-const getUser = createAction(GET_USER, (data_list) => ({ data_list }));
-// const setUser = createAction(SET_USER, (user) => ({ user }));
+const checkEmailDup = createAction(CHECK_EMAIL_DUP, (checkEmailAlert) => ({
+  checkEmailAlert,
+}));
+const initCheckEmailDup = createAction(INIT_CHECK_EMAIL_DUP, () => ({}));
+const kakaoLogin = createAction(KAKAO_LOGIN, (user, id) => ({ user, id }));
+const loginErrorCode = createAction(LOGIN_ERROR_CODE, (data) => ({ data }));
 
 //initialState
 const initialState = {
@@ -43,6 +48,12 @@ const initialState = {
     nickname: null,
   },
   userInfo: [],
+  checkEmailDup: {},
+  checkNicknameDup: {},
+  initInput: "",
+  profileSet: true,
+  kakaoId: "",
+  loginErrorCode: 0,
 };
 
 const userInitial = {
@@ -50,69 +61,123 @@ const userInitial = {
 };
 
 //middleware actions
-const __login = (userEmail, password) => {
+const __kakaoLogin = (code) => {
   return async function (dispatch, getState, { history }) {
     try {
-      const {
-        data: { accessToken, refreshToken, accessTokenExpiresIn },
-      } = await axios.post("http://3.34.135.82:8080/user/login", {
-        email: userEmail,
-        password,
-      });
-      const { sub, email, nickname, profileImg, major } = jwt_decode(accessToken);
-      console.log(
-        "userid:",
-        sub,
-        "이메일:",
-        email,
-        "닉네임:",
-        nickname,
-        "프로필:",
-        profileImg,
-        "전공:",
-        major
-      );
-      cookies.set("accessToken", accessToken, {
-        path: "/",
-        maxAge: 3600, // 60분
-      });
-      cookies.set("refreshToken", refreshToken, {
-        path: "/",
-        maxAge: 604800, // 7일
-      });
-      localStorage.setItem("userId", sub);
-      localStorage.setItem("email", email);
-      localStorage.setItem("nickname", nickname);
-      localStorage.setItem("profileImgUrl", profileImg);
-      localStorage.setItem("major", major);
-      dispatch(login());
-      history.replace("/");
+      const { data } = await userApi.kakaoGet(code);
+      if (data.data.profileSet === false) {
+        dispatch(kakaoLogin(data.data.profileSet, data.data.userId));
+      } else {
+        const { accessToken, refreshToken } = data.data;
+
+        const { sub, memberId, nickname, major, profileImg } =
+          jwt_decode(accessToken);
+        cookies.set("accessToken", accessToken, {
+          path: "/",
+          maxAge: 86400, // 24시간
+        });
+        cookies.set("refreshToken", refreshToken, {
+          path: "/",
+          // maxAge: 604800, // 7일
+        });
+        localStorage.setItem("userId", sub);
+        localStorage.setItem("memberId", memberId);
+        localStorage.setItem("nickname", nickname);
+        localStorage.setItem("major", major);
+        localStorage.setItem("profileImg", profileImg);
+
+        dispatch(login());
+        history.replace("/main");
+      }
     } catch (err) {
-      console.log(err);
     }
   };
 };
 
-const __signup = (email, password, pwCheck, nickname, major) => {
+const __login = (_memberId, password) => {
+  return async function (dispatch, getState, { history }) {
+    try {
+      const loginData = await axios.post("https://everymohum.shop/user/login", {
+        memberId: _memberId,
+        password,
+      });
+      const { accessToken, refreshToken, accessTokenExpiresIn } =
+        loginData.data.data.token;
+      const { sub, memberId, nickname, major, profileImg } =
+        jwt_decode(accessToken);
+      cookies.set("accessToken", accessToken, {
+        path: "/",
+        maxAge: 86400, // 24시간
+        // maxAge: 10, // 10초
+      });
+      cookies.set("refreshToken", refreshToken, {
+        path: "/",
+        // maxAge: 604800, // 7일
+      });
+      localStorage.setItem("userId", sub);
+      localStorage.setItem("memberId", memberId);
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("major", major);
+      localStorage.setItem("profileImg", profileImg);
+      dispatch(login());
+      history.replace("/main");
+    } catch (err) {
+      dispatch(loginErrorCode(err.response.data.errorCode));
+    }
+  };
+};
+
+const __signup = (memberId, password, pwCheck) => {
   return async (dispatch, getState, { history }) => {
     try {
-      const signup = await axios.post("http://3.34.135.82:8080/user/signup", {
-        email,
+      const signup = await axios.post("https://everymohum.shop/user/signup", {
+        memberId,
         password,
         pwCheck,
-        nickname,
-        major,
       });
-      console.log(signup);
-      if (signup.data) {
-        window.alert("회원가입이 완료되었습니다.");
-        history.replace("/login");
-      }
+      localStorage.setItem("userId", signup.data.data.userId);
     } catch (err) {
-      console.log(err);
       if (err.errorCode === 400) {
         window.alert("오류가 발생했습니다.");
-        console.log(err.errorCode, err.errorMessage);
+      }
+    }
+  };
+};
+const __additionalInfo = (_userId, nickName, majors) => {
+  return async (dispatch, getState, { history }) => {
+    try {
+      const additionalInfo = await axios.post(
+        "https://everymohum.shop/user/signup/addInfo",
+        {
+          userId: _userId,
+          nickname: nickName,
+          major: majors,
+        }
+      );
+      const { accessToken, refreshToken } = additionalInfo.data.data;
+      cookies.set("accessToken", accessToken, {
+        path: "/",
+        maxAge: 86400, // 24시간
+        // maxAge: 10, // 10초
+      });
+      cookies.set("refreshToken", refreshToken, {
+        path: "/",
+        // maxAge: 604800, // 7일
+      });
+
+      const { sub, memberId, nickname, major, profileImg } =
+        jwt_decode(accessToken);
+      localStorage.setItem("userId", sub);
+      localStorage.setItem("memberId", memberId);
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("major", major);
+      localStorage.setItem("profileImg", profileImg);
+      dispatch(login());
+
+      history.replace("/main");
+    } catch (err) {
+      if (err.errorCode === 400) {
+        window.alert("오류가 발생했습니다.");
       }
     }
   };
@@ -122,13 +187,24 @@ const __emailCheck =
   (email) =>
   async (dispatch, getState, { hisory }) => {
     try {
-      await userApi.emailCheck(email);
-      window.alert("입력하신 이메일은 사용이 가능합니다.");
+      const checkEmailAlert = await axios.post(
+        "https://everymohum.shop/user/emailCheck",
+        {
+          email,
+        }
+      );
+      if (checkEmailAlert.data.errorCode === "200") {
+        window.alert("입력하신 이메일은 사용이 가능합니다.");
+      } else if (checkEmailAlert.data.errorCode !== "200") {
+        dispatch(checkEmailDup(checkEmailAlert));
+        window.alert("다른 이메일을 사용해주세요.");
+        return;
+      }
     } catch (err) {
-      console.log(err);
       window.alert("입력하신 이메일은 사용이 불가능합니다.");
     }
   };
+
 const __nicknameCheck =
   (nickname) =>
   async (dispatch, getState, { hisory }) => {
@@ -136,131 +212,77 @@ const __nicknameCheck =
       await userApi.nicknameCheck(nickname);
       window.alert("입력하신 닉네임은 사용이 가능합니다.");
     } catch (err) {
-      console.log(err);
       window.alert("입력하신 닉네임은 사용이 불가능합니다.");
     }
   };
 
 const __logout = () => {
-  return function (dispatch, getState) {
-    dispatch(logout());
-    window.alert("로그아웃되었습니다.");
-    history.replace("/");
+  return async function (dispatch, getState) {
+    try {
+      localStorage.removeItem("userId");
+      localStorage.removeItem("major");
+      localStorage.removeItem("memberId");
+      localStorage.removeItem("nickname");
+      localStorage.removeItem("profileImg");
+      cookies.remove("isLogin", { path: "/" });
+      cookies.remove("accessToken", { path: "/" });
+      cookies.remove("refreshToken", { path: "/" });
+      await dispatch(logout());
+      window.alert("로그아웃되었습니다.");
+      history.replace("/");
+    } catch (err) {
+    }
   };
 };
 
 const __loginCheck = () => {
   return function (dispatch, getState, { history }) {
-    const tokenCheck = cookies.get("accessToken");
-    // console.log(userId);
-    // console.log(tokenCheck);
+    const tokenCheck = cookies.get("accessToken", { path: "/" });
     if (tokenCheck) {
+      dispatch(login());
       return;
-    } else {
-      dispatch(logout());
-      console.log("로그인을 다시 해주세요");
-      history.replace("/");
     }
   };
 };
-
-const __getUserInfo = (userId) => {
-  return async function (dispatch, getState, { history }) {
-    try {
-      const { data } = await userApi.getUserInfo(userId);
-      dispatch(getUser(data));
-      // const {userId, nickname, profileImg, major, intro, portfolioLink, currentImgUrl, imgs } = {...data};
-
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-};
-
-// const __signup =
-//   (email, password, pwCheck, nickname) =>
-//   (dispatch, getState, { history }) => {
-//     userApi
-//       .signup(email, password, pwCheck, nickname)
-//       .then((user) => {
-//         console.log(user);
-//         window.alert("회원가입이 완료되었습니다.");
-//         history.replace("/login");
-//       })
-//       .catch((err) => {
-//         if (err.errorCode === 400) {
-//           window.alert("오류가 발생했습니다.");
-//           console.log(err.errorCode, err.errorMessage);
-//         }
-//       });
-//   };
-
-// const loginCheckFB = () => {
-//   return function (dispatch, getState, { history }) {
-//     auth.onAuthStateChanged((user) => {
-//       if (user) {
-//         dispatch(
-//           setUser({ user_name: user.displayName, user_profile: "", id: user.email, uid: user.uid })
-//         );
-//       } else {
-//         dispatch(logOut());
-//       }
-//     });
-//   };
-// };
-
-// const logoutFB = () => {
-//   return function (dispatch, getState, { history }) {
-//     auth.signOut().then(() => {
-//       dispatch(logOut());
-//       //.replace는 현재의 페이지를 소괄호안의 페이지를 교체한다는 의미.
-//       //예를 들어,
-//       //메인페이지 > 로그인페이지 > 게시물작성페이지 의 순서대로 history가 쌓여 있을 때,
-//       //게시물작성페이지에서 로그아웃을 하게 된다면
-//       //.push("/")의 경우에는
-//       //메인페이지 > 로그인페이지 > 게시물작성페이지 > 메인페이지 의 history가 된다.
-//       //뒤로가기 버튼을 클릭한다면 로그아웃 상태임에도 게시물작성페이지로 진입하게 되는 문제가 발생한다.
-//       //.replace("/")의 경우에는
-//       //메인페이지 > 로그인페이지 > 메인페이지 의 history가 된다.
-//       //게시물작성페이지에서 로그아웃을 한다면 메인페이지를 history에 추가하지 않고
-//       //현재 페이지인 게시물작성페이지를 메인페이지로 대체한다.
-//       //이 때 뒤로가기 버튼을 클릭한다면 로그인페이지로 이동하게 되고 문제는 해결된다.
-//       history.replace("/");
-//     });
-//   };
-// };
 
 //reducer
 export default handleActions(
   {
     [LOG_IN]: (state, action) =>
       produce(state, (draft) => {
-        cookies.set("isLogin", "success");
-        draft.user = action.payload.user;
+        cookies.set("isLogin", "success", { path: "/" });
         draft.isLogin = true;
       }),
-    // [SET_USER]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     setCookie("is_login", "success");
-    //     draft.user = action.payload.user;
-    //     draft.is_login = true;
-    //   }),
+
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
-        cookies.remove("isLogin");
-        cookies.remove("accessToken");
-        cookies.remove("refreshToken");
         localStorage.removeItem("major");
         localStorage.removeItem("email");
         localStorage.removeItem("nickname");
         localStorage.removeItem("profileImgUrl");
+        localStorage.removeItem("userId");
+        cookies.remove("isLogin");
+        cookies.remove("accessToken", { path: "/" });
+        cookies.remove("refreshToken", { path: "/" });
         draft.user = null;
         draft.isLogin = false;
       }),
-    [GET_USER]: (state, action) =>
+    [CHECK_EMAIL_DUP]: (state, action) =>
       produce(state, (draft) => {
-        draft.userInfo = action.payload?.data_list;
+        draft.checkEmailDup = action.payload?.checkEmailAlert;
+      }),
+    [INIT_CHECK_EMAIL_DUP]: (state, action) =>
+      produce(state, (draft) => {
+        draft.checkEmailDup = {};
+      }),
+    [KAKAO_LOGIN]: (state, action) =>
+      produce(state, (draft) => {
+        draft.profileSet = action.payload.user;
+        draft.kakaoId = action.payload.id;
+      }),
+    [LOGIN_ERROR_CODE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.loginErrorCode = action.payload.data;
       }),
   },
   initialState
@@ -274,7 +296,11 @@ const actionCreators = {
   __signup,
   __logout,
   __loginCheck,
-  __getUserInfo,
+  login,
+  initCheckEmailDup,
+  kakaoLogin,
+  __kakaoLogin,
+  __additionalInfo,
 };
 
 export { actionCreators };

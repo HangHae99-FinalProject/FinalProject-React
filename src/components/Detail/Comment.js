@@ -1,37 +1,39 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
-import rr from "../../assets/image 35.png";
+
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 import { useParams } from "react-router-dom";
 import CommentList from "./CommentList";
 import { history } from "../../redux/configureStore";
-import { actionCreates as postActions } from "../../redux/modules/post";
 
-const Comment = (props) => {
+const Comment = (userId) => {
   const dispatch = useDispatch();
   const commentList = useSelector((state) => state.comment);
-
+  const isLogin = useSelector((state) => state.user.isLogin);
   const param = useParams();
-
-  const id = param.postid;
 
   const commentCnt = commentList.commentList?.length;
 
   const [is_comment, setIs_comment] = useState("");
 
   const addComment = () => {
+    if (!isLogin) {
+      alert("로그인을 먼저 해주세요!");
+      history.push("/login");
+      return;
+    }
     if (is_comment === "") {
       alert("공란 입니다!");
       return;
     }
     dispatch(commentActions.__addComment(param.postid, is_comment));
+
     setIs_comment("");
   };
 
   const handleEvent = (e) => {
-    console.log(e.nativeEvent.isComposing);
     if (e.nativeEvent.isComposing) {
       return;
     }
@@ -46,29 +48,12 @@ const Comment = (props) => {
     setIs_comment(e.target.value);
   };
 
-  const handleWrite = () => {
-    history.push(`/editpost/${id}`);
-  };
-
-  const postDelete = () => {
-    dispatch(postActions.__deletePost(id));
-  };
-
   return (
     <>
       <CommentBox>
         <div className="commentHead">
           <TextsmsOutlinedIcon />
-          <p style={{ marginRight: "70rem" }}>댓글 {commentCnt}</p>
-          <span
-            style={{ marginRight: "2rem", cursor: "pointer" }}
-            onClick={handleWrite}
-          >
-            수정하기
-          </span>
-          <span style={{ cursor: "pointer" }} onClick={postDelete}>
-            삭제하기
-          </span>
+          <p style={{ marginRight: "78rem" }}>댓글 {commentCnt}</p>
         </div>
         <div className="line" />
 
@@ -85,9 +70,11 @@ const Comment = (props) => {
             value={is_comment || ""}
             onChange={handleComment}
             onKeyDown={handleEvent}
+            maxLength={80}
           />
-
-          <span onClick={addComment}>입력</span>
+          <div className="commentAddBtn" onClick={addComment}>
+            <span>등록</span>
+          </div>
         </div>
       </CommentBox>
     </>
@@ -95,7 +82,7 @@ const Comment = (props) => {
 };
 
 const CommentScroll = styled.div`
-  height: 300px;
+  height: 330px;
   overflow: auto;
 
   .icon {
@@ -125,7 +112,6 @@ const CommentBox = styled.div`
     p {
       margin-left: 0.5rem;
       font-size: 15px;
-      font-weight: 400;
     }
   }
   .line {
@@ -134,36 +120,55 @@ const CommentBox = styled.div`
   }
   .comment {
     margin-left: 1rem;
-    font-size: 18px;
-    font-weight: 400;
-    height: 60px;
-    margin-top: 2rem;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid gray;
   }
   .comments {
-    margin-top: -0.5rem;
-    margin-left: 4rem;
-    font-size: 22px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    margin-left: 3rem;
+    font-size: 16px;
     font-weight: 400;
 
     justify-content: center;
   }
+
   .commentInput {
-    span {
+    display: flex;
+    .commentAddBtn {
+      margin-left: 10px;
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      margin-left: -5rem;
-      font-size: 22px;
-      color: rgba(155, 151, 152, 1);
+      width: 80px;
+      height: 72px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      background-color: #2967ac;
+      span {
+        font-size: 16px;
+        color: #fff;
+      }
     }
     input {
-      width: 98%;
-      height: 4rem;
+      display: flex;
+      width: 1270px;
+      height: 72px;
       border: 1px solid #9b9798;
       border-radius: 10px;
-      padding: 5px 15px 5px 15px;
-      font-size: 22px;
+      padding: 0px 0px 0px 15px;
+      font-size: 16px;
       margin-bottom: 4rem;
+      background: #f5fcff;
       :focus {
         outline-color: gray;
+      }
+      ::placeholder {
+        color: #c2c0c1;
+        font-size: 16px;
       }
     }
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreates as RecruitActions } from "../redux/modules/recruit";
 import { actionCreates as PostActions } from "../redux/modules/post";
 import { history } from "../redux/configureStore";
+import Footer from "../elements/Footer";
+import { useLocation } from "react-router-dom";
 
 const Write = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,8 @@ const Write = () => {
 
   const majorList = useSelector((state) => state.recruit.majorList);
   const link = useSelector((state) => state.image.Url);
+
+  const pathName = useLocation();
 
   const data = {
     content: is_content,
@@ -61,7 +65,7 @@ const Write = () => {
   };
 
   const PeopleBtn = () => {
-    const CheckMojor = majorList.map((a) => a.majorName);
+    const CheckMajor = majorList.map((a) => a.majorName);
 
     if (is_cate === "" && is_people === "") {
       alert("모집분야와 인원을 선택해 주세요!");
@@ -75,8 +79,8 @@ const Write = () => {
       alert("모집인원을 선택해 주세요!");
       return;
     }
-    for (let i = 0; i < CheckMojor.length; i++) {
-      if (is_cate === CheckMojor[i]) {
+    for (let i = 0; i < CheckMajor.length; i++) {
+      if (is_cate === CheckMajor[i]) {
         alert("이미 같은 직군이 있습니다!");
         return;
       }
@@ -102,8 +106,8 @@ const Write = () => {
       alert("지역을 선택해주세요!");
       return;
     }
-    if (is_cate === "" && is_people === "") {
-      alert("모집분야와 인원을 선택해 주세요!");
+    if (data.majorList.length === 0) {
+      alert("모집인원을 추가해 주세요!");
       return;
     }
     if (data.content === "") {
@@ -112,6 +116,10 @@ const Write = () => {
     }
     dispatch(PostActions.__addPost(data));
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathName]);
 
   return (
     <>
@@ -123,12 +131,12 @@ const Write = () => {
 
         {/* 제목 입력 */}
         <TitleBox>
-          <Text bold size="23px" margin="0 75px 0 20px">
+          <Text bold size="23px" margin="0 4.9% 0 20px">
             제목
           </Text>
           <InputBox
             placeholder="제목을 20글자 이내 적어주세요!"
-            maxLength={20}
+            maxLength={25}
             value={is_title}
             onChange={TitleHandleChange}
           />
@@ -136,7 +144,7 @@ const Write = () => {
 
         {/* 모집기간/ 지역 */}
         <DropBox>
-          <Text bold size="23px" margin="0 40px 0 15px">
+          <Text bold size="23px" margin="0 1.8% 0 15px">
             모집기간
           </Text>
 
@@ -187,11 +195,12 @@ const Write = () => {
               <MenuItem style={{ fontSize: "20px" }} value={"강원"}>
                 강원
               </MenuItem>
+
               <MenuItem style={{ fontSize: "20px" }} value={"전북"}>
                 전북
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"전라"}>
-                전라
+              <MenuItem style={{ fontSize: "20px" }} value={"전남"}>
+                전남
               </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={"충북"}>
                 충북
@@ -199,17 +208,14 @@ const Write = () => {
               <MenuItem style={{ fontSize: "20px" }} value={"충남"}>
                 충남
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"경남"}>
-                경남
-              </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={"경북"}>
                 경북
               </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"경남"}>
+                경남
+              </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={"제주"}>
                 제주
-              </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"온라인"}>
-                온라인
               </MenuItem>
             </Select>
           </FormControl>
@@ -223,17 +229,15 @@ const Write = () => {
         <Category>
           <CateBtn
             onClick={() => {
-              is_cate === "미술/디자인"
-                ? setIs_Cate("")
-                : setIs_Cate("미술/디자인");
+              is_cate === "디자인" ? setIs_Cate("") : setIs_Cate("디자인");
               setSelected(true);
             }}
           >
             <Grid
-              _className={is_cate === "미술/디자인" ? "active" : "default"}
-              bg={is_cate === "미술/디자인" ? "#2967AC" : "#fff"}
+              _className={is_cate === "디자인" ? "active" : "default"}
+              bg={is_cate === "디자인" ? "#2967AC" : "#f5fcff"}
             >
-              <p>미술/디자인</p>
+              <p>디자인</p>
             </Grid>
           </CateBtn>
 
@@ -245,7 +249,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "영상" ? "active" : "default"}
-              bg={is_cate === "영상" ? "#6AD8F5" : "#fff"}
+              bg={is_cate === "영상" ? "#6AD8F5" : "#f5fcff"}
             >
               <p>영상</p>
             </Grid>
@@ -259,7 +263,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "배우" ? "active" : "default"}
-              bg={is_cate === "배우" ? "#F58467" : "#fff"}
+              bg={is_cate === "배우" ? "#F58467" : "#f5fcff"}
             >
               <p>배우</p>
             </Grid>
@@ -273,7 +277,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "사진" ? "active" : "default"}
-              bg={is_cate === "사진" ? "#4299E9" : "#fff"}
+              bg={is_cate === "사진" ? "#4299E9" : "#f5fcff"}
             >
               <p>사진</p>
             </Grid>
@@ -290,7 +294,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "프로그래밍" ? "active" : "default"}
-              bg={is_cate === "프로그래밍" ? "#5BC8D2" : "#fff"}
+              bg={is_cate === "프로그래밍" ? "#5BC8D2" : "#f5fcff"}
             >
               <p>프로그래밍</p>
             </Grid>
@@ -304,7 +308,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "모델" ? "active" : "default"}
-              bg={is_cate === "모델" ? "#FE674C" : "#fff"}
+              bg={is_cate === "모델" ? "#FE674C" : "#f5fcff"}
             >
               <p>모델</p>
             </Grid>
@@ -318,7 +322,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "성우" ? "active" : "default"}
-              bg={is_cate === "성우" ? "#FFD082" : "#fff"}
+              bg={is_cate === "성우" ? "#FFD082" : "#f5fcff"}
             >
               <p>성우</p>
             </Grid>
@@ -332,7 +336,7 @@ const Write = () => {
           >
             <Grid
               _className={is_cate === "음향" ? "active" : "default"}
-              bg={is_cate === "음향" ? "#FFEF62" : "#fff"}
+              bg={is_cate === "음향" ? "#FFEF62" : "#f5fcff"}
             >
               <p>음향</p>
             </Grid>
@@ -393,6 +397,7 @@ const Write = () => {
           <TextBox
             placeholder="내용을 입력하세요!"
             value={is_content}
+            maxLength={250}
             onChange={ContentHandleChange}
           />
         </ContentBox>
@@ -409,6 +414,7 @@ const Write = () => {
           </CloseBtn>
         </BtnBox>
       </Container>
+      <Footer />
     </>
   );
 };
@@ -456,6 +462,7 @@ const RecruitBox = styled.div`
 const TitleBox = styled.div`
   margin-top: 1%;
   align-items: center;
+  flex-direction: row;
   display: flex;
 `;
 
@@ -504,23 +511,20 @@ const CateBtn = styled.div`
     width: 140px;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid black;
-    background-color: #fff;
-    /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: #f5fcff;
+    box-shadow: inset 0px 4px 13px #d7f1fd;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    .icon {
-      font-size: 32px;
-      color: var(--inactive-text-color);
-    }
+
     p {
       text-align: center;
       font-size: 20px;
       font-weight: 700;
-      color: black;
+      color: #2967ac;
     }
   }
   .active {
@@ -532,7 +536,7 @@ const CateBtn = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0px 4px 13px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 
     /* background-color: gray; */

@@ -8,18 +8,41 @@ import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
-const EditImage = (image) => {
-  const eddit = image.image;
+const EditImage = (props) => {
+  const {
+    image,
+    margintop,
+    marginleft,
+    display,
+    marginright,
+    padding,
+    fontSize,
+    il_width,
+    il_height,
+    img_div_margin,
+    il_border,
+    img_div_width,
+    img_box_margin,
+    img_div_padding,
+    il_bg_repeat,
+    _onChange,
+  } = props;
+  const eddit = { image }.image;
+
   const dispatch = useDispatch();
   const [imgPreview, setImgPreview] = useState([]);
+
   const [is_open, setIs_open] = useState(false);
   const [is_Url, setIs_url] = useState("");
   const Link = useSelector((state) => state.image.Url);
 
   const uploadFile = (e) => {
     const imageList = e.target.files;
+
     let imageUrlList = [...imgPreview];
+
     const maxImageCnt = 4;
 
     if (imageList.length > maxImageCnt) {
@@ -29,6 +52,7 @@ const EditImage = (image) => {
     // 파일들을 URL로 만듬
     for (let i = 0; i < imageList.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageList[i]);
+
       imageUrlList.push(currentImageUrl);
     }
 
@@ -57,11 +81,12 @@ const EditImage = (image) => {
     setImgPreview(editPree);
     // 리덕스에 files 인덱스를 맞추기 위해 URL도 같이 넣우줌
     dispatch(imgActions.setPre(editPree));
+    setIs_url(Link);
   }, [eddit]);
 
   const handleDeleteImage = (x, id) => {
     // 서버에서 준 URL 버킷 이름을 기준으로 찾아
-    if (x.indexOf("hyemco-butket") !== -1) {
+    if (x.indexOf("mohum") !== -1) {
       dispatch(imgActions.editUrl(x));
       // URL을 따로 저장
       dispatch(imgActions.deletePre(id));
@@ -82,15 +107,33 @@ const EditImage = (image) => {
     dispatch(imgActions.setURL(is_Url));
   };
 
+  const styles = {
+    margintop: margintop,
+    marginleft: marginleft,
+    display: display,
+    marginright: marginright,
+    padding: padding,
+    fontSize: fontSize,
+    il_width: il_width,
+    il_height: il_height,
+    img_div_margin: img_div_margin,
+    il_border: il_border,
+    img_div_width: img_div_width,
+    img_box_margin: img_box_margin,
+    img_div_padding: img_div_padding,
+    il_bg_repeat: il_bg_repeat,
+  };
+
   return (
     <>
-      <UploadBox>
+      <UploadBox {...styles}>
         <Labels htmlFor="files" onChange={uploadFile}>
-          <InsertPhotoIcon fontSize="large" />
+          <AddPhotoAlternateIcon {...styles} />
           <Inputs type="file" id="files" multiple="multiple" accept="image/*" />
         </Labels>
 
         <Labels
+          {...styles}
           onClick={() => {
             setIs_open(!is_open);
           }}
@@ -128,10 +171,16 @@ const EditImage = (image) => {
           </>
         ) : null}
       </UploadBox>
-      <div style={{ margin: "0 10%" }}>
+      <ImageComment>
+        <span>
+          (권장 사이즈 <span className="imageSize">990*500)</span>
+          &nbsp;JPG,PNG,SVG로 올려주세요!
+        </span>
+      </ImageComment>
+      <ImageDiv {...styles}>
         {imgPreview.map((image, id) => {
           return (
-            <ImageBox key={id}>
+            <ImageBox {...styles} key={id}>
               <BiX
                 size="20px"
                 style={{ cursor: "pointer" }}
@@ -141,20 +190,50 @@ const EditImage = (image) => {
                 }}
               />
 
-              <ImageList src={`${image}`} alt={`${image}-${id}`} />
+              <ImageList
+                {...styles}
+                src={`${image}`}
+                alt={`${image}-${id}`}
+                onChange={_onChange}
+              />
             </ImageBox>
           );
         })}
-      </div>
+      </ImageDiv>
     </>
   );
 };
 
-export default EditImage;
+EditImage.defaultProps = {
+  fontSize: "large",
+  margintop: "2rem",
+  marginleft: "1rem",
+  display: null,
+  marginright: "1px",
+  padding: "5px 15px 5px 15px",
+  il_width: "220px",
+  il_height: "130px",
+  il_border: "1px solid rgba(0, 0, 0, 0.07)",
+  il_bg_repeat: null,
+  img_div_margin: "0 10%",
+  img_div_width: null,
+  img_div_padding: null,
+  img_box_margin: "0 20px",
+  _onChange: () => {},
+};
+
+const ImageComment = styled.div`
+  font-size: 20px;
+  margin-left: 36px;
+  font-weight: 500;
+  .imageSize {
+    font-weight: bold;
+  }
+`;
 
 const UploadBox = styled.div`
-  margin-top: 2rem;
-  margin-left: 1rem;
+  margin-top: ${(props) => props.margintop};
+  margin-left: ${(props) => props.marginleft};
   display: flex;
   background-color: white;
   width: 80%;
@@ -182,8 +261,15 @@ const UrlBox = styled.input`
     outline: none;
   }
 `;
+
+const ImageDiv = styled.div`
+  margin: ${(props) => props.img_div_margin};
+  ${(props) => (props.img_div_width ? `width: ${props.img_div_width}` : "")};
+  ${(props) => (props.img_div_padding ? `padding: ${props.img_div_padding}` : "")};
+`;
+
 const ImageBox = styled.div`
-  margin: 0 20px;
+  margin: ${(props) => props.img_box_margin};
   /* margin-right: 50px; */
   /* margin-top: 1%; */
   display: inline-flex;
@@ -192,10 +278,11 @@ const ImageBox = styled.div`
 `;
 
 const Labels = styled.label`
-  margin-right: 1px;
+  ${(props) => (props.display ? `display: ${props.display}` : "")};
+  margin-right: ${(props) => props.marginRight};
   align-items: center;
   cursor: pointer;
-  padding: 5px 15px 5px 15px;
+  padding: ${(props) => props.padding};
   /* line-height: 100px; */
   width: 25px;
   height: 30px;
@@ -209,12 +296,15 @@ const Inputs = styled.input`
 `;
 
 const ImageList = styled.div`
-  width: 220px;
-  height: 130px;
-  border: 1px solid rgba(0, 0, 0, 0.07);
+  width: ${(props) => props.il_width};
+  height: ${(props) => props.il_height};
+  border: ${(props) => props.il_border};
   border-radius: 3px;
   background-image: url("${(props) => props.src}");
 
   background-size: contain;
   background-position: center;
+  ${(props) =>
+    props.il_bg_repeat ? `background-repeat: ${props.il_bg_repeat}` : ""};
 `;
+export default EditImage;

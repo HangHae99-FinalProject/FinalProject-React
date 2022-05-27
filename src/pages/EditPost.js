@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Grid from "../elements/Grid";
 import Text from "../elements/Text";
-import Uploads from "../elements/Upload";
-import { BiX } from "react-icons/bi";
 
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -15,19 +12,23 @@ import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
 import EditImage from "../elements/EditImage";
 import { imgActions } from "../redux/modules/image";
+import Footer from "../elements/Footer";
 
 const EditPost = () => {
   const post_list = useSelector((state) => state.post.detailList);
+
   const link = useSelector((state) => state.image.Url);
   const dispatch = useDispatch();
   const param = useParams();
 
-  const [is_location, setLocation] = useState(
-    post_list ? post_list.region : ""
-  );
-  const [is_Week, setWeek] = useState(post_list ? post_list.deadline : "");
-  const [is_title, setIs_Title] = useState(post_list.title);
-  const [is_content, setIs_Content] = useState(post_list.content);
+  const [is_location, setLocation] = useState("");
+  const [is_Week, setWeek] = useState("");
+
+  if (is_Week === undefined) {
+    setWeek("");
+  }
+  const [is_title, setIs_Title] = useState("");
+  const [is_content, setIs_Content] = useState("");
 
   const Files = useSelector((state) => state.image.files);
   // 파일만 넣을 빈 배열
@@ -42,8 +43,6 @@ const EditPost = () => {
   }
 
   const imgUrl = useSelector((state) => state.image.editUrl);
-  console.log(imgUrl);
-  console.log(newFiles);
 
   const data = {
     imgUrl,
@@ -73,13 +72,6 @@ const EditPost = () => {
   const post_id = param.postid;
   const is_edit = post_id ? true : false;
 
-  useEffect(() => {
-    if (is_edit) {
-      dispatch(PostActions.__getDetail(post_id));
-      dispatch(imgActions.initPre());
-    }
-  }, []);
-
   const editDetailBtn = () => {
     if (data.title === "") {
       alert("제목을 입력해주세요!");
@@ -100,6 +92,20 @@ const EditPost = () => {
     dispatch(PostActions.__editPost(data, post_id, newFiles));
   };
 
+  useEffect(() => {
+    setIs_Title(post_list.title);
+    setIs_Content(post_list.content);
+    setLocation(post_list.region);
+    setWeek(post_list.deadline);
+  }, [post_list]);
+
+  useEffect(() => {
+    if (is_edit) {
+      dispatch(PostActions.__getDetail(post_id));
+      dispatch(imgActions.initPre());
+    }
+  }, []);
+
   return (
     <>
       <Container>
@@ -109,6 +115,7 @@ const EditPost = () => {
         </HeaderText>
 
         {/* 제목 입력 */}
+
         <TitleBox>
           <Text bold size="23px" margin="0 75px 0 20px">
             제목
@@ -116,7 +123,7 @@ const EditPost = () => {
           <InputBox
             placeholder="제목을 20글자 이내 적어주세요!"
             maxLength={20}
-            value={is_title}
+            value={is_title === undefined ? "" : is_title}
             onChange={TitleHandleChange}
           />
         </TitleBox>
@@ -129,8 +136,7 @@ const EditPost = () => {
 
           <FormControl sx={{ width: "33.5rem" }}>
             <Select
-              value={is_Week}
-              defaultValue={post_list.deadline}
+              value={is_Week === undefined ? "" : is_Week}
               onChange={WeekHandleChange}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
@@ -160,7 +166,7 @@ const EditPost = () => {
 
           <FormControl sx={{ width: "33.5rem" }}>
             <Select
-              value={is_location}
+              value={is_location === undefined ? "" : is_location}
               onChange={RegionHandleChange}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
@@ -175,11 +181,12 @@ const EditPost = () => {
               <MenuItem style={{ fontSize: "20px" }} value={"강원"}>
                 강원
               </MenuItem>
+
               <MenuItem style={{ fontSize: "20px" }} value={"전북"}>
                 전북
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"전라"}>
-                전라
+              <MenuItem style={{ fontSize: "20px" }} value={"전남"}>
+                전남
               </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={"충북"}>
                 충북
@@ -187,17 +194,14 @@ const EditPost = () => {
               <MenuItem style={{ fontSize: "20px" }} value={"충남"}>
                 충남
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"경남"}>
-                경남
-              </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={"경북"}>
                 경북
               </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={"경남"}>
+                경남
+              </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={"제주"}>
                 제주
-              </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"온라인"}>
-                온라인
               </MenuItem>
             </Select>
           </FormControl>
@@ -211,6 +215,7 @@ const EditPost = () => {
             placeholder="내용을 입력하세요!"
             value={is_content}
             onChange={ContentHandleChange}
+            maxLength={250}
           />
         </ContentBox>
 
@@ -227,6 +232,7 @@ const EditPost = () => {
           </CloseBtn>
         </BtnBox>
       </Container>
+      <Footer />
     </>
   );
 };

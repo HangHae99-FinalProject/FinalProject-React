@@ -53,6 +53,25 @@ const Alert = () => {
     }
   }, [isLogin]);
 
+  useEffect(() => {
+    if (pathName.pathname === "/") {
+      return;
+    }
+    if (isLogin) {
+      chatApi
+        .notifications()
+        .then((res) => {
+          setNotification(res.data);
+        })
+        .catch((err) => {});
+      chatApi
+        .notificationsCnt()
+        .then((res) => {
+          setNotificationCnt(res.data.count);
+        })
+        .catch((err) => {});
+    }
+  }, [alertOpen]);
   const handelOpenMessage = (id, url, status) => {
     window.location.href = url;
 
@@ -94,26 +113,6 @@ const Alert = () => {
 
     setAlertOpen(false);
   };
-
-  useEffect(() => {
-    if (pathName.pathname === "/") {
-      return;
-    }
-    if (isLogin) {
-      chatApi
-        .notifications()
-        .then((res) => {
-          setNotification(res.data);
-        })
-        .catch((err) => {});
-      chatApi
-        .notificationsCnt()
-        .then((res) => {
-          setNotificationCnt(res.data.count);
-        })
-        .catch((err) => {});
-    }
-  }, [alertOpen, isLogin, pathName]);
 
   if (pathName.pathname === "/") {
     return null;

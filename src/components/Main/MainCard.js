@@ -89,7 +89,9 @@ const MainCard = (item) => {
             <p style={{ fontSize: "14px" }}>{major[0]}</p>
           </Grid>
 
-          {majorCnt === 1 ? null : majorCnt === 2 ? (
+          {majorCnt === 1 ? (
+            <div style={{ marginRight: "105px" }} />
+          ) : majorCnt === 2 ? (
             <Grid _className={"PeopleCnt"}>
               <p style={{ fontSize: "14px" }}>+{majorCnt - 1}</p>
             </Grid>

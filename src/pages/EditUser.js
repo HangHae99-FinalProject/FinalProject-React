@@ -681,7 +681,7 @@ const EditUser = () => {
           </Grid_2>
         </form>
       </Grid_2>
-      <Footer position="absolute" />
+      <Footer position="absolute" bottom="0" />
     </>
   );
 };

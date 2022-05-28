@@ -294,7 +294,7 @@ const Detail = () => {
               <BackImage>
                 <ModalGrid>
                   <ModalTitle>
-                    <p>신청 할 가테고리를 선택해주세요!</p>
+                    <p>신청 할 카테고리를 선택해주세요!</p>
                   </ModalTitle>
                   <Category>
                     {majorList?.map((a, idx) => {
@@ -438,7 +438,7 @@ const CateBtn = styled.div`
 
     height: 50px;
     border-radius: 14px;
-    border: 1px solid #E0F4FE;
+    border: 1px solid #e0f4fe;
     background-color: #f5fcff;
 
     display: flex;
@@ -461,7 +461,7 @@ const CateBtn = styled.div`
     width: auto;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid #E0F4FE;
+    border: 1px solid #e0f4fe;
     display: flex;
     flex-direction: column;
     justify-content: center;

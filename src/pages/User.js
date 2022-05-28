@@ -618,7 +618,7 @@ const User = (props) => {
         </ReactModal>
         {/* 여기까지 평점 모달창 */}
         {/* 본문  */}
-        {(
+        {
           <>
             <Grid
               container
@@ -686,7 +686,7 @@ const User = (props) => {
                             variant="contained"
                             sx={{
                               fontSize: "16px",
-                              fontWeight:"bold",
+                              fontWeight: "bold",
                               marginRight: "14px",
                               width: "120px",
                               height: "40px",
@@ -709,7 +709,7 @@ const User = (props) => {
                           variant="contained"
                           sx={{
                             fontSize: "16px",
-                            fontWeight:"bold",
+                            fontWeight: "bold",
                             width: "120px",
                             height: "40px",
                             padding: "0",
@@ -1253,10 +1253,10 @@ const User = (props) => {
               </Grid>
             </Grid>
           </>
-        )}
+        }
         <Link />
       </Grid>
-      <Footer/>
+      <Footer />
     </>
   );
 };

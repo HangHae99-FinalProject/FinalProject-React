@@ -56,12 +56,13 @@ const Comment = (userId) => {
           <p style={{ marginRight: "78rem" }}>댓글 {commentCnt}</p>
         </div>
         <div className="line" />
-
-        <CommentScroll>
-          {commentList.commentList.map((a, idx) => {
-            return <CommentList {...a} key={idx} />;
-          })}
-        </CommentScroll>
+        <CommentListBox>
+          <CommentScroll>
+            {commentList.commentList.map((a, idx) => {
+              return <CommentList {...a} key={idx} />;
+            })}
+          </CommentScroll>
+        </CommentListBox>
 
         <div className="commentInput">
           <input
@@ -81,24 +82,31 @@ const Comment = (userId) => {
   );
 };
 
-const CommentScroll = styled.div`
+const CommentListBox = styled.div`
   height: 330px;
+`;
+
+const CommentScroll = styled.div`
+  height: 315px;
+
   overflow: auto;
 
-  .icon {
-    display: flex;
-    margin-left: 68rem;
-    margin-top: 1rem;
-    font-size: large;
-
-    cursor: pointer;
+  -ms-overflow-style: {
   }
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  &::-webkit-scrollbar-thumb {
+    background-color: #2967ac;
+    width: 10px;
+    border-radius: 20px;
+  }
+  &::-webkit-scrollbar-track {
+    width: 10px;
+  }
 
   &::-webkit-scrollbar {
-    display: none;
+    border-radius: 20px;
+    background-color: #b9daf6;
+    width: 10px;
   }
 `;
 

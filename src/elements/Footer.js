@@ -19,13 +19,14 @@ Footer.defaultProps = {
   position: null,
   width: "100vw",
   borderRadius: null,
+  bottom: "0",
 };
 
 const Image = styled.img`
   width: ${(props) => props.width};
   z-index: -10;
   position: ${(props) => props.position};
-  bottom: 0;
+  bottom: ${(props) => props.bottom};
   left: 0;
   border-radius: ${(props) => props.borderRadius};
 `;

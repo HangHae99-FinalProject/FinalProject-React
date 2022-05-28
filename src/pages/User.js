@@ -685,8 +685,10 @@ const User = (props) => {
                           <Button
                             variant="contained"
                             sx={{
+                              fontSize: "16px",
+                              fontWeight:"bold",
                               marginRight: "14px",
-                              width: "100px",
+                              width: "120px",
                               height: "40px",
                               padding: "0",
                               background: "#FE5953",
@@ -706,7 +708,9 @@ const User = (props) => {
                         <Button
                           variant="contained"
                           sx={{
-                            width: "100px",
+                            fontSize: "16px",
+                            fontWeight:"bold",
+                            width: "120px",
                             height: "40px",
                             padding: "0",
                             background: "#FFD082",

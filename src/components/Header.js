@@ -51,9 +51,7 @@ function Header(props) {
   if (pathName.pathname === "/user/kakao/login") {
     return null;
   }
-  // if (pathName.pathname === "/") {
-  //   return null;
-  // }
+
   if (pathName.pathname === "/signup") {
     return null;
   }

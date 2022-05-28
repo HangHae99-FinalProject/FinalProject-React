@@ -28,35 +28,35 @@ const Alert = () => {
 
   const EventSource = EventSourcePolyfill || NativeEventSource;
 
-  useEffect(() => {
-    if (pathName.pathname === "/") {
-      return;
-    }
-    if (isLogin) {
-      const source = new EventSource(
-        "https://everymohum.shop/subscribe",
+  // useEffect(() => {
+  //   if (pathName.pathname === "/") {
+  //     return;
+  //   }
+  //   if (isLogin) {
+  //     const source = new EventSource(
+  //       "https://everymohum.shop/subscribe",
 
-        {
-          headers: {
-            Authorization: accessToken,
-          },
-        }
-      );
+  //       {
+  //         headers: {
+  //           Authorization: accessToken,
+  //         },
+  //       }
+  //     );
 
-      source.onmessage = (e) => {
-        if (e.type === "message" && e.data.startsWith("{")) {
-          setNotification((prev) => [JSON.parse(e.data)]);
-          setAlertOpen(true);
-        }
-      };
+  //     source.onmessage = (e) => {
+  //       if (e.type === "message" && e.data.startsWith("{")) {
+  //         setNotification((prev) => [JSON.parse(e.data)]);
+  //         setAlertOpen(true);
+  //       }
+  //     };
 
-      source.addEventListener("error", function (e) {
-        if (e) {
-          source.close();
-        }
-      });
-    }
-  }, [isLogin]);
+  //     source.addEventListener("error", function (e) {
+  //       if (e) {
+  //         source.close();
+  //       }
+  //     });
+  //   }
+  // }, [isLogin]);
 
   useEffect(() => {
     if (pathName.pathname === "/") {

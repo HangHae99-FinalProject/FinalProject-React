@@ -128,6 +128,7 @@ const CommentBox = styled.div`
   }
   .comment {
     margin-left: 1rem;
+    margin-right: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid gray;

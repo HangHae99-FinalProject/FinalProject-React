@@ -119,7 +119,7 @@ const Detail = () => {
       dispatch(imgActions.initPre());
       dispatch(postActions.clearPost());
     };
-  }, [dispatch, pathName, is_login]);
+  }, [dispatch]);
 
   return (
     <>

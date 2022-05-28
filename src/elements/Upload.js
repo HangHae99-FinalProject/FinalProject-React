@@ -178,10 +178,7 @@ const UrlBox = styled.input`
 `;
 const ImageBox = styled.div`
   margin: 0 20px;
-  /* margin-right: 50px; */
-  /* margin-top: 1%; */
   display: inline-flex;
-
   flex-direction: column; /* row로 변경 시, 내용물이 가로로 나열됨 */
 `;
 
@@ -190,10 +187,8 @@ const Labels = styled.label`
   align-items: center;
   cursor: pointer;
   padding: 5px 15px 5px 15px;
-  /* line-height: 100px; */
   width: 25px;
   height: 30px;
-
   border-radius: 1px;
   background-color: transparent;
 `;
@@ -208,7 +203,6 @@ const ImageList = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: 3px;
   background-image: url("${(props) => props.src}");
-
-  background-size: contain;
+  background-size: cover;
   background-position: center;
 `;

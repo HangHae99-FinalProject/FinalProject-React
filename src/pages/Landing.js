@@ -65,111 +65,43 @@ const Landing = () => {
           </TitleImg>
         </div>
       </HeadImage>
-      <PreviewBox>
-        <PreviewCard>
-          {landingList?.map((a, idx) => {
-            return <LandingCard {...a} key={idx} />;
-          })}
-        </PreviewCard>
-        <PreviewBtn onClick={mainHandelBtn}>
-          <span>VIEW MORE</span>
-          <FiChevronRight className="rightArrow" />
-        </PreviewBtn>
-      </PreviewBox>
-      <MidBox>
-        <Scrollbar>
-          <ImageScroll>
-            <img
-              src="https://velog.velcdn.com/images/tty5799/post/39a8d144-f810-4b4e-a8f3-1c59cdca54fa/image.png"
-              alt="bestImg"
-            />
-            <img
-              src="https://velog.velcdn.com/images/tty5799/post/a207d900-8227-4fb1-854a-4781287b50b4/image.png"
-              alt="bestImg"
-            />
-            <img
-              src="https://velog.velcdn.com/images/tty5799/post/d47aab59-55b1-4155-bfac-ec69bba32c2c/image.png"
-              alt="bestImg"
-            />
-            <img
-              src="https://velog.velcdn.com/images/tty5799/post/9542c9c7-a7bb-4c2c-ae8f-52ca409fca52/image.png"
-              alt="bestImg"
-            />
-            <img
-              src="https://velog.velcdn.com/images/tty5799/post/519fb1b4-29e8-4c80-927b-cf219a2cdeb1/image.png"
-              alt="bestImg"
-            />
-            <img
-              src="https://velog.velcdn.com/images/tty5799/post/806c1bce-d170-475d-8b51-e799b87e2947/image.png"
-              alt="bestImg"
-            />
-            <img
-              src="https://velog.velcdn.com/images/tty5799/post/a44a32e9-8723-4c4c-95ac-9165b333530e/image.png"
-              alt="bestImg"
-            />
-          </ImageScroll>
-        </Scrollbar>
-      </MidBox>
+      <BackColor>
+        <PreviewBox>
+          <PreviewCard>
+            {landingList?.map((a, idx) => {
+              return <LandingCard {...a} key={idx} />;
+            })}
+          </PreviewCard>
+          <PreviewBtn onClick={mainHandelBtn}>
+            <span>VIEW MORE</span>
+            <FiChevronRight className="rightArrow" />
+          </PreviewBtn>
+        </PreviewBox>
 
-      <LastImage>
-        <img
-          src="https://velog.velcdn.com/images/tty5799/post/e586c4aa-8716-40cc-8fb0-9e44b511dd2e/image.png"
-          alt="lastImg"
-        />
-      </LastImage>
+        <LastImage>
+          <img
+            src="https://velog.velcdn.com/images/tty5799/post/a10b6974-bce2-4e6d-86a8-f6ae906c8647/image.png"
+            alt="lastImg"
+          />
+        </LastImage>
+      </BackColor>
     </Container>
   );
 };
 
 const LastImage = styled.div`
+  margin-top: 18%;
   img {
     width: 100%;
   }
 `;
 
-const ImageScroll = styled.div`
-  img {
-    display: flex;
-    width: 1260px;
-    height: 310px;
-    margin-bottom: 100px;
-  }
-`;
-
-const Scrollbar = styled.div`
-  width: 98%;
-  overflow: auto;
-  height: 852px;
-  display: flex;
-  justify-content: center;
-
-  -ms-overflow-style: {
-    height: 70%;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #03517d;
-    width: 10px;
-    border-radius: 20px;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: #fff;
-    border-radius: 20px;
-  }
-
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-`;
-
-const MidBox = styled.div`
-  width: 100%;
-  height: 1006px;
-  background-color: #b9daf6;
-  margin: 10% auto 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const BackColor = styled.div`
+  background: linear-gradient(
+    360deg,
+    #e9f8ff 43.2%,
+    rgba(255, 255, 255, 0.24) 99.48%
+  );
 `;
 
 const PreviewBox = styled.div`
@@ -189,6 +121,7 @@ const PreviewBtn = styled.div`
   background: #d7f1fd;
   box-shadow: 2px 3px 11px #8eb4d7;
   border-radius: 14px;
+
   span {
     font-size: 36px;
     color: #fff;

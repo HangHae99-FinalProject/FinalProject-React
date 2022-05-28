@@ -237,6 +237,7 @@ const NoMessage = styled.div`
     display: flex;
     width: 300px;
     height: 200px;
+    cursor: auto;
   }
 `;
 

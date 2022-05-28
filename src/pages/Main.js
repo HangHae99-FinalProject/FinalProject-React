@@ -255,7 +255,7 @@ const Main = () => {
       </Container>
       <BackImage>
         <img
-          src="https://velog.velcdn.com/images/tty5799/post/132ac619-d569-4005-9052-3ff8e28d5b6d/image.png"
+          src="https://velog.velcdn.com/images/tty5799/post/a10b6974-bce2-4e6d-86a8-f6ae906c8647/image.png"
           alt="backImg"
         />
       </BackImage>
@@ -266,6 +266,7 @@ const Main = () => {
 const BackImage = styled.div`
   z-index: 9999;
   bottom: 0px;
+
   left: 0;
   img {
     width: 100%;

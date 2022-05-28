@@ -38,6 +38,7 @@ const Chatting = () => {
       })
       .catch((err) => {});
   }, [isLogin, pathname]);
+
   if (!user) {
     alert("로그인을 먼저 해주세요!");
     return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />;

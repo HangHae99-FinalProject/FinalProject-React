@@ -360,10 +360,18 @@ const Write = () => {
               <MenuItem value="" style={{ fontSize: "20px" }}>
                 <em>인원을 선택해주세요.</em>
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"1"}>
+              <MenuItem
+                style={{ fontSize: "20px" }}
+                value={1}
+                onClick={PeopleBtn}
+              >
                 1명
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"2"}>
+              <MenuItem
+                style={{ fontSize: "20px" }}
+                value={2}
+                onClick={PeopleBtn}
+              >
                 2명
               </MenuItem>
             </Select>
@@ -448,7 +456,8 @@ const ContentBox = styled.div``;
 const PlusBtn = styled.span`
   margin: 0 25px;
   color: rgba(41, 103, 172, 1);
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
 `;
 

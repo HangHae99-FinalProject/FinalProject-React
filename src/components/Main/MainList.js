@@ -70,17 +70,12 @@ const MainList = ({ location, category, selected }) => {
   return (
     <React.Fragment>
       <MainContainer>
-        {postList.length === 0 && category === "" && (
-          <div className="spinner">
-            <Spinner />
-          </div>
-        )}
         <InfiniteScroll
           dataLength={postList.length}
           next={getData}
           hasMore={hasMore}
         >
-          {postList.length === 0 && is_loading === true && category !== "" ? (
+          {postList.length === 0 && is_loading === true ? (
             <NoPost />
           ) : (
             <MainCardBox>

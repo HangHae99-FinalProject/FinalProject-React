@@ -233,6 +233,9 @@ const __loginCheck = () => {
       dispatch(login());
       return;
     }
+    if (!tokenCheck) {
+      dispatch(logout());
+    }
   };
 };
 

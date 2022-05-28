@@ -360,18 +360,10 @@ const Write = () => {
               <MenuItem value="" style={{ fontSize: "20px" }}>
                 <em>인원을 선택해주세요.</em>
               </MenuItem>
-              <MenuItem
-                style={{ fontSize: "20px" }}
-                value={1}
-                onClick={PeopleBtn}
-              >
+              <MenuItem style={{ fontSize: "20px" }} value={1}>
                 1명
               </MenuItem>
-              <MenuItem
-                style={{ fontSize: "20px" }}
-                value={2}
-                onClick={PeopleBtn}
-              >
+              <MenuItem style={{ fontSize: "20px" }} value={2}>
                 2명
               </MenuItem>
             </Select>
@@ -520,7 +512,7 @@ const CateBtn = styled.div`
     width: 140px;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid #E0F4FE;
+    border: 1px solid #e0f4fe;
     background-color: #f5fcff;
     box-shadow: inset 0px 4px 13px #d7f1fd;
     display: flex;

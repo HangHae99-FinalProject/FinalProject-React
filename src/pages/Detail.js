@@ -438,7 +438,7 @@ const CateBtn = styled.div`
 
     height: 50px;
     border-radius: 14px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid #E0F4FE;
     background-color: #f5fcff;
 
     display: flex;
@@ -461,7 +461,7 @@ const CateBtn = styled.div`
     width: auto;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid #E0F4FE;
     display: flex;
     flex-direction: column;
     justify-content: center;

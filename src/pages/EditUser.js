@@ -681,7 +681,7 @@ const EditUser = () => {
           </Grid_2>
         </form>
       </Grid_2>
-      <Footer />
+      <Footer position="absolute" bottom="0" />
     </>
   );
 };
@@ -759,6 +759,7 @@ const CateBtn = _styled.div`
   .default {
     width: 140px;
     height: 50px;
+    border: 1px solid #E0F4FE;
     border-radius: 14px;
     background-color: #f5fcff;
     box-shadow: inset 0px 4px 13px #d7f1fd;

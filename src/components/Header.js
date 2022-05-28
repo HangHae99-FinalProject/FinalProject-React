@@ -48,9 +48,9 @@ function Header(props) {
   if (pathName.pathname === "/user/kakao/login") {
     return null;
   }
-  if (pathName.pathname === "/") {
-    return null;
-  }
+  // if (pathName.pathname === "/") {
+  //   return null;
+  // }
   if (pathName.pathname === "/signup") {
     return null;
   }
@@ -72,7 +72,7 @@ function Header(props) {
         }}
       >
         <Toolbar>
-          <Grid
+          {pathName.pathname === "/" ? <Grid></Grid> :<Grid
             sx={{ color: "#C2C0C1", width:"1370px", margin:"auto" }}
             container
             direction="row"
@@ -163,7 +163,7 @@ function Header(props) {
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid>}
         </Toolbar>
       </AppBar>
     </Grid>

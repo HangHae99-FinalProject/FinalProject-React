@@ -15,4 +15,7 @@ export const userApi = {
   remove: () => instance.delete("/user/remove"),
 
   kakaoGet: (code) => notLogin.get(`/user/kakao/login?code=${code}`),
+
+  refreshToken: (accessToken, refreshToken, userId) =>
+    instance.post("/user/reissue", { accessToken, refreshToken, userId }),
 };

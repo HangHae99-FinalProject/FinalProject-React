@@ -141,7 +141,7 @@ function Header(props) {
                       onClick={goChat}
                     >
                       <Typography sx={{ color: "#fff", fontSize: "18px" }}>
-                        CHATON
+                        CHAT
                       </Typography>
                     </Grid>
                   ) : null}

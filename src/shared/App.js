@@ -37,9 +37,13 @@ const cookies = new Cookies();
 function App() {
   const dispatch = useDispatch();
 
+  const token = cookies.get("accessToken");
+
   useEffect(() => {
-    dispatch(userActions.__loginCheck());
-  }, []);
+    if (token) {
+      dispatch(userActions.__loginCheck());
+    }
+  }, [dispatch, token]);
 
   const client = useSelector((state) => state.chat.client);
 

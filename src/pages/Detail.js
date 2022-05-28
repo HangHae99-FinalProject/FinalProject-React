@@ -250,7 +250,9 @@ const Detail = () => {
                   </p>
                 ) : null}
                 <ContentScroll>
-                  <p>{detailList.content}</p>
+                  {detailList.content?.split("\n").map((content, idx) => {
+                    return <p key={idx}>{content}</p>;
+                  })}
                 </ContentScroll>
               </RightBox>
             </MidBox>
@@ -500,12 +502,25 @@ const CateBtn = styled.div`
 
 const ContentScroll = styled.div`
   height: 90px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 
+  &::-webkit-scrollbar-thumb {
+    background-color: #2967ac;
+    width: 10px;
+    border-radius: 20px;
+  }
+  &::-webkit-scrollbar-track {
+    width: 10px;
+  }
+
   &::-webkit-scrollbar {
-    display: none;
+    border-radius: 20px;
+    background-color: #b9daf6;
+    width: 10px;
   }
 `;
 

@@ -49,7 +49,7 @@ const Landing = () => {
             />
             <LoginBox>
               {isLogin ? (
-                <span className="login" onClick={mainHandelBtn}>
+                <span className="goHome" onClick={mainHandelBtn}>
                   GO HOME
                 </span>
               ) : (
@@ -148,6 +148,23 @@ const PreviewCard = styled.div`
 const LoginBox = styled.div`
   display: flex;
   justify-content: center;
+  .goHome {
+    cursor: pointer;
+    margin-right: 185px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 164px;
+    height: 45px;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 2px solid #b9daf7;
+    border-radius: 14px;
+    :hover {
+      background-color: #b9daf7;
+      color: #fff;
+    }
+  }
   span {
     font-size: 24px;
     color: #b9daf7;

@@ -15,6 +15,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { actionCreators as chatActions } from "../redux/modules/chat";
 import Spinner from "../components/Spinner";
 import Footer from "../elements/Footer";
+import { useLocation } from "react-router-dom";
 
 const Chat = (data) => {
   const client = useSelector((state) => state.chat.client);
@@ -32,6 +33,8 @@ const Chat = (data) => {
   const [is_exit, setIs_exit] = useState(false); // 상대방 나갔는지 판단
   const [is_loading, setIs_Loading] = useState(false); // 스피너
   const scrollRef = useRef();
+
+  const pathName = useLocation();
 
   const receiverId = data.location.state.sender.userId;
   const roomName = data.location.state.roomName;
@@ -80,9 +83,12 @@ const Chat = (data) => {
     sendMessage();
   };
 
-  const _onChange = useCallback((e) => {
-    setCurrentMes(e.target.value);
-  }, []);
+  const _onChange = useCallback(
+    (e) => {
+      setCurrentMes(e.target.value);
+    },
+    [pathName]
+  );
 
   const sendMessage = () => {
     const messageDto = {

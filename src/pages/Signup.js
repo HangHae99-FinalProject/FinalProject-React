@@ -18,6 +18,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import Swal from "sweetalert2";
 
 //추가 정보 기입 모달
 const style = {
@@ -231,7 +232,12 @@ const Signup = () => {
   //추가정보기입후 회원가입 완료
   const goAdditionalInfo = () => {
     if (!nicknameCheckRE(nickname)) {
-      window.alert("닉네임 형식을 확인해주세요.");
+      Swal.fire({
+        title: "닉네임 형식을 확인해주세요.",
+        text: "로그인 이후 이용 하실 수 있습니다!",
+        icon: "warning",
+      });
+
       return;
     }
     const _userId = localStorage.getItem("userId");
@@ -607,9 +613,7 @@ const Signup = () => {
               </FormControl>
             </Grid>
 
-            <Grid
-              sx={{ marginTop: "10px" }}
-            >
+            <Grid sx={{ marginTop: "10px" }}>
               <Stack direction="column">
                 {checkMemberIdError === false ? (
                   <Button

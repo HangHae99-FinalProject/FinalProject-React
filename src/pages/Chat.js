@@ -16,6 +16,7 @@ import { actionCreators as chatActions } from "../redux/modules/chat";
 import Spinner from "../components/Spinner";
 import Footer from "../elements/Footer";
 import { useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Chat = (data) => {
   const client = useSelector((state) => state.chat.client);
@@ -211,7 +212,11 @@ const Chat = (data) => {
                       onClick={() => {
                         ModalControl();
                         OptionTwoControl();
-                        alert("준비중 입니다!");
+                        Swal.fire({
+                          title: "준비중 입니다!",
+
+                          icon: "warning",
+                        });
                       }}
                     >
                       신고하기
@@ -222,7 +227,11 @@ const Chat = (data) => {
                       onClick={() => {
                         ModalControl();
                         OptionThreeControl();
-                        alert("준비중 입니다!");
+                        Swal.fire({
+                          title: "준비중 입니다!",
+
+                          icon: "warning",
+                        });
                       }}
                     >
                       차단하기
@@ -235,7 +244,7 @@ const Chat = (data) => {
           <div></div>
           <ChatBox ref={scrollRef}>
             <div className="inner-chat-box">
-              {messageList?.length === 0 ? (
+              {messageList?.length === 0 && is_loading === true ? (
                 <div className="enter-chat-box">
                   <span className="enter-chat">
                     {data.location.state.sender.nickname}님과 {nickName}님이

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 import { history } from "../../redux/configureStore";
-
+import Swal from "sweetalert2";
 const CommentList = (props) => {
   const dispatch = useDispatch();
   const [is_createdAt, setIS_createdAt] = useState("");
@@ -17,7 +17,11 @@ const CommentList = (props) => {
 
   const handleUserPage = () => {
     if (!localNickName) {
-      alert("로그인을 먼저 해주세요!");
+      Swal.fire({
+        title: "로그인을 해주세요!",
+        text: "로그인 이후 이용 하실 수 있습니다!",
+        icon: "warning",
+      });
       history.push("/login");
       return;
     }
@@ -38,7 +42,10 @@ const CommentList = (props) => {
 
   const editEndButton = () => {
     if (is_comment === "") {
-      alert("공란 입니다!");
+      Swal.fire({
+        title: "공란 입니다!",
+        icon: "error",
+      });
       return;
     }
     setIs_open(!is_open);

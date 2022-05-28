@@ -8,7 +8,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
-
+import Swal from "sweetalert2";
 const Uploads = () => {
   const dispatch = useDispatch();
   const [imgPreview, setImgPreview] = useState([]);
@@ -26,7 +26,11 @@ const Uploads = () => {
     }
 
     if (imageUrlList.length > 4) {
-      alert("사진은 최대 4장만 가능합니다!");
+      Swal.fire({
+        title: "이미지는 최대 4장 까지 가능합니다!",
+        icon: "error",
+      });
+      return;
     } else {
       setImgPreview(imageUrlList);
     }
@@ -110,7 +114,8 @@ const Uploads = () => {
       <ImageComment>
         <span>
           (권장 사이즈 <span className="imageSize">990*500)</span>
-          &nbsp;JPG,PNG로 올려주세요!
+          &nbsp;JPG,PNG로 올려주세요!&nbsp;&nbsp;&nbsp; ⌽ 이미지는 최대 4장까지
+          가능합니다!
         </span>
       </ImageComment>
       <div style={{ margin: "0 10%" }}>

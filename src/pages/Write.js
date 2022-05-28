@@ -14,6 +14,7 @@ import { actionCreates as PostActions } from "../redux/modules/post";
 import { history } from "../redux/configureStore";
 import Footer from "../elements/Footer";
 import { useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Write = () => {
   const dispatch = useDispatch();
@@ -68,20 +69,36 @@ const Write = () => {
     const CheckMajor = majorList.map((a) => a.majorName);
 
     if (is_cate === "" && is_people === "") {
-      alert("모집분야와 인원을 선택해 주세요!");
+      Swal.fire({
+        title: "모집분야와 인원을 선택해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (is_cate === "") {
-      alert("모집분야를 선택해 주세요!");
+      Swal.fire({
+        title: "모집분야를 선택해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (is_people === "") {
-      alert("모집인원을 선택해 주세요!");
+      Swal.fire({
+        title: "모집인원을 선택해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     for (let i = 0; i < CheckMajor.length; i++) {
       if (is_cate === CheckMajor[i]) {
-        alert("이미 같은 직군이 있습니다!");
+        Swal.fire({
+          title: "이미 같은 직군이 있습니다!",
+          icon: "warning",
+        });
+
         return;
       }
     }
@@ -95,23 +112,41 @@ const Write = () => {
 
   const PostDetailBtn = () => {
     if (data.title === "") {
-      alert("제목을 입력해주세요!");
+      Swal.fire({
+        title: "제목을 입력해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (data.deadline === "") {
-      alert("모집기간을 선택해주세요!");
+      Swal.fire({
+        title: "모집 기간을 선택해 주세요!",
+        icon: "warning",
+      });
       return;
     }
     if (data.region === "") {
-      alert("지역을 선택해주세요!");
+      Swal.fire({
+        title: "지역을 선택해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (data.majorList.length === 0) {
-      alert("모집인원을 추가해 주세요!");
+      Swal.fire({
+        title: "추가하기 버튼을 눌러주세요!",
+        icon: "warning",
+      });
       return;
     }
     if (data.content === "") {
-      alert("내용을 입력해주세요!");
+      Swal.fire({
+        title: "내용을 입력해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     dispatch(PostActions.__addPost(data));
@@ -365,6 +400,12 @@ const Write = () => {
               </MenuItem>
               <MenuItem style={{ fontSize: "20px" }} value={2}>
                 2명
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={3}>
+                3명
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={4}>
+                4명
               </MenuItem>
             </Select>
           </FormControl>

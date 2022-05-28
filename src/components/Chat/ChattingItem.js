@@ -83,8 +83,8 @@ const ChattingWrap = styled.div`
       margin-left: 30px;
       background: rgba(0, 0, 0, 0.2);
       img {
-        width: 100%;
-        height: 100%;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         object-fit: cover;
       }
@@ -106,9 +106,11 @@ const ChattingWrap = styled.div`
     }
 
     .chat-list {
-      position: absolute;
+      /* position: absolute;
       width: 80px;
-      right: 27%;
+      right: 27%; */
+      width: 150px;
+      margin-left: 140px;
       span {
         color: #9b9798;
       }

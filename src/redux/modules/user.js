@@ -220,7 +220,7 @@ const __logout = () => {
       cookies.remove("accessToken", { path: "/" });
       cookies.remove("refreshToken", { path: "/" });
       await dispatch(logout());
-      window.alert("로그아웃되었습니다.");
+
       history.replace("/");
     } catch (err) {}
   };

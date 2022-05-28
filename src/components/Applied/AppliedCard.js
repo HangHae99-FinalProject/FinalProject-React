@@ -135,7 +135,7 @@ const AppliedCard = (item) => {
       </CommentBox>
       <BottomBtn>
         <span className="chatButton" onClick={chatHandelBtn}>
-          체팅
+          채팅
         </span>
         <span className="noButton" onClick={refuseHandelBtn}>
           강퇴

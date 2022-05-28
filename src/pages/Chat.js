@@ -174,7 +174,7 @@ const Chat = (data) => {
                       marginLeft: "6px",
                     }}
                     onClick={() => {
-                      history.goBack();
+                      history.replace("/chatlist");
                     }}
                   />
                 </div>

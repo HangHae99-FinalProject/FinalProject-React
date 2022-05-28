@@ -57,10 +57,13 @@ const Landing = () => {
                   LOG IN
                 </span>
               )}
-
-              <span className="signup" onClick={signUpHandelBtn}>
-                SIGN UP
-              </span>
+              {isLogin ? (
+                <div></div>
+              ) : (
+                <span className="signup" onClick={signUpHandelBtn}>
+                  SIGN UP
+                </span>
+              )}
             </LoginBox>
           </TitleImg>
         </div>

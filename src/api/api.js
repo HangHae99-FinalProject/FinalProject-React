@@ -51,11 +51,8 @@ instance.interceptors.response.use(
       return userApi
         .refreshToken(accessToken, refreshToken, userId)
         .then((res) => {
-          console.log(res);
           const newAccessToken = res.data.data.accessToken;
           const newRefreshToken = res.data.data.refreshToken;
-          console.log(newAccessToken);
-          console.log(newRefreshToken);
 
           cookies.set("accessToken", newAccessToken, {
             path: "/",

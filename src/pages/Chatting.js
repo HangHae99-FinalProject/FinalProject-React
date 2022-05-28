@@ -8,6 +8,7 @@ import Spinner from "../components/Spinner";
 import Footer from "../elements/Footer";
 import { actionCreators as chatActios } from "../redux/modules/chat";
 import Link from "../components/Link";
+import Swal from "sweetalert2";
 
 const Chatting = () => {
   const client = useSelector((state) => state.chat.client);
@@ -40,7 +41,11 @@ const Chatting = () => {
   }, [isLogin, pathname]);
 
   if (!user) {
-    alert("로그인을 먼저 해주세요!");
+    Swal.fire({
+      title: "로그인을 해주세요!",
+      text: "로그인 이후 이용 하실 수 있습니다!",
+      icon: "warning",
+    });
     return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />;
   }
 

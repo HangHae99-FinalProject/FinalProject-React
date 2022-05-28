@@ -23,6 +23,7 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { useLocation, useParams } from "react-router-dom";
 import FormControl, { useFormControl } from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
+import Swal from "sweetalert2";
 
 const EditUser = () => {
   const param = useParams();
@@ -122,10 +123,13 @@ const EditUser = () => {
   //닉네임 중복확인 버튼
   const nicknameCheckBtn = async () => {
     try {
-      const checkNickname = await axios.post("https://everymohum.shop/user/nicknameCheck", {
-        nickname,
-        major,
-      });
+      const checkNickname = await axios.post(
+        "https://everymohum.shop/user/nicknameCheck",
+        {
+          nickname,
+          major,
+        }
+      );
       checkNickname.status == 200 && setCheckNicknameError(true);
     } catch (err) {
       setCheckNicknameError(false);
@@ -135,23 +139,43 @@ const EditUser = () => {
 
   const goEdit = () => {
     if (requestDto.profileImgUrl === "") {
-      alert("프로필 이미지를 선택해 주세요.");
+      Swal.fire({
+        title: "프로필 이미지를 선택해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (requestDto.nickname === "") {
-      alert("닉네임을 입력해 주세요.");
+      Swal.fire({
+        title: "닉네임을 입력해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (requestDto.intro === "") {
-      alert("자기소개를 입력해 주세요.");
+      Swal.fire({
+        title: "자기소개를 입력해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (requestDto.major === "") {
-      alert("전공을 선택해 주세요.");
+      Swal.fire({
+        title: "전공을 선택해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (requestDto.portfolioLink === "") {
-      alert("포트폴리오 링크를 입력해 주세요.");
+      Swal.fire({
+        title: "포트폴리오 링크를 입력해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     dispatch(userInfoActions.__putUserInfoMod(userId, requestDto, newFiles));
@@ -201,7 +225,9 @@ const EditUser = () => {
               <Profile>
                 <img
                   src={
-                    profileImgUrl == getUserInfo.profileImg ? getUserInfo.profileImg : profileImgUrl
+                    profileImgUrl == getUserInfo.profileImg
+                      ? getUserInfo.profileImg
+                      : profileImgUrl
                   }
                   alt="profile"
                 />
@@ -213,7 +239,10 @@ const EditUser = () => {
                 }}
                 onClick={handleClick}
               >
-                <AddCircleRoundedIcon fontSize="large" sx={{ color: "#2967AC" }} />
+                <AddCircleRoundedIcon
+                  fontSize="large"
+                  sx={{ color: "#2967AC" }}
+                />
               </Badge>
               {/* 프로필사진변경 팝오버 */}
               <Grid_2>
@@ -516,12 +545,16 @@ const EditUser = () => {
                     </CateBtn>
                     <CateBtn
                       onClick={() => {
-                        major === "프로그래밍" ? setMajor("") : setMajor("프로그래밍");
+                        major === "프로그래밍"
+                          ? setMajor("")
+                          : setMajor("프로그래밍");
                         setSelected(true);
                       }}
                     >
                       <Grid
-                        _className={major === "프로그래밍" ? "active" : "default"}
+                        _className={
+                          major === "프로그래밍" ? "active" : "default"
+                        }
                         bg={major === "프로그래밍" ? "#5BC8D2" : "#f5fcff"}
                       >
                         <p>프로그래밍</p>

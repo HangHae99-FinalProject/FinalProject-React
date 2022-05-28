@@ -17,6 +17,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
 import Spinner from "./Spinner";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 const style = {
   position: "absolute",
@@ -118,7 +119,11 @@ const OAuthRedirect = () => {
   //추가정보기입후 회원가입 완료
   const goAdditionalInfo = () => {
     if (!nicknameCheckRE(nickname)) {
-      window.alert("닉네임 형식을 확인해주세요.");
+      Swal.fire({
+        title: "닉네임 형식을 확인해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     dispatch(userActions.__additionalInfo(kakaoId, nickname, major));

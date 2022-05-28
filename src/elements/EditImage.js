@@ -9,6 +9,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import Swal from "sweetalert2";
 
 const EditImage = (props) => {
   const {
@@ -43,12 +44,6 @@ const EditImage = (props) => {
 
     let imageUrlList = [...imgPreview];
 
-    const maxImageCnt = 4;
-
-    if (imageList.length > maxImageCnt) {
-      window.alert("이미지는 최대 4개까지 가능합니다!");
-    }
-
     // 파일들을 URL로 만듬
     for (let i = 0; i < imageList.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageList[i]);
@@ -58,7 +53,10 @@ const EditImage = (props) => {
 
     // 10개로 갯수 정함
     if (imageUrlList.length > 4) {
-      window.alert("이미지는 최대 4개까지 가능합니다!");
+      Swal.fire({
+        title: "이미지는 최대 4개까지 가능합니다!",
+        icon: "error",
+      });
     } else {
       let imgList = [];
       // 파일들을 꺼내 배열안에 넣어줌
@@ -179,7 +177,8 @@ const EditImage = (props) => {
       <ImageComment>
         <span>
           (권장 사이즈 <span className="imageSize">990*500)</span>
-          &nbsp;JPG,PNG로 올려주세요!
+          &nbsp;JPG,PNG로 올려주세요!&nbsp;&nbsp;&nbsp; ⌽ 이미지는 최대 4장까지
+          가능합니다!
         </span>
       </ImageComment>
       <ImageDiv {...styles}>

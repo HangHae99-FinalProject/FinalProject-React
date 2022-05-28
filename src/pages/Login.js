@@ -15,6 +15,7 @@ import Grid from "../elements/Grid";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Cookies from "universal-cookie";
+import Swal from "sweetalert2";
 
 const cookies = new Cookies();
 
@@ -50,7 +51,11 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   function PwFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -68,7 +73,11 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   // 여기까지 헬퍼텍스트 -아이디, 패스워드
 
@@ -89,7 +98,11 @@ const Login = ({ location }) => {
 
   const goLogin = () => {
     if (!memberIdCheckRE(memberId)) {
-      window.alert("아이디 형식을 확인해주세요.");
+      Swal.fire({
+        title: "아이디 형식을 확인해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
 
@@ -106,7 +119,10 @@ const Login = ({ location }) => {
 
   React.useEffect(() => {
     if (token) {
-      alert("이미 로그인을 하셨습니다!");
+      Swal.fire({
+        title: "이미 로그인을 하셨습니다!",
+        icon: "error",
+      });
       history.replace("/main");
     }
   }, []);
@@ -116,7 +132,10 @@ const Login = ({ location }) => {
       <BgDiv>
         <Grid is_center margin="auto auto">
           <div style={{ marginBottom: "45px" }}>
-            <img src={require(`../assets/fixedSignupLogo.png`)} alt="signupLogo" />
+            <img
+              src={require(`../assets/fixedSignupLogo.png`)}
+              alt="signupLogo"
+            />
           </div>
           <form
             onSubmit={(event) => {

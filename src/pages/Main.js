@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MainSearch from "../components/Main/MainSearch";
 import { history } from "../redux/configureStore";
 import { Redirect, useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Main = () => {
   const [is_location, setLocation] = useState("위치설정");
@@ -29,7 +30,11 @@ const Main = () => {
 
   const writeBtn = () => {
     if (is_login === false) {
-      alert("로그인을 먼저 해주세요!");
+      Swal.fire({
+        title: "로그인을 해주세요!",
+        text: "로그인 이후 이용 하실 수 있습니다!",
+        icon: "warning",
+      });
       history.push("/login");
       return;
     }
@@ -286,7 +291,7 @@ const BtnTest = styled.button`
   background: #ffd082;
   border: none;
   /* box-shadow: inset 0px 2px 8px #ffffff; */
-  box-shadow: 0px 0px 0px ;
+  box-shadow: 0px 0px 0px;
   border-radius: 14px;
   font-size: 25px;
   font-weight: 700;
@@ -307,7 +312,7 @@ const LocationBox = styled.div`
   font-weight: 700;
   color: #f5fcff;
   /* box-shadow: inset 0px 2px 13px #d7f1fd; */
-  box-shadow:  0px 0px 0px ;
+  box-shadow: 0px 0px 0px;
   border-radius: 14px;
 
   cursor: pointer;
@@ -374,7 +379,7 @@ const CateBtn = styled.div`
     width: 140px;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid #E0F4FE;
+    border: 1px solid #e0f4fe;
 
     background-color: #f5fcff;
 

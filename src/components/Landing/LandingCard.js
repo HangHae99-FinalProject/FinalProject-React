@@ -212,7 +212,7 @@ const Container = styled.div`
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  margin: 35px 10px 10px 20px;
+  margin: 20px 20px 20px 20px;
 
   float: left;
   overflow: scroll;

@@ -17,6 +17,7 @@ const CHECK_EMAIL_DUP = "user/CHECK_EMAIL_DUP";
 const INIT_CHECK_EMAIL_DUP = "user/INIT_CHECK_EMAIL_DUP";
 const KAKAO_LOGIN = "KAKAO_LOGIN";
 const LOGIN_ERROR_CODE = "user/LOGIN_ERROR_CODE";
+const IS_ADDITIONAL_INFO_STATE = "user/IS_ADDITIONAL_INFO_STATE";
 //action creators
 // //redux-actions를 사용하지 않을때의 방법 예시
 // const logIn = (user) => {
@@ -39,6 +40,9 @@ const checkEmailDup = createAction(CHECK_EMAIL_DUP, (checkEmailAlert) => ({
 const initCheckEmailDup = createAction(INIT_CHECK_EMAIL_DUP, () => ({}));
 const kakaoLogin = createAction(KAKAO_LOGIN, (user, id) => ({ user, id }));
 const loginErrorCode = createAction(LOGIN_ERROR_CODE, (data) => ({ data }));
+const additionalInfoState = createAction(IS_ADDITIONAL_INFO_STATE, (additionalInfoData) => ({
+  additionalInfoData,
+}));
 
 //initialState
 const initialState = {
@@ -54,6 +58,7 @@ const initialState = {
   profileSet: true,
   kakaoId: "",
   loginErrorCode: 0,
+  isAdditionalInfoState: null,
 };
 
 const userInitial = {
@@ -70,8 +75,7 @@ const __kakaoLogin = (code) => {
       } else {
         const { accessToken, refreshToken } = data.data;
 
-        const { sub, memberId, nickname, major, profileImg } =
-          jwt_decode(accessToken);
+        const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
         cookies.set("accessToken", accessToken, {
           path: "/",
           maxAge: 86400, // 24시간
@@ -85,12 +89,10 @@ const __kakaoLogin = (code) => {
         localStorage.setItem("nickname", nickname);
         localStorage.setItem("major", major);
         localStorage.setItem("profileImg", profileImg);
-
         dispatch(login());
         history.replace("/main");
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -101,10 +103,10 @@ const __login = (_memberId, password) => {
         memberId: _memberId,
         password,
       });
-      const { accessToken, refreshToken, accessTokenExpiresIn } =
-        loginData.data.data.token;
-      const { sub, memberId, nickname, major, profileImg } =
-        jwt_decode(accessToken);
+      const additionalInfoData = loginData.data.data?.isProfileSet;
+      console.log(additionalInfoData);
+      const { accessToken, refreshToken, accessTokenExpiresIn } = loginData.data.data.token;
+      const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
       cookies.set("accessToken", accessToken, {
         path: "/",
         maxAge: 86400, // 24시간
@@ -120,7 +122,7 @@ const __login = (_memberId, password) => {
       localStorage.setItem("major", major);
       localStorage.setItem("profileImg", profileImg);
       dispatch(login());
-      history.replace("/main");
+      dispatch(additionalInfoState(additionalInfoData));
     } catch (err) {
       dispatch(loginErrorCode(err.response.data.errorCode));
     }
@@ -143,17 +145,15 @@ const __signup = (memberId, password, pwCheck) => {
     }
   };
 };
+
 const __additionalInfo = (_userId, nickName, majors) => {
   return async (dispatch, getState, { history }) => {
     try {
-      const additionalInfo = await axios.post(
-        "https://everymohum.shop/user/signup/addInfo",
-        {
-          userId: _userId,
-          nickname: nickName,
-          major: majors,
-        }
-      );
+      const additionalInfo = await axios.post("https://everymohum.shop/user/signup/addInfo", {
+        userId: _userId,
+        nickname: nickName,
+        major: majors,
+      });
       const { accessToken, refreshToken } = additionalInfo.data.data;
       cookies.set("accessToken", accessToken, {
         path: "/",
@@ -164,16 +164,13 @@ const __additionalInfo = (_userId, nickName, majors) => {
         path: "/",
         // maxAge: 604800, // 7일
       });
-
-      const { sub, memberId, nickname, major, profileImg } =
-        jwt_decode(accessToken);
+      const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
       localStorage.setItem("userId", sub);
       localStorage.setItem("memberId", memberId);
       localStorage.setItem("nickname", nickname);
       localStorage.setItem("major", major);
       localStorage.setItem("profileImg", profileImg);
       dispatch(login());
-
       history.replace("/main");
     } catch (err) {
       if (err.errorCode === 400) {
@@ -187,12 +184,9 @@ const __emailCheck =
   (email) =>
   async (dispatch, getState, { hisory }) => {
     try {
-      const checkEmailAlert = await axios.post(
-        "https://everymohum.shop/user/emailCheck",
-        {
-          email,
-        }
-      );
+      const checkEmailAlert = await axios.post("https://everymohum.shop/user/emailCheck", {
+        email,
+      });
       if (checkEmailAlert.data.errorCode === "200") {
         window.alert("입력하신 이메일은 사용이 가능합니다.");
       } else if (checkEmailAlert.data.errorCode !== "200") {
@@ -230,8 +224,7 @@ const __logout = () => {
       await dispatch(logout());
       window.alert("로그아웃되었습니다.");
       history.replace("/");
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 };
 
@@ -253,7 +246,10 @@ export default handleActions(
         cookies.set("isLogin", "success", { path: "/" });
         draft.isLogin = true;
       }),
-
+    [IS_ADDITIONAL_INFO_STATE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.isAdditionalInfoState = action.payload.additionalInfoData;
+      }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
         localStorage.removeItem("major");

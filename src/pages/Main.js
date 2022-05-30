@@ -14,6 +14,7 @@ import { history } from "../redux/configureStore";
 import { Redirect, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import Link from "../components/Link";
+import { imgActions } from "../redux/modules/image";
 
 import ModalWindow from "../elements/ModalWindow";
 import TutorialSwiper from "../elements/TutorialSwiper";
@@ -92,6 +93,7 @@ const Main = () => {
     return () => {
       dispatch(recruitActions.initRecruit());
       dispatch(postActions.clearPost());
+      dispatch(imgActions.initPre());
     };
   }, [dispatch, pathName]);
   if (from) {

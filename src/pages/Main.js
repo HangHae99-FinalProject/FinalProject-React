@@ -14,6 +14,13 @@ import { history } from "../redux/configureStore";
 import { Redirect, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 
+import ModalWindow from "../elements/ModalWindow";
+import TutorialSwiper from "../elements/TutorialSwiper";
+
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 const Main = () => {
   const [is_location, setLocation] = useState("위치설정");
   const [is_open, setIs_open] = useState(false);
@@ -41,34 +48,52 @@ const Main = () => {
     history.push("/write");
   };
 
-  //지역 옵션
-  const locations = [
-    { id: 1, locationName: "전체" },
-    { id: 2, locationName: "서울/경기" },
-    { id: 3, locationName: "강원" },
-    { id: 4, locationName: "전북" },
-    { id: 5, locationName: "전남" },
-    { id: 6, locationName: "충북" },
-    { id: 7, locationName: "충남" },
-    { id: 8, locationName: "경북" },
-    { id: 9, locationName: "경남" },
-    { id: 10, locationName: "제주" },
-  ];
+    //모달 컨트롤
+    const [open, setOpen] = React.useState(true);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    //여기까지 모달컨트롤
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    return () => {
-      dispatch(recruitActions.initRecruit());
-      dispatch(postActions.clearPost());
-    };
-  }, [dispatch, pathName]);
-
-  if (from) {
-    return <Redirect to={{ pathname: from }} />;
-  }
+    //지역 옵션
+    const locations = [
+      { id: 1, locationName: "전체" },
+      { id: 2, locationName: "서울/경기" },
+      { id: 3, locationName: "강원" },
+      { id: 4, locationName: "전북" },
+      { id: 5, locationName: "전남" },
+      { id: 6, locationName: "충북" },
+      { id: 7, locationName: "충남" },
+      { id: 8, locationName: "경북" },
+      { id: 9, locationName: "경남" },
+      { id: 10, locationName: "제주" },
+    ];
+    
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      return () => {
+        dispatch(recruitActions.initRecruit());
+        dispatch(postActions.clearPost());
+      };
+    }, [dispatch, pathName]);
+    
+    if (from) {
+      return <Redirect to={{ pathname: from }} />;
+    }
 
   return (
     <>
+      {/* 튜토리얼 모달 */}
+      {<ModalWindow
+        handleOpen={handleOpen}
+        open={open}
+        handleClose={handleClose}
+        width="1200px"
+        height="881px"
+        borderRadius="20px"
+      >
+        <TutorialSwiper></TutorialSwiper>
+      </ModalWindow>}
+      {/* 여기까지 튜토리얼 모달 */}
       <Container>
         <MainImage />
 

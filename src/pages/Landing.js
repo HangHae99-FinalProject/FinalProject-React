@@ -110,14 +110,17 @@ const BackColor = styled.div`
 const PreviewBox = styled.div`
   width: 68%;
   margin: 5% auto 0 auto;
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PreviewBtn = styled.div`
   cursor: pointer;
   justify-content: center;
   align-items: center;
-  margin: 65% auto 0 auto;
+  margin: 39px auto 0 auto;
   display: flex;
   width: 315px;
   height: 80px;
@@ -137,12 +140,17 @@ const PreviewBtn = styled.div`
   }
 `;
 const PreviewCard = styled.div`
-  @media screen and (max-height: 1000px) {
+  width: 996px;
+  height: auto;
+  /* @media screen and (max-height: 1000px) {
     height: 500px;
   }
   @media screen and (max-height: 650px) {
     height: 200px;
-  }
+  } */
+  /* display: flex; */
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const LoginBox = styled.div`

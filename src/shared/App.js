@@ -76,7 +76,6 @@ function App() {
           <Route path="/applied/:postid" exact component={Applied} />
         </Container>
         <Alert />
-        <OnTopBtn />
       </ConnectedRouter>
     </>
   );

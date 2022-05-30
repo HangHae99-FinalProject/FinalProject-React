@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import EditImage from "../elements/EditImage";
 import { imgActions } from "../redux/modules/image";
 import Footer from "../elements/Footer";
+import Swal from "sweetalert2";
 
 const EditPost = () => {
   const post_list = useSelector((state) => state.post.detailList);
@@ -74,21 +75,38 @@ const EditPost = () => {
 
   const editDetailBtn = () => {
     if (data.title === "") {
-      alert("제목을 입력해주세요!");
-      return;
-    }
-    if (data.content === "") {
-      alert("내용을 입력해주세요!");
+      Swal.fire({
+        title: "제목을 입력해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (data.deadline === "") {
-      alert("모집기간을 선택해주세요!");
+      Swal.fire({
+        title: "모집 기간을 선택해 주세요!",
+        icon: "warning",
+      });
       return;
     }
     if (data.region === "") {
-      alert("지역을 선택해주세요!");
+      Swal.fire({
+        title: "지역을 선택해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
+
+    if (data.content === "") {
+      Swal.fire({
+        title: "내용을 입력해주세요!",
+        icon: "warning",
+      });
+
+      return;
+    }
+
     dispatch(PostActions.__editPost(data, post_id, newFiles));
   };
 
@@ -271,7 +289,7 @@ const TextBox = styled.textarea`
   height: 200px;
   padding: 5px 16px 5px 16px;
   font-size: 22px;
-
+  resize: none;
   :focus {
     outline-color: gray;
   }

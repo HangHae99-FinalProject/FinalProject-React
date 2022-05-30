@@ -9,6 +9,7 @@ import ReactModal from "react-modal";
 import Grid from "../elements/Grid";
 import { actionCreates as applyActions } from "../redux/modules/apply";
 import { actionCreators as chatActions } from "../redux/modules/chat";
+import Swal from "sweetalert2";
 
 const Applied = () => {
   const dispatch = useDispatch();
@@ -66,7 +67,11 @@ const Applied = () => {
   }, []);
 
   if (!user) {
-    alert("로그인을 먼저 해주세요!");
+    Swal.fire({
+      title: "로그인을 해주세요!",
+      text: "로그인 이후 이용 하실 수 있습니다!",
+      icon: "warning",
+    });
     return <Redirect to={{ pathname: "/login", state: { from: pathname } }} />;
   }
 

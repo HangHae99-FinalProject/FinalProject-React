@@ -15,6 +15,8 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { actionCreators as chatActions } from "../redux/modules/chat";
 import Spinner from "../components/Spinner";
 import Footer from "../elements/Footer";
+import { useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Chat = (data) => {
   const client = useSelector((state) => state.chat.client);
@@ -32,6 +34,8 @@ const Chat = (data) => {
   const [is_exit, setIs_exit] = useState(false); // 상대방 나갔는지 판단
   const [is_loading, setIs_Loading] = useState(false); // 스피너
   const scrollRef = useRef();
+
+  const pathName = useLocation();
 
   const receiverId = data.location.state.sender.userId;
   const roomName = data.location.state.roomName;
@@ -80,9 +84,12 @@ const Chat = (data) => {
     sendMessage();
   };
 
-  const _onChange = useCallback((e) => {
-    setCurrentMes(e.target.value);
-  }, []);
+  const _onChange = useCallback(
+    (e) => {
+      setCurrentMes(e.target.value);
+    },
+    [pathName]
+  );
 
   const sendMessage = () => {
     const messageDto = {
@@ -174,7 +181,7 @@ const Chat = (data) => {
                       marginLeft: "6px",
                     }}
                     onClick={() => {
-                      history.goBack();
+                      history.replace("/chatlist");
                     }}
                   />
                 </div>
@@ -205,7 +212,11 @@ const Chat = (data) => {
                       onClick={() => {
                         ModalControl();
                         OptionTwoControl();
-                        alert("준비중 입니다!");
+                        Swal.fire({
+                          title: "준비중 입니다!",
+
+                          icon: "warning",
+                        });
                       }}
                     >
                       신고하기
@@ -216,7 +227,11 @@ const Chat = (data) => {
                       onClick={() => {
                         ModalControl();
                         OptionThreeControl();
-                        alert("준비중 입니다!");
+                        Swal.fire({
+                          title: "준비중 입니다!",
+
+                          icon: "warning",
+                        });
                       }}
                     >
                       차단하기
@@ -229,7 +244,7 @@ const Chat = (data) => {
           <div></div>
           <ChatBox ref={scrollRef}>
             <div className="inner-chat-box">
-              {messageList?.length === 0 ? (
+              {messageList?.length === 0 && is_loading === true ? (
                 <div className="enter-chat-box">
                   <span className="enter-chat">
                     {data.location.state.sender.nickname}님과 {nickName}님이

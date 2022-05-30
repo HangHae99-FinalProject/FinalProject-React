@@ -78,7 +78,6 @@ const __kakaoLogin = (code) => {
         const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
         cookies.set("accessToken", accessToken, {
           path: "/",
-          maxAge: 86400, // 24시간
         });
         cookies.set("refreshToken", refreshToken, {
           path: "/",
@@ -109,12 +108,9 @@ const __login = (_memberId, password) => {
       const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
       cookies.set("accessToken", accessToken, {
         path: "/",
-        maxAge: 86400, // 24시간
-        // maxAge: 10, // 10초
       });
       cookies.set("refreshToken", refreshToken, {
         path: "/",
-        // maxAge: 604800, // 7일
       });
       localStorage.setItem("userId", sub);
       localStorage.setItem("memberId", memberId);
@@ -157,12 +153,9 @@ const __additionalInfo = (_userId, nickName, majors) => {
       const { accessToken, refreshToken } = additionalInfo.data.data;
       cookies.set("accessToken", accessToken, {
         path: "/",
-        maxAge: 86400, // 24시간
-        // maxAge: 10, // 10초
       });
       cookies.set("refreshToken", refreshToken, {
         path: "/",
-        // maxAge: 604800, // 7일
       });
       const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
       localStorage.setItem("userId", sub);
@@ -222,7 +215,7 @@ const __logout = () => {
       cookies.remove("accessToken", { path: "/" });
       cookies.remove("refreshToken", { path: "/" });
       await dispatch(logout());
-      window.alert("로그아웃되었습니다.");
+
       history.replace("/");
     } catch (err) {}
   };
@@ -234,6 +227,9 @@ const __loginCheck = () => {
     if (tokenCheck) {
       dispatch(login());
       return;
+    }
+    if (!tokenCheck) {
+      dispatch(logout());
     }
   };
 };

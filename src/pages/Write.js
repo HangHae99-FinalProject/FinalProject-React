@@ -14,6 +14,7 @@ import { actionCreates as PostActions } from "../redux/modules/post";
 import { history } from "../redux/configureStore";
 import Footer from "../elements/Footer";
 import { useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Write = () => {
   const dispatch = useDispatch();
@@ -68,20 +69,36 @@ const Write = () => {
     const CheckMajor = majorList.map((a) => a.majorName);
 
     if (is_cate === "" && is_people === "") {
-      alert("모집분야와 인원을 선택해 주세요!");
+      Swal.fire({
+        title: "모집분야와 인원을 선택해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (is_cate === "") {
-      alert("모집분야를 선택해 주세요!");
+      Swal.fire({
+        title: "모집분야를 선택해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (is_people === "") {
-      alert("모집인원을 선택해 주세요!");
+      Swal.fire({
+        title: "모집인원을 선택해 주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     for (let i = 0; i < CheckMajor.length; i++) {
       if (is_cate === CheckMajor[i]) {
-        alert("이미 같은 직군이 있습니다!");
+        Swal.fire({
+          title: "이미 같은 직군이 있습니다!",
+          icon: "warning",
+        });
+
         return;
       }
     }
@@ -95,23 +112,41 @@ const Write = () => {
 
   const PostDetailBtn = () => {
     if (data.title === "") {
-      alert("제목을 입력해주세요!");
+      Swal.fire({
+        title: "제목을 입력해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (data.deadline === "") {
-      alert("모집기간을 선택해주세요!");
+      Swal.fire({
+        title: "모집 기간을 선택해 주세요!",
+        icon: "warning",
+      });
       return;
     }
     if (data.region === "") {
-      alert("지역을 선택해주세요!");
+      Swal.fire({
+        title: "지역을 선택해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (data.majorList.length === 0) {
-      alert("모집인원을 추가해 주세요!");
+      Swal.fire({
+        title: "추가하기 버튼을 눌러주세요!",
+        icon: "warning",
+      });
       return;
     }
     if (data.content === "") {
-      alert("내용을 입력해주세요!");
+      Swal.fire({
+        title: "내용을 입력해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     dispatch(PostActions.__addPost(data));
@@ -135,8 +170,8 @@ const Write = () => {
             제목
           </Text>
           <InputBox
-            placeholder="제목을 20글자 이내 적어주세요!"
-            maxLength={25}
+            placeholder="제목을 25글자 이내 적어주세요!"
+            maxLength={24}
             value={is_title}
             onChange={TitleHandleChange}
           />
@@ -360,11 +395,17 @@ const Write = () => {
               <MenuItem value="" style={{ fontSize: "20px" }}>
                 <em>인원을 선택해주세요.</em>
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"1"}>
+              <MenuItem style={{ fontSize: "20px" }} value={1}>
                 1명
               </MenuItem>
-              <MenuItem style={{ fontSize: "20px" }} value={"2"}>
+              <MenuItem style={{ fontSize: "20px" }} value={2}>
                 2명
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={3}>
+                3명
+              </MenuItem>
+              <MenuItem style={{ fontSize: "20px" }} value={4}>
+                4명
               </MenuItem>
             </Select>
           </FormControl>
@@ -448,7 +489,8 @@ const ContentBox = styled.div``;
 const PlusBtn = styled.span`
   margin: 0 25px;
   color: rgba(41, 103, 172, 1);
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
 `;
 
@@ -485,7 +527,7 @@ const TextBox = styled.textarea`
   height: 200px;
   padding: 5px 16px 5px 16px;
   font-size: 22px;
-
+  resize: none;
   :focus {
     outline-color: gray;
   }
@@ -511,7 +553,7 @@ const CateBtn = styled.div`
     width: 140px;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid #E0F4FE;
+    border: 1px solid #e0f4fe;
     background-color: #f5fcff;
     box-shadow: inset 0px 4px 13px #d7f1fd;
     display: flex;

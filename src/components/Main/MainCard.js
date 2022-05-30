@@ -51,12 +51,7 @@ const MainCard = (item) => {
       }}
     >
       {item.item.imgUrl.length !== 0 ? (
-        <MainImage
-          src={item.item.imgUrl[0].imgUrl
-            .replace("mohum.", "mohum-resized.")
-            .replace(".com/", ".com/resized-")}
-          alt="mainImage"
-        />
+        <MainImage src={item.item.imgUrl[0].imgUrl} alt="mainImage" />
       ) : (
         <MainImage
           src="https://velog.velcdn.com/images/tty5799/post/3fa2c200-7be0-4b39-bba3-bd9bf3d37f64/image.png"

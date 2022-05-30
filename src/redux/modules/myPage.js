@@ -286,7 +286,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.getAppliedOverList_reqruit = [];
         draft.evaluationList = [];
-        draft.isLoading = false;
+        // draft.isLoading = false;
       }),
   },
   initialState

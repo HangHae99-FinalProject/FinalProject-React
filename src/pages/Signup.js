@@ -14,6 +14,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Swal from "sweetalert2";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -262,9 +263,7 @@ const Signup = () => {
               </FormControl>
             </Grid>
 
-            <Grid
-              sx={{ marginTop: "10px" }}
-            >
+            <Grid sx={{ marginTop: "10px" }}>
               <Stack direction="column">
                 {checkMemberIdError === false ? (
                   <Button

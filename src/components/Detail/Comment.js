@@ -7,6 +7,7 @@ import { actionCreators as commentActions } from "../../redux/modules/comment";
 import { useParams } from "react-router-dom";
 import CommentList from "./CommentList";
 import { history } from "../../redux/configureStore";
+import Swal from "sweetalert2";
 
 const Comment = (userId) => {
   const dispatch = useDispatch();
@@ -20,12 +21,21 @@ const Comment = (userId) => {
 
   const addComment = () => {
     if (!isLogin) {
-      alert("로그인을 먼저 해주세요!");
+      Swal.fire({
+        title: "로그인을 해주세요!",
+        text: "로그인 이후 이용 하실 수 있습니다!",
+        icon: "warning",
+      });
+
       history.push("/login");
       return;
     }
     if (is_comment === "") {
-      alert("공란 입니다!");
+      Swal.fire({
+        title: "공란 입니다!",
+        icon: "error",
+      });
+
       return;
     }
     dispatch(commentActions.__addComment(param.postid, is_comment));
@@ -56,12 +66,13 @@ const Comment = (userId) => {
           <p style={{ marginRight: "78rem" }}>댓글 {commentCnt}</p>
         </div>
         <div className="line" />
-
-        <CommentScroll>
-          {commentList.commentList.map((a, idx) => {
-            return <CommentList {...a} key={idx} />;
-          })}
-        </CommentScroll>
+        <CommentListBox>
+          <CommentScroll>
+            {commentList.commentList.map((a, idx) => {
+              return <CommentList {...a} key={idx} />;
+            })}
+          </CommentScroll>
+        </CommentListBox>
 
         <div className="commentInput">
           <input
@@ -81,24 +92,31 @@ const Comment = (userId) => {
   );
 };
 
-const CommentScroll = styled.div`
+const CommentListBox = styled.div`
   height: 330px;
+`;
+
+const CommentScroll = styled.div`
+  height: 315px;
+
   overflow: auto;
 
-  .icon {
-    display: flex;
-    margin-left: 68rem;
-    margin-top: 1rem;
-    font-size: large;
-
-    cursor: pointer;
+  -ms-overflow-style: {
   }
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  &::-webkit-scrollbar-thumb {
+    background-color: #2967ac;
+    width: 10px;
+    border-radius: 20px;
+  }
+  &::-webkit-scrollbar-track {
+    width: 10px;
+  }
 
   &::-webkit-scrollbar {
-    display: none;
+    border-radius: 20px;
+    background-color: #b9daf6;
+    width: 10px;
   }
 `;
 
@@ -120,6 +138,7 @@ const CommentBox = styled.div`
   }
   .comment {
     margin-left: 1rem;
+    margin-right: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid gray;

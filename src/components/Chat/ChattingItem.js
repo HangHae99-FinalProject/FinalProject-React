@@ -83,8 +83,8 @@ const ChattingWrap = styled.div`
       margin-left: 30px;
       background: rgba(0, 0, 0, 0.2);
       img {
-        width: 100%;
-        height: 100%;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         object-fit: cover;
       }
@@ -106,9 +106,13 @@ const ChattingWrap = styled.div`
     }
 
     .chat-list {
-      position: absolute;
+      /* position: absolute;
       width: 80px;
-      right: 27%;
+      right: 27%; */
+      display: flex;
+      justify-content: center;
+      width: 200px;
+      margin-left: 140px;
       span {
         color: #9b9798;
       }
@@ -128,11 +132,6 @@ const ChattingWrap = styled.div`
       border-radius: 50%;
       text-align: center;
       margin-left: 20px;
-    }
-    .cnt-zero {
-      background-color: #fff;
-      width: 22px;
-      height: 22px;
     }
   }
 `;

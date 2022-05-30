@@ -36,11 +36,10 @@ const MainSearch = ({ location, category, selected }) => {
   };
 
   const searchValueHandle = (e) => {
-    setIs_SearchValue(e.target.value);
     if (is_search === "") {
-      alert("검색어를 먼저 설정해 주세요!");
-      return;
+      setIs_Search("title");
     }
+    setIs_SearchValue(e.target.value);
 
     let data = e.target.value;
 
@@ -75,10 +74,6 @@ const MainSearch = ({ location, category, selected }) => {
   };
 
   const searchButton = () => {
-    if (is_search === "") {
-      alert("검색어를 설정해 주세요!");
-      return;
-    }
     setIs_SearchValue("");
 
     setIS_SearchList([]);
@@ -168,7 +163,7 @@ const MainSearch = ({ location, category, selected }) => {
         <SearchInputBox>
           <SearchInput
             onChange={searchValueHandle}
-            placeholder="검색어를 먼저 설정해주세요!"
+            placeholder=""
             onKeyDown={handleEvent}
             value={is_searchValue}
           />

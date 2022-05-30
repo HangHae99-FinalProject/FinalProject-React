@@ -114,7 +114,10 @@ const __editPost =
       })
     );
     Files.map((e) => {
-      return formData.append("img", e);
+      const file = new File([e], e.name, {
+        type: e.type,
+      });
+      return formData.append("img", file);
     });
     try {
       await postApi.editPost(postId, formData);
@@ -137,7 +140,10 @@ const __addPost =
     );
 
     images.map((e) => {
-      return formData.append("img", e);
+      const file = new File([e], e.name, {
+        type: e.type,
+      });
+      return formData.append("img", file);
     });
 
     try {

@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { actionCreates as applyActions } from "../../redux/modules/apply";
 import { history } from "../../redux/configureStore";
 import { actionCreators as chatActions } from "../../redux/modules/chat";
+import Swal from "sweetalert2";
 
 const AppliedCard = (item) => {
   const dispatch = useDispatch();
@@ -30,13 +31,24 @@ const AppliedCard = (item) => {
   };
 
   const refuseHandelBtn = () => {
-    if (window.confirm("강퇴 하시겠습니까?")) {
-      alert("강퇴하셨습니다!");
-    } else {
-      alert("취소되었습니다!");
-      return;
-    }
-    dispatch(applyActions.__postRefuse(refuseDto));
+    Swal.fire({
+      title: "정말로 강퇴 하시겠습니까?",
+      text: "강퇴한 선장은 다시 볼수 없습니다! ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "강퇴",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "강퇴가 완료되었습니다.",
+          icon: "success",
+        });
+        dispatch(applyActions.__postRefuse(refuseDto));
+      }
+    });
   };
 
   var likeRatio = (item.likeCount / 100) * (100 / item.projectCount) * 100;
@@ -47,7 +59,11 @@ const AppliedCard = (item) => {
   const chatHandelBtn = () => {
     for (let i = 0; i < item.roomUserId.length; i++) {
       if (item.userId === item.roomUserId[i]) {
-        alert("이미 채팅방이 존재 합니다!");
+        Swal.fire({
+          title: "이미 채팅방이 존재 합니다!",
+          icon: "error",
+        });
+
         return;
       }
     }
@@ -135,7 +151,7 @@ const AppliedCard = (item) => {
       </CommentBox>
       <BottomBtn>
         <span className="chatButton" onClick={chatHandelBtn}>
-          체팅
+          채팅
         </span>
         <span className="noButton" onClick={refuseHandelBtn}>
           강퇴

@@ -21,6 +21,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Swal from "sweetalert2";
 
 const cookies = new Cookies();
 
@@ -74,7 +75,11 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   function PwFormHelperText() {
     const { focused, filled } = useFormControl() || {};
@@ -92,7 +97,11 @@ const Login = ({ location }) => {
       return " ";
     }, [focused, filled]);
 
-    return <FormHelperText sx={{ margin: "0", height: "20px" }}>{helperText}</FormHelperText>;
+    return (
+      <FormHelperText sx={{ margin: "0", height: "20px" }}>
+        {helperText}
+      </FormHelperText>
+    );
   }
   function NicknameFormHelperText() {
     //
@@ -167,7 +176,11 @@ const Login = ({ location }) => {
 
   const goLogin = () => {
     if (!memberIdCheckRE(memberId)) {
-      window.alert("아이디 형식을 확인해주세요.");
+      Swal.fire({
+        title: "아이디 형식을 확인해주세요!",
+        icon: "warning",
+      });
+
       return;
     }
     if (!pwCheckRE(password)) {
@@ -199,7 +212,10 @@ const Login = ({ location }) => {
 
   React.useEffect(() => {
     if (token) {
-      alert("이미 로그인을 하셨습니다!");
+      Swal.fire({
+        title: "이미 로그인을 하셨습니다!",
+        icon: "error",
+      });
       history.replace("/main");
     }
   }, []);

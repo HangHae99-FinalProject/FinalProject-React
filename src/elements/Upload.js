@@ -8,6 +8,8 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
+import Swal from "sweetalert2";
+import imageCompression from "browser-image-compression";
 
 const Uploads = () => {
   const dispatch = useDispatch();
@@ -16,30 +18,39 @@ const Uploads = () => {
   const [is_Url, setIs_url] = useState("");
   const Link = useSelector((state) => state.image.Url);
 
-  const uploadFile = (e) => {
+  const uploadFile = async (e) => {
     const imageList = e.target.files;
     let imageUrlList = [...imgPreview];
+    let compressedFileList = [];
+    console.log(imageList);
 
-    for (let i = 0; i < imageList.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageList[i]);
-      imageUrlList.push(currentImageUrl);
-    }
+    const options = {
+      maxSizeMB: 2,
+      maxWidth: 990,
+    };
+    try {
+      for (let i = 0; i < imageList.length; i++) {
+        const compressedFile = await imageCompression(imageList[i], options);
+        compressedFileList.push(compressedFile);
 
-    if (imageUrlList.length > 4) {
-      alert("사진은 최대 4장만 가능합니다!");
-    } else {
-      setImgPreview(imageUrlList);
-    }
-
-    let imgList = [];
-    // 파일들을 꺼내 배열안에 넣어줌
-    for (const key in imageList) {
-      if (Object.hasOwnProperty.call(imageList, key)) {
-        imgList.push(imageList[key]);
+        const currentImageUrl = URL.createObjectURL(compressedFile);
+        imageUrlList.push(currentImageUrl);
       }
+
+      if (imageUrlList.length > 4) {
+        Swal.fire({
+          title: "이미지는 최대 4장 까지 가능합니다!",
+          icon: "error",
+        });
+        return;
+      } else {
+        setImgPreview(imageUrlList);
+      }
+
+      dispatch(imgActions.setPre(compressedFileList));
+    } catch (err) {
+      console.log(err);
     }
-    setImgPreview(imageUrlList);
-    dispatch(imgActions.setPre(imgList));
   };
 
   const handleUrl = (e) => {
@@ -64,7 +75,7 @@ const Uploads = () => {
             type="file"
             id="files"
             multiple="multiple"
-            accept=".jpg,.png,.svg"
+            accept=".jpg,.png"
           />
         </Labels>
 
@@ -110,7 +121,8 @@ const Uploads = () => {
       <ImageComment>
         <span>
           (권장 사이즈 <span className="imageSize">990*500)</span>
-          &nbsp;JPG,PNG,SVG로 올려주세요!
+          &nbsp;JPG,PNG로 올려주세요!&nbsp;&nbsp;&nbsp; ⌽ 이미지는 최대 4장까지
+          가능합니다!
         </span>
       </ImageComment>
       <div style={{ margin: "0 10%" }}>
@@ -178,10 +190,7 @@ const UrlBox = styled.input`
 `;
 const ImageBox = styled.div`
   margin: 0 20px;
-  /* margin-right: 50px; */
-  /* margin-top: 1%; */
   display: inline-flex;
-
   flex-direction: column; /* row로 변경 시, 내용물이 가로로 나열됨 */
 `;
 
@@ -190,10 +199,8 @@ const Labels = styled.label`
   align-items: center;
   cursor: pointer;
   padding: 5px 15px 5px 15px;
-  /* line-height: 100px; */
   width: 25px;
   height: 30px;
-
   border-radius: 1px;
   background-color: transparent;
 `;
@@ -208,7 +215,6 @@ const ImageList = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: 3px;
   background-image: url("${(props) => props.src}");
-
-  background-size: contain;
+  background-size: cover;
   background-position: center;
 `;

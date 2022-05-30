@@ -10,6 +10,7 @@ import amateurCap from "../../assets/ama.svg";
 import juniorCap from "../../assets/jr.svg";
 import proCap from "../../assets/pro.svg";
 import { history } from "../../redux/configureStore";
+import Swal from "sweetalert2";
 
 const ApplyCard = (props) => {
   const dispatch = useDispatch();
@@ -59,7 +60,10 @@ const ApplyCard = (props) => {
         majorList[i].majorName === props.applyMajor &&
         majorList[i].numOfPeopleSet === majorList[i].numOfPeopleApply
       ) {
-        alert("인원이 찼습니다!");
+        Swal.fire({
+          title: "인원이 찼습니다!",
+          icon: "error",
+        });
         return;
       }
     }
@@ -73,7 +77,10 @@ const ApplyCard = (props) => {
   const chatHandelBtn = () => {
     for (let i = 0; i < props.roomUserId.length; i++) {
       if (props.userId === props.roomUserId[i]) {
-        alert("이미 채팅방이 존재 합니다!");
+        Swal.fire({
+          title: "이미 채팅방이 존재 합니다!",
+          icon: "error",
+        });
         return;
       }
     }

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import ReactModal from "react-modal";
 import DetailImage from "../components/Detail/DetailImage";
 import Link from "../components/Link";
+import Swal from "sweetalert2";
 
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,18 +53,34 @@ const Detail = () => {
   };
 
   const postDelete = () => {
-    if (window.confirm("삭제 하시겠습니까?")) {
-      alert("삭제되었습니다!");
-    } else {
-      alert("취소되었습니다!");
-      return;
-    }
-    dispatch(PostActions.__deletePost(id));
+    Swal.fire({
+      title: "정말로 삭제 하시겠습니까?",
+      text: "삭제한 글은 다시 볼수 없습니다! ",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "삭제가 완료되었습니다.",
+
+          icon: "success",
+        });
+        dispatch(PostActions.__deletePost(id));
+      }
+    });
   };
 
   const handleUserPage = () => {
     if (detailList.userStatus === "anonymous") {
-      alert("로그인을 먼저 해주세요!");
+      Swal.fire({
+        title: "로그인을 해주세요!",
+        text: "로그인 이후 이용 하실 수 있습니다!",
+        icon: "warning",
+      });
       history.push("/login");
       return;
     }
@@ -76,13 +93,20 @@ const Detail = () => {
 
   const applyHandelButton = () => {
     if (detailList.userStatus === "anonymous") {
-      alert("로그인을 먼저 해주세요!");
+      Swal.fire({
+        title: "로그인을 해주세요!",
+        text: "로그인 이후 이용 하실 수 있습니다!",
+        icon: "warning",
+      });
       history.push("/login");
       return;
     }
     if (detailList.userStatus === "applicant") {
       dispatch(PostActions.__deleteApply(id));
-      alert("신청이 취소되었습니다!");
+      Swal.fire({
+        title: "신청이 취소되었습니다!",
+        icon: "success",
+      });
       return;
     }
     if (detailList.userStatus === "starter") {
@@ -94,11 +118,18 @@ const Detail = () => {
 
   const applyPostButton = () => {
     if (data.applyMajor === "") {
-      alert("카테고리를 선택해 주세요!");
+      Swal.fire({
+        title: "카테고리를 선택해 주세요!",
+
+        icon: "warning",
+      });
       return;
     }
     dispatch(PostActions.__postApply(id, data));
-    alert("신청 완료!");
+    Swal.fire({
+      title: "신청이 완료되었습니다!",
+      icon: "success",
+    });
     setModalState(!ModalState);
   };
 
@@ -119,7 +150,7 @@ const Detail = () => {
       dispatch(imgActions.initPre());
       dispatch(postActions.clearPost());
     };
-  }, [dispatch, pathName, is_login]);
+  }, [dispatch, is_login, pathName]);
 
   return (
     <>
@@ -250,7 +281,9 @@ const Detail = () => {
                   </p>
                 ) : null}
                 <ContentScroll>
-                  <p>{detailList.content}</p>
+                  {detailList.content?.split("\n").map((content, idx) => {
+                    return <p key={idx}>{content}</p>;
+                  })}
                 </ContentScroll>
               </RightBox>
             </MidBox>
@@ -294,7 +327,7 @@ const Detail = () => {
               <BackImage>
                 <ModalGrid>
                   <ModalTitle>
-                    <p>신청 할 가테고리를 선택해주세요!</p>
+                    <p>신청 할 카테고리를 선택해주세요!</p>
                   </ModalTitle>
                   <Category>
                     {majorList?.map((a, idx) => {
@@ -438,7 +471,7 @@ const CateBtn = styled.div`
 
     height: 50px;
     border-radius: 14px;
-    border: 1px solid #E0F4FE;
+    border: 1px solid #e0f4fe;
     background-color: #f5fcff;
 
     display: flex;
@@ -461,7 +494,7 @@ const CateBtn = styled.div`
     width: auto;
     height: 50px;
     border-radius: 14px;
-    border: 1px solid #E0F4FE;
+    border: 1px solid #e0f4fe;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -500,12 +533,24 @@ const CateBtn = styled.div`
 
 const ContentScroll = styled.div`
   height: 90px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   -ms-overflow-style: none;
   scrollbar-width: none;
 
+  &::-webkit-scrollbar-thumb {
+    background-color: #2967ac;
+    width: 10px;
+    border-radius: 20px;
+  }
+  &::-webkit-scrollbar-track {
+    width: 10px;
+  }
+
   &::-webkit-scrollbar {
-    display: none;
+    border-radius: 20px;
+    background-color: #b9daf6;
+    width: 10px;
   }
 `;
 

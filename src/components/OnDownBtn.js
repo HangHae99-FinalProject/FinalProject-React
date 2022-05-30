@@ -2,20 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-const OnTopBtn = () => {
+const OnDownBtn = () => {
   const [is_ScrollY, setIs_ScrollY] = useState(0);
-  const [onBtnStatus, setOnBtnStatus] = useState(false);
 
   const handelFollow = () => {
     setIs_ScrollY(window.scrollY);
-    if (is_ScrollY > 100) {
-      setOnBtnStatus(true);
-    } else {
-      setOnBtnStatus(false);
-    }
-  };
-  const handelTopBtn = () => {
-    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -28,25 +19,29 @@ const OnTopBtn = () => {
     };
   });
 
+  const handelDownBtn = () => {
+    window.scrollTo(2462, 2462);
+  };
+
   return (
     <>
-      {onBtnStatus === false ? null : (
-        <OnBtn onClick={handelTopBtn}>
+      {is_ScrollY === 2462 ? null : (
+        <DownBtn onClick={handelDownBtn}>
           <img
-            src="https://velog.velcdn.com/images/tty5799/post/fe4c26c9-85e4-49df-9190-950297df48ab/image.svg"
+            src="https://velog.velcdn.com/images/tty5799/post/e925267e-a8e3-4e9f-bcd0-7ba52580e61e/image.png"
             alt=""
           />
-        </OnBtn>
+        </DownBtn>
       )}
     </>
   );
 };
 
-const OnBtn = styled.div`
+const DownBtn = styled.div`
   position: fixed;
-  top: 80%;
+  top: 90%;
   right: 7%;
   cursor: pointer;
 `;
 
-export default OnTopBtn;
+export default OnDownBtn;

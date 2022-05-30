@@ -19,6 +19,8 @@ import ModalWindow from "../elements/ModalWindow";
 import TutorialSwiper from "../elements/TutorialSwiper";
 
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import Cookies from "universal-cookie";
+import OnTopBtn from "../components/OnTopBtn";
 
 import dayjs from "dayjs";
 import { useCookies } from 'react-cookie'; 
@@ -84,7 +86,6 @@ const Main = () => {
     { id: 9, locationName: "경남" },
     { id: 10, locationName: "제주" },
   ];
-    
   useEffect(() => {
     window.scrollTo(0, 0);
     return () => {
@@ -92,7 +93,6 @@ const Main = () => {
       dispatch(postActions.clearPost());
     };
   }, [dispatch, pathName]);
-  
   if (from) {
     return <Redirect to={{ pathname: from }} />;
   }

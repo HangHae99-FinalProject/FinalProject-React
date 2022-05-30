@@ -289,7 +289,7 @@ const TextBox = styled.textarea`
   height: 200px;
   padding: 5px 16px 5px 16px;
   font-size: 22px;
-
+  resize: none;
   :focus {
     outline-color: gray;
   }

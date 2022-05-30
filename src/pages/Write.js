@@ -171,7 +171,7 @@ const Write = () => {
           </Text>
           <InputBox
             placeholder="제목을 25글자 이내 적어주세요!"
-            maxLength={25}
+            maxLength={24}
             value={is_title}
             onChange={TitleHandleChange}
           />
@@ -527,7 +527,7 @@ const TextBox = styled.textarea`
   height: 200px;
   padding: 5px 16px 5px 16px;
   font-size: 22px;
-
+  resize: none;
   :focus {
     outline-color: gray;
   }

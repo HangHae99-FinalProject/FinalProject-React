@@ -9,6 +9,8 @@ import LinkIcon from "@mui/icons-material/Link";
 import { imgActions } from "../redux/modules/image";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
 import Swal from "sweetalert2";
+import imageCompression from "browser-image-compression";
+
 const Uploads = () => {
   const dispatch = useDispatch();
   const [imgPreview, setImgPreview] = useState([]);
@@ -16,34 +18,39 @@ const Uploads = () => {
   const [is_Url, setIs_url] = useState("");
   const Link = useSelector((state) => state.image.Url);
 
-  const uploadFile = (e) => {
+  const uploadFile = async (e) => {
     const imageList = e.target.files;
     let imageUrlList = [...imgPreview];
+    let compressedFileList = [];
+    console.log(imageList);
 
-    for (let i = 0; i < imageList.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageList[i]);
-      imageUrlList.push(currentImageUrl);
-    }
+    const options = {
+      maxSizeMB: 2,
+      maxWidth: 990,
+    };
+    try {
+      for (let i = 0; i < imageList.length; i++) {
+        const compressedFile = await imageCompression(imageList[i], options);
+        compressedFileList.push(compressedFile);
 
-    if (imageUrlList.length > 4) {
-      Swal.fire({
-        title: "이미지는 최대 4장 까지 가능합니다!",
-        icon: "error",
-      });
-      return;
-    } else {
-      setImgPreview(imageUrlList);
-    }
-
-    let imgList = [];
-    // 파일들을 꺼내 배열안에 넣어줌
-    for (const key in imageList) {
-      if (Object.hasOwnProperty.call(imageList, key)) {
-        imgList.push(imageList[key]);
+        const currentImageUrl = URL.createObjectURL(compressedFile);
+        imageUrlList.push(currentImageUrl);
       }
+
+      if (imageUrlList.length > 4) {
+        Swal.fire({
+          title: "이미지는 최대 4장 까지 가능합니다!",
+          icon: "error",
+        });
+        return;
+      } else {
+        setImgPreview(imageUrlList);
+      }
+
+      dispatch(imgActions.setPre(compressedFileList));
+    } catch (err) {
+      console.log(err);
     }
-    setImgPreview(imageUrlList);
-    dispatch(imgActions.setPre(imgList));
   };
 
   const handleUrl = (e) => {

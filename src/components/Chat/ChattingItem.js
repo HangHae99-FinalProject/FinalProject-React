@@ -109,7 +109,9 @@ const ChattingWrap = styled.div`
       /* position: absolute;
       width: 80px;
       right: 27%; */
-      width: 150px;
+      display: flex;
+      justify-content: center;
+      width: 200px;
       margin-left: 140px;
       span {
         color: #9b9798;
@@ -130,11 +132,6 @@ const ChattingWrap = styled.div`
       border-radius: 50%;
       text-align: center;
       margin-left: 20px;
-    }
-    .cnt-zero {
-      background-color: #fff;
-      width: 22px;
-      height: 22px;
     }
   }
 `;

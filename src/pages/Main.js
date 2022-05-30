@@ -18,20 +18,20 @@ import Link from "../components/Link";
 import ModalWindow from "../elements/ModalWindow";
 import TutorialSwiper from "../elements/TutorialSwiper";
 
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import Cookies from "universal-cookie";
 import OnTopBtn from "../components/OnTopBtn";
 
 import dayjs from "dayjs";
-import { useCookies } from 'react-cookie'; 
+import { useCookies } from "react-cookie";
 
 const Main = () => {
   const [is_location, setLocation] = useState("위치설정");
   const [is_open, setIs_open] = useState(false);
   const [selected, setSelected] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
-  
-  const COOKIE_KEY = 'HideModal'; 	                     // 쿠키이름세팅 
+
+  const COOKIE_KEY = "HideModal"; // 쿠키이름세팅
   const [cookies, setCookie] = useCookies([COOKIE_KEY]); // 쿠키이름을 초기값으로 넣어 쿠키세팅
 
   const pathName = useLocation();
@@ -63,13 +63,14 @@ const Main = () => {
 
   //1회성 튜토리얼 모달
   const hideModal = () => {
-    const date = dayjs();                     // 일단 dayjs 로 시간변수를 만들어주고
-    const modalExpire = date.add(1, "day"); 	// 하루 뒤로 값을 add 해준다.
-    setCookie(COOKIE_KEY, 'true', {	          // 쿠키를 셋해준다.
-      path: '/',			                        // path를 지정해주고
-      expires: modalExpire.toDate(),	      	// 여기서 날짜를 지정해준다
+    const date = dayjs(); // 일단 dayjs 로 시간변수를 만들어주고
+    const modalExpire = date.add(1, "day"); // 하루 뒤로 값을 add 해준다.
+    setCookie(COOKIE_KEY, "true", {
+      // 쿠키를 셋해준다.
+      path: "/", // path를 지정해주고
+      expires: modalExpire.toDate(), // 여기서 날짜를 지정해준다
     });
-    handleClose()
+    handleClose();
   };
   //여기까지 1회성 튜토리얼 모달
 
@@ -100,8 +101,7 @@ const Main = () => {
   return (
     <>
       {/* 튜토리얼 모달 */}
-      {cookies[COOKIE_KEY] ? 
-        null : 
+      {cookies[COOKIE_KEY] ? null : (
         <ModalWindow
           handleOpen={handleOpen}
           open={open}
@@ -111,11 +111,11 @@ const Main = () => {
           borderRadius="20px"
         >
           <CloseBtn onClick={hideModal}>
-            <CloseRoundedIcon/>
+            <CloseRoundedIcon />
           </CloseBtn>
           <TutorialSwiper></TutorialSwiper>
         </ModalWindow>
-      }
+      )}
       {/* 여기까지 튜토리얼 모달 */}
       <Container>
         <MainImage />
@@ -312,7 +312,8 @@ const Main = () => {
           alt="backImg"
         />
       </BackImage>
-      <Link/>
+      <Link />
+      <OnTopBtn />
     </>
   );
 };
@@ -320,7 +321,7 @@ const Main = () => {
 const CloseBtn = styled.div`
   z-index: 9999;
   width: 24px;
-  height:24px;
+  height: 24px;
   /* background-color: green; */
   margin: 20px 20px 0 1156px;
   cursor: pointer;

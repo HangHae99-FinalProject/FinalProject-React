@@ -3,7 +3,7 @@ import ModalWindow from "../elements/ModalWindow";
 import TutorialSwiper from "../elements/TutorialSwiper";
 
 import styled from "styled-components";
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const Link = () => {
   const [open, setOpen] = React.useState(false);
@@ -22,7 +22,7 @@ const Link = () => {
         borderRadius="20px"
       >
         <CloseBtn onClick={handleClose}>
-          <CloseRoundedIcon/>
+          <CloseRoundedIcon />
         </CloseBtn>
         <TutorialSwiper></TutorialSwiper>
       </ModalWindow>
@@ -47,7 +47,7 @@ const Link = () => {
 const CloseBtn = styled.div`
   z-index: 9999;
   width: 24px;
-  height:24px;
+  height: 24px;
   /* background-color: green; */
   margin: 20px 20px 0 1156px;
   cursor: pointer;
@@ -57,8 +57,7 @@ const CloseBtn = styled.div`
 const LinkImage = styled.div`
   position: fixed;
   top: 80%;
-
-  left: 7%;
+  left: 5%;
   .help-tip {
   }
 

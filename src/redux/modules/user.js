@@ -103,7 +103,6 @@ const __login = (_memberId, password) => {
         password,
       });
       const additionalInfoData = loginData.data.data?.isProfileSet;
-      console.log(additionalInfoData);
       const { accessToken, refreshToken, accessTokenExpiresIn } = loginData.data.data.token;
       const { sub, memberId, nickname, major, profileImg } = jwt_decode(accessToken);
       cookies.set("accessToken", accessToken, {

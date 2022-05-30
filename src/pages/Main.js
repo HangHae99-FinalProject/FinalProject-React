@@ -13,19 +13,24 @@ import MainSearch from "../components/Main/MainSearch";
 import { history } from "../redux/configureStore";
 import { Redirect, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import Link from "../components/Link";
 
 import ModalWindow from "../elements/ModalWindow";
 import TutorialSwiper from "../elements/TutorialSwiper";
 
-import Cookies from "universal-cookie";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-const cookies = new Cookies();
+import dayjs from "dayjs";
+import { useCookies } from 'react-cookie'; 
 
 const Main = () => {
   const [is_location, setLocation] = useState("위치설정");
   const [is_open, setIs_open] = useState(false);
   const [selected, setSelected] = useState(false);
   const [is_cate, setIs_Cate] = useState("");
+  
+  const COOKIE_KEY = 'HideModal'; 	                     // 쿠키이름세팅 
+  const [cookies, setCookie] = useCookies([COOKIE_KEY]); // 쿠키이름을 초기값으로 넣어 쿠키세팅
 
   const pathName = useLocation();
 
@@ -48,51 +53,69 @@ const Main = () => {
     history.push("/write");
   };
 
-    //모달 컨트롤
-    const [open, setOpen] = React.useState(true);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    //여기까지 모달컨트롤
+  //모달 컨트롤
+  const [open, setOpen] = React.useState(true);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  //여기까지 모달컨트롤
 
-    //지역 옵션
-    const locations = [
-      { id: 1, locationName: "전체" },
-      { id: 2, locationName: "서울/경기" },
-      { id: 3, locationName: "강원" },
-      { id: 4, locationName: "전북" },
-      { id: 5, locationName: "전남" },
-      { id: 6, locationName: "충북" },
-      { id: 7, locationName: "충남" },
-      { id: 8, locationName: "경북" },
-      { id: 9, locationName: "경남" },
-      { id: 10, locationName: "제주" },
-    ];
+  //1회성 튜토리얼 모달
+  const hideModal = () => {
+    const date = dayjs();                     // 일단 dayjs 로 시간변수를 만들어주고
+    const modalExpire = date.add(1, "day"); 	// 하루 뒤로 값을 add 해준다.
+    setCookie(COOKIE_KEY, 'true', {	          // 쿠키를 셋해준다.
+      path: '/',			                        // path를 지정해주고
+      expires: modalExpire.toDate(),	      	// 여기서 날짜를 지정해준다
+    });
+    handleClose()
+  };
+  //여기까지 1회성 튜토리얼 모달
+
+  //지역 옵션
+  const locations = [
+    { id: 1, locationName: "전체" },
+    { id: 2, locationName: "서울/경기" },
+    { id: 3, locationName: "강원" },
+    { id: 4, locationName: "전북" },
+    { id: 5, locationName: "전남" },
+    { id: 6, locationName: "충북" },
+    { id: 7, locationName: "충남" },
+    { id: 8, locationName: "경북" },
+    { id: 9, locationName: "경남" },
+    { id: 10, locationName: "제주" },
+  ];
     
-    useEffect(() => {
-      window.scrollTo(0, 0);
-      return () => {
-        dispatch(recruitActions.initRecruit());
-        dispatch(postActions.clearPost());
-      };
-    }, [dispatch, pathName]);
-    
-    if (from) {
-      return <Redirect to={{ pathname: from }} />;
-    }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    return () => {
+      dispatch(recruitActions.initRecruit());
+      dispatch(postActions.clearPost());
+    };
+  }, [dispatch, pathName]);
+  
+  if (from) {
+    return <Redirect to={{ pathname: from }} />;
+  }
 
   return (
     <>
       {/* 튜토리얼 모달 */}
-      {<ModalWindow
-        handleOpen={handleOpen}
-        open={open}
-        handleClose={handleClose}
-        width="1200px"
-        height="881px"
-        borderRadius="20px"
-      >
-        <TutorialSwiper></TutorialSwiper>
-      </ModalWindow>}
+      {cookies[COOKIE_KEY] ? 
+        null : 
+        <ModalWindow
+          handleOpen={handleOpen}
+          open={open}
+          // handleClose={handleClose}
+          width="1200px"
+          height="881px"
+          borderRadius="20px"
+        >
+          <CloseBtn onClick={hideModal}>
+            <CloseRoundedIcon/>
+          </CloseBtn>
+          <TutorialSwiper></TutorialSwiper>
+        </ModalWindow>
+      }
       {/* 여기까지 튜토리얼 모달 */}
       <Container>
         <MainImage />
@@ -289,9 +312,20 @@ const Main = () => {
           alt="backImg"
         />
       </BackImage>
+      <Link/>
     </>
   );
 };
+
+const CloseBtn = styled.div`
+  z-index: 9999;
+  width: 24px;
+  height:24px;
+  /* background-color: green; */
+  margin: 20px 20px 0 1156px;
+  cursor: pointer;
+  position: absolute;
+`;
 
 const BackImage = styled.div`
   z-index: 9999;

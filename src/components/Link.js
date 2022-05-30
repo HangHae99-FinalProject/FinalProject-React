@@ -1,23 +1,58 @@
 import React from "react";
+import ModalWindow from "../elements/ModalWindow";
+import TutorialSwiper from "../elements/TutorialSwiper";
 
 import styled from "styled-components";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 const Link = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-    <LinkImage>
-      <div className="help-tip">
-        <p>설문조사에 참여해 주세요! </p>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfwLz8IG1fdkeqcVlABNK806-R1FbkWO1PyD-Qr3OWti_K_9A/viewform?usp=sf_link">
+    <>
+      {/* 튜토리얼 모달 */}
+      <ModalWindow
+        handleOpen={handleOpen}
+        open={open}
+        handleClose={handleClose}
+        width="1200px"
+        height="881px"
+        borderRadius="20px"
+      >
+        <CloseBtn onClick={handleClose}>
+          <CloseRoundedIcon/>
+        </CloseBtn>
+        <TutorialSwiper></TutorialSwiper>
+      </ModalWindow>
+      {/* 여기까지 튜토리얼 모달 */}
+      <LinkImage>
+        <div className="help-tip" onClick={handleOpen}>
+          <p>
+            저를 클릭하시면 <br /> 사용방법을 알려드릴게요~!
+          </p>
+          <br />
           <img
             src="https://velog.velcdn.com/images/tty5799/post/669db19d-5a4c-49f7-ab32-aab0304cf14e/image.svg"
             alt="linkImage"
             className="shake-right"
           />
-        </a>
-      </div>
-    </LinkImage>
+        </div>
+      </LinkImage>
+    </>
   );
 };
+
+const CloseBtn = styled.div`
+  z-index: 9999;
+  width: 24px;
+  height:24px;
+  /* background-color: green; */
+  margin: 20px 20px 0 1156px;
+  cursor: pointer;
+  position: absolute;
+`;
 
 const LinkImage = styled.div`
   position: fixed;

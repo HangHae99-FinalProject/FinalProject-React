@@ -109,19 +109,19 @@ const SwiperEl = (props) => {
 };
 
 const TutorialImgList_apllier = [
-  { img: require("../assets/tutorial/applier/a1.png"), title: "applierTutorial_1" },
-  { img: require("../assets/tutorial/applier/a2.png"), title: "applierTutorial_2" },
-  { img: require("../assets/tutorial/applier/a3.png"), title: "applierTutorial_3" },
-  { img: require("../assets/tutorial/applier/a4.png"), title: "applierTutorial_4" },
+  { img: require("../assets/tutorial/applier/a1.jpg"), title: "applierTutorial_1" },
+  { img: require("../assets/tutorial/applier/a2.jpg"), title: "applierTutorial_2" },
+  { img: require("../assets/tutorial/applier/a3.jpg"), title: "applierTutorial_3" },
+  { img: require("../assets/tutorial/applier/a4.jpg"), title: "applierTutorial_4" },
 ];
 
 const TutorialImgList_recruiter = [
   { img: require("../assets/tutorial/recruiter/r1.gif"), title: "recruiterTutorial_1" },
-  { img: require("../assets/tutorial/recruiter/r2.png"), title: "recruiterTutorial_2" },
-  { img: require("../assets/tutorial/recruiter/r3.png"), title: "recruiterTutorial_3" },
-  { img: require("../assets/tutorial/recruiter/r4.png"), title: "recruiterTutorial_4" },
+  { img: require("../assets/tutorial/recruiter/r2.jpg"), title: "recruiterTutorial_2" },
+  { img: require("../assets/tutorial/recruiter/r3.jpg"), title: "recruiterTutorial_3" },
+  { img: require("../assets/tutorial/recruiter/r4.jpg"), title: "recruiterTutorial_4" },
   { img: require("../assets/tutorial/recruiter/r5.gif"), title: "recruiterTutorial_5" },
-  { img: require("../assets/tutorial/recruiter/r6.png"), title: "recruiterTutorial_6" },
+  { img: require("../assets/tutorial/recruiter/r6.jpg"), title: "recruiterTutorial_6" },
 ];
 
 const BgDiv = styled.div`

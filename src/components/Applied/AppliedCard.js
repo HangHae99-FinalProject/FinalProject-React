@@ -51,7 +51,7 @@ const AppliedCard = (item) => {
     });
   };
 
-  var likeRatio = (item.likeCount / 100) * (100 / item.projectCount) * 100;
+  var likeRatio = (item.likeCount / 100) * (100 / item.userRateTotal) * 100;
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }

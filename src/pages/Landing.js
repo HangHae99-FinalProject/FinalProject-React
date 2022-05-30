@@ -140,7 +140,7 @@ const PreviewBtn = styled.div`
   }
 `;
 const PreviewCard = styled.div`
-  width: 996px;
+  width: 1328px;
   height: auto;
   /* @media screen and (max-height: 1000px) {
     height: 500px;

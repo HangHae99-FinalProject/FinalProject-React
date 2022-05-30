@@ -104,7 +104,6 @@ const AppliedCard = (item) => {
           <p style={{ fontSize: "23px", fontWeight: "700" }}>{item.nickname}</p>
           <div className="ratingBox">
             <div className="help-tip">
-              <p>현재까지 협업횟수는 {item.projectCount}입니다.</p>
               {likeRatio <= 40 ? (
                 <img src={amateurCap} alt="amateurCap" />
               ) : 71 <= likeRatio ? (
@@ -112,6 +111,7 @@ const AppliedCard = (item) => {
               ) : (
                 <img src={juniorCap} alt="juniorCap" />
               )}
+              <p>현재까지 협업횟수는 {item.projectCount}입니다.</p>
             </div>
             &nbsp;&nbsp;
             <span className="rating">{evaluationRatio}</span>
@@ -266,12 +266,12 @@ const Profile = styled.div`
       display: none;
       text-align: center;
       background-color: #f5f5f9;
+      z-index: 20px;
       width: 150px;
       padding: 10px;
       max-width: 220px;
       position: absolute;
-      left: 20%;
-      top: 58%;
+
       color: rgba(0, 0, 0, 0.87);
       font-size: 12px;
       font-weight: bold;

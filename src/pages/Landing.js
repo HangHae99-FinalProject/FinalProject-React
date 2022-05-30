@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import LandingCard from "../components/Landing/LandingCard";
@@ -6,9 +6,12 @@ import { actionCreates as postActions } from "../redux/modules/post";
 import { FiChevronRight } from "react-icons/fi";
 import { history } from "../redux/configureStore";
 import { useLocation } from "react-router-dom";
+import OnTopBtn from "../components/OnTopBtn";
+import OnDownBtn from "../components/OnDownBtn";
 
 const Landing = () => {
   const dispatch = useDispatch();
+
   const landingList = useSelector((state) => state.post.landingList);
 
   const pathName = useLocation();
@@ -27,6 +30,7 @@ const Landing = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
     dispatch(postActions.__getLanding());
   }, [pathName]);
 
@@ -88,6 +92,8 @@ const Landing = () => {
           />
         </LastImage>
       </BackColor>
+      <OnTopBtn />
+      <OnDownBtn />
     </Container>
   );
 };
@@ -140,17 +146,18 @@ const PreviewBtn = styled.div`
   }
 `;
 const PreviewCard = styled.div`
-  width: 996px;
+  width: 1370px;
   height: auto;
+  margin: 0 auto;
   /* @media screen and (max-height: 1000px) {
     height: 500px;
   }
   @media screen and (max-height: 650px) {
     height: 200px;
   } */
-  /* display: flex; */
+  /* display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; */
 `;
 
 const LoginBox = styled.div`
@@ -158,11 +165,11 @@ const LoginBox = styled.div`
   justify-content: center;
   .goHome {
     cursor: pointer;
-    margin-right: 185px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 164px;
+    width: 357px;
     height: 45px;
     border-radius: 20px;
     background: #ffffff;
@@ -214,7 +221,7 @@ const LoginBox = styled.div`
 
 const BackImage = styled.div`
   img {
-    width: 93%;
+    width: 83%;
     margin-top: 5%;
   }
 `;
@@ -222,7 +229,7 @@ const BackImage = styled.div`
 const TitleImg = styled.div`
   margin-left: 70%;
   position: absolute;
-  margin-top: -50%;
+  margin-top: -40%;
 `;
 
 const HeadImage = styled.div`

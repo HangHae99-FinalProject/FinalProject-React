@@ -49,7 +49,7 @@ const HtmlTooltip = styled(({ className, ...props }) => (
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: "#f5f5f9",
     color: "rgba(0, 0, 0, 0.87)",
-    maxWidth: 220,
+    maxWidth: "250px",
     fontSize: theme.typography.pxToRem(12),
     border: "1px solid #dadde9",
   },
@@ -704,7 +704,15 @@ const User = (props) => {
                     <HtmlTooltip
                       title={
                         <React.Fragment>
-                          <Typography>
+                          <Typography 
+                            sx={{
+                              width:"250px", 
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
                             현재까지 협업횟수는&nbsp;
                             <span style={{ fontWeight: "bold" }}>{getUserInfo.projectCount}회</span>
                             입니다.

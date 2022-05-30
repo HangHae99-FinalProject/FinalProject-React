@@ -22,7 +22,6 @@ const Uploads = () => {
     const imageList = e.target.files;
     let imageUrlList = [...imgPreview];
     let compressedFileList = [];
-    console.log(imageList);
 
     const options = {
       maxSizeMB: 2,

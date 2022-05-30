@@ -16,7 +16,7 @@ const ApplyCard = (props) => {
   const dispatch = useDispatch();
   const majorList = props.majorData;
 
-  var likeRatio = (props.likeCount / 100) * (100 / props.projectCount) * 100;
+  var likeRatio = (props.likeCount / 100) * (100 / props.userRateTotal) * 100;
   if (isNaN(likeRatio)) {
     likeRatio = 0;
   }

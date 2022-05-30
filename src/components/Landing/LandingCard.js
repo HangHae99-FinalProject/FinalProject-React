@@ -207,8 +207,8 @@ const TitleBox = styled.div`
 `;
 
 const Container = styled.div`
-  height: 380px;
   width: 292px;
+  height: 380px;
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
   border-radius: 8px;

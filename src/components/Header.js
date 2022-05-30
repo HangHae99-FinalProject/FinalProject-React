@@ -11,9 +11,6 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import ModalWindow from "../elements/ModalWindow";
-
-import TutorialSwiper from "../elements/TutorialSwiper";
 
 //미사용 임포트
 import styled from "styled-components";
@@ -28,15 +25,12 @@ function Header(props) {
 
   const pathName = useLocation();
 
-  //모달 컨트롤
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  //여기까지 모달컨트롤
-
   const menuId = "primary-search-account-menu";
   const goHome = () => {
     history.push("/main");
+  };
+  const goLanding = () => {
+    history.push("/");
   };
   const goChat = () => {
     history.push("/chatlist");
@@ -70,18 +64,6 @@ function Header(props) {
 
   return (
     <Grid>
-      {/* 튜토리얼 모달 */}
-      <ModalWindow
-      handleOpen={handleOpen}
-      open={open}
-      handleClose={handleClose}
-      width="1200px"
-      height="881px"
-      borderRadius="20px"
-      >
-        <TutorialSwiper></TutorialSwiper>
-      </ModalWindow>
-      {/* 여기까지 튜토리얼 모달 */}
       <AppBar
         position="static"
         sx={{
@@ -99,7 +81,18 @@ function Header(props) {
             alignItems="center"
           >
             {pathName.pathname === "/main" ? (
-              <Grid></Grid>
+              <>
+                <Grid sx={{ display: { cursor: "pointer" } }} onClick={goLanding}>
+                  <img
+                    src="https://velog.velcdn.com/images/tty5799/post/89054416-3241-4eaa-984e-931466ff2329/image.svg"
+                    alt="logo"
+                    style={{ 
+                      // marginLeft: "260px", 
+                      height: "40px" 
+                    }}
+                  />
+                </Grid>
+              </>
             ) : (
               <>
                 <Grid sx={{ display: { cursor: "pointer" } }} onClick={goHome}>
@@ -124,21 +117,13 @@ function Header(props) {
                 justifyContent="flex-end"
                 alignItems="center"
               >
-                {/* <Grid
-                  sx={{ marginRight: "20px", display: { cursor: "pointer" } }}
-                  onClick={handleOpen}
-                >
-                  <Typography sx={{ color: "#fff", fontSize: "18px" }}>
-                    /TUTORIAL TEST BUTTON/
-                  </Typography>
-                </Grid> */}
                 {isLogin && isCookies === true ? (
                   <Grid
                     sx={{ marginRight: "20px", display: { cursor: "pointer" } }}
                     onClick={goChat}
                   >
                     <Typography sx={{ color: "#fff", fontSize: "18px" }}>
-                      CHATON
+                      CHAT
                     </Typography>
                   </Grid>
                 ) : null}

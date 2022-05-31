@@ -36,14 +36,19 @@ const MainImage = () => {
             style={{ width: "1288px", height: "342px" }}
           />
         </SwiperSlide>
-        <SwiperSlide>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfwLz8IG1fdkeqcVlABNK806-R1FbkWO1PyD-Qr3OWti_K_9A/viewform?usp=sf_link">
-            <img
-              src="https://velog.velcdn.com/images/tty5799/post/a7f2445d-ce4f-407a-b609-552513b8fb20/image.svg"
-              alt=""
-              style={{ width: "1288px", height: "342px", cursor: "pointer" }}
-            />
-          </a>
+        <SwiperSlide
+          onClick={() => {
+            window.open(
+              "https://docs.google.com/forms/d/e/1FAIpQLSfwLz8IG1fdkeqcVlABNK806-R1FbkWO1PyD-Qr3OWti_K_9A/viewform?usp=sf_link",
+              "_blank"
+            );
+          }}
+        >
+          <img
+            src="https://velog.velcdn.com/images/tty5799/post/a7f2445d-ce4f-407a-b609-552513b8fb20/image.svg"
+            alt=""
+            style={{ width: "1288px", height: "342px", cursor: "pointer" }}
+          />
         </SwiperSlide>
         <SwiperSlide>
           <img

@@ -4,7 +4,7 @@ import { history } from "../redux/configureStore";
 import Cookies from "universal-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
-import tutorial_main from "../assets/tutorial/tutorial_main.png";
+import tutorial_main from "../assets/tutorial/tutorial_main.jpeg";
 
 //MUI 관련 임포트
 import AppBar from "@mui/material/AppBar";

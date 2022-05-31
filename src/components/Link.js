@@ -34,7 +34,7 @@ const Link = () => {
           </p>
           <br />
           <img
-            src="https://velog.velcdn.com/images/tty5799/post/669db19d-5a4c-49f7-ab32-aab0304cf14e/image.svg"
+            src="https://velog.velcdn.com/images/tty5799/post/e7250490-8f0b-4bd5-8203-a7b5a795a256/image.svg"
             alt="linkImage"
             className="shake-right"
           />
@@ -193,7 +193,7 @@ const LinkImage = styled.div`
 
   img {
     cursor: pointer;
-    width: 100px;
+    width: 110px;
   }
 `;
 

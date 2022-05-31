@@ -5,11 +5,10 @@ import proCap from "../assets/proCap.png";
 import ReactModal from "react-modal";
 import _styled from "styled-components";
 import { useLocation, useParams } from "react-router-dom";
-import { history } from "../redux/configureStore";
+import { history, store } from "../redux/configureStore";
 import TabPanel from "../components/MyPage/TabPanel";
-import { useDispatch, useSelector } from "react-redux";
+import { batch, shallowEqual, useDispatch, useSelector } from "react-redux";
 import DetailImage from "../components/Detail/DetailImage";
-import { actionCreators as userInfoActions } from "../redux/modules/myPage";
 import Pagination from "../components/MyPage/Pagination";
 import ModalWindow from "../elements/ModalWindow";
 import Footer from "../elements/Footer";
@@ -17,6 +16,7 @@ import Link from "../components/Link";
 import UserSkeleton from "../components/MyPage/UserSkeleton";
 import ImageSkeleton from "../components/MyPage/ImageSkeleton";
 import Spinner from "../components/Spinner";
+import { actionCreators as userInfoActions, initialState } from "../redux/modules/myPage";
 
 import PropTypes from "prop-types";
 import Tab from "@mui/material/Tab";
@@ -35,6 +35,7 @@ import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import PanToolRoundedIcon from "@mui/icons-material/PanToolRounded";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
+import user from "../redux/modules/user";
 
 const a11yProps = (index) => {
   return {
@@ -74,6 +75,9 @@ const User = (props) => {
   const modalHandelBtn = () => {
     setModalState(!ModalState);
   };
+// const { userState, prevUserState } = useSelector((state: initialState) => ({
+//   userState : state.myPage.appliedList
+// }), shallowEqual)
 
   const getUserInfo = useSelector((state) => state.myPage.userInfo);
   console.log(getUserInfo.email)
@@ -138,17 +142,43 @@ const User = (props) => {
 
   useEffect(() => {
     dispatch(userInfoActions.initList());
-  }, [ModalState]);
+  }, [ModalState, dispatch]);
 
   useEffect(() => {
-    dispatch(userInfoActions.__getUserInfo(userId));
-    dispatch(userInfoActions.__getApplied(userId));
-    dispatch(userInfoActions.__getRecruit(userId));
-    dispatch(userInfoActions.__getRecruitOver(userId));
+    batch(() => {
+      dispatch(userInfoActions.__getUserInfo(userId));
+      dispatch(userInfoActions.__getApplied(userId));
+      dispatch(userInfoActions.__getRecruit(userId));
+      dispatch(userInfoActions.__getRecruitOver(userId));
+    })
     return () => {
       dispatch(userInfoActions.initUserInfo());
     };
   }, [dispatch, userId, pathName]);
+  // useEffect(() => {
+  //   dispatch(userInfoActions.__getUserInfo(userId));
+  //   return () => {
+  //     dispatch(userInfoActions.initUserInfo());
+  //   };
+  // }, [dispatch, userId, pathName]);
+  // useEffect(() => {
+  //   dispatch(userInfoActions.__getApplied(userId));
+  //   return () => {
+  //     dispatch(userInfoActions.initUserInfo());
+  //   };
+  // }, [dispatch, userId, pathName]);
+  // useEffect(() => {
+  //   dispatch(userInfoActions.__getRecruit(userId));
+  //   return () => {
+  //     dispatch(userInfoActions.initUserInfo());
+  //   };
+  // }, [dispatch, userId, pathName]);
+  // useEffect(() => {
+  //   dispatch(userInfoActions.__getRecruitOver(userId));
+  //   return () => {
+  //     dispatch(userInfoActions.initUserInfo());
+  //   };
+  // }, [dispatch, userId, pathName]);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -866,16 +896,19 @@ const User = (props) => {
                       sx={{ width: "456px", fontSize: "20px", fontWeight: "bold" }}
                       label={userId === id ? "신청중" : "진행중"}
                       {...a11yProps(0)}
+                      // onClick={() => {dispatch(userInfoActions.__getApplied(userId));}}
                     />
                     <Tab
                       sx={{ width: "456px", fontSize: "20px", fontWeight: "bold" }}
                       label="모집중"
                       {...a11yProps(1)}
+                      // onClick={() => {dispatch(userInfoActions.__getRecruit(userId));}}
                     />
                     <Tab
                       sx={{ width: "456px", fontSize: "20px", fontWeight: "bold" }}
                       label="모집/진행 완료"
                       {...a11yProps(2)}
+                      // onClick={() => {dispatch(userInfoActions.__getRecruitOver(userId));}}
                     />
                   </Tabs>
                   {/* 여기까지 탭 속성 */}

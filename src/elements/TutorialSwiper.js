@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import tutorial_main from "../assets/tutorial/tutorial_main.png";
+import tutorial_main from "../assets/tutorial/tutorial_main.jpeg";
 
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";

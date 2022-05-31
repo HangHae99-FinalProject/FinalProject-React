@@ -26,6 +26,8 @@ import OnTopBtn from "../components/OnTopBtn";
 import dayjs from "dayjs";
 import { useCookies } from "react-cookie";
 
+import crossBtn from "../assets/crossBtn.png"
+
 const Main = () => {
   const [is_location, setLocation] = useState("위치설정");
   const [is_open, setIs_open] = useState(false);
@@ -107,7 +109,7 @@ const Main = () => {
         <ModalWindow
           handleOpen={handleOpen}
           open={open}
-          // handleClose={handleClose}
+          handleClose={hideModal}
           width="1200px"
           height="881px"
           borderRadius="20px"

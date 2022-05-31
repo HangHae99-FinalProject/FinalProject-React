@@ -66,12 +66,11 @@ const Main = () => {
 
   //1회성 튜토리얼 모달
   const hideModal = () => {
-    const date = dayjs(); // 일단 dayjs 로 시간변수를 만들어주고
+    const date = dayjs();                   // 일단 dayjs 로 시간변수를 만들어주고
     const modalExpire = date.add(1, "day"); // 하루 뒤로 값을 add 해준다.
-    setCookie(COOKIE_KEY, "true", {
-      // 쿠키를 셋해준다.
-      path: "/", // path를 지정해주고
-      expires: modalExpire.toDate(), // 여기서 날짜를 지정해준다
+    setCookie(COOKIE_KEY, "true", {         // 쿠키를 셋해준다.
+      path: "/",                            // path를 지정해주고
+      expires: modalExpire.toDate(),        // 여기서 날짜를 지정해준다
     });
     handleClose();
   };

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import tutorial_main from "../assets/tutorial/tutorial_main.png";
+import tutorial_main from "../assets/tutorial/tutorial_main.jpg";
 
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -170,7 +170,8 @@ const TutorialImgList_recruiter = [
 const BgDiv = styled.div`
   z-index: 0;
   width: 1200px;
-  background-image: url("https://velog.velcdn.com/images/tty5799/post/cc5ad0f0-7dbd-4e36-b8b4-cce619a19946/image.jpeg");
+  background-image: url(${tutorial_main});
+  /* background-image: url("https://velog.velcdn.com/images/tty5799/post/cc5ad0f0-7dbd-4e36-b8b4-cce619a19946/image.jpeg"); */
   background-repeat: no-repeat;
   height: 881px;
   background-size: cover;

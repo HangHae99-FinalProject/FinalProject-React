@@ -170,7 +170,7 @@ const TutorialImgList_recruiter = [
 const BgDiv = styled.div`
   z-index: 0;
   width: 1200px;
-  background-image: url("https://velog.velcdn.com/images/tty5799/post/b286d196-657c-4c6a-a188-5d31b99b31dc/image.png");
+  background-image: url("https://velog.velcdn.com/images/tty5799/post/cc5ad0f0-7dbd-4e36-b8b4-cce619a19946/image.jpeg");
   background-repeat: no-repeat;
   height: 881px;
   background-size: cover;

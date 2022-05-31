@@ -76,6 +76,7 @@ const User = (props) => {
   };
 
   const getUserInfo = useSelector((state) => state.myPage.userInfo);
+  console.log(getUserInfo.email)
   const getAppliedList = useSelector((state) => state.myPage.appliedList?.data); //신청중 리스트
   const getRecruitList = useSelector((state) => state.myPage.recruitList?.data); //모집중 리스트
   const getRecruitOverList = useSelector((state) => state.myPage.recruitOverList.data); //모집완료 리스트
@@ -621,7 +622,7 @@ const User = (props) => {
                                 justifyContent="flex-end"
                                 alignItems="center"
                               >
-                                <Typography>알림받는 이메일: test@test.com</Typography>
+                                <Typography>알림받는 이메일: {getUserInfo.email}</Typography>
                               </Grid>
                             )}
                           </Typography>

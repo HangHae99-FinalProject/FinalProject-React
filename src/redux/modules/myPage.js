@@ -207,7 +207,10 @@ const __putUserInfoMod = (userId, data, files) => {
       })
     );
     files.map((e) => {
-      return formData.append("imgs", e);
+      const file = new File([e], e.name, {
+        type: e.type,
+      })
+      return formData.append("imgs", file);
     });
     try {
       await userInfoApi.putUserInfoModData(userId, formData);

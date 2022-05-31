@@ -217,6 +217,16 @@ const TitleBox = styled.div`
   margin: 20px 0 0 15px;
   width: 244px;
   height: 55px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  /* display: flex-box;
+        flex-direction: column;
+        flex-wrap: wrap; */
+  line-height: 1.5em;
+  max-height: 3em;
   span {
     font-weight: 700;
     font-size: 22px;

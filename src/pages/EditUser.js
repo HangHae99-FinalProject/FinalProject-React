@@ -486,7 +486,7 @@ const EditUser = () => {
               >
                 <Grid_2>
                   <Typography sx={{ marginTop: "20px", fontSize: "14px" }}>
-                    최소 하나의 분야를 선택해주세요.
+                    전공을 선택해주세요.
                   </Typography>
                 </Grid_2>
                 <Grid_2 sx={{ width: "1181px" }}>

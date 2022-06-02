@@ -20,12 +20,12 @@ const OnDownBtn = () => {
   });
 
   const handelDownBtn = () => {
-    window.scrollTo(2462, 2462);
+    window.scrollTo(2450, 2450);
   };
 
   return (
     <>
-      {is_ScrollY === 2462 ? null : (
+      {is_ScrollY > 2450 ? null : (
         <DownBtn onClick={handelDownBtn}>
           <img
             src="https://velog.velcdn.com/images/tty5799/post/e925267e-a8e3-4e9f-bcd0-7ba52580e61e/image.png"

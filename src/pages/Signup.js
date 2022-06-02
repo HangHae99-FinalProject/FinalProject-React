@@ -15,6 +15,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Swal from "sweetalert2";
+import kakao from "../assets/kakao.png";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,10 @@ const Signup = () => {
   const [password, setPassword] = React.useState("");
   const [pwCheck, setPwCheck] = React.useState("");
   const [checkMemberIdError, setCheckMemberIdError] = React.useState(null);
+
+  const apiKey = process.env.REACT_APP_KAKAO_API_KEY;
+  const redirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+  const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUri}&response_type=code`;
 
   // 헬퍼텍스트 -아이디, 패스워드, 패스워드확인
   function IdFormHelperText() {
@@ -93,6 +98,7 @@ const Signup = () => {
       </FormHelperText>
     );
   }
+
   // 여기까지 헬퍼텍스트 -아이디, 패스워드, 패스워드확인
 
   const onMemberIdHandler = (e) => {
@@ -106,6 +112,10 @@ const Signup = () => {
   const onPwCheckHandler = (e) => {
     e.preventDefault();
     setPwCheck(e.target.value);
+  };
+
+  const onLoginHandler = () => {
+    window.location.href = kakaoUrl;
   };
 
   //중복확인 버튼
@@ -154,7 +164,10 @@ const Signup = () => {
           alignItems="center"
         >
           <div style={{ marginBottom: "45px" }}>
-              <img src={require(`../assets/fixedSignupLogo.png`)} alt="signupLogo"/>
+            <img
+              src={require(`../assets/fixedSignupLogo.png`)}
+              alt="signupLogo"
+            />
           </div>
           <form
             onSubmit={(event) => {
@@ -326,6 +339,30 @@ const Signup = () => {
                     회원가입
                   </Button>
                 )}
+                <Button
+                  variant="contained"
+                  onClick={onLoginHandler}
+                  sx={{
+                    marginTop: "20px",
+                    width: "430px",
+                    height: "52px",
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    color: "white",
+                    border: "0",
+                    borderRadius: "14px",
+                    cursor: "pointer",
+                    backgroundColor: "#FFD082",
+                    "&:hover": {
+                      backgroundColor: "#FFD082",
+                      boxShadow: "0",
+                    },
+                    boxShadow: "0",
+                  }}
+                >
+                  카카오 로그인
+                  <img src={kakao} alt="kakao" style={{ marginLeft: "10px" }} />
+                </Button>
                 <Button
                   variant="contained"
                   onClick={goHome}

@@ -50,11 +50,11 @@ const Alert = () => {
         }
       };
 
-      // source.addEventListener("error", function (e) {
-      //   if (e) {
-      //     source.close();
-      //   }
-      // });
+      source.addEventListener("error", function (e) {
+        if (e) {
+          source.close();
+        }
+      });
     }
   }, [isLogin]);
 

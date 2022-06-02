@@ -10,7 +10,6 @@ const OnDownBtn = () => {
   };
 
   useEffect(() => {
-    console.log(is_ScrollY);
     const watch = () => {
       window.addEventListener("scroll", handelFollow);
     };
